@@ -1,16 +1,22 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView, View } from 'react-native'
 import styled from 'styled-components'
 import { colors } from '../styles/colors'
+import StartScreenModal from '../components/StartScreenModal'
+import { useNavigation } from '@react-navigation/native'
 
 const StartScreen = () => {
+  const [isSignupModalVisible, setIsSignupModalVisible] = useState(false);
+  const navigation = useNavigation();
+
   return (
     <StartScreenBody>
       <StartScreenBg source={require("../../../assets/start_bg.png")} />
       <StartText>안녕하세요{"\n"}환영합니다</StartText>
-      <StartButton>
+      <StartButton onPress={() => setIsSignupModalVisible(true)}>
         <StartButtonText>시작하기</StartButtonText>
       </StartButton>
+      <StartScreenModal  isSignupModalVisible={isSignupModalVisible} setIsSignupModalVisible={setIsSignupModalVisible}/>
     </StartScreenBody>
     
   )

@@ -2,13 +2,15 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import StartScreen from './src/ui/screens/StartScreen';
 import LoginScreen from './src/ui/screens/LoginScreen';
+import { NavigationContainer } from '@react-navigation/native';
+import StackNavigation from './src/navigation/StackNavigation';
 
 export default function App() {
   return (
-    <View >
-      {/* <StartScreen/> */}
-      <LoginScreen/>
-    </View>
+   
+      <NavigationContainer>
+        <StackNavigation/>
+      </NavigationContainer>
   );
 }
 

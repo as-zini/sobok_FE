@@ -1,22 +1,23 @@
 import React from 'react'
 import styled from 'styled-components';
 import loginBg from '../../../assets/login_bg.png';
-import back_arrow from '../../../assets/back_arrow.png';
 import login_icon from '../../../assets/login_icon.png'
 import save_icon from '../../../assets/save_icon.png';
 import auto_icon from '../../../assets/auto_icon.png';
 import { colors } from '../styles/colors';
 import Button from '../components/Button';
 import { View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import BackArrowButton from '../components/BackArrowButton';
 
 const LoginScreen = () => {
+  const navigation = useNavigation();
+
   return (
     <LoginScreenBody>
       <LoginScreenBg source={loginBg}/>
       <LoginHeader>
-        <BackArrowButton>
-          <BackArrowImg source={back_arrow} />
-        </BackArrowButton>
+        <BackArrowButton/>
       </LoginHeader>
       <LoginIntroArea>
         <LoginIcon source={login_icon} />
@@ -71,13 +72,7 @@ const LoginHeader = styled.View`
   left:40px;
 `
 
-const BackArrowButton = styled.TouchableOpacity`
 
-`
-
-const BackArrowImg = styled.Image`
-
-`
 
 const LoginIntroArea = styled.View`
   position:absolute;

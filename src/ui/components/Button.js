@@ -3,9 +3,9 @@ import styled from 'styled-components'
 import login_button_bg from '../../../assets/login_button_bg.png';
 
 
-const Button = ({text}) => {
+const Button = ({text, handleButton}) => {
   return (
-    <ButtonBody>
+    <ButtonBody onPress={handleButton}>
       <ButtonBg source={login_button_bg}/>
       <ButtonText>{text}</ButtonText>
     </ButtonBody>
