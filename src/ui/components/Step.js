@@ -34,6 +34,8 @@ const StepsBody = styled.View`
   display:flex;
   flex-direction:row;
   gap:10px;
+  position:absolute;
+  top:55px;
 `
 
 const StepEl = styled.View`
