@@ -9,14 +9,20 @@ import Button from '../components/Button';
 import Steps from '../components/Step';
 import phone_number_auth_icon from '../../../assets/phone_number_auth_icon.png';
 import clock_graphic from '../../../assets/clock_graphic.png';
+import { useNavigation } from '@react-navigation/native';
 
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
 
 const SignupScreen = () => {
   const [step, setStep] = useState(1);
+  const navigation = useNavigation();
   const handleButton = () => {
-    setStep((prev) => prev+1);
+    if(step<5){
+      setStep((prev) => prev+1);
+    } else{
+      navigation.navigate("TestStart");
+    }
   }
   const contentsText = ["성함을 \n 알려주세요", "소복에서는 \n 어떻게 불러드릴까요?", "아이디와 \n 비밀번호를 설정할게요!", "지윤 님에 대해 \n 더 알려주세요!",""]
   const placeholderText = ["이름을 입력해주세요", "닉네임을 입력해주세요", ["아이디를 입력해주세요", "대/소문자, 숫자, 특수문자의 조합", "비밀번호를 한 번 더 입력해주세요"],["이메일을 입력해주세요", "전화번호를 입력해주세요", "인증번호를 입력해주세요", "생년월일을 입력해주세요"],""]
