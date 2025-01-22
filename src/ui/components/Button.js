@@ -1,14 +1,15 @@
 import React from 'react'
 import styled from 'styled-components'
 import login_button_bg from '../../../assets/login_button_bg.png';
+import unchecked_button_bg from '../../../assets/unchecked_button_bg.png';
 
 
-const Button = ({text, handleButton}) => {
+const Button = ({text, handleButton, unChecked}) => {
   return (
     <ButtonBody onPress={handleButton}>
       
       <ButtonText>{text}</ButtonText>
-    <ButtonBg source={login_button_bg}/>
+    <ButtonBg source={unChecked === true ? unchecked_button_bg : login_button_bg}/>
     </ButtonBody>
   )
 }

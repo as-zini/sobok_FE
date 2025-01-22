@@ -10,6 +10,7 @@ import Steps from '../components/Step';
 import phone_number_auth_icon from '../../../assets/phone_number_auth_icon.png';
 import clock_graphic from '../../../assets/clock_graphic.png';
 import { useNavigation } from '@react-navigation/native';
+import StepNumber from '../components/StepNumber';
 
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
@@ -39,9 +40,7 @@ const SignupScreen = () => {
         <Steps step={step}/>
         <SignupInputArea>
         {step !== 5 ?
-        <StepNumber >
-          <StepNumberText>{step}</StepNumberText>
-        </StepNumber>
+        <StepNumber step={step}/>
         :
         <></>
         }
@@ -143,23 +142,6 @@ const SignupHeader = styled.View`
   position:absolute;
   left:30px;
   top:20px;
-`
-
-const StepNumber = styled.View`
-  width:32px;
-  height:32px;
-  background-color:${colors.indigoBlue};
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  border-radius:50%;
-  margin-bottom:20px;
-`
-
-const StepNumberText = styled.Text`
-  font-size:16px;
-  font-weight:600;
-  color:#fff;
 `
 
 const SignupContentsText = styled.Text`
