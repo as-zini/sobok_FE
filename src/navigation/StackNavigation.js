@@ -5,6 +5,7 @@ import LoginScreen from '../ui/screens/LoginScreen';
 import SignupScreen from '../ui/screens/SignupScreen';
 import TestStartScreen from '../ui/screens/TestStartScreen';
 import Test from '../ui/screens/Test';
+import AiRoutineCompleteScreen from '../ui/screens/AiRoutineCompleteScreen';
 
 const Stack = createStackNavigator();
 
@@ -21,6 +22,7 @@ const StackNavigation = () => {
       <Stack.Screen name="Signup" component={SignupScreen}/>
       <Stack.Screen name="TestStart" component={TestStartScreen}/>
       <Stack.Screen name="Test" component={Test}/>
+      <Stack.Screen name="AiRoutineComplete" component={AiRoutineCompleteScreen} />
     </Stack.Navigator>
   )
 }
