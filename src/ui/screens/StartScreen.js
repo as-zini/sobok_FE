@@ -13,7 +13,8 @@ const StartScreen = () => {
     <StartScreenBody>
       <StartScreenBg source={require("../../../assets/start_bg.png")} />
       <StartText>안녕하세요{"\n"}환영합니다</StartText>
-      <StartButton onPress={() => setIsSignupModalVisible(true)}>
+      {/* <StartButton onPress={() => setIsSignupModalVisible(true)}> */}
+      <StartButton onPress={() => navigation.navigate("Tabs")}>
         <StartButtonText>시작하기</StartButtonText>
       </StartButton>
       <StartScreenModal  isSignupModalVisible={isSignupModalVisible} setIsSignupModalVisible={setIsSignupModalVisible}/>

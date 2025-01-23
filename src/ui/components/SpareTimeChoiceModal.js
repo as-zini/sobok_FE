@@ -7,8 +7,14 @@ import { colors } from '../styles/colors';
 import TimeSliderBar from './TimeSliderBar';
 import MarginVertical from './marginVertical';
 import Button from './Button';
+import { useNavigation } from '@react-navigation/native';
 
 const SpareTimeChoiceModal = ({isChoiceModalVisible, setIsChoiceModalVisible}) => {
+
+  const handleSpareTimeModal = () => {
+    setIsChoiceModalVisible(false);
+  }
+  
   return (
     <SafeAreaView>
       <Modal 
@@ -31,7 +37,7 @@ const SpareTimeChoiceModal = ({isChoiceModalVisible, setIsChoiceModalVisible}) =
           <MarginVertical top={48}/>
           <TimeSliderBar text={"까지"}/>
           <MarginVertical top={55}/>
-          <Button text={"다음 단계로"}/>
+          <Button text={"다음 단계로"} handleButton={handleSpareTimeModal}/>
         </SpareTimeModalBody>
 
       </Modal>

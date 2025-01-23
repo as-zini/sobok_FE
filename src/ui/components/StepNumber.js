@@ -3,9 +3,9 @@ import { View } from 'react-native'
 import styled from 'styled-components';
 import { colors } from '../styles/colors';
 
-const StepNumber = ({step}) => {
+const StepNumber = ({step, marginBottom}) => {
   return (
-    <StepNumberBody>
+    <StepNumberBody style={{marginBottom:marginBottom}}>
       <StepNumberText>{step}</StepNumberText>
     </StepNumberBody>
   )
@@ -21,7 +21,6 @@ const StepNumberBody = styled.View`
   justify-content:center;
   align-items:center;
   border-radius:50%;
-  margin-bottom:20px;
 `
 
 const StepNumberText = styled.Text`
