@@ -9,9 +9,11 @@ import complete_icon from '../../../assets/complete_icon.png';
 import { colors } from '../styles/colors';
 import MarginVertical from '../components/marginVertical';
 import Button from '../components/Button';
+import { useNavigation } from '@react-navigation/native';
 
 const AiRoutineCompleteScreen = () => {
   const [isCreateComplete, setIsCreateComplete] = useState(true);
+  const navigation = useNavigation();
 
   return (
     <>
@@ -26,7 +28,7 @@ const AiRoutineCompleteScreen = () => {
           <MarginVertical top={18}/>
           <AiRoutineCompleteText>이제 지윤 님에게 딱 맞는{"\n"}루틴을 보러 가요!</AiRoutineCompleteText>
           <View style={{position:'absolute', bottom:100}}>
-            <Button text={"루틴 보러 가기"}/>
+            <Button text={"루틴 보러 가기"} handleButton={() => navigation.navigate("Tabs")}/>
           </View>
         </AiRoutineCompleteBody>
         <AiRoutineCompleteBg source={airoutine_complete_bg}/>

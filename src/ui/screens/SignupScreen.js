@@ -40,7 +40,7 @@ const SignupScreen = () => {
         <Steps step={step}/>
         <SignupInputArea>
         {step !== 5 ?
-        <StepNumber step={step}/>
+        <StepNumber step={step} marginBottom={20}/>
         :
         <></>
         }
