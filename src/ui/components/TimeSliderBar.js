@@ -37,7 +37,7 @@ const TimeSliderBar = ({text}) => {
             {value <= 12 ? '오전' : '오후'} {value === 12 ? 12 : value % 12}:00
           </Label>
         </ValueArea>
-        <Text style={{fontSize:12, fontWeight:500, color:"#4c4c4c"}}>{text}</Text>
+        <Text style={{fontSize:14, fontWeight:500, color:"#4c4c4c"}}>{text}</Text>
       </View>
       <SliderContainer>
         {/* 고정된 버튼 */}

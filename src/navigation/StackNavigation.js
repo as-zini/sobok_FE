@@ -10,6 +10,9 @@ import Home from '../ui/screens/Home';
 import BottomTabNavigation from './BottomTabNavigation';
 import ViewInstallmentSavingScreen from '../ui/screens/ViewInstallmentSavingScreen';
 import DetailInstallmentSavingScreen from '../ui/screens/DetailInstallmentSavingScreen';
+import ViewRoutineListScreen from '../ui/screens/ViewRoutineListScreen';
+import DetailRoutineScreen from '../ui/screens/DetailRoutineScreen';
+import DetailTodo from '../ui/screens/DetailTodo';
 
 const Stack = createStackNavigator();
 
@@ -30,6 +33,9 @@ const StackNavigation = () => {
       <Stack.Screen name="Tabs" component={BottomTabNavigation}/>
       <Stack.Screen name="ViewSave" component={ViewInstallmentSavingScreen} />
       <Stack.Screen name="DetailSave" component={DetailInstallmentSavingScreen}/>
+      <Stack.Screen name="ViewRoutine" component={ViewRoutineListScreen} />
+      <Stack.Screen name="DetailRoutine" component={DetailRoutineScreen}/>
+      <Stack.Screen name="DetailTodo" component={DetailTodo}/>
     </Stack.Navigator>
   )
 }

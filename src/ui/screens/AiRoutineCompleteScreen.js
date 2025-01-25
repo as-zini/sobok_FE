@@ -7,7 +7,7 @@ import airoutine_complete_bg from '../../../assets/airoutine_complete_bg.png';
 import { size } from '../styles/size';
 import complete_icon from '../../../assets/complete_icon.png';
 import { colors } from '../styles/colors';
-import MarginVertical from '../components/marginVertical';
+import MarginVertical from '../components/MarginVertical';
 import Button from '../components/Button';
 import { useNavigation } from '@react-navigation/native';
 

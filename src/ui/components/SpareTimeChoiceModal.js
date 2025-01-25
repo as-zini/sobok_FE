@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { size } from '../styles/size';
 import { colors } from '../styles/colors';
 import TimeSliderBar from './TimeSliderBar';
-import MarginVertical from './marginVertical';
+import MarginVertical from './MarginVertical';
 import Button from './Button';
 import { useNavigation } from '@react-navigation/native';
 

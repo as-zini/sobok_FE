@@ -13,7 +13,7 @@ import routine_icon from '../../../assets/routine_icon.png';
 import point_icon from '../../../assets/point_icon.png';
 import { size } from '../styles/size';
 import { colors } from '../styles/colors';
-import MarginVertical from '../components/marginVertical';
+import MarginVertical from '../components/MarginVertical';
 import NavigateArrowButton from '../components/NavigateArrowButton';
 import Button from '../components/Button';
 import ContinuitySuccess from '../components/ContinuitySuccess';
@@ -80,7 +80,7 @@ const Home = () => {
               
             </TotalTimeEl>
             <BorderLine/>
-            <TotalTimeEl >
+            <TotalTimeEl onPress={() => navigation.navigate("ViewRoutine")}>
               <View style={{flexGrow:.5}}>
                 <TotalTimeIcon source={routine_icon} style={{width:40, height:25}}/>
               </View>
