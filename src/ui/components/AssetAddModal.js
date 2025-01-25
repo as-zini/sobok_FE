@@ -11,7 +11,7 @@ import ai_routine_icon from '../../../assets/routine_icon.png';
 import { size } from '../styles/size';
 import NavigateArrowButton from './NavigateArrowButton';
 import { colors } from '../styles/colors';
-import MarginVertical from './marginVertical';
+import MarginVertical from './MarginVertical';
 
 const AssetAddModal = ({isAssetAddModalVisible, setIsAssetAddModalVisible}) => {
   const assetCategory = ['적금', 'AI 루틴', "자율루틴"];

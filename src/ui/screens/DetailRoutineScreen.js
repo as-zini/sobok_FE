@@ -10,28 +10,26 @@ import BackArrowButton from '../components/BackArrowButton';
 import { colors } from '../styles/colors';
 import { size } from '../styles/size';
 import LinkIcon from '../components/LinkIcon';
-import ShortAlertArea from '../components/ShortAlertArea';
 import DoubleButton from '../components/DoubleButton';
-import ProgressBar from '../components/ProgressBar';
-import { BlurView } from 'expo-blur';
 import BlurComponent from '../components/BlurComponent';
 import DropDownArrowButton from '../components/DropDownArrowButton';
 import AssetEl from '../components/AssetEl';
 import CalandarModal from '../components/CalandarModal';
+import routine_icon from '../../../assets/routine_icon.png';
+import trash_icon from '../../../assets/trash_icon.png';
+import snow_flake_icon_white from '../../../assets/snow_flake_icon_white.png';
+import RoutinePauseModal from '../components/RoutinePauseModal';
 
-const DetailInstallmentSavingScreen = () => {
-  const [isCalandarModalVisible, setIsCalandarModalVisible] = useState(false);
+const DetailRoutineScreen = () => {
+  const [isPauseModalVisible, setIsPauseModalVisible] = useState(false);
 
   const Data = [
     {
-      title:["2월 6일 - 2월 13일"],
-      data:[["5회차", "09:00", "1H 30M", "7H 30M"]]
+      title:"1번째",
+      data:[["영어 강의 1강", "스픽", "1H 00M", "6:00 - 7:00"]]
     },{
-      title:["1월 30일 - 2월 5일"],
-      data:[["4회차", "09:00", "1H 30M", "6H 30M"]]
-    },{
-      title:["1월 23일 - 1월 29일"],
-      data:[["3회차", "09:00", "1H 30M", "4H 30M"]]
+      title:"2번쪠",
+      data:[["영어 강의 2강", "스픽", "1H 30M", "7:00 - 8:30"]]
     }
   ]
 
@@ -47,7 +45,7 @@ const DetailInstallmentSavingScreen = () => {
   const LenderItem = ({item, index}) => {
     return(
       <>
-        <AssetEl item={item} index={index} isLink={false}/>
+        <AssetEl item={item} index={index} isLink={true} category={"Todo"}/>
         <MarginVertical top={40}/>
       </>
     )
@@ -57,8 +55,7 @@ const DetailInstallmentSavingScreen = () => {
     return(
       <View style={{paddingHorizontal:30, paddingVertical:40}}>
         <View style={{display:'flex', flexDirection:'row', gap:4}}>
-          <SettingPeriodText>2024.08 - 2024.10</SettingPeriodText>
-          <DropDownArrowButton size={16} handleArrowButton={() => setIsCalandarModalVisible(true)}/>
+          <TotalRoutineCount>총 2개의 할 일</TotalRoutineCount>
         </View>
         <MarginVertical top={32}/>
         <SectionList
@@ -78,6 +75,7 @@ const DetailInstallmentSavingScreen = () => {
   }
   
   return (
+    <>
     <SafeAreaView>
       <ScrollView>
       <DetailInstallmentSavingBody>
@@ -86,48 +84,59 @@ const DetailInstallmentSavingScreen = () => {
           <View style={{position:'absolute', left:20}}>
             <BackArrowButton/>
           </View>
-          <Text style={{fontWeight:600, fontSize:18, color:colors.fontSub}}>적금</Text>
+          <Text style={{fontWeight:600, fontSize:18, color:colors.fontSub}}>아침에는 영어 공부 루틴</Text>
         </DetailInstallmentSavingHeader>
         <MarginVertical top={47}/>
         <SavingIntroArea>
-          <Image source={installment_icon} style={{width:48, height:34}}/>
+          <Image source={routine_icon} style={{width:51, height:33}}/>
           <MarginVertical top={18}/>
           <View style={{display:'flex', flexDirection:'row', alignItems:'center', gap:5}}>
             <LinkIcon size={16}/>
-            <LinkedRoutineText>아침에는 영어 공부</LinkedRoutineText>
+            <LinkedRoutineText>영어 적금</LinkedRoutineText>
           </View>
           <MarginVertical top={5}/>
           <TotalSavingTitle>7H 30M</TotalSavingTitle>
           <MarginVertical top={32}/>
-          <InterestText>연 3.8%</InterestText>
-          <PushPeriodText>매주 1H 30M</PushPeriodText>
+          <InterestText>월, 수, 금</InterestText>
+          <View style={{display:'flex', flexDirection:'row', alignItems:'center'}}>
+            <PushPeriodText style={{flexGrow:1}}>오전 6:00 - 7:30</PushPeriodText>
+            <View style={{display:'flex', flexDirection:'row', alignItems:'center', gap:8}}>
+              <View style={{width:8, height:8, borderRadius:'50%', backgroundColor:colors.indigoBlue}}></View>
+              <PushPeriodText>진행중</PushPeriodText>
+            </View>
+          </View>
         </SavingIntroArea>
-        <MarginVertical top={24}/>
-        
-        <ShortAlertArea text={"3개월 남았어요!"} width={114} height={30}/>
-        {/* 기간바 */}
-        <MarginVertical top={36}/>
-        <ProgressBar/>
-        <MarginVertical top={48}/>
-        <DoubleButton text1={"연결 루틴 관리"} text2={"채우기"}/>
         <MarginVertical top={40}/>
+        <DoubleButton text1={"루틴 수정하기"} text2={"루틴 보류하기"} handleRightButton={() => setIsPauseModalVisible(true)}/>
+        
+        <MarginVertical top={40}/>
+        
         <BlurComponent child={BlurChild}/>
+        <RoutinePauseModal isPauseModalVisible={isPauseModalVisible} setIsPauseModalVisible={setIsPauseModalVisible}/>
       </DetailInstallmentSavingBody>
-      <CalandarModal isCalandarModalVisible={isCalandarModalVisible} setIsCalandarModalVisible={setIsCalandarModalVisible} />
+      
       </ScrollView>
+      
       <DetailInstallmentSavingBg source={installment_saving_bg}/>
+      
     </SafeAreaView>
+    <RoutineCompleteBar>
+      <RoutineCompleteBg />
+      <CompleteIcon source={snow_flake_icon_white}/>
+      <CompleteBarText>완료하기</CompleteBarText>
+  </RoutineCompleteBar>
+  </>
   )
 }
 
-export default DetailInstallmentSavingScreen;
+export default DetailRoutineScreen;
 
 const DetailInstallmentSavingBody = styled.View`
   display:flex;
-  justify-content:center;
   align-items:center;
   width:${size.width}px;
-  height:1000px;
+  z-index:1;
+  margin-bottom:30px;
 `
 
 const DetailInstallmentSavingBg = styled.Image`
@@ -177,11 +186,49 @@ const PushPeriodText = styled.Text`
 
 
 
-const SettingPeriodText = styled.Text`
-  color:#4A5660;
+const TotalRoutineCount = styled.Text`
+  color:#707172;
   font-weight:600;
-  font-size:16px;
+  font-size:20px;
 `
+
+const RoutineCompleteBar = styled.View`
+  position:absolute;
+  bottom:0;
+  width:${size.width}px;
+  height:110px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background-color:white;
+  
+`
+
+const RoutineCompleteBg = styled.TouchableOpacity`
+  z-index:1;
+  
+  background-color:${colors.indigoBlue50};
+  width:100%;
+  height:100%;
+  position:absolute;
+  top:0;
+`
+
+const CompleteIcon = styled.Image`
+  width:20px;
+  height:20px;
+  margin-bottom:10px;
+  z-index:2;
+`
+
+const CompleteBarText = styled.Text`
+  font-size:18px;
+  font-weight:600;
+  color:#fff;
+  z-index:2;
+`
+
+
 
 
 
