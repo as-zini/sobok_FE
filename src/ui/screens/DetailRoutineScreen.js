@@ -112,7 +112,7 @@ const DetailRoutineScreen = () => {
         <MarginVertical top={40}/>
         
         <BlurComponent child={BlurChild}/>
-        <RoutinePauseModal isPauseModalVisible={isPauseModalVisible} setIsPauseModalVisible={setIsPauseModalVisible}/>
+        <RoutinePauseModal isPauseModalVisible={isPauseModalVisible} setIsPauseModalVisible={setIsPauseModalVisible} version={"Routin"}/>
       </DetailInstallmentSavingBody>
       
       </ScrollView>

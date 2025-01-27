@@ -12,11 +12,19 @@ import { size } from '../styles/size';
 import NavigateArrowButton from './NavigateArrowButton';
 import { colors } from '../styles/colors';
 import MarginVertical from './MarginVertical';
+import { useNavigation } from '@react-navigation/native';
 
 const AssetAddModal = ({isAssetAddModalVisible, setIsAssetAddModalVisible}) => {
   const assetCategory = ['적금', 'AI 루틴', "자율루틴"];
   const assetText = ['목표 금액을 정하고\n꾸준히 시간을 모을 수 있어요', "AI가 나만의 루틴을\n만들어줘요","직접 나만의 루틴을\n만들 수 있어요"];
   const assetIcon = [installment_saving_icon, ai_routine_icon, autonomy_routine_icon];
+
+  const navigation = useNavigation();
+
+  const handleAddAssetButton = (index) => {
+    navigation.navigate(index===1? "StartAiRoutine" : null);
+    setIsAssetAddModalVisible(false);
+  }
   
   return (
     <SafeAreaView style={{borderRadius:24}}>
@@ -38,7 +46,7 @@ const AssetAddModal = ({isAssetAddModalVisible, setIsAssetAddModalVisible}) => {
           <AssetAddArea>
             {assetCategory.map((el, index) =>{
               return(
-                <AssetAddEl style={{width:index===0?310:144}} key={index}>
+                <AssetAddEl style={{width:index===0?310:144}} key={index} onPress={() => handleAddAssetButton(index)}>
                   <View style={{display:'flex', flexDirection:'row', alignItems:'center'}}>
                     <AssetCategory>{assetCategory[index]}</AssetCategory>
                     <NavigateArrowButton/>

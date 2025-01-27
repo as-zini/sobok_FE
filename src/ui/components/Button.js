@@ -22,6 +22,7 @@ const ButtonBody = styled.TouchableOpacity`
   display:flex;
   justify-content:center;
   align-items:center;
+  z-index:3;
 `
 
 const ButtonBg = styled.Image`

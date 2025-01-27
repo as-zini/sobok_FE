@@ -13,6 +13,8 @@ import DetailInstallmentSavingScreen from '../ui/screens/DetailInstallmentSaving
 import ViewRoutineListScreen from '../ui/screens/ViewRoutineListScreen';
 import DetailRoutineScreen from '../ui/screens/DetailRoutineScreen';
 import DetailTodo from '../ui/screens/DetailTodo';
+import ViewPointScreen from '../ui/screens/ViewPointScreen';
+import StartAddAIRoutine from '../ui/screens/StartAddAIRoutine';
 
 const Stack = createStackNavigator();
 
@@ -36,6 +38,8 @@ const StackNavigation = () => {
       <Stack.Screen name="ViewRoutine" component={ViewRoutineListScreen} />
       <Stack.Screen name="DetailRoutine" component={DetailRoutineScreen}/>
       <Stack.Screen name="DetailTodo" component={DetailTodo}/>
+      <Stack.Screen name="ViewPoint" component={ViewPointScreen}/>
+      <Stack.Screen name="StartAiRoutine" component={StartAddAIRoutine}/>
     </Stack.Navigator>
   )
 }

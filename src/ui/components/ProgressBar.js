@@ -5,7 +5,7 @@ import { colors } from "../styles/colors";
 import snowflake_icon from '../../../assets/snowflak_icon.png';
 import ShortAlertArea from "./ShortAlertArea";
 
-const ProgressBarWithIcon = () => {
+const ProgressBar = () => {
   const startDate = new Date("2025-01-06");
   const endDate = new Date("2025-02-06");
   const [progress, setProgress] = useState(new Animated.Value(0));
@@ -102,4 +102,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ProgressBarWithIcon;
+export default ProgressBar;
