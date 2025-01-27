@@ -12,19 +12,19 @@ import MarginVertical from './MarginVertical';
 
 import check_icon_indigo from '../../../assets/check_icon_indigo.png';
 
-const RoutinePauseModal = ({isPauseModalVisible, setIsPauseModalVisible, version}) => {
+const PurchaseModal = ({isPurchaseModalVisible, setIsPurchaseModalVisible, version}) => {
   const [isComplete, setIsComplete] = useState(false);
 
   
 
   return (
     <Modal
-      isVisible={isPauseModalVisible} 
+      isVisible={isPurchaseModalVisible} 
       animationIn={'slideInUp'}
       animationInTiming={1000} 
       animationOut={'slideOutDown'} 
       animationOutTiming={1000}
-      onBackdropPress={() => setIsPauseModalVisible(false)}
+      onBackdropPress={() => setIsPurchaseModalVisible(false)}
     >
       <RoutinePauseModalBody height={isComplete ? 310 : 400}>
         <MarginVertical top={isComplete ? 52 : 0}/>
@@ -48,7 +48,7 @@ const RoutinePauseModal = ({isPauseModalVisible, setIsPauseModalVisible, version
   )
 }
 
-export default RoutinePauseModal
+export default PurchaseModal
 
 
 const RoutinePauseModalBody = styled.View`

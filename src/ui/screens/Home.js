@@ -91,7 +91,7 @@ const Home = () => {
               <TotalTimeClock>5H 20M</TotalTimeClock>
             </TotalTimeEl>
             <BorderLine/>
-            <TotalTimeEl>
+            <TotalTimeEl onPress={() => navigation.navigate("ViewPoint")}>
               <View style={{flexGrow:.5}}>
                 <TotalTimeIcon source={point_icon} style={{width:40, height:40}}/>
               </View>

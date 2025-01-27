@@ -69,6 +69,7 @@ const ViewInstallmentSavingScreen = () => {
         <MarginVertical top={72}/>
         <SectionList
           sections={Data}
+          scrollEnabled={false}
           keyExtractor={(item, index) => item + index}
           renderItem={({item, index}) => (
             <RenderItem item={item} index={index}></RenderItem>
