@@ -12,7 +12,7 @@ import Button from '../components/Button';
 import { useNavigation } from '@react-navigation/native';
 
 const AiRoutineCompleteScreen = () => {
-  const [isCreateComplete, setIsCreateComplete] = useState(true);
+  const [isCreateComplete, setIsCreateComplete] = useState(false);
   const navigation = useNavigation();
 
   return (
