@@ -15,6 +15,7 @@ import DetailRoutineScreen from '../ui/screens/DetailRoutineScreen';
 import DetailTodo from '../ui/screens/DetailTodo';
 import ViewPointScreen from '../ui/screens/ViewPointScreen';
 import StartAddAIRoutine from '../ui/screens/StartAddAIRoutine';
+import ViewAiRoutineResult from '../ui/screens/ViewAiRoutineResult';
 
 const Stack = createStackNavigator();
 
@@ -40,6 +41,7 @@ const StackNavigation = () => {
       <Stack.Screen name="DetailTodo" component={DetailTodo}/>
       <Stack.Screen name="ViewPoint" component={ViewPointScreen}/>
       <Stack.Screen name="StartAiRoutine" component={StartAddAIRoutine}/>
+      <Stack.Screen name="AiRoutineResult" component={ViewAiRoutineResult}/>
     </Stack.Navigator>
   )
 }

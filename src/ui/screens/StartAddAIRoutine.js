@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native'
 import styled from 'styled-components'
 
@@ -8,12 +8,27 @@ import { size } from '../styles/size';
 import { colors } from '../styles/colors';
 import MarginVertical from '../components/MarginVertical';
 import { useNavigation } from '@react-navigation/native';
+import AiRoutineCompleteScreen from './AiRoutineCompleteScreen';
 
 const StartAddAIRoutine = () => {
   const navigation = useNavigation();
+  const [isMakeRoutine, setIsMakeRoutine] = useState(false);
+  
+  const handleMakeAiRoutine = () => {
+    setIsMakeRoutine(true);
+
+    setTimeout(() => {
+      navigation.navigate("AiRoutineResult");
+    }, 5000);
+  }
+
 
   return (
     <SafeAreaView>
+      {isMakeRoutine ?
+      <><AiRoutineCompleteScreen/></> 
+      :
+      <>
       <StartAddAiRoutineBody>
         <StartAddAiRoutineTitle>AI 루틴 추가하기</StartAddAiRoutineTitle>
         <StartAddAiRoutineText>
@@ -23,7 +38,7 @@ const StartAddAIRoutine = () => {
         </StartAddAiRoutineText>
         <MarginVertical top={330}/>
         <StartAddAiRoutineButton>
-          <StartAddAiRoutineButtonEl>
+          <StartAddAiRoutineButtonEl onPress={handleMakeAiRoutine}>
             <StartAddAiRoutineButtonText>
               내 맞춤 정보로 루틴 만들기
             </StartAddAiRoutineButtonText>
@@ -39,6 +54,8 @@ const StartAddAIRoutine = () => {
         </StartAddAiRoutineButton>
       </StartAddAiRoutineBody>
       <StartAddAiRoutineBg source={add_ai_routine_bg}/>
+      </>
+      }
     </SafeAreaView>
   )
 }
