@@ -22,7 +22,9 @@ const AssetAddModal = ({isAssetAddModalVisible, setIsAssetAddModalVisible}) => {
   const navigation = useNavigation();
 
   const handleAddAssetButton = (index) => {
-    navigation.navigate(index===1? "StartAiRoutine" : null);
+    navigation.navigate("StartAddAsset", {
+      version: index===0 ? "Saving" : index === 1 ? "Ai" : "Free"
+    });
     setIsAssetAddModalVisible(false);
   }
   

@@ -33,7 +33,7 @@ const ButtonBg = styled.Image`
 
 const ButtonText = styled.Text`
   color:#fff;
-  font-weight:500;
-  font-size:16px;
+  font-weight:600;
+  font-size:18px;
   position:absolute;
 `

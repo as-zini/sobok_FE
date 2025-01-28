@@ -9,7 +9,8 @@ const colors = {
   indigoBlue50: "rgba(106, 143, 246, 0.5)",
   fontSub:'#4c4c4c',
   gray77:"#777777",
-  darkGray:"#4A5660"
+  darkGray:"#4A5660",
+  gray70:"#707172"
 }
 
 export {colors};

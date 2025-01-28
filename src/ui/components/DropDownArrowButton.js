@@ -19,9 +19,11 @@ const DropDownArrowButtonBody = styled.TouchableOpacity`
   display:flex;
   justify-content:center;
   align-items:center;
+  z-index:3;
 `
 
 const DropDownArrowImage = styled.Image`
   width:${(props) => props.size}px;
   height:${(props) => props.size}px;
+  z-index:3;
 `
