@@ -13,7 +13,7 @@ const AssetEl = ({item, index, isLink, category}) => {
   return (
     item[0] !== "" ?
     <SavingEl onPress={() => navigation.navigate(category === "Save" ? 'DetailSave': category==="Routine" ? 'DetailRoutine' : "DetailTodo")}>
-        <View style={{flexGrow:.2}}>
+        <View style={{flexGrow:.15}}>
           <StepNumber step={index+1}/>
         </View>
         <View style={{display:'flex', flexGrow:1}}>
@@ -47,29 +47,29 @@ const SavingEl = styled.TouchableOpacity`
   flex-direction:row;
   justify-content:center;
   align-items:center;
-  width:310px;
+  width:290px;
 `
 
 const SavingTitle = styled.Text`
-  font-size:16px;
+  font-size:18px;
   font-weight:600;
   color:#343434;
 `
 
 const LinkedRoutineTitle = styled.Text`
-  font-size:12px;
+  font-size:14px;
   font-weight:500;
   color:#707172;
 `
 
 const SavingTime = styled.Text`
-  font-size:16px;
+  font-size:18px;
   font-weight:600;
   color:${colors.indigoBlue}
 `
 
 const SavingAtFinish = styled.Text`
-font-size:12px;
+font-size:14px;
 font-weight:500;
 color:#707172;
 `

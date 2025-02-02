@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import navigate_icon from '../../../assets/navigate_icon.png';
 
-const NavigateArrowButton = (handleArrowButton) => {
+const NavigateArrowButton = ({handleArrowButton}) => {
   return (
     <NavigateArrowButtonBody onPress={handleArrowButton}>
       <NavigateArrowButtonImage source={navigate_icon}/>

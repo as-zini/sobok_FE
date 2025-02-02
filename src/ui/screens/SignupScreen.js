@@ -11,6 +11,7 @@ import phone_number_auth_icon from '../../../assets/phone_number_auth_icon.png';
 import clock_graphic from '../../../assets/clock_graphic.png';
 import { useNavigation } from '@react-navigation/native';
 import StepNumber from '../components/StepNumber';
+import { size } from '../styles/size';
 
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
@@ -22,7 +23,7 @@ const SignupScreen = () => {
     if(step<5){
       setStep((prev) => prev+1);
     } else{
-      navigation.navigate("TestStart");
+      navigation.navigate("StartAddAsset", {version:"Saving"});
     }
   }
   const contentsText = ["성함을 \n알려주세요", "소복에서는 \n어떻게 불러드릴까요?", "아이디와 \n비밀번호를 설정할게요!", "지윤 님에 대해 \n더 알려주세요!",""]
@@ -127,7 +128,7 @@ const SignupContentsBody = styled.View`
   width:${width}px;
   height:${height}px;
   display:flex;
-  justify-content:center;
+  
   align-items:center;
 `
 
@@ -139,9 +140,11 @@ const SignupBg = styled.Image`
 `
 
 const SignupHeader = styled.View`
-  position:absolute;
-  left:30px;
-  top:20px;
+  width:${size.width-50}px;
+  height:50px;
+  display:flex;
+  justify-content:center;
+  
 `
 
 const SignupContentsText = styled.Text`

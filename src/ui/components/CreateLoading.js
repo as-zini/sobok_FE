@@ -1,11 +1,13 @@
 import React from 'react'
-import { Dimensions, SafeAreaView, Text } from 'react-native'
+import { Dimensions, SafeAreaView, Text, View } from 'react-native'
 import styled from 'styled-components'
 
 import create_loading_bg from '../../../assets/create_loading_bg.png';
 import cloud_icon from '../../../assets/cloud_icon.png';
 import snowflak_icon from '../../../assets/snowflak_icon.png';
 import { colors } from '../styles/colors';
+import Steps from './Step';
+import MarginVertical from './MarginVertical';
 
 const width=Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
@@ -14,6 +16,8 @@ const CreateLoading = ({categoryText, marginTop}) => {
   return (
     <SafeAreaView>
       <CreateLoadingBody>
+        <MarginVertical top={75}/>
+        <Steps step={5}/>
         <LoadingCloundIcon source={cloud_icon} style={{marginTop:120}}/>
         <LoadingSnowFlackIcon source={snowflak_icon}/>
         <PercentageText>14%</PercentageText>
@@ -35,7 +39,7 @@ const CreateLoadingBody = styled.View`
 
 const CreateLoadingBg = styled.Image`
   position:absolute;
-  top:0;
+  top:-50;
   width:${width}px;
   height:${height}px;
   z-index:-1;
