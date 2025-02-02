@@ -20,6 +20,11 @@ import StartAddAsset from '../ui/screens/StartAddAsset';
 import AddFreeRoutine from '../ui/screens/AddFreeRoutine';
 import AddTodo from '../ui/screens/AddTodo';
 import CompleteAddFreeRoutine from '../ui/screens/CompleteAddFreeRoutine';
+import AddInstallmentSaving from '../ui/screens/AddInstallmentSaving';
+import CompleteAddSaving from '../ui/screens/CompleteAddSaving';
+import TodayTodo from '../ui/screens/TodayTodo';
+import Timer from '../ui/screens/Timer';
+import CompleteTimer from '../ui/screens/CompleteTimer';
 
 
 const Stack = createStackNavigator();
@@ -50,6 +55,11 @@ const StackNavigation = () => {
       <Stack.Screen name="AddFreeRoutine" component={AddFreeRoutine}/>
       <Stack.Screen name="AddTodo" component={AddTodo}/>
       <Stack.Screen name="CompleteAddRoutine" component={CompleteAddFreeRoutine}/>
+      <Stack.Screen name="AddInstallmentSaving" component={AddInstallmentSaving}/>
+      <Stack.Screen name="CompleteAddSaving" component={CompleteAddSaving}/>
+      <Stack.Screen name="TodayTodo" component={TodayTodo}/>
+      <Stack.Screen name="Timer" component={Timer}/>
+      <Stack.Screen name="CompleteTimer" component={CompleteTimer}/>
     </Stack.Navigator>
   )
 }

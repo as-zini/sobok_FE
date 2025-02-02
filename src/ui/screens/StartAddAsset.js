@@ -63,7 +63,7 @@ const StartAddAsset = ({route}) => {
           <StartAddAiRoutineButtonBg source={add_ai_routine_button}/>
         </StartAddAiRoutineButton>
         :
-        <Button text={version==="Saving" ? "적금 만들기" : "자율 루틴 만들기"} handleButton={() => navigation.navigate(version === "Saving" ? "Tabs" : "AddFreeRoutine")}/>
+        <Button text={version==="Saving" ? "적금 만들기" : "자율 루틴 만들기"} handleButton={() => navigation.navigate(version === "Saving" ? "AddInstallmentSaving" : "AddFreeRoutine" )}/>
         
         }
       </StartAddAiRoutineBody>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View } from 'react-native'
 import styled from 'styled-components'
 import { colors } from '../styles/colors'
@@ -7,10 +7,11 @@ import MarginVertical from './MarginVertical'
 
 const TodoEl = ({data, index}) => {
 
+
   return(
     <TodoElBody>
     <TodoIndex>
-      <TodoIndexText>{index}</TodoIndexText>
+      <TodoIndexText>{index+1}</TodoIndexText>
     </TodoIndex>
     <SetTodoGap>
       <TodoTitle>
