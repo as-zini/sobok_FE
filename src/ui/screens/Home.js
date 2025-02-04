@@ -37,7 +37,6 @@ const Home = () => {
           <MarginVertical top={5}/>
           <View style={{display:'flex', flexDirection:'row',alignItems:'center'}}>
             <HomeText>오늘도 열심히{"\n"}시간을 모아봐요!</HomeText>
-            <Image source={snow_flake_icon_white} style={{width:30, height:30}}/>
           </View>
         </View>
         <MarginVertical top={17}/>

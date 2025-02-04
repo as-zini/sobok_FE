@@ -11,6 +11,7 @@ import my_icon from '../../assets/my_icon.png';
 import { Image, View } from 'react-native';
 import { size } from '../ui/styles/size';
 import Today from '../ui/screens/Today';
+import MyPage from '../ui/screens/MyPage';
 
 const Tab = createBottomTabNavigator();
 
@@ -70,7 +71,7 @@ const BottomTabNavigation = () => {
         <Tab.Screen name="HOME" component={Home} />
         <Tab.Screen name="TODAY" component={Today}/>
         <Tab.Screen name="REPORT" component={Home}/>
-        <Tab.Screen name="MY" component={Home} />
+        <Tab.Screen name="MY" component={MyPage} />
       </Tab.Navigator>
     
   )

@@ -25,6 +25,8 @@ import CompleteAddSaving from '../ui/screens/CompleteAddSaving';
 import TodayTodo from '../ui/screens/TodayTodo';
 import Timer from '../ui/screens/Timer';
 import CompleteTimer from '../ui/screens/CompleteTimer';
+import Setting from '../ui/screens/Setting';
+import SettingLinkedApp from '../ui/screens/SettingLinkedApp';
 
 
 const Stack = createStackNavigator();
@@ -60,6 +62,8 @@ const StackNavigation = () => {
       <Stack.Screen name="TodayTodo" component={TodayTodo}/>
       <Stack.Screen name="Timer" component={Timer}/>
       <Stack.Screen name="CompleteTimer" component={CompleteTimer}/>
+      <Stack.Screen name="Setting" component={Setting}/>
+      <Stack.Screen name="SettingLinkedApp" component={SettingLinkedApp}/>
     </Stack.Navigator>
   )
 }

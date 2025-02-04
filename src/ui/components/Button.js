@@ -17,7 +17,7 @@ const Button = ({text, handleButton, unChecked}) => {
 export default Button
 
 const ButtonBody = styled.TouchableOpacity`
-  width:290px;
+  width:310px;
   height:56px;
   display:flex;
   justify-content:center;
