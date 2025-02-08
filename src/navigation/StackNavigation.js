@@ -27,6 +27,9 @@ import Timer from '../ui/screens/Timer';
 import CompleteTimer from '../ui/screens/CompleteTimer';
 import Setting from '../ui/screens/Setting';
 import SettingLinkedApp from '../ui/screens/SettingLinkedApp';
+import Report from '../ui/screens/Report';
+import CompleteSnowCard from '../ui/screens/CompleteSnowCard';
+import SnowCardBook from '../ui/screens/SnowCardBook';
 
 
 const Stack = createStackNavigator();
@@ -64,6 +67,10 @@ const StackNavigation = () => {
       <Stack.Screen name="CompleteTimer" component={CompleteTimer}/>
       <Stack.Screen name="Setting" component={Setting}/>
       <Stack.Screen name="SettingLinkedApp" component={SettingLinkedApp}/>
+      <Stack.Screen name="Report" component={Report}/>
+      <Stack.Screen name="CompleteSnowCard" component={CompleteSnowCard}/>
+      <Stack.Screen name="SnowCardBook" component={SnowCardBook}/>
+  
     </Stack.Navigator>
   )
 }
