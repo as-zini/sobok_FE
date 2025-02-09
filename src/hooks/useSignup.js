@@ -7,7 +7,7 @@ export const useSignup = () => {
 
   const handleSignup = async(values, setStep) => {
     try {
-      const response = await axios.post("http://Sobok-env.eba-rw35wa8t.ap-northeast-2.elasticbeanstalk.com/user/create", {
+      const response = await axios.post("https://sobok-app.com/user/create", {
           "username" : values.username,
           "password" : values.password,
           "name" : values.name,
@@ -25,8 +25,10 @@ export const useSignup = () => {
 
   const checkAvailability = async(value, type) => {
     try {
-      const response = await axios.get(`http://Sobok-env.eba-rw35wa8t.ap-northeast-2.elasticbeanstalk.com/user/is-duplicated/${type}?${type}=${value}`)
-      console.log(response.data)
+      const response = await axios.get(type !== "display-name" ? `https://sobok-app.com/user/is-duplicated/${type}?${type}=${value}` : 
+      `https://sobok-app.com/user/is-duplicated/${type}?displayName=${value}`)
+      // console.log(response.data)
+      return response.data
     } catch (error) {
       console.log(error)
     }
