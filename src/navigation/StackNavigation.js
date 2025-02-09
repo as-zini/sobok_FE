@@ -1,5 +1,5 @@
 import { createStackNavigator } from '@react-navigation/stack'
-import React from 'react'
+import React, { useEffect } from 'react'
 import StartScreen from '../ui/screens/StartScreen';
 import LoginScreen from '../ui/screens/LoginScreen';
 import SignupScreen from '../ui/screens/SignupScreen';
@@ -30,16 +30,35 @@ import SettingLinkedApp from '../ui/screens/SettingLinkedApp';
 import Report from '../ui/screens/Report';
 import CompleteSnowCard from '../ui/screens/CompleteSnowCard';
 import SnowCardBook from '../ui/screens/SnowCardBook';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 const Stack = createStackNavigator();
 
+
+
+
+
 const StackNavigation = () => {
+  const getUser = async() => {
+    const token = await AsyncStorage.getItem("access_token")
+    console.log(token)
+    return(JSON.parse(token));
+  }
+
+  useEffect(() => {
+    getUser();
+    console.log(getUser());
+  }, [])
+  
+
   return (
     <Stack.Navigator
       screenOptions={{
         headerShown:false,
       }}
+      // initialRouteName={getUser() ? "Tabs" : 'Start'}
       initialRouteName='Start'
     >
       <Stack.Screen name='Start' component={StartScreen} />

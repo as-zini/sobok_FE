@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components';
 import loginBg from '../../../assets/login_bg.png';
 import login_icon from '../../../assets/login_icon.png'
@@ -6,12 +6,26 @@ import save_icon from '../../../assets/save_icon.png';
 import auto_icon from '../../../assets/auto_icon.png';
 import { colors } from '../styles/colors';
 import Button from '../components/Button';
-import { View } from 'react-native';
+import { Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import BackArrowButton from '../components/BackArrowButton';
+import { useLogin } from '../../hooks/useLogin';
+import MarginVertical from '../components/MarginVertical';
 
 const LoginScreen = () => {
   const navigation = useNavigation();
+  const [id, setId] = useState("");
+  const [password, setPassword] = useState("");
+  const {handleLogin} = useLogin();
+  const [isLoginFail, setIsLoginFail] = useState(false);
+
+  const isActive = id.length > 0 && password.length>0;
+
+
+  useEffect(() => {
+    console.log(isLoginFail)
+  }, [isLoginFail])
+  
 
   return (
     <LoginScreenBody>
@@ -27,16 +41,27 @@ const LoginScreen = () => {
       <InputArea>
         <InputEl>
           <InputTitleText>아이디</InputTitleText>
-          <InputBox placeholder="아이디를 입력해주세요"></InputBox>
+          <InputBox
+            placeholder="아이디를 입력해주세요"
+            value={id}
+            onChange={(e) => setId(e.nativeEvent.text)}
+          ></InputBox>
           <BorderLine/>
         </InputEl>
         <InputEl>
           <InputTitleText>비밀번호</InputTitleText>
-          <InputBox placeholder="비밀번호를 입력해주세요"></InputBox>
+          <InputBox
+            placeholder="비밀번호를 입력해주세요"
+            value={password}
+            onChange={(e) => setPassword(e.nativeEvent.text)}
+            secureTextEntry={true}
+            ></InputBox>
           <BorderLine/>
+          
+
         </InputEl>
       </InputArea>
-      <OptionArea>
+      {/* <OptionArea>
         <OptionEl>
           <OptionIcon source={save_icon}/>
           <OptionText>아이디 저장</OptionText>
@@ -45,9 +70,10 @@ const LoginScreen = () => {
           <OptionIcon source={auto_icon}/>
           <OptionText>자동 로그인</OptionText>
         </OptionEl>
-      </OptionArea>
-      <View style={{position:'absolute', bottom:'80'}}>
-        <Button text={"로그인하기"}/>
+      </OptionArea> */}
+      <View style={{position:'absolute', bottom:'80', justifyContent:'center', alignItems:'center', gap:10}}>
+        {isLoginFail && <Text style={{color:colors.fontMain, fontSize:16, fontWeight:600}}>다시 시도해주세요</Text>}
+        <Button text={"로그인하기"} handleButton={() => handleLogin(id, password, setIsLoginFail)} unChecked={!isActive}/>
       </View>
       <LoginErrorText>로그인에 문제가 있나요?</LoginErrorText>
     </LoginScreenBody>
@@ -120,12 +146,16 @@ const InputTitleText = styled.Text`
 const InputBox = styled.TextInput`
   width:290px;
   height:50px;
+  color:${colors.fontMain};
+  font-size:16px;
+  font-weight:500;
 `
 
 const BorderLine = styled.View`
   width:290px;
   height:.5px;
-  background-color:${colors.fontMain}
+  background-color:${colors.fontMain};
+  z-index:2;
 `
 
 const OptionArea = styled.View`

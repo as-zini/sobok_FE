@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Image, SafeAreaView, ScrollView, View } from 'react-native'
 import styled from 'styled-components'
 
@@ -19,10 +19,22 @@ import Button from '../components/Button';
 import ContinuitySuccess from '../components/ContinuitySuccess';
 import AssetAddModal from '../components/AssetAddModal';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Home = () => {
   const [isAssetAddModalVisible, setIsAssetAddModalVisible] = useState(false);
   const navigation = useNavigation();
+
+  const getUser = async() => {
+    const token = await AsyncStorage.getItem("access_token")
+    console.log(token)
+    return(JSON.parse(token));
+  }
+
+  useEffect(() => {
+    getUser();
+    console.log(getUser());
+  }, [])
 
   return (
     <SafeAreaView>
