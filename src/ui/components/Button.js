@@ -6,7 +6,7 @@ import unchecked_button_bg from '../../../assets/unchecked_button_bg.png';
 
 const Button = ({text, handleButton, unChecked}) => {
   return (
-    <ButtonBody onPress={handleButton}>
+    <ButtonBody onPress={() => unChecked ? console.log(unChecked) : handleButton()}>
       
       <ButtonText>{text}</ButtonText>
     <ButtonBg source={unChecked === true ? unchecked_button_bg : login_button_bg}/>

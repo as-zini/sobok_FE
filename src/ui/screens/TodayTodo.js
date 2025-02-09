@@ -15,8 +15,11 @@ import TodoEl from '../components/TodoEl';
 import LinkIcon from '../components/LinkIcon';
 import button_icon from '../../../assets/save_icon.png';
 import StartCountDown from '../components/StartCountDown';
+import { useNavigation } from '@react-navigation/native';
 
 const TodayTodo = () => {
+  const [isStart, setIsStart] = useState(false);
+  
   const Data = [
     {
       title:["아침에는 영어 공부", "영어 적금", "1H 25M", "09:00 - 10:25"],
@@ -27,7 +30,6 @@ const TodayTodo = () => {
     }
   ]
 
-  const [isStart, setIsStart] = useState(false);
 
   const ListHeader = ({title}) => {
     return(

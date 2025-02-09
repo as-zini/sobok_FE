@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import signup_modal_bg from '../../../assets/signup_modal_bg.png';
 import signup_icon from '../../../assets/signup_icon.png';
-import apple_icon from '../../../assets/apple.png';
+import google_icon from '../../../assets/google_icon.png';
 import kakao_icon from '../../../assets/kakao_icon.png';
 import email_icon from '../../../assets/email_icon.png';
 import { useNavigation } from '@react-navigation/native';
@@ -35,8 +35,8 @@ const StartScreenModal = ({isSignupModalVisible, setIsSignupModalVisible}) => {
           <SignupText>당신의 시작을 응원합니다!!{"\n"}어떤 경로로 시작해볼까요?</SignupText>
           <SignupPlatformArea>
             <SignupButton>
-              <PlatformIcon source={apple_icon}/>
-              <PlatformText>Apple로 시작하기</PlatformText>
+              <PlatformIcon source={google_icon}/>
+              <PlatformText>Google로 시작하기</PlatformText>
             </SignupButton>
             <SignupButton>
               <PlatformIcon source={kakao_icon}/>
@@ -96,14 +96,14 @@ const ModalContentsArea = styled.View`
 const SignupTitle = styled.Text`
   color:#fff;
   font-weight:600;
-  font-size:24px;
+  font-size:26px;
   margin-bottom:16px;
 `
 
 const SignupText = styled.Text`
   color:#fff;
   font-weight:500;
-  font-size:16px;
+  font-size:18px;
   
 `
 
@@ -135,7 +135,7 @@ const PlatformText = styled.Text`
   flex-grow:1;
   text-align:center;
   color:#4c4c4c;
-  font-size:16px;
+  font-size:18px;
   font-weight:500;
 `
 
@@ -144,7 +144,7 @@ const GoToLoginButton = styled.TouchableOpacity`
 `
 
 const GoToLogin = styled.Text`
-  font-size:14px;
+  font-size:16px;
   font-weight:500;
   color:#fff;
 `
