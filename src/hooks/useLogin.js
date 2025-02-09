@@ -7,7 +7,7 @@ export const useLogin = () => {
 
   const handleLogin = async(id, password, setIsLoginFail) => {
     try {
-      const response = await axios.post("http://Sobok-env.eba-rw35wa8t.ap-northeast-2.elasticbeanstalk.com/user/login/jwt",{
+      const response = await axios.post("https://sobok-app.com/user/login/jwt",{
         username:id,
         password:password,
       })

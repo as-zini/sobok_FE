@@ -21,7 +21,9 @@ const height = Dimensions.get('screen').height;
 const SignupScreen = () => {
   const [step, setStep] = useState(1);
   const [unChecked, setUnChecked] = useState(true);
-  // const [idChecked, setIdChecked] = useState(false);
+  const [idChecked, setIdChecked] = useState(false);
+  const [emailChecked, setEmailChecked] = useState(false);
+  const [nicknameChecked, setNicknameChecked] = useState(false);
   const [values, setValues] = useState({
     username:"",
     displayName:"",
@@ -54,13 +56,43 @@ const SignupScreen = () => {
   const isActive = step === 1 || step === 2 ? currentValue.trim() !== "" :
                   step === 3 ? values.username.trim() !=="" && values.password.trim() !=="" && values.password2.trim() !=="" : values.email.trim() !=="" && values.phoneNumber.trim() !== "" && values.birth.trim() !== ""
   const isSame = values.password !== values.password2
-  const step3Check = !isActive && isSame
-  const idCheck = checkAvailability(values.username , "username");
+  const step3Check = !isActive || isSame
+  const checkList = [!isActive || nicknameChecked, !isActive || isSame || idChecked, !isActive || emailChecked];
+
+  const handleIdCheck = async() => {
+    const response = await checkAvailability(values.username, "username");
+    console.log(response);
+    setIdChecked(response.isDuplicated);
+  }
+
+  const handleNichnameCheck = async() => {
+    const response = await checkAvailability(values.displayName, "display-name");
+    console.log(response);
+    setNicknameChecked(response.isDuplicated);
+  }
+
+  const handleEmailCheck = async() => {
+    const response = await checkAvailability(values.email, 'email');
+    console.log(response);
+    setEmailChecked(response.isDuplicated);
+  }
+
+
+
   
 
   
   useEffect(() => {
-    console.log(isActive)
+    // console.log(isActive)
+    step===2 ? 
+    handleNichnameCheck()
+    :step === 3?
+    handleIdCheck()
+    :
+    handleEmailCheck();
+    console.log(idChecked);
+    console.log(values);
+    console.log(checkList);
   }, [values])
 
 
@@ -83,7 +115,7 @@ const SignupScreen = () => {
         {step === 1 || step===2 ? 
         <>
         <SignupContentsText>{contentsText[step-1]}</SignupContentsText>
-        <View>
+        <View style={{display:'flex', flexDirection:'row', justifyContent:'center', alignItems:'center', width:294}}>
           <SignupInput 
             placeholder={placeholderText[step-1]}
             placeholderTextColor="#fff"
@@ -91,18 +123,9 @@ const SignupScreen = () => {
             onChange={(e) => {
               console.log(e.nativeEvent.text);
               step === 1 ? setValues({...values,  "name" : e.nativeEvent.text}) : setValues({...values, "displayName": e.nativeEvent.text})
-              if(step===1){
-                
-              } else{
-              }
-              // if(step===2 && values.displayName){
-              //   setUnChecked(false)
-              // }else{
-              //   setUnChecked(true);
-              // }
             }}
           ></SignupInput>
-          <Image source={check_icon} style={{width:32, height:32, position:'absolute', right:0}}/>
+          {step === 2 && !nicknameChecked? <Image source={check_icon} style={{width:32, height:32, position:'absolute', right:0}}/> : <></>}
         </View>
         <BorderLine />
         </>
@@ -117,10 +140,9 @@ const SignupScreen = () => {
             value={values.username}
             onChange={(e) => {
               setValues({...values, 'username':e.nativeEvent.text});
-              checkAvailability(values.username, "username")
             }}
           />
-          <Image source={check_icon} style={{width:32, height:32, position:'absolute', right:0}}/>
+          {idChecked || values.username.length ===0 ? <></> : <Image source={check_icon} style={{width:32, height:32, position:'absolute', right:0}}/>}
         </View>
         <BorderLine/>
         <View >
@@ -130,6 +152,7 @@ const SignupScreen = () => {
             placeholderTextColor="#fff"
             value={values.password}  
             onChange={(e) => {setValues({...values, 'password':e.nativeEvent.text})}}
+            secureTextEntry={true}
           />
           <BorderLine/>
           <View style={{display:'flex', flexDirection:'row', justifyContent:'center', alignItems:'center', width:294}}>
@@ -138,6 +161,7 @@ const SignupScreen = () => {
               placeholderTextColor="#fff"
               value={values.password2}
               onChange={(e) => {setValues({...values, 'password2':e.nativeEvent.text})}}
+              secureTextEntry={true}
             />
             {isSame ? <></>
             :<Image source={check_icon} style={{width:32, height:32, position:'absolute', right:0}}/>
@@ -155,7 +179,7 @@ const SignupScreen = () => {
               placeholder={placeholderText[step-1][0]}
               value={values.email}
               onChange={(e) => {setValues({...values, "email" : e.nativeEvent.text})}}/>
-            <Image source={check_icon} style={{width:32, height:32, position:'absolute', right:0}}/>
+          {emailChecked ? <></> : <Image source={check_icon} style={{width:32, height:32, position:'absolute', right:0}}/>}
           </View>
           <BorderLine/>
 
@@ -192,7 +216,7 @@ const SignupScreen = () => {
           
         </SignupInputArea>
         <View style={{position:'absolute', bottom:100}}>
-          <Button text={"다음 단계로"} handleButton={handleButton} unChecked={step!== 3? !isActive : step3Check}/>
+          <Button text={"다음 단계로"} handleButton={handleButton} unChecked={step===2 ? checkList[0] : step===3 ? checkList[1] : step === 4 ? checkList[2] : !isActive}/>
         </View>
         <SignupBg source={signup_bg} />
       </SignupContentsBody>
