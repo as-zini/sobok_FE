@@ -9,10 +9,14 @@ import MarginVertical from './MarginVertical'
 
 const AssetEl = ({item, index, isLink, category}) => {
   const navigation = useNavigation();
+  console.log(item)
 
   return (
+    
     item[0] !== "" ?
-    <SavingEl onPress={() => navigation.navigate(category === "Save" ? 'DetailSave': category==="Routine" ? 'DetailRoutine' : "DetailTodo")}>
+    <SavingEl onPress={() => category === "Save" ? navigation.navigate('DetailSave', {id:item[4]})
+                            : category === "Routine" ? navigation.navigate('DetailRoutine')
+                            : navigation.navigate("DetailTodo")}>
         <View style={{flexGrow:.15}}>
           <StepNumber step={index+1}/>
         </View>
