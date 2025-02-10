@@ -31,6 +31,7 @@ import Report from '../ui/screens/Report';
 import CompleteSnowCard from '../ui/screens/CompleteSnowCard';
 import SnowCardBook from '../ui/screens/SnowCardBook';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ViewLinkedRoutine from '../ui/screens/ViewLinkedRoutine';
 
 
 
@@ -59,7 +60,7 @@ const StackNavigation = () => {
         headerShown:false,
       }}
       // initialRouteName={getUser() ? "Tabs" : 'Start'}
-      initialRouteName='Start'
+      initialRouteName='Start'  
     >
       <Stack.Screen name='Start' component={StartScreen} />
       <Stack.Screen name="Login" component={LoginScreen} />
@@ -89,6 +90,7 @@ const StackNavigation = () => {
       <Stack.Screen name="Report" component={Report}/>
       <Stack.Screen name="CompleteSnowCard" component={CompleteSnowCard}/>
       <Stack.Screen name="SnowCardBook" component={SnowCardBook}/>
+      <Stack.Screen name="ViewLinkedRoutine" component={ViewLinkedRoutine}/>
   
     </Stack.Navigator>
   )

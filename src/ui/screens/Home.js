@@ -20,10 +20,15 @@ import ContinuitySuccess from '../components/ContinuitySuccess';
 import AssetAddModal from '../components/AssetAddModal';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useGetInfo } from '../../hooks/useGetInfo';
+import { useUserInfoStore } from '../../store/user';
+import axios from 'axios';
 
 const Home = () => {
   const [isAssetAddModalVisible, setIsAssetAddModalVisible] = useState(false);
   const navigation = useNavigation();
+  const {getUserInfo} = useGetInfo();
+  const {userInfo} = useUserInfoStore();
 
   const getUser = async() => {
     const token = await AsyncStorage.getItem("access_token")
@@ -31,9 +36,22 @@ const Home = () => {
     return(JSON.parse(token));
   }
 
+  const getTodos = async() => {
+    try {
+      const response = await axios.get(`https://sobok-app.com/routine/details?routineId=15`)
+      console.log(response.data)
+    } catch (error) {
+      console.log("Todos",error)
+    }
+  }
+
+
+
   useEffect(() => {
     getUser();
     console.log(getUser());
+    getUserInfo();
+    getTodos();
   }, [])
 
   return (
@@ -45,7 +63,7 @@ const Home = () => {
         </View>
         <MarginVertical top={25}/>
         <View style={{display:'flex', justifyContent:'flex-start', width:328}}>
-          <UserName>지윤 님!</UserName>
+          <UserName>{`${userInfo.displayName} 님!`}</UserName>
           <MarginVertical top={5}/>
           <View style={{display:'flex', flexDirection:'row',alignItems:'center'}}>
             <HomeText>오늘도 열심히{"\n"}시간을 모아봐요!</HomeText>

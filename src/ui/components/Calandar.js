@@ -10,7 +10,7 @@ import calandar_arrow_right from '../../../assets/calandar_arrow_right.png';
 import { colors } from '../styles/colors';
 import MarginVertical from './MarginVertical';
 
-const Calandar = () => {
+const Calandar = ({type}) => {
   const [today, setToday] = useState(dayjs());
   const [weeks, setWeeks] = useState([]);
 
@@ -63,8 +63,8 @@ const Calandar = () => {
       <MarginVertical top={10}/>
       <CalandarContentsBody>
         {weeks.map((week, weekIndex) => (
-          <>
-          <WeekRow key={weekIndex}>
+          <View key={weekIndex}>
+          <WeekRow>
             {week.map((date, dateIndex) => (
               <DateEl key={dateIndex} isEmpty={!date}>
                 <DateText>{date || ""}</DateText>
@@ -72,7 +72,7 @@ const Calandar = () => {
             ))}
           </WeekRow>
           <MarginVertical top={6}/>
-          </>
+          </View>
         ))}
       </CalandarContentsBody>
     </CalandarBody>

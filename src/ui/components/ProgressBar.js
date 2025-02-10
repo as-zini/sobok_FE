@@ -4,10 +4,11 @@ import { colors } from "../styles/colors";
 
 import snowflake_icon from '../../../assets/snowflak_icon.png';
 import ShortAlertArea from "./ShortAlertArea";
+import dayjs from "dayjs";
 
-const ProgressBar = () => {
-  const startDate = new Date("2025-01-06");
-  const endDate = new Date("2025-02-06");
+const ProgressBar = ({startedAt, duration}) => {
+  const startDate = dayjs();
+  const endDate = startDate.add(duration, 'M')
   const [progress, setProgress] = useState(new Animated.Value(0));
 
   useEffect(() => {
@@ -28,6 +29,7 @@ const ProgressBar = () => {
       duration: 500, // 애니메이션 지속 시간
       useNativeDriver: false,
     }).start();
+    console.log(duration)
   }, []);
 
   // Progress Bar와 아이콘의 위치를 애니메이션으로 조정
@@ -55,8 +57,8 @@ const ProgressBar = () => {
       </View>
     </View>
     <View style={styles.dateContainer}>
-      <Text style={styles.dateText}>{startDate.getFullYear()+'년 '+(startDate.getMonth()+1)+'월 '+startDate.getDate()+'일'}</Text>
-      <Text style={styles.dateText}>{endDate.getFullYear()+'년 '+(endDate.getMonth()+1)+'월 '+endDate.getDate()+'일'}</Text>
+      <Text style={styles.dateText}>{startedAt}</Text>
+      <Text style={styles.dateText}>{endDate.format("YYYY년 M월 D일")}</Text>
 
     </View>
     </>

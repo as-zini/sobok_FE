@@ -1,5 +1,5 @@
-import React from 'react'
-import { Image, SafeAreaView, SectionList, Text, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { Image, SafeAreaView, ScrollView, SectionList, Text, View } from 'react-native'
 import styled from 'styled-components'
 
 import installment_saving_bg from '../../../assets/installment_saving_bg.png';
@@ -12,24 +12,29 @@ import MarginVertical from '../components/MarginVertical';
 
 import { useNavigation } from '@react-navigation/native';
 import AssetEl from '../components/AssetEl';
+import { useInstallmentSaving } from '../../hooks/useInstallmentSaving';
+import { minToHour } from '../../util';
 
 const ViewInstallmentSavingScreen = () => {
   const navigation = useNavigation();
+  const {getSavingList} = useInstallmentSaving();
+  const [onGoingAccountList, setOnGoingAccountList] = useState([]);
+  const [expiredAccountList, setExpiredAccountList] = useState([]);
 
   const Data = [
     {
-      title:["진행 중인 적금", 3],
-      data:[["영어 천재 적금", "아침에는 영어 공부","1H 25M","D-120"], ["독서 적금", "저녁에는 독서","2H 50M","D-77"]]
+      title:["진행 중인 적금", onGoingAccountList.length],
+      data:onGoingAccountList.map((el,index) => [el.title, "", minToHour(el.time), `D-${el.duration*30}`, el.id])
     },{
-      title:["만기된 적금",3],
-      data:[["프랑스어 적금", "프랑스어 공부 루틴", "30M","D-1"]]
+      title:["만기된 적금",expiredAccountList.length],
+      data:expiredAccountList.map((el) => [el.title,"",minToHour(el.time), `D-${el.duration}`, el.id])
     }
   ]
 
   const RenderItem = ({item, index}) => {
     return(
       <>
-        <AssetEl item={item} index={index} isLink={true} category={"Save"}/>
+        <AssetEl item={item} index={index} isLink={false} category={"Save"}/>
         <MarginVertical top={50}/>
       </>
     )
@@ -47,9 +52,16 @@ const ViewInstallmentSavingScreen = () => {
       </>
     )
   }
+
+  useEffect(() => {
+    getSavingList(setOnGoingAccountList, "onGoing");
+    getSavingList(setExpiredAccountList, "expired");
+  }, [])
+  
   
   return (
     <SafeAreaView>
+      <ScrollView>
       <ViewInstallmentSavingBody>
         <MarginVertical top={20}/>
         <ViewInstallmentSavingHeader>
@@ -82,6 +94,7 @@ const ViewInstallmentSavingScreen = () => {
 
         </SectionList>
       </ViewInstallmentSavingBody>
+      </ScrollView>
       <ViewInstallmentSavingBg source={installment_saving_bg}/>
     </SafeAreaView>
   )

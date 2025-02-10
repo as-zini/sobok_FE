@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styled from 'styled-components';
 
@@ -18,9 +18,32 @@ import BlurComponent from '../components/BlurComponent';
 import DropDownArrowButton from '../components/DropDownArrowButton';
 import AssetEl from '../components/AssetEl';
 import CalandarModal from '../components/CalandarModal';
+import axios from 'axios';
+import { minToHour } from '../../util';
+import { useNavigation } from '@react-navigation/native';
 
-const DetailInstallmentSavingScreen = () => {
+const DetailInstallmentSavingScreen = ({route}) => {
   const [isCalandarModalVisible, setIsCalandarModalVisible] = useState(false);
+  const {id} = route.params;
+  const [savingInfo, setSavingInfo] = useState([]);
+  const navigation = useNavigation();
+
+  const getSavingDetail = async() => {
+    try {
+      const response = await axios.get(`https://sobok-app.com/account/details?accountId=${id}`)
+      console.log(response.data);
+      setSavingInfo(response.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    console.log(id);
+    getSavingDetail();
+    console.log(savingInfo.createdAt)
+  }, [])
+  
 
   const Data = [
     {
@@ -93,23 +116,27 @@ const DetailInstallmentSavingScreen = () => {
           <Image source={installment_icon} style={{width:48, height:34}}/>
           <MarginVertical top={18}/>
           <View style={{display:'flex', flexDirection:'row', alignItems:'center', gap:5}}>
-            <LinkIcon size={16}/>
-            <LinkedRoutineText>아침에는 영어 공부</LinkedRoutineText>
+            <LinkedRoutineText>{savingInfo.title}</LinkedRoutineText>
           </View>
           <MarginVertical top={5}/>
-          <TotalSavingTitle>7H 30M</TotalSavingTitle>
+          <TotalSavingTitle>{minToHour(savingInfo.balance)}</TotalSavingTitle>
           <MarginVertical top={32}/>
-          <InterestText>연 3.8%</InterestText>
-          <PushPeriodText>매주 1H 30M</PushPeriodText>
+          <InterestText>{`연 ${savingInfo.interest}%`}</InterestText>
+          <PushPeriodText>{`매주 ${minToHour(savingInfo.time)}`}</PushPeriodText>
         </SavingIntroArea>
         <MarginVertical top={24}/>
         
-        <ShortAlertArea text={"3개월 남았어요!"} width={114} height={30}/>
+        <ShortAlertArea text={`${savingInfo.duration}개월 남았어요!`} width={114} height={30}/>
         {/* 기간바 */}
         <MarginVertical top={36}/>
-        <ProgressBar/>
+        <ProgressBar startedAt={"2025년 2월 6일"} duration={savingInfo.duration}/>
         <MarginVertical top={48}/>
-        <DoubleButton text1={"연결 루틴 관리"} text2={"채우기"}/>
+        <DoubleButton
+          text1={"연결 루틴 보기"}
+          text2={"채우기"}
+          handleLeftButton={() => navigation.navigate('ViewLinkedRoutine', {title:savingInfo.title, routines:savingInfo.routines})}
+          handleRightButton={() => navigation.navigate("TodayTodo")}
+        />
         <MarginVertical top={40}/>
         <BlurComponent child={BlurChild}/>
       </DetailInstallmentSavingBody>
