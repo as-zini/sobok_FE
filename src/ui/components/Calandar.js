@@ -9,10 +9,36 @@ import calandar_arrow_left from '../../../assets/calandar_arrow_left.png';
 import calandar_arrow_right from '../../../assets/calandar_arrow_right.png';
 import { colors } from '../styles/colors';
 import MarginVertical from './MarginVertical';
+import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
-const Calandar = ({type}) => {
+const Calandar = ({type, selectedRange, setSelectedRange}) => {
   const [today, setToday] = useState(dayjs());
   const [weeks, setWeeks] = useState([]);
+
+  // const handleRange = (date) => {
+  //   if(!selectedRange.startDate){
+  //     setSelectedRange({...selectedRange, startDate:date})
+  //   } else if(!selectedRange.endDate){
+  //     setSelectedRange({...selectedRange, endDate:date})
+  //   } else if(selectedRange.startDate && selectedRange){
+  //     setSelectedRange({})
+  //   }
+  // }
+
+  const handleRange = (date) => {
+    const fullDate = dayjs(today).date(date).format("YYYY-MM-DD"); // 현재 보고 있는 달(today) 기준으로 날짜 설정
+    console.log(date, fullDate)
+    if (!selectedRange.startDate) {
+      setSelectedRange({ startDate: fullDate });
+    } else if (!selectedRange.endDate) {
+      setSelectedRange({
+        startDate: selectedRange.startDate,
+        endDate: fullDate
+      });
+    } else {
+      setSelectedRange({});
+    }
+  };
 
   const getCalandarData = () => {
     const fisrtDayOfMonth = dayjs(today).startOf("month");
@@ -39,7 +65,11 @@ const Calandar = ({type}) => {
 
   useEffect(() => {
     getCalandarData();
-  }, [today]);
+    console.log(selectedRange)
+    console.log(dayjs(today).date('2025-04-23').isAfter(dayjs(selectedRange.startDate), 'day') )
+    console.log(dayjs(today).date('2025-04-23').isAfter(dayjs("2025-04-22")))
+    // dayjs(today).date('2025-04-23').isBefore(dayjs(selectedRange.endDate), 'day'))
+  }, [today, selectedRange]);
 
   return (
     <CalandarBody>
@@ -66,9 +96,47 @@ const Calandar = ({type}) => {
           <View key={weekIndex}>
           <WeekRow>
             {week.map((date, dateIndex) => (
-              <DateEl key={dateIndex} isEmpty={!date}>
-                <DateText>{date || ""}</DateText>
-              </DateEl>
+              // <DateEl
+              //   key={dateIndex}
+              //   isEmpty={!date} 
+              //   onPress={() => handleRange(date)}
+              //   style={{backgroundColor: date < selectedRange["startDate"] && date > selectedRange["endDate"] ? "rgba(176, 195, 255, 0.3)"
+              //   :date === selectedRange.startDate || date === selectedRange.endDate ? colors.fontMain : "",
+              //   borderRadius:date === selectedRange.startDate || date === selectedRange.endDate ? "50%" : ""
+              //   }}>
+                
+              //   <DateText style={{color:date === selectedRange.startDate || date === selectedRange.endDate ? "#fff" : ""}}>{date || ""}</DateText>
+              // </DateEl>
+              <DateEl
+  key={dateIndex}
+  isEmpty={!date} 
+  onPress={() => handleRange(date)} // 숫자(일)만 전달
+  style={{
+    backgroundColor: 
+      selectedRange.startDate && selectedRange.endDate &&
+      dayjs(today).date(date).isAfter(dayjs(selectedRange.startDate), 'day') &&
+      dayjs(today).date(date).isBefore(dayjs(selectedRange.endDate), 'day')
+        ? "rgba(176, 195, 255, 0.3)"  // 선택한 기간 중간 부분 배경색
+        : dayjs(today).date(date).isSame(dayjs(selectedRange.startDate), 'day') ||
+          dayjs(today).date(date).isSame(dayjs(selectedRange.endDate), 'day')
+          ? colors.fontMain // 시작과 끝 날짜 색상
+          : "",
+    borderRadius: 
+      dayjs(today).date(date).isSame(dayjs(selectedRange.startDate), 'day') ||
+      dayjs(today).date(date).isSame(dayjs(selectedRange.endDate), 'day')
+        ? "50%" 
+        : ""
+  }}
+>
+  <DateText style={{
+    color: dayjs(today).date(date).isSame(dayjs(selectedRange.startDate), 'day') ||
+          dayjs(today).date(date).isSame(dayjs(selectedRange.endDate), 'day') 
+      ? "#fff" 
+      : ""
+  }}>
+    {date || ""}
+  </DateText>
+</DateEl>
             ))}
           </WeekRow>
           <MarginVertical top={6}/>
@@ -113,7 +181,7 @@ const CurrentMonthText = styled.Text`
 
 const CalandarContentsBody = styled.View`
   width:310px;
-  height:230px;
+  height:235px;
   background-color:#fff;
   border-radius:16px;
   display:flex;
@@ -146,17 +214,17 @@ const WeekRow = styled.View`
   flex-direction:row;
   align-items:center;
   justify-content:center;
-  gap:9px;
   width:258px;
 `
 
 const DateEl = styled.TouchableOpacity`
-  width:30px;
-  height:30px;
+  width:39px;
+  height:39px;
   display:flex;
   justify-content:center;
   align-items:center;
   box-sizing:border-box;
+  padding:9px;
 `
 
 const DateText = styled.Text`

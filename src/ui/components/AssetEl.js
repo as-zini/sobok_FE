@@ -15,7 +15,7 @@ const AssetEl = ({item, index, isLink, category}) => {
     
     item[0] !== "" ?
     <SavingEl onPress={() => category === "Save" ? navigation.navigate('DetailSave', {id:item[4]})
-                            : category === "Routine" ? navigation.navigate('DetailRoutine')
+                            : category === "Routine" ? navigation.navigate('DetailRoutine', {id:item[4]})
                             : navigation.navigate("DetailTodo")}>
         <View style={{flexGrow:.15}}>
           <StepNumber step={index+1}/>

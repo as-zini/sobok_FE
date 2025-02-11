@@ -7,21 +7,19 @@ import ShortAlertArea from "./ShortAlertArea";
 import dayjs from "dayjs";
 
 const ProgressBar = ({startedAt, duration}) => {
-  const startDate = dayjs();
-  const endDate = startDate.add(duration, 'M')
+  const endDate = startedAt.add(duration, 'M')
   const [progress, setProgress] = useState(new Animated.Value(0));
 
   useEffect(() => {
     const calculateProgress = () => {
       const now = new Date();
-      const totalTime = endDate - startDate;
-      const timeElapsed = now - startDate;
+      const totalTime = endDate - startedAt;
+      const timeElapsed = now - startedAt;
       const percentage = Math.min((timeElapsed / totalTime) * 100, 100); // 0~100%로 계산
       return percentage;
     };
 
     const percentage = calculateProgress();
-    console.log(startDate)
 
     // 프로그레스 애니메이션 실행
     Animated.timing(progress, {
@@ -57,7 +55,7 @@ const ProgressBar = ({startedAt, duration}) => {
       </View>
     </View>
     <View style={styles.dateContainer}>
-      <Text style={styles.dateText}>{startedAt}</Text>
+      <Text style={styles.dateText}>{startedAt.format("YYYY년 M월 D일")}</Text>
       <Text style={styles.dateText}>{endDate.format("YYYY년 M월 D일")}</Text>
 
     </View>

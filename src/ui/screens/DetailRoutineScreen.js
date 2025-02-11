@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styled from 'styled-components';
 
@@ -19,17 +19,27 @@ import routine_icon from '../../../assets/routine_icon.png';
 import trash_icon from '../../../assets/trash_icon.png';
 import snow_flake_icon_white from '../../../assets/snow_flake_icon_white.png';
 import RoutinePauseModal from '../components/RoutinePauseModal';
+import { useRoutine } from '../../hooks/useRoutine';
+import { minToHour } from '../../util';
+import TodoEl from '../components/TodoEl';
 
-const DetailRoutineScreen = () => {
+const DetailRoutineScreen = ({route}) => {
   const [isPauseModalVisible, setIsPauseModalVisible] = useState(false);
+  const {id} = route.params;
+  const {getRoutineDetail} = useRoutine();
+  const [routineDetailInfo, setRoutineDetailInfo] = useState([]);
+  
+
+  useEffect(() => {
+    console.log(id)
+    getRoutineDetail(id, setRoutineDetailInfo);
+  }, [])
+  
 
   const Data = [
     {
-      title:"1번째",
-      data:[["영어 강의 1강", "스픽", "1H 00M", "6:00 - 7:00"]]
-    },{
-      title:"2번쪠",
-      data:[["영어 강의 2강", "스픽", "1H 30M", "7:00 - 8:30"]]
+      title:"",
+      data:routineDetailInfo.todos.map((el) => [el.title, el.linkApp, minToHour(el.duration), `${el.startTime} - ${el.endTime}`])
     }
   ]
 
@@ -37,7 +47,7 @@ const DetailRoutineScreen = () => {
     return(
       <>
         <Text style={{color:"#707172", fontWeight:500, fontSize:14}}>{title}</Text>
-        <MarginVertical top={20}/>
+        
       </>
     )
   }
@@ -45,7 +55,7 @@ const DetailRoutineScreen = () => {
   const LenderItem = ({item, index}) => {
     return(
       <>
-        <AssetEl item={item} index={index} isLink={true} category={"Todo"}/>
+        <TodoEl data={item} index={index}/>
         <MarginVertical top={40}/>
       </>
     )
@@ -73,6 +83,8 @@ const DetailRoutineScreen = () => {
       </View>
     )
   }
+
+  
   
   return (
     <>
@@ -84,7 +96,7 @@ const DetailRoutineScreen = () => {
           <View style={{position:'absolute', left:20}}>
             <BackArrowButton/>
           </View>
-          <Text style={{fontWeight:600, fontSize:18, color:colors.fontSub}}>아침에는 영어 공부 루틴</Text>
+          <Text style={{fontWeight:600, fontSize:18, color:colors.fontSub}}>{routineDetailInfo.title}</Text>
         </DetailInstallmentSavingHeader>
         <MarginVertical top={47}/>
         <SavingIntroArea>
@@ -92,27 +104,33 @@ const DetailRoutineScreen = () => {
           <MarginVertical top={18}/>
           <View style={{display:'flex', flexDirection:'row', alignItems:'center', gap:5}}>
             <LinkIcon size={16}/>
-            <LinkedRoutineText>영어 적금</LinkedRoutineText>
+            <LinkedRoutineText>{routineDetailInfo.accountTitle}</LinkedRoutineText>
           </View>
           <MarginVertical top={5}/>
-          <TotalSavingTitle>7H 30M</TotalSavingTitle>
+          <TotalSavingTitle>{minToHour(routineDetailInfo.duration)}</TotalSavingTitle>
           <MarginVertical top={32}/>
-          <InterestText>월, 수, 금</InterestText>
+          <View style={{flexDirection:'row', gap:5}}>
+          {routineDetailInfo.length === 0 ? null : routineDetailInfo.days.map((el, index) => {
+            return(
+            <InterestText key={index}>{el === "MONDAY" ? "월" : el === "TUESDAY" ? "화" : el==="WEDNESDAY" ? "수" : el==="THURSDAY" ? "목" : el==="FRIDAY" ? "금" : el ==="SATURDAY" ? "토" : "일"}</InterestText>
+            )
+          })}
+          </View>
           <View style={{display:'flex', flexDirection:'row', alignItems:'center'}}>
-            <PushPeriodText style={{flexGrow:1}}>오전 6:00 - 7:30</PushPeriodText>
+            <PushPeriodText style={{flexGrow:1}}>{routineDetailInfo.length === 0 ? "" : `${routineDetailInfo.startTime.slice(0,5)} - ${routineDetailInfo.endTime.slice(0,5)}`}</PushPeriodText>
             <View style={{display:'flex', flexDirection:'row', alignItems:'center', gap:8}}>
               <View style={{width:8, height:8, borderRadius:'50%', backgroundColor:colors.indigoBlue}}></View>
-              <PushPeriodText>진행중</PushPeriodText>
+              <PushPeriodText>{routineDetailInfo.isEnded ? "종료" : "진행중"}</PushPeriodText>
             </View>
           </View>
         </SavingIntroArea>
         <MarginVertical top={40}/>
-        <DoubleButton text1={"루틴 수정하기"} text2={"루틴 보류하기"} handleRightButton={() => setIsPauseModalVisible(true)}/>
+        <DoubleButton text1={"루틴 수정하기"} text2={routineDetailInfo.isSuspended ? "루틴 재개하기":"루틴 보류하기"} handleRightButton={() => setIsPauseModalVisible(true)}/>
         
         <MarginVertical top={40}/>
         
         <BlurComponent child={BlurChild}/>
-        <RoutinePauseModal isPauseModalVisible={isPauseModalVisible} setIsPauseModalVisible={setIsPauseModalVisible} version={"Routin"}/>
+        <RoutinePauseModal isPauseModalVisible={isPauseModalVisible} setIsPauseModalVisible={setIsPauseModalVisible} version={"Routin"} id={id}/>
       </DetailInstallmentSavingBody>
       
       </ScrollView>

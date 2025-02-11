@@ -11,9 +11,11 @@ import { colors } from '../styles/colors';
 import MarginVertical from './MarginVertical';
 
 import check_icon_indigo from '../../../assets/check_icon_indigo.png';
+import { useRoutine } from '../../hooks/useRoutine';
 
-const RoutinePauseModal = ({isPauseModalVisible, setIsPauseModalVisible, version}) => {
+const RoutinePauseModal = ({isPauseModalVisible, setIsPauseModalVisible, version, id}) => {
   const [isComplete, setIsComplete] = useState(false);
+  const {handleRoutineSuspend} = useRoutine();
 
   
 
@@ -37,7 +39,7 @@ const RoutinePauseModal = ({isPauseModalVisible, setIsPauseModalVisible, version
         {isComplete ? <></>
         :
         <>
-        <DoubleButton text1={"아니오"} text2={"예"} handleRightButton={() => setIsComplete(true)}/>
+        <DoubleButton text1={"아니오"} text2={"예"} handleRightButton={() => handleRoutineSuspend(id, setIsComplete)}/>
         <MarginVertical top={36}/>
         </>
         

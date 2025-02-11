@@ -21,6 +21,7 @@ import CalandarModal from '../components/CalandarModal';
 import SubscribeModal from '../components/SubscribeModal';
 import RoutinePauseModal from '../components/RoutinePauseModal';
 import PurchaseModal from '../components/PurchaseModal';
+import dayjs from 'dayjs';
 
 const ViewPointScreen = () => {
   const navigation = useNavigation();
@@ -113,7 +114,7 @@ const ViewPointScreen = () => {
         <MarginVertical top={56}/>
         <ProgressBarArea>
           <ProgressText>1500P 만 모으면{"\n"}2월 구독권을 구매할 수 있어요!</ProgressText>
-          <ProgressBar/>
+          <ProgressBar startedAt={dayjs()} duration={12}/>
         </ProgressBarArea>
         <MarginVertical top={72}/>
         {/* <SectionList
