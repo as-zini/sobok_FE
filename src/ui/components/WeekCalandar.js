@@ -4,11 +4,10 @@ import { Text } from 'react-native';
 import styled from 'styled-components'
 import { colors } from '../styles/colors';
 
-const WeekCalandar = () => {
+const WeekCalandar = ({selectedDate, setSelectedDate}) => {
   const [today, setToday] = useState(dayjs());
   const DayTexts = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
   const [weekDates, setWeekDates] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(dayjs().get('date'));
 
   const getWeekDate = () => {
     const dateList = [];

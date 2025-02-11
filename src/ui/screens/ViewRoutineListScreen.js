@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Image, SafeAreaView, SectionList, Text, View } from 'react-native'
 import styled from 'styled-components'
 
@@ -12,19 +12,39 @@ import { size } from '../styles/size';
 import AssetEl from '../components/AssetEl';
 import WeekCalandar from '../components/WeekCalandar';
 import dayjs from 'dayjs';
+import { useRoutine } from '../../hooks/useRoutine';
+import { minToHour } from '../../util';
 
 const ViewRoutineListScreen = () => {
   const[isList,setIsList] = useState(true);
   const WeekOfToday = dayjs().format("MMMM YYYY")
+  const {getRoutineByList, getRoutineByCalandar} = useRoutine();
+  const [routineInfo, setRoutineInfo] = useState([]);
+  const [isComplete, setIsComplete] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(dayjs().get("date"));
+  const [todayRoutineList, setTodayRoutineList] = useState([])
+  
+  let totalTime = 0;
+  for(let i = 0; i<routineInfo.length;i++){
+    totalTime += routineInfo[i].duration
+  }
+
+  useEffect(() => {
+    getRoutineByList(setRoutineInfo, setIsComplete)
+    getRoutineByCalandar(selectedDate, setTodayRoutineList)
+  }, [isComplete, isList, selectedDate])
+  
+  const ingRoutine = routineInfo.filter((el) => el.isSuspended === false);
+  const suspendedRoutine = routineInfo.filter((el) => el.isSuspended === true);
 
   const DataForList = [
     {
-      title:["진행 중인 루틴", 1],
-      data:[["아침에는 영어 공부", "영어 적금", "1H 25M", ""]]
+      title:["진행 중인 루틴", ingRoutine.length],
+      data:ingRoutine.map((el) => [el.title, el.accountTitle, minToHour(el.duration), "", el.id])
     },
     {
-      title:["보류한 루틴", 1],
-      data:[["저녁에는 독서", "독서 적금", "2H 50M", ""]]
+      title:["보류한 루틴", suspendedRoutine.length],
+      data:suspendedRoutine.map((el) => [el.title, el.accountTitle, minToHour(el.duration),"", el.id])
     },
     {
       title:["완료한 루틴", 1],
@@ -32,16 +52,6 @@ const ViewRoutineListScreen = () => {
     }
   ]
 
-  const DataForCal = [
-    {
-      title:"09:00 - 10:25",
-      data:[["아침에는 영어 공부", "영어 적금", "1H 25M", ""]]
-    },
-    {
-      title:"18:00 - 19:25",
-      data:[["저녁에는 독서", "독서 적금", "2H 50M", ""]]
-    }
-  ]
 
   const RenderItem = ({item, index}) => {
     return(
@@ -95,24 +105,25 @@ const ViewRoutineListScreen = () => {
         <TotalRoutineArea>
           <Image source={routine_icon} style={{width:51, height:33}}/>
           <MarginVertical top={18}/>
-          <TotalRoutineText>총 3개의 루틴</TotalRoutineText>
+          <TotalRoutineText>{`총 ${routineInfo.length}개의 루틴`}</TotalRoutineText>
           <MarginVertical top={5}/>
-          <TotalRoutineTitle>5H 20M</TotalRoutineTitle>
+          <TotalRoutineTitle>{`${minToHour(totalTime)}`}</TotalRoutineTitle>
         </TotalRoutineArea>
         :
         <>
           <Text style={{fontWeight:600, fontSize:18, color:colors.darkGray}}>{WeekOfToday}</Text>
           <MarginVertical top={33}/>
-          <WeekCalandar/>
+          <WeekCalandar selectedDate={selectedDate} setSelectedDate={setSelectedDate}/>
           <MarginVertical top={58}/>
           <View style={{display:'flex', alignItems:'flex-start', width:310}}>
-            <SectionTitle>총 2개의 루틴</SectionTitle>
+            <SectionTitle>{`총 ${todayRoutineList.length}개의 루틴`}</SectionTitle>
           </View>
         </>
         }
         <MarginVertical top={isList ? 72 : 23}/>
+        {isList ?
         <SectionList
-          sections={isList ? DataForList : DataForCal}
+          sections={DataForList}
           keyExtractor={(item, index) => item + index}
           renderItem={({item, index}) => (
             <RenderItem item={item} index={index}></RenderItem>
@@ -122,8 +133,20 @@ const ViewRoutineListScreen = () => {
           )}
         
         >
-
         </SectionList>
+        :
+        todayRoutineList.map((el,index) => {
+          return(
+            <>
+            <View style={{width:'100%', paddingHorizontal:45}}>
+              <Text style={{fontSize:14, fontWeight:500, color:"#707172", marginBottom:-10}}>{`${el.startTime} - ${el.endTime}`}</Text>
+            </View>
+            <MarginVertical top={24}/>
+            <AssetEl item={[el.title, el.accountTitle, minToHour(el.duration),"", el.id]} index={index} isLink={true} category={"Routine"}/>
+            <MarginVertical top={40}/>
+            </>
+          )
+        })}
       </ViewRoutineListBody>
       <ViewRoutineListBg source={installment_saving_bg}/>
     </SafeAreaView>

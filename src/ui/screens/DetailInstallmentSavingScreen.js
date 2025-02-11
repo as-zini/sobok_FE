@@ -21,12 +21,16 @@ import CalandarModal from '../components/CalandarModal';
 import axios from 'axios';
 import { minToHour } from '../../util';
 import { useNavigation } from '@react-navigation/native';
+import dayjs from 'dayjs';
 
 const DetailInstallmentSavingScreen = ({route}) => {
   const [isCalandarModalVisible, setIsCalandarModalVisible] = useState(false);
   const {id} = route.params;
   const [savingInfo, setSavingInfo] = useState([]);
   const navigation = useNavigation();
+  const [selectedRange, setSelectedRange] = useState({});
+  const [savingLog, setSavingLog] = useState([]);
+
 
   const getSavingDetail = async() => {
     try {
@@ -41,8 +45,12 @@ const DetailInstallmentSavingScreen = ({route}) => {
   useEffect(() => {
     console.log(id);
     getSavingDetail();
-    console.log(savingInfo.createdAt)
+    
+    console.log("date",startedAt)
   }, [])
+  // const startedAt = dayjs(new Date(Number(savingInfo.created_at.slice(0,4)),Number(savingInfo.created_at.slice(5,7))-1,Number(savingInfo.created_at.slice(8,10))+1))
+  const startedAt = dayjs()
+
   
 
   const Data = [
@@ -80,11 +88,11 @@ const DetailInstallmentSavingScreen = ({route}) => {
     return(
       <View style={{paddingHorizontal:30, paddingVertical:40}}>
         <View style={{display:'flex', flexDirection:'row', gap:4}}>
-          <SettingPeriodText>2024.08 - 2024.10</SettingPeriodText>
+          <SettingPeriodText>{`${selectedRange.startDate?.slice(5,7)}월 ${selectedRange.startDate?.slice(8,10)}일 - ${selectedRange.endDate?.slice(5,7)}월 ${selectedRange.endDate?.slice(8,10)}일`}</SettingPeriodText>
           <DropDownArrowButton size={16} handleArrowButton={() => setIsCalandarModalVisible(true)}/>
         </View>
         <MarginVertical top={32}/>
-        <SectionList
+        {/* <SectionList
             sections={Data}
             keyExtractor={(item, index) => item + index}
             scrollEnabled={false}
@@ -95,7 +103,8 @@ const DetailInstallmentSavingScreen = ({route}) => {
               <ListHeader title={title}/>
             )}
           >
-        </SectionList>
+        </SectionList> */}
+        {/* {savingLog.map((el) => <Text>{el}</Text>)} */}
       </View>
     )
   }
@@ -129,7 +138,7 @@ const DetailInstallmentSavingScreen = ({route}) => {
         <ShortAlertArea text={`${savingInfo.duration}개월 남았어요!`} width={114} height={30}/>
         {/* 기간바 */}
         <MarginVertical top={36}/>
-        <ProgressBar startedAt={"2025년 2월 6일"} duration={savingInfo.duration}/>
+        <ProgressBar startedAt={startedAt} duration={savingInfo.duration}/>
         <MarginVertical top={48}/>
         <DoubleButton
           text1={"연결 루틴 보기"}
@@ -140,7 +149,13 @@ const DetailInstallmentSavingScreen = ({route}) => {
         <MarginVertical top={40}/>
         <BlurComponent child={BlurChild}/>
       </DetailInstallmentSavingBody>
-      <CalandarModal isCalandarModalVisible={isCalandarModalVisible} setIsCalandarModalVisible={setIsCalandarModalVisible} />
+      <CalandarModal
+        isCalandarModalVisible={isCalandarModalVisible} 
+        setIsCalandarModalVisible={setIsCalandarModalVisible} 
+        selectedRange={selectedRange} 
+        setSelectedRange={setSelectedRange} 
+        id={id}
+        setSavingLog={setSavingLog}/>
       </ScrollView>
       <DetailInstallmentSavingBg source={installment_saving_bg}/>
     </SafeAreaView>
@@ -151,7 +166,6 @@ export default DetailInstallmentSavingScreen;
 
 const DetailInstallmentSavingBody = styled.View`
   display:flex;
-  justify-content:center;
   align-items:center;
   width:${size.width}px;
   height:1000px;

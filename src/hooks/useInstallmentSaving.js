@@ -13,8 +13,19 @@ export const useInstallmentSaving = () => {
     }
   }
 
+  const getSavingLog = async(id, startDate, endDate, setSavingLog) => {
+    try {
+      const response = await axios.get(`https://sobok-app.com/account/log?accountId=${id}&startDate=${startDate}&endDate=${endDate}`)
+      console.log(response.data)
+      setSavingLog(response.data.account_logs)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return {
-    getSavingList
+    getSavingList,
+    getSavingLog
   }
 }
 

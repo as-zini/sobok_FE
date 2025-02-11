@@ -10,9 +10,18 @@ import calandar_modal_bg from '../../../assets/caladar_modal_bg.png';
 import SmallButton from './SmallButton';
 import Calandar from './Calandar';
 import MarginVertical from './MarginVertical';
+import { useInstallmentSaving } from '../../hooks/useInstallmentSaving';
 
 
-const CalandarModal = ({isCalandarModalVisible, setIsCalandarModalVisible}) => {
+const CalandarModal = ({isCalandarModalVisible, setIsCalandarModalVisible, selectedRange, setSelectedRange, id, setSavingLog}) => {
+  const {getSavingLog} = useInstallmentSaving();
+
+  const handleCalandarModal = () => {
+    setIsCalandarModalVisible(false);
+    getSavingLog(id, selectedRange.startDate, selectedRange.endDate, setSavingLog)
+  }
+
+
   return (
     <SafeAreaView>
       <Modal
@@ -27,14 +36,14 @@ const CalandarModal = ({isCalandarModalVisible, setIsCalandarModalVisible}) => {
         <CalandarModalBody>
           {/* 캘린더 컴포넌트 */}
           <MarginVertical top={45}/>
-          <Calandar/>
+          <Calandar selectedRange={selectedRange} setSelectedRange={setSelectedRange}/>
           <MarginVertical top={20}/>
           <View style={{display:'flex', flexDirection:'row'}}>
             <View style={{flexGrow:1}}>
-              <SelectedPeriodText>2024년 10월 10일 <Text style={{fontSize:14, fontWeight:500, color:colors.fontMain80}}>부터</Text></SelectedPeriodText>
-              <SelectedPeriodText>2024년 10월 18일 <Text style={{fontSize:14, fontWeight:500, color:colors.fontMain80}}>까지</Text></SelectedPeriodText>
+              <SelectedPeriodText>{`${selectedRange.startDate}`} <Text style={{fontSize:14, fontWeight:500, color:colors.fontMain80}}>부터</Text></SelectedPeriodText>
+              <SelectedPeriodText>{`${selectedRange.endDate}`}<Text style={{fontSize:14, fontWeight:500, color:colors.fontMain80}}>까지</Text></SelectedPeriodText>
             </View>
-            <SmallButton text={"확인"} width={100} height={40} bgColor={colors.indigoBlue50} fontColor={"#fff"} handleButton={() => setIsCalandarModalVisible(false)}/>
+            <SmallButton text={"확인"} width={100} height={40} bgColor={colors.indigoBlue50} fontColor={"#fff"} handleButton={() => handleCalandarModal()}/>
           </View>
           
         </CalandarModalBody>
