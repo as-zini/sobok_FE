@@ -22,6 +22,8 @@ import SubscribeModal from '../components/SubscribeModal';
 import RoutinePauseModal from '../components/RoutinePauseModal';
 import PurchaseModal from '../components/PurchaseModal';
 import dayjs from 'dayjs';
+import { useUserInfoStore } from '../../store/user';
+import { usePoint } from '../../hooks/usePoint';
 
 const ViewPointScreen = () => {
   const navigation = useNavigation();
@@ -29,29 +31,42 @@ const ViewPointScreen = () => {
   const [isCalandarModalVisible, setIsCalandarModalVisible] = useState(false);
   const [isSubscribeModalVisible, setIsSubscribeModalVisible] = useState(false);
   const [isPurchaseModalVisible, setIsPurchaseModalVisible] = useState(false);
+  const [selectedRange, setSelectedRange] = useState({});
+  const {userInfo} = useUserInfoStore();
+  const {getUserPremium} = usePoint();
+  const [userPremium, setUserPremium] = useState(0);
+  const [pointLog, setPointLog] = useState([]);
 
-  const Data = [
-    {
-      title:["10월 2일"],
-      data:[["자유 출금", "09:00", "-3500P", "5,824P"]]
-    },{
-      title:["9월 30일"],
-      data:[["적립", "09:00", "+1200P", "9,324P"]]
-    },{
-      title:["8월 14일"],
-      data:[["적립", "09:00", "+500P", "8124P"]]
-    }
-  ]
+
+  // const Data = [
+  //   pointLog.length > 0 ?
+  //   {
+  //     title:["10월 2일"],
+  //     data:[["자유 출금", "09:00", "-3500P", "5,824P"]]
+  //   },{
+  //     title:["9월 30일"],
+  //     data:[["적립", "09:00", "+1200P", "9,324P"]]
+  //   },{
+  //     title:["8월 14일"],
+  //     data:[["적립", "09:00", "+500P", "8124P"]]
+  //   } :
+  //   {
+
+  //   }
+  // ]
 
   useEffect(() => {
     console.log(isPurchaseModalVisible);
-  }, [[isPurchaseModalVisible]])
+    console.log(isSubscribeModalVisible);
+    getUserPremium(setUserPremium);
+
+  }, [isPurchaseModalVisible, isSubscribeModalVisible])
 
   const ListHeader = ({title}) => {
     return(
       <>
         <Text style={{color:"#707172", fontWeight:500, fontSize:14}}>{title}</Text>
-        <MarginVertical top={20}/>
+        
       </>
     )
   }
@@ -69,22 +84,19 @@ const ViewPointScreen = () => {
     return(
       <View style={{paddingHorizontal:30, paddingVertical:40}}>
         <View style={{display:'flex', flexDirection:'row', gap:4}}>
-          <SettingPeriodText>2024.08 - 2024.10</SettingPeriodText>
+          <SettingPeriodText>{`${selectedRange.startDate} - ${selectedRange.endDate}`}</SettingPeriodText>
           <DropDownArrowButton size={16} handleArrowButton={() => setIsCalandarModalVisible(true)}/>
         </View>
         <MarginVertical top={32}/>
-        <SectionList
-            sections={Data}
-            keyExtractor={(item, index) => item + index}
-            scrollEnabled={false}
-            renderItem={({item, index}) => (
-              <LenderItem item={item} index={index}></LenderItem>
-            )}
-            renderSectionHeader={({section: {title}}) => (
-              <ListHeader title={title}/>
-            )}
-          >
-        </SectionList>
+        {pointLog.map((el, index) => {
+          <View key={index}>
+            <Text style={{color:"#707172", fontWeight:500, fontSize:14}}>10월 2일</Text>
+            <MarginVertical top={20}/>
+            <AssetEl item={[`${el.category}`, `${dayjs(el.createdAt).format("hh:mm")}`, `${el.point}`, `${el.balance}`]} index={index} isLink={false}/>
+            <MarginVertical top={40}/>
+          </View>
+        })}
+        
       </View>
     )
   }
@@ -104,17 +116,18 @@ const ViewPointScreen = () => {
         <TotalSavingArea>
           <Image source={point_icon} style={{width:48, height:46}}/>
           <MarginVertical top={18}/>
-          <TotalPointText>지윤 님의 총 포인트는</TotalPointText>
+          <TotalPointText>{`${userInfo.displayName} 님의 총 포인트는`}</TotalPointText>
           <MarginVertical top={5}/>
           <View style={{display:'flex', flexDirection:'row', alignItems:'center', width:310}}>
-            <TotalSavingTitle>5,824P</TotalSavingTitle>
+            <TotalSavingTitle>{`${userInfo.point}P`}</TotalSavingTitle>
             <SmallButton text={"사용하기"} width={100} height={40} bgColor={colors.indigoBlue50} handleButton={() => setIsSubscribeModalVisible(true)} fontColor={"#fff"}/>
           </View>
         </TotalSavingArea>
         <MarginVertical top={56}/>
         <ProgressBarArea>
-          <ProgressText>1500P 만 모으면{"\n"}2월 구독권을 구매할 수 있어요!</ProgressText>
-          <ProgressBar startedAt={dayjs()} duration={12}/>
+          <ProgressText>{`${userPremium-userInfo.point}P 만 모으면\n${dayjs().format("M월")} 구독권을 구매할 수 있어요!`}</ProgressText>
+          <MarginVertical top={20}/>
+          <ProgressBar version={"Point"} userPoint={100} totalPoints={300}/>
         </ProgressBarArea>
         <MarginVertical top={72}/>
         {/* <SectionList
@@ -133,9 +146,9 @@ const ViewPointScreen = () => {
         <BlurComponent child={BlurChild}/>
       </ViewInstallmentSavingBody>
       </ScrollView>
-      <CalandarModal isCalandarModalVisible={isCalandarModalVisible} setIsCalandarModalVisible={setIsCalandarModalVisible} />
-      <PurchaseModal isPerchaseModalVisible={isPurchaseModalVisible} setIsPurchaseModalVisible={setIsPurchaseModalVisible}/>
-      <SubscribeModal isSubscribeModalVisible={isSubscribeModalVisible} setIsSubscribeModalVisible={setIsSubscribeModalVisible} setIsPurchaseModalVisible={setIsPurchaseModalVisible}/>
+      <CalandarModal isCalandarModalVisible={isCalandarModalVisible} setIsCalandarModalVisible={setIsCalandarModalVisible} selectedRange={selectedRange} setSelectedRange={setSelectedRange} version={"Point"} setPointLog={setPointLog}/>
+      <PurchaseModal isPurchaseModalVisible={isPurchaseModalVisible} setIsPurchaseModalVisible={setIsPurchaseModalVisible} version={"Purchase"}/>
+      <SubscribeModal isSubscribeModalVisible={isSubscribeModalVisible} setIsSubscribeModalVisible={setIsSubscribeModalVisible} setIsPurchaseModalVisible={setIsPurchaseModalVisible} userPremium={userPremium}/>
       <ViewInstallmentSavingBg source={installment_saving_bg}/>
     </SafeAreaView>
   )

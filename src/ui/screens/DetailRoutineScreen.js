@@ -22,24 +22,37 @@ import RoutinePauseModal from '../components/RoutinePauseModal';
 import { useRoutine } from '../../hooks/useRoutine';
 import { minToHour } from '../../util';
 import TodoEl from '../components/TodoEl';
+import axios from 'axios';
 
 const DetailRoutineScreen = ({route}) => {
   const [isPauseModalVisible, setIsPauseModalVisible] = useState(false);
   const {id} = route.params;
-  const {getRoutineDetail} = useRoutine();
+  // const {getRoutineDetail} = useRoutine();
   const [routineDetailInfo, setRoutineDetailInfo] = useState([]);
+  const [isComplete, setIsComplete] = useState(false);
+
+  const getRoutineDetail = async(id, setRoutineDetailInfo, setIsComplete) => {
+    try {
+      const response = await axios.get(`https://sobok-app.com/routine/detail?routineId=${id}`)
+      console.log("detail",response.data)
+      setRoutineDetailInfo(response.data)
+      setIsComplete(true)
+    } catch (error) {
+      console.log(error)
+    }
+  }
   
 
   useEffect(() => {
     console.log(id)
-    getRoutineDetail(id, setRoutineDetailInfo);
-  }, [])
+    getRoutineDetail(id, setRoutineDetailInfo, setIsComplete);
+  }, [isComplete])
   
 
   const Data = [
     {
       title:"",
-      data:routineDetailInfo.todos.map((el) => [el.title, el.linkApp, minToHour(el.duration), `${el.startTime} - ${el.endTime}`])
+      data:Object.keys(routineDetailInfo).length !== 0 ?routineDetailInfo.todos.map((el) => [el.title, el.linkApp, minToHour(el.duration), `${el.startTime} - ${el.endTime}`]) : []
     }
   ]
 
@@ -110,14 +123,14 @@ const DetailRoutineScreen = ({route}) => {
           <TotalSavingTitle>{minToHour(routineDetailInfo.duration)}</TotalSavingTitle>
           <MarginVertical top={32}/>
           <View style={{flexDirection:'row', gap:5}}>
-          {routineDetailInfo.length === 0 ? null : routineDetailInfo.days.map((el, index) => {
+          {Object.keys(routineDetailInfo).length !== 0 ? routineDetailInfo.days.map((el, index) => {
             return(
             <InterestText key={index}>{el === "MONDAY" ? "월" : el === "TUESDAY" ? "화" : el==="WEDNESDAY" ? "수" : el==="THURSDAY" ? "목" : el==="FRIDAY" ? "금" : el ==="SATURDAY" ? "토" : "일"}</InterestText>
             )
-          })}
+          }) : null}
           </View>
           <View style={{display:'flex', flexDirection:'row', alignItems:'center'}}>
-            <PushPeriodText style={{flexGrow:1}}>{routineDetailInfo.length === 0 ? "" : `${routineDetailInfo.startTime.slice(0,5)} - ${routineDetailInfo.endTime.slice(0,5)}`}</PushPeriodText>
+            <PushPeriodText style={{flexGrow:1}}>{Object.keys(routineDetailInfo).length === 0 ? "" : `${routineDetailInfo.startTime.slice(0,5)} - ${routineDetailInfo.endTime.slice(0,5)}`}</PushPeriodText>
             <View style={{display:'flex', flexDirection:'row', alignItems:'center', gap:8}}>
               <View style={{width:8, height:8, borderRadius:'50%', backgroundColor:colors.indigoBlue}}></View>
               <PushPeriodText>{routineDetailInfo.isEnded ? "종료" : "진행중"}</PushPeriodText>
@@ -130,7 +143,7 @@ const DetailRoutineScreen = ({route}) => {
         <MarginVertical top={40}/>
         
         <BlurComponent child={BlurChild}/>
-        <RoutinePauseModal isPauseModalVisible={isPauseModalVisible} setIsPauseModalVisible={setIsPauseModalVisible} version={"Routin"} id={id}/>
+        <RoutinePauseModal isPauseModalVisible={isPauseModalVisible} setIsPauseModalVisible={setIsPauseModalVisible} version={"Routine"} id={id} setRoutineDetailInfo={setRoutineDetailInfo} setIsComplete={setIsComplete}/>
       </DetailInstallmentSavingBody>
       
       </ScrollView>

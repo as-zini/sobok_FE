@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Image, SafeAreaView, ScrollView, View } from 'react-native'
+import { Image, SafeAreaView, ScrollView, TouchableOpacity, View } from 'react-native'
 import styled from 'styled-components'
 
 import home_bg from '../../../assets/home_bg.png';
@@ -28,7 +28,7 @@ const Home = () => {
   const [isAssetAddModalVisible, setIsAssetAddModalVisible] = useState(false);
   const navigation = useNavigation();
   const {getUserInfo} = useGetInfo();
-  const {userInfo} = useUserInfoStore();
+  const {userInfo, setUserInfo} = useUserInfoStore();
 
   const getUser = async() => {
     const token = await AsyncStorage.getItem("access_token")
@@ -36,14 +36,6 @@ const Home = () => {
     return(JSON.parse(token));
   }
 
-  const getTodos = async() => {
-    try {
-      const response = await axios.get(`https://sobok-app.com/routine/details?routineId=15`)
-      console.log(response.data)
-    } catch (error) {
-      console.log("Todos",error)
-    }
-  }
 
 
 
@@ -51,7 +43,6 @@ const Home = () => {
     getUser();
     console.log(getUser());
     getUserInfo();
-    getTodos();
   }, [])
 
   return (
@@ -79,7 +70,9 @@ const Home = () => {
             <MarginVertical top={10}/>
             <TodoDuringTime>1H 25M</TodoDuringTime>
             </View>
-            <Image source={go_todo_icon} style={{width:64, height:50, marginRight:25, marginTop:40}}/>
+            <TouchableOpacity onPress={() => navigation.navigate("TodayTodo")}>
+              <Image source={go_todo_icon} style={{width:64, height:50, marginRight:25, marginTop:40}}/>
+            </TouchableOpacity>
           </View>
           <TodoBgArea>
             <TodoAreaBg source={home_main_square_bg}/>
@@ -93,7 +86,6 @@ const Home = () => {
           <MarginVertical top={5}/>
           <View style={{display:'flex', flexDirection:'row'}}>
             <TotalTimeText>10H 45M</TotalTimeText>
-            <NavigateArrowButton/>
           </View>
           <MarginVertical top={17}/>
           <TotalTimeList>
@@ -127,7 +119,7 @@ const Home = () => {
               <View style={{display:'flex', flexGrow:2}}>
                 <TotalTimeCategory>포인트</TotalTimeCategory>
               </View>
-              <TotalTimeClock>814P</TotalTimeClock>
+              <TotalTimeClock>{`${userInfo.point}P`}</TotalTimeClock>
             </TotalTimeEl>
           </TotalTimeList>
         </TotalTimeArea>
