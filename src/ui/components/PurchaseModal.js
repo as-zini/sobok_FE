@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import Modal from 'react-native-modal';
 import { Image } from 'react-native';
@@ -9,12 +9,18 @@ import snowflake_icon from '../../../assets/snowflak_icon.png';
 import DoubleButton from './DoubleButton';
 import { colors } from '../styles/colors';
 import MarginVertical from './MarginVertical';
+import subscribe_complete_icon from '../../../assets/subscribe_complete_icon.png';
 
 import check_icon_indigo from '../../../assets/check_icon_indigo.png';
+import dayjs from 'dayjs';
+import { usePoint } from '../../hooks/usePoint';
 
 const PurchaseModal = ({isPurchaseModalVisible, setIsPurchaseModalVisible, version}) => {
   const [isComplete, setIsComplete] = useState(false);
+  const {getSubscribe} = usePoint();
 
+  useEffect(() => {
+  }, [])
   
 
   return (
@@ -28,16 +34,36 @@ const PurchaseModal = ({isPurchaseModalVisible, setIsPurchaseModalVisible, versi
     >
       <RoutinePauseModalBody height={isComplete ? 310 : 400}>
         <MarginVertical top={isComplete ? 52 : 0}/>
-        <Image source={isComplete ? check_icon_indigo:snowflake_icon} style={{width:isComplete ? 44 : 16, height: isComplete ? 44 : 16}}/>
+        {
+          version === "Purchase" ? 
+          <Image source={isComplete ? subscribe_complete_icon:snowflake_icon} style={{width:isComplete ? 80 : 16, height: isComplete ? 42 : 16}}/>
+          :
+          <Image source={isComplete ? check_icon_indigo:snowflake_icon} style={{width:isComplete ? 44 : 16, height: isComplete ? 44 : 16}}/>
+        }
+        
         <MarginVertical top={15}/>
+        {version === "Purchase"
+        ?
+        <>
+        <RoutinePauseModalTitle>{!isComplete ? "프리미엄 구독권을\n구매할까요?" : `${dayjs().format("M월")} 구독권\n구매 완료!`}</RoutinePauseModalTitle>
+        <MarginVertical top={30}/>
+        <RoutinePauseModalText>{!isComplete ? "구독권 상세 페이지의 주의사항을\n꼭 읽어보고 구매해주세요!" : "이번 달도 소복과 함께\n시간을 모아봐요!"}</RoutinePauseModalText>
+        <MarginVertical top={isComplete ? 72 : 50}/>
+        </>
+        :
+        <>
         <RoutinePauseModalTitle>루틴을 보관함에{"\n"}{isComplete ? "넣어두었어요!" : "넣어둘까요?"}</RoutinePauseModalTitle>
         <MarginVertical top={30}/>
         <RoutinePauseModalText>{isComplete ? "루틴 페이지에서 언제든\n다시 시작할 수 있어요!" : "잠시 미뤄두었다가\n언제든 다시 시작할 수 있어요!"}</RoutinePauseModalText>
         <MarginVertical top={isComplete ? 72 : 50}/>
+        </>
+        }
         {isComplete ? <></>
         :
         <>
-        <DoubleButton text1={"아니오"} text2={"예"} handleRightButton={() => setIsComplete(true)}/>
+        <DoubleButton text1={"아니오"} text2={"예"} handleLeftButton={() => setIsPurchaseModalVisible(false)} handleRightButton={() => {
+          version === "Purchase" ? getSubscribe(setIsComplete) : setIsComplete(true)
+        }}/>
         <MarginVertical top={36}/>
         </>
         

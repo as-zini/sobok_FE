@@ -11,8 +11,12 @@ import { Image } from 'react-native';
 import ProgressBar from './ProgressBar';
 import Button from './Button';
 import MarginVertical from './MarginVertical';
+import dayjs from 'dayjs';
+import { useUserInfoStore } from '../../store/user';
 
-const SubscribeModal = ({isSubscribeModalVisible, setIsSubscribeModalVisible, setIsPurchaseModalVisible}) => {
+const SubscribeModal = ({isSubscribeModalVisible, setIsSubscribeModalVisible, setIsPurchaseModalVisible, userPremium}) => {
+  const{userInfo} = useUserInfoStore();
+ 
   return (
     <Modal
       isVisible={isSubscribeModalVisible} 
@@ -30,17 +34,25 @@ const SubscribeModal = ({isSubscribeModalVisible, setIsSubscribeModalVisible, se
         <TicketImageArea>
           <Image source={ticket_img} style={{zIndex:2}}/>
           <Image source={ticket_check_icon} style={{position:'relative', top:-90, left:110, zIndex:2}}/>
-          <TickeText>1월 구독권{"\n"}사용중</TickeText>
+          <TickeText>{`${dayjs().subtract(1, 'month').format("M월")} 구독권\n사용중`}</TickeText>
         </TicketImageArea>
         <ExpirationText>구독권 만료까지</ExpirationText>
         <MarginVertical top={8}/>
         <ExpirationTitle>D-4</ExpirationTitle>
         <MarginVertical top={35}/>
-        <ToSubscribeText>1500P만 모으면{"\n"}2월 구독권을 구매할 수 있어요!</ToSubscribeText>
+        <ToSubscribeText>{`${userPremium-userInfo.point}P만 모으면\n${dayjs().add(1, 'month').format("M월")} 구독권을 구매할 수 있어요!`}</ToSubscribeText>
         <MarginVertical top={35}/>
-        <ProgressBar/>
+        <ProgressBar version={"Point"} userPoint={userInfo.point}/>
         <MarginVertical top={40}/>
-        <Button text={"구독권 구매하기"} handleButton={() => {setIsPurchaseModalVisible(true);setIsSubscribeModalVisible(false)}}/>
+        <Button text={"구독권 구매하기"} handleButton={() => {
+          setIsSubscribeModalVisible(false);
+
+          setTimeout(() => {
+          setIsPurchaseModalVisible(true)
+            
+          }, 1500);
+        }}
+        />
       </SubscribeModalBody>
       <SubscribeModalBg source={subscribe_bg}/>
     </Modal>

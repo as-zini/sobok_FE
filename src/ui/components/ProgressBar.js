@@ -1,3 +1,5 @@
+
+
 import React, { useState, useEffect } from "react";
 import { View, Animated, StyleSheet, Image, Text } from "react-native";
 import { colors } from "../styles/colors";
@@ -6,16 +8,26 @@ import snowflake_icon from '../../../assets/snowflak_icon.png';
 import ShortAlertArea from "./ShortAlertArea";
 import dayjs from "dayjs";
 
-const ProgressBar = ({startedAt, duration}) => {
-  const endDate = startedAt.add(duration, 'M')
+const ProgressBar = ({ startedAt, duration, version, userPoint, totalPoints }) => {
+  const endDate = version ==="Time" ? startedAt.add(duration, 'M') : null;
+  
   const [progress, setProgress] = useState(new Animated.Value(0));
 
   useEffect(() => {
     const calculateProgress = () => {
-      const now = new Date();
-      const totalTime = endDate - startedAt;
-      const timeElapsed = now - startedAt;
-      const percentage = Math.min((timeElapsed / totalTime) * 100, 100); // 0~100%로 계산
+      let percentage = 0;
+      let pointPercentage = 0;
+      
+      if (version === 'Time') {
+        const now = new Date();
+        const totalTime = endDate - startedAt;
+        const timeElapsed = now - startedAt;
+        percentage = Math.min((timeElapsed / totalTime) * 100, 100);
+      } else if (version === 'Point') {
+        // 포인트 프로그레스 계산
+        percentage= Math.min((userPoint / totalPoints) * 100, 100);
+      }
+      
       return percentage;
     };
 
@@ -27,8 +39,7 @@ const ProgressBar = ({startedAt, duration}) => {
       duration: 500, // 애니메이션 지속 시간
       useNativeDriver: false,
     }).start();
-    console.log(duration)
-  }, []);
+  }, [startedAt, duration, version, userPoint, totalPoints]);
 
   // Progress Bar와 아이콘의 위치를 애니메이션으로 조정
   const translateX = progress.interpolate({
@@ -43,22 +54,27 @@ const ProgressBar = ({startedAt, duration}) => {
 
   return (
     <>
-    <View style={styles.container}>
-      <View style={styles.progressBar}>
-        {/* Progress Bar의 채워진 부분 */}
-        <Animated.View style={[styles.filledBar, { width: progressBarWidth }]} />
-        {/* 아이콘 */}
-        <Animated.View style={[styles.icon, { transform: [{ translateX }] }]}>
-          <Image source={snowflake_icon} style={{width:16, height:16}}/>
-      
-        </Animated.View>
+      <View style={styles.container}>
+        <View style={styles.progressBar}>
+          {/* Progress Bar의 채워진 부분 */}
+          <Animated.View style={[styles.filledBar, { width: progressBarWidth }]} />
+          {/* 아이콘 */}
+          <Animated.View style={[styles.icon, { transform: [{ translateX }] }]}>
+            <Image source={snowflake_icon} style={{width: 16, height: 16}} />
+          </Animated.View>
+        </View>
       </View>
-    </View>
-    <View style={styles.dateContainer}>
-      <Text style={styles.dateText}>{startedAt.format("YYYY년 M월 D일")}</Text>
-      <Text style={styles.dateText}>{endDate.format("YYYY년 M월 D일")}</Text>
-
-    </View>
+      {version === 'Time' ? (
+        <View style={styles.dateContainer}>
+          <Text style={styles.dateText}>{startedAt.format("YYYY년 M월 D일")}</Text>
+          <Text style={styles.dateText}>{endDate.format("YYYY년 M월 D일")}</Text>
+        </View>
+      ) : (
+        <View style={styles.pointsContainer}>
+          <Text style={styles.pointsText}>{`${userPoint}P`}</Text>
+          <Text style={styles.pointsText}>{`${totalPoints}P`}</Text>
+        </View>
+      )}
     </>
   );
 };
@@ -82,23 +98,35 @@ const styles = StyleSheet.create({
   },
   icon: {
     width: 20,
-    height: 20, // 아이콘 색상
+    height: 20, // 아이콘 크기
     borderRadius: 10,
     position: "absolute",
     top: -25, // Progress Bar 위로 올리기
   },
-  dateContainer:{
-    display:'flex',
-    flexDirection:'row',
-    alignItems:'center',
-    justifyContent:'space-between',
-    width:300,
-    height:30
+  dateContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: 300,
+    height: 30
   },
-  dateText:{
-    color:colors.gray77,
-    fontWeight:500,
-    fontSize:14 ,
+  dateText: {
+    color: colors.gray77,
+    fontWeight: 500,
+    fontSize: 14,
+  },
+  pointsContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: 300,
+    marginTop: 10,
+  },
+  pointsText: {
+    fontSize: 14,
+    fontWeight: 500,
+    color: colors.fontMain70,
   }
 });
 

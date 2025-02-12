@@ -138,7 +138,7 @@ const DetailInstallmentSavingScreen = ({route}) => {
         <ShortAlertArea text={`${savingInfo.duration}개월 남았어요!`} width={114} height={30}/>
         {/* 기간바 */}
         <MarginVertical top={36}/>
-        <ProgressBar startedAt={startedAt} duration={savingInfo.duration}/>
+        <ProgressBar startedAt={startedAt} duration={savingInfo.duration} version={"Time"}/>
         <MarginVertical top={48}/>
         <DoubleButton
           text1={"연결 루틴 보기"}

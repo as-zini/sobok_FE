@@ -20,7 +20,7 @@ export const useRoutine = () => {
     
     
     try {
-      const response = await axios.get(`https://sobok-app.com/routine/by-date?dateString=${year}-${month}-${selectedDate-1}`)
+      const response = await axios.get(`https://sobok-app.com/routine/by-date?dateString=${year}-${month}-${selectedDate}`)
       console.log("cal",response.data)
       console.log(response.data.message)
       response.data.message ? setTodayRoutineList([]) : setTodayRoutineList(response.data)
@@ -29,13 +29,14 @@ export const useRoutine = () => {
     }
   }
 
-  const getRoutineDetail = async(id, setRoutineDetailInfo) => {
+  const getRoutineDetail = async(id, setRoutineDetailInfo, setIsComplete) => {
     try {
       const response = await axios.get(`https://sobok-app.com/routine/detail?routineId=${id}`)
       console.log("detail",response.data)
-      setRoutineDetailInfo(response.data)
+      setRoutineDetailInfo(...response.data)
+      setIsComplete(true)
     } catch (error) {
-      console.log(error)
+      console.log("detail",error)
     }
   }
 

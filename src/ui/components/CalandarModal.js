@@ -11,13 +11,18 @@ import SmallButton from './SmallButton';
 import Calandar from './Calandar';
 import MarginVertical from './MarginVertical';
 import { useInstallmentSaving } from '../../hooks/useInstallmentSaving';
+import { usePoint } from '../../hooks/usePoint';
 
 
-const CalandarModal = ({isCalandarModalVisible, setIsCalandarModalVisible, selectedRange, setSelectedRange, id, setSavingLog}) => {
+const CalandarModal = ({isCalandarModalVisible, setIsCalandarModalVisible, selectedRange, setSelectedRange, id, setSavingLog, version, setPointLog}) => {
   const {getSavingLog} = useInstallmentSaving();
+  const {getPointLog} = usePoint();
 
   const handleCalandarModal = () => {
     setIsCalandarModalVisible(false);
+    version === "Point" ?
+    getPointLog(selectedRange.startDate, selectedRange.endDate, setPointLog)
+    :
     getSavingLog(id, selectedRange.startDate, selectedRange.endDate, setSavingLog)
   }
 
