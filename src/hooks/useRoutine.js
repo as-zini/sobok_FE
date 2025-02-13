@@ -1,7 +1,11 @@
+import { useNavigation } from "@react-navigation/native";
 import axios from "axios"
 import dayjs from "dayjs";
+import { useTodoStore } from "../store/todo";
 
 export const useRoutine = () => {
+  const navigation = useNavigation();
+  const {todoData, setTodoData} = useTodoStore();
 
   const getRoutineByList = async(setRoutineInfo, setIsComplete) => {
     try {
@@ -10,7 +14,7 @@ export const useRoutine = () => {
       setRoutineInfo(response.data)
       setIsComplete(true)
     } catch (error) {
-      console.log(error)
+      console.log("routine list",error)
     }
   }
 
@@ -50,10 +54,29 @@ export const useRoutine = () => {
     }
   }
 
+  const handleAddRoutine = async(newRoutineData) => {
+    try {
+      const response = await axios.post("https://sobok-app.com/routine/create",{
+        accountId:49,
+        title: newRoutineData.title,
+        startTime: newRoutineData.startTime,
+        endTime: newRoutineData.endTime,
+        days: newRoutineData.days,
+        todos:todoData
+      })
+      console.log(response.data);
+      setTodoData([]);
+      navigation.navigate("CompleteAddRoutine")
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return {
     getRoutineByList,
     getRoutineByCalandar,
     getRoutineDetail,
-    handleRoutineSuspend
+    handleRoutineSuspend,
+    handleAddRoutine
   }
 }

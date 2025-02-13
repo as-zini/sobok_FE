@@ -4,10 +4,11 @@ import { Text } from 'react-native';
 import styled from 'styled-components'
 import { colors } from '../styles/colors';
 
-const WeekCalandar = ({selectedDate, setSelectedDate}) => {
+const WeekCalandar = ({selectedDate, setSelectedDate, isDuplication}) => {
   const [today, setToday] = useState(dayjs());
   const DayTexts = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
   const [weekDates, setWeekDates] = useState([]);
+
 
   const getWeekDate = () => {
     const dateList = [];
@@ -23,8 +24,8 @@ const WeekCalandar = ({selectedDate, setSelectedDate}) => {
 
   useEffect(() => {
     getWeekDate();
-    
-  }, [])
+    console.log(selectedDate)
+  }, [selectedDate])
 
 
   return (
@@ -41,8 +42,19 @@ const WeekCalandar = ({selectedDate, setSelectedDate}) => {
       <WeekCalandarContentsBody>
         {weekDates.map((el, index) =>{
           return(
-            <DateEl key={index} onPress={() => setSelectedDate(el)}>
-              {selectedDate === el ?
+            <DateEl key={index} onPress={() => {
+              if(isDuplication){
+                if(selectedDate.includes(index)){
+                  let result = selectedDate.filter((el) => el !== index)
+                  setSelectedDate(result);
+                }else{
+                  setSelectedDate(prev => [...prev, index])
+                }
+              }else{
+                setSelectedDate(el)
+              }
+            }}>
+              {(isDuplication && selectedDate?.includes(index)) ||  (!isDuplication && selectedDate === el)?
               <>
                 <SelectedCircle/>
                 <DateText style={{color:"#fff"}}>{el}</DateText>
@@ -50,6 +62,14 @@ const WeekCalandar = ({selectedDate, setSelectedDate}) => {
               :
               <DateText>{el}</DateText>
               }
+              {/* {!isDuplication && selectedDate === el   ?
+              <>
+                <SelectedCircle/>
+                <DateText style={{color:"#fff"}}>{el}</DateText>
+              </>
+              :
+              <DateText>{el}</DateText>
+              } */}
             </DateEl>
           )
         } )}

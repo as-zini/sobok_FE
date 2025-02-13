@@ -46,7 +46,7 @@ const DetailRoutineScreen = ({route}) => {
   useEffect(() => {
     console.log(id)
     getRoutineDetail(id, setRoutineDetailInfo, setIsComplete);
-  }, [isComplete])
+  }, [isComplete, isPauseModalVisible])
   
 
   const Data = [
@@ -65,10 +65,10 @@ const DetailRoutineScreen = ({route}) => {
     )
   }
 
-  const LenderItem = ({item, index}) => {
+  const LenderItem = ({item, index, todoInfo, routineTitle}) => {
     return(
       <>
-        <TodoEl data={item} index={index}/>
+        <TodoEl data={item} index={index} todoInfo={todoInfo} routineTitle={routineTitle}/>
         <MarginVertical top={40}/>
       </>
     )
@@ -85,8 +85,8 @@ const DetailRoutineScreen = ({route}) => {
             sections={Data}
             keyExtractor={(item, index) => item + index}
             scrollEnabled={false}
-            renderItem={({item, index}) => (
-              <LenderItem item={item} index={index}></LenderItem>
+            renderItem={({item, index, todoInfo}) => (
+              <LenderItem item={item} index={index} todoInfo={routineDetailInfo.todos[index]} routineTitle={routineDetailInfo.title}></LenderItem>
             )}
             renderSectionHeader={({section: {title}}) => (
               <ListHeader title={title}/>

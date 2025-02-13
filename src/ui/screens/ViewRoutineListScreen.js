@@ -137,14 +137,14 @@ const ViewRoutineListScreen = () => {
         :
         todayRoutineList.map((el,index) => {
           return(
-            <>
-            <View style={{width:'100%', paddingHorizontal:45}}>
+            <View key={index}>
+            <View style={{width:'100%'}}>
               <Text style={{fontSize:14, fontWeight:500, color:"#707172", marginBottom:-10}}>{`${el.startTime} - ${el.endTime}`}</Text>
             </View>
             <MarginVertical top={24}/>
             <AssetEl item={[el.title, el.accountTitle, minToHour(el.duration),"", el.id]} index={index} isLink={true} category={"Routine"}/>
             <MarginVertical top={40}/>
-            </>
+            </View>
           )
         })}
       </ViewRoutineListBody>
