@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Image, SafeAreaView, ScrollView, SectionList, Text, View } from 'react-native'
+import { Image, Pressable, SafeAreaView, ScrollView, SectionList, Text, View } from 'react-native'
 import styled from 'styled-components'
 
 import installment_saving_bg from '../../../assets/installment_saving_bg.png';
@@ -24,6 +24,7 @@ import PurchaseModal from '../components/PurchaseModal';
 import dayjs from 'dayjs';
 import { useUserInfoStore } from '../../store/user';
 import { usePoint } from '../../hooks/usePoint';
+import { useGetInfo } from '../../hooks/useGetInfo';
 
 const ViewPointScreen = () => {
   const navigation = useNavigation();
@@ -31,11 +32,12 @@ const ViewPointScreen = () => {
   const [isCalandarModalVisible, setIsCalandarModalVisible] = useState(false);
   const [isSubscribeModalVisible, setIsSubscribeModalVisible] = useState(false);
   const [isPurchaseModalVisible, setIsPurchaseModalVisible] = useState(false);
-  const [selectedRange, setSelectedRange] = useState({});
+  const [selectedRange, setSelectedRange] = useState({startDate:dayjs().startOf('month').format("YYYY-MM-DD"), endDate:dayjs().endOf('month').format("YYYY-MM-DD")});
   const {userInfo} = useUserInfoStore();
-  const {getUserPremium} = usePoint();
+  const {getUserPremium, getPointLog} = usePoint();
   const [userPremium, setUserPremium] = useState(0);
   const [pointLog, setPointLog] = useState([]);
+  const {getUserInfo} = useGetInfo();
 
 
   // const Data = [
@@ -59,7 +61,8 @@ const ViewPointScreen = () => {
     console.log(isPurchaseModalVisible);
     console.log(isSubscribeModalVisible);
     getUserPremium(setUserPremium);
-
+    getUserInfo()
+    getPointLog(selectedRange.startDate, selectedRange.endDate, setPointLog)
   }, [isPurchaseModalVisible, isSubscribeModalVisible])
 
   const ListHeader = ({title}) => {
@@ -89,12 +92,14 @@ const ViewPointScreen = () => {
         </View>
         <MarginVertical top={32}/>
         {pointLog.map((el, index) => {
+          return(
           <View key={index}>
-            <Text style={{color:"#707172", fontWeight:500, fontSize:14}}>10월 2일</Text>
+            <Text style={{color:"#707172", fontWeight:500, fontSize:14}}>{dayjs(el.createdAt).format("M월 D일")}</Text>
             <MarginVertical top={20}/>
-            <AssetEl item={[`${el.category}`, `${dayjs(el.createdAt).format("hh:mm")}`, `${el.point}`, `${el.balance}`]} index={index} isLink={false}/>
+            <AssetEl item={[`${el.category}`, `${dayjs(el.createdAt).format("hh:mm")}`, `${el.point}P`, `${el.balance}P`]} index={index} isLink={false}/>
             <MarginVertical top={40}/>
           </View>
+          )
         })}
         
       </View>
@@ -113,6 +118,11 @@ const ViewPointScreen = () => {
           <Text style={{fontWeight:600, fontSize:18, color:colors.fontSub}}>포인트</Text>
         </ViewInstallmentSavingHeader>
         <MarginVertical top={47}/>
+        {userInfo.isPremium ?
+        <ViewSubscribing>
+          <SubscribingText>{`${dayjs().format("M월")} 구독권 사용중`}</SubscribingText>
+        </ViewSubscribing>
+        : <></>  }
         <TotalSavingArea>
           <Image source={point_icon} style={{width:48, height:46}}/>
           <MarginVertical top={18}/>
@@ -120,29 +130,20 @@ const ViewPointScreen = () => {
           <MarginVertical top={5}/>
           <View style={{display:'flex', flexDirection:'row', alignItems:'center', width:310}}>
             <TotalSavingTitle>{`${userInfo.point}P`}</TotalSavingTitle>
-            <SmallButton text={"사용하기"} width={100} height={40} bgColor={colors.indigoBlue50} handleButton={() => setIsSubscribeModalVisible(true)} fontColor={"#fff"}/>
+            {userInfo.isPremium ? <></>
+            :<SmallButton text={"사용하기"} width={100} height={40} bgColor={colors.indigoBlue50} handleButton={() => setIsSubscribeModalVisible(true)} fontColor={"#fff"}/>
+            }
           </View>
         </TotalSavingArea>
         <MarginVertical top={56}/>
         <ProgressBarArea>
-          <ProgressText>{`${userPremium-userInfo.point}P 만 모으면\n${dayjs().format("M월")} 구독권을 구매할 수 있어요!`}</ProgressText>
+          {userPremium < userInfo.point ? <ProgressText>{`${userPremium}P 를 모두 모았어요!\n${dayjs().add(1, 'M').format("M월")} 구독권을 구매할 수 있겠군요!`}</ProgressText>
+          :<ProgressText>{`${userPremium-userInfo.point}P 만 모으면\n${dayjs().add(1, 'M').format("M월")} 구독권을 구매할 수 있어요!`}</ProgressText>
+          }
           <MarginVertical top={20}/>
-          <ProgressBar version={"Point"} userPoint={100} totalPoints={300}/>
+          <ProgressBar version={"Point"} userPoint={userInfo.point} totalPoints={userPremium}/>
         </ProgressBarArea>
         <MarginVertical top={72}/>
-        {/* <SectionList
-          sections={Data}
-          keyExtractor={(item, index) => item + index}
-          renderItem={({item, index}) => (
-            <RenderItem item={item} index={index}></RenderItem>
-          )}
-          renderSectionHeader={({section: {title}}) => (
-            <ListHeader title={title}/>
-          )}
-        
-        >
-
-        </SectionList> */}
         <BlurComponent child={BlurChild}/>
       </ViewInstallmentSavingBody>
       </ScrollView>
@@ -233,3 +234,18 @@ const SettingPeriodText = styled.Text`
   font-size:16px;
 `
 
+const ViewSubscribing = styled.View`
+  width:114px;
+  height:30px;
+  border-radius:15px;
+  background-color:${colors.indigoBlue50};
+  display:flex;
+  justify-content:center;
+  align-items:center;
+`
+
+const SubscribingText = styled.Text`
+  font-weight:500;
+  font-size:14px;
+  color:#fff;
+`

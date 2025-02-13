@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Image, SafeAreaView, ScrollView, View } from 'react-native'
 import styled from 'styled-components'
 
@@ -14,9 +14,21 @@ import DropDownArrowButton from '../components/DropDownArrowButton';
 import Button from '../components/Button';
 import { useNavigation } from '@react-navigation/native';
 import MarginVertical from '../components/MarginVertical';
+import { useTodoStore } from '../../store/todo';
+import dayjs from 'dayjs';
+import { getTimeDifference } from '../../util';
 
-const AddTodo = () => {
-  const navigation = useNavigation();
+const AddTodo = ({route, navigation}) => {
+  const {todoData, setTodoData} = useTodoStore();
+  const [newTodoData, setNewTodoData] = useState({title:"", linkApp:"스픽", startTime:"", endTime:""});
+
+ 
+
+  useEffect(() => {
+    console.log(newTodoData)
+    console.log(todoData)
+  }, [newTodoData, todoData])
+  
 
   return (
     <SafeAreaView>
@@ -34,15 +46,20 @@ const AddTodo = () => {
           <MarginVertical top={24}/>
           <AddTodoText>할 일 1</AddTodoText>
           <MarginVertical top={12}/>
-          <AddTodoTitle>할 일의 이름을{"\n"}입력해주세요</AddTodoTitle>
+          <AddTodoTitle
+            placeholder="할 일의 이름을 입력해주세요"
+            value={newTodoData.title}
+            onChangeText={(text) => setNewTodoData(prev => ({...prev, title: text}))} // 함수형 업데이트
+            multiline
+          />
         </View>
         <MarginVertical top={40}/>
         <TotalTimeText style={{fontSize:18}}>총 시간</TotalTimeText>
-        <TotalTimeText>1H 00M</TotalTimeText>
+        <TotalTimeText>{`${getTimeDifference(newTodoData.startTime,newTodoData.endTime)}`}</TotalTimeText>
         <MarginVertical top={32}/>
-        <TimeSliderBar text={"에 시작해서"}/>
+        <TimeSliderBar text={"에 시작해서"} setTime={setNewTodoData} version={"start"}/>
         <MarginVertical top={65}/>
-        <TimeSliderBar text={"까지 끝내요"}/>
+        <TimeSliderBar text={"까지 끝내요"} setTime={setNewTodoData} version={'end'}/>
         <MarginVertical top={80}/>
         <View style={{width:310, display:'flex', alignItems:'flex-start'}}>
           <LinkedAppTitle>연동앱</LinkedAppTitle>
@@ -58,9 +75,9 @@ const AddTodo = () => {
           </View>
         </LinkedAppArea>
         <MarginVertical top={80}/>
-        <Button text={"저장하기"}/>
+        <Button text={"저장하기"} handleButton={() => {setTodoData(newTodoData);navigation.goBack()}}/>
         <MarginVertical top={20}/>
-        <TrashButton onPress={() => navigation.goBack()}>
+        <TrashButton onPress={() => {setTodoData(prev => [...prev, newTodoData]);navigation.goBack()}}>
           <TrashButtonIcon source={trash_icon}/>
         </TrashButton>
       </AddTodoBody>
@@ -107,10 +124,13 @@ const AddTodoText = styled.Text`
   color:${colors.fontMain70};
 `
 
-const AddTodoTitle = styled.Text`
+const AddTodoTitle = styled.TextInput`
   font-size:34px;
   font-weight:600;
   color:${colors.fontMain};
+  width:200px;
+  height:100px;
+  
 `
 
 const TotalTimeText = styled.Text`

@@ -22,13 +22,15 @@ import axios from 'axios';
 import { minToHour } from '../../util';
 import { useNavigation } from '@react-navigation/native';
 import dayjs from 'dayjs';
+import { useInstallmentSaving } from '../../hooks/useInstallmentSaving';
 
 const DetailInstallmentSavingScreen = ({route}) => {
   const [isCalandarModalVisible, setIsCalandarModalVisible] = useState(false);
   const {id} = route.params;
+  const {getSavingLog} = useInstallmentSaving();
   const [savingInfo, setSavingInfo] = useState([]);
   const navigation = useNavigation();
-  const [selectedRange, setSelectedRange] = useState({});
+  const [selectedRange, setSelectedRange] = useState({startDate:dayjs().startOf('month').format("YYYY-MM-DD"), endDate:dayjs().endOf('month').format("YYYY-MM-DD")});
   const [savingLog, setSavingLog] = useState([]);
 
 
@@ -37,6 +39,7 @@ const DetailInstallmentSavingScreen = ({route}) => {
       const response = await axios.get(`https://sobok-app.com/account/details?accountId=${id}`)
       console.log(response.data);
       setSavingInfo(response.data)
+      
     } catch (error) {
       console.log(error)
     }
@@ -45,9 +48,9 @@ const DetailInstallmentSavingScreen = ({route}) => {
   useEffect(() => {
     console.log(id);
     getSavingDetail();
-    
+    getSavingLog(id, selectedRange.startDate, selectedRange.endDate, setSavingLog)
     console.log("date",startedAt)
-  }, [])
+  }, [selectedRange])
   // const startedAt = dayjs(new Date(Number(savingInfo.created_at.slice(0,4)),Number(savingInfo.created_at.slice(5,7))-1,Number(savingInfo.created_at.slice(8,10))+1))
   const startedAt = dayjs()
 

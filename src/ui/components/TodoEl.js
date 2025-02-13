@@ -4,12 +4,13 @@ import styled from 'styled-components'
 import { colors } from '../styles/colors'
 import LinkIcon from './LinkIcon'
 import MarginVertical from './MarginVertical'
+import { useNavigation } from '@react-navigation/native'
 
-const TodoEl = ({data, index}) => {
-
+const TodoEl = ({data, index, todoInfo, routineTitle}) => {
+  const navigation = useNavigation();
 
   return(
-    <TodoElBody>
+    <TodoElBody onPress={() => navigation.navigate("DetailTodo", {todoInfo:todoInfo, index:index, routineTitle:routineTitle})}>
     <TodoIndex>
       <TodoIndexText>{index+1}</TodoIndexText>
     </TodoIndex>
@@ -33,7 +34,7 @@ const TodoEl = ({data, index}) => {
 export default TodoEl
 
 
-const TodoElBody = styled.View`
+const TodoElBody = styled.TouchableOpacity`
   width:300px;
   height:64px;
   display:flex;

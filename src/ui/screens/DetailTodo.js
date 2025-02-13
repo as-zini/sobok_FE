@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { SafeAreaView, ScrollView, View } from 'react-native'
 import styled from 'styled-components';
 
@@ -13,8 +13,17 @@ import TimeSliderBar from '../components/TimeSliderBar';
 import LinkIcon from '../components/LinkIcon';
 import DropDownArrowButton from '../components/DropDownArrowButton';
 import Button from '../components/Button';
+import { minToHour } from '../../util';
 
-const DetailTodo = () => {
+const DetailTodo = ({route}) => {
+  const {todoInfo, index, routineTitle} = route.params;
+
+  useEffect(() => {
+    console.log(todoInfo)
+    console.log(index)
+  }, [])
+  
+
   return (
     <SafeAreaView>
       <ScrollView>
@@ -23,24 +32,24 @@ const DetailTodo = () => {
           <View style={{position:'absolute', left:20}}>
             <BackArrowButton/>
           </View>
-          <DetailTodoCategory>아침에는 영어 공부</DetailTodoCategory>
+          <DetailTodoCategory>{`${routineTitle}`}</DetailTodoCategory>
         </DetailTodoHeader>
         <TodoIntroArea>
           <DetailTodoIcon source={todo_icon}/>
           <MarginVertical top={25}/>
-          <DetailTodoText>할 일 1</DetailTodoText>
+          <DetailTodoText>{`할 일 ${index+1}`}</DetailTodoText>
           <MarginVertical top={12}/>
-          <DetailTodoTitle>영어 강의 1강</DetailTodoTitle>
+          <DetailTodoTitle>{`${todoInfo.title}`}</DetailTodoTitle>
         </TodoIntroArea>
         <MarginVertical top={65}/>
         <TotalTimeArea>
           <TotalTimeText>총 시간</TotalTimeText>
-          <TotalTimeText style={{fontSize:26}}>1H 00M</TotalTimeText>
+          <TotalTimeText style={{fontSize:26}}>{`${minToHour(todoInfo.duration)}`}</TotalTimeText>
         </TotalTimeArea>
         <MarginVertical top={32}/>
-        <TimeSliderBar text={"에 시작해서"}/>
+        <TimeSliderBar text={"에 시작해서"} version={"Todo"} time={todoInfo.startTime.slice(0,5)}/>
         <MarginVertical top={65}/>
-        <TimeSliderBar text={"까지 끝내요"}/>
+        <TimeSliderBar text={"까지 끝내요"} version={"Todo"} time={todoInfo.endTime.slice(0,5)}/>
         <MarginVertical top={80}/>
         <LinkedAppArea>
           <LinkedAppTitle>연동앱</LinkedAppTitle>
@@ -48,7 +57,7 @@ const DetailTodo = () => {
             <LinkedAppIcon>
               <LinkIcon size={24}/>
             </LinkedAppIcon>
-            <LinkedAppText>스픽</LinkedAppText>
+            <LinkedAppText>{`${todoInfo.linkApp}`}</LinkedAppText>
             <DropDownArrowButton size={24}/>
           </LinkedAppBody>
         </LinkedAppArea>

@@ -17,7 +17,7 @@ export const usePoint = () => {
       console.log(response.data)
       setIsComplete(true)
     } catch (error) {
-      console.log(error)
+      console.log(error.data)
     }
   }
 
