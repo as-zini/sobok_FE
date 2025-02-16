@@ -72,11 +72,21 @@ export const useRoutine = () => {
     }
   }
 
+  const getRoutineCount = async(setRoutineCount) => {
+    try {
+      const response = await axios.get("https://sobok-app.com/routine/by-list");
+      setRoutineCount(response.data.length)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return {
     getRoutineByList,
     getRoutineByCalandar,
     getRoutineDetail,
     handleRoutineSuspend,
-    handleAddRoutine
+    handleAddRoutine,
+    getRoutineCount
   }
 }

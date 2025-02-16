@@ -23,12 +23,19 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useGetInfo } from '../../hooks/useGetInfo';
 import { useUserInfoStore } from '../../store/user';
 import axios from 'axios';
+import { minToHour } from '../../util';
+import { useInstallmentSaving } from '../../hooks/useInstallmentSaving';
+import { useRoutine } from '../../hooks/useRoutine';
 
 const Home = () => {
   const [isAssetAddModalVisible, setIsAssetAddModalVisible] = useState(false);
   const navigation = useNavigation();
   const {getUserInfo} = useGetInfo();
   const {userInfo, setUserInfo} = useUserInfoStore();
+  const {getSavingCount} = useInstallmentSaving();
+  const [savingCount, setSavingCount] = useState(0);
+  const {getRoutineCount} = useRoutine();
+  const [routineCount, setRoutineCount] = useState(0);
 
   const getUser = async() => {
     const token = await AsyncStorage.getItem("access_token")
@@ -43,6 +50,8 @@ const Home = () => {
     getUser();
     console.log(getUser());
     getUserInfo();
+    getSavingCount(setSavingCount);
+    getRoutineCount(setRoutineCount);
   }, [])
 
   return (
@@ -85,7 +94,7 @@ const Home = () => {
           <TotalTimeTitle>나의 총 시간</TotalTimeTitle>
           <MarginVertical top={5}/>
           <View style={{display:'flex', flexDirection:'row'}}>
-            <TotalTimeText>10H 45M</TotalTimeText>
+            <TotalTimeText>{minToHour(userInfo.totalAchievedTime)}</TotalTimeText>
           </View>
           <MarginVertical top={17}/>
           <TotalTimeList>
@@ -95,9 +104,9 @@ const Home = () => {
               </View>
               <View style={{display:'flex', flexGrow:2}}>
                 <TotalTimeCategory>적금</TotalTimeCategory>
-                <TotalTimeCount>5개</TotalTimeCount>
+                <TotalTimeCount>{`${savingCount}개`}</TotalTimeCount>
               </View>
-              <TotalTimeClock>5H 20M</TotalTimeClock>
+              <TotalTimeClock>{minToHour(userInfo.totalAccountBalance)}</TotalTimeClock>
               
             </TotalTimeEl>
             <BorderLine/>
@@ -107,9 +116,9 @@ const Home = () => {
               </View>
               <View style={{display:'flex', flexGrow:2}}>
                 <TotalTimeCategory>루틴</TotalTimeCategory>
-                <TotalTimeCount>4개</TotalTimeCount>
+                <TotalTimeCount>{`${routineCount}개`}</TotalTimeCount>
               </View>
-              <TotalTimeClock>5H 20M</TotalTimeClock>
+              <TotalTimeClock>{minToHour(userInfo.weeklyRoutineTime)}</TotalTimeClock>
             </TotalTimeEl>
             <BorderLine/>
             <TotalTimeEl onPress={() => navigation.navigate("ViewPoint")}>

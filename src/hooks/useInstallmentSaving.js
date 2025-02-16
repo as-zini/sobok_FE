@@ -23,9 +23,20 @@ export const useInstallmentSaving = () => {
     }
   }
 
+  const getSavingCount = async(setSavingCount) => {
+    try {
+      const response = await axios.get("https://sobok-app.com/account/list/ongoing")
+      // console.log(response.data);
+      setSavingCount(response.data.account_list.length);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return {
     getSavingList,
-    getSavingLog
+    getSavingLog,
+    getSavingCount
   }
 }
 
