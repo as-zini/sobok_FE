@@ -23,9 +23,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useGetInfo } from '../../hooks/useGetInfo';
 import { useUserInfoStore } from '../../store/user';
 import axios from 'axios';
-import { minToHour } from '../../util';
+import { getTimeDifference, minToHour } from '../../util';
 import { useInstallmentSaving } from '../../hooks/useInstallmentSaving';
 import { useRoutine } from '../../hooks/useRoutine';
+import { useTodo } from '../../hooks/useTodo';
+import dayjs from 'dayjs';
+import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
+dayjs.extend(isSameOrBefore)
 
 const Home = () => {
   const [isAssetAddModalVisible, setIsAssetAddModalVisible] = useState(false);
@@ -36,6 +40,9 @@ const Home = () => {
   const [savingCount, setSavingCount] = useState(0);
   const {getRoutineCount} = useRoutine();
   const [routineCount, setRoutineCount] = useState(0);
+  const {getTodayTodo} = useTodo();
+  const [todayTodo, setTodayTodo] = useState([]);
+  const [nowTodo, setNowTodo] = useState([]);
 
   const getUser = async() => {
     const token = await AsyncStorage.getItem("access_token")
@@ -43,7 +50,23 @@ const Home = () => {
     return(JSON.parse(token));
   }
 
+  const getTimesAfter = (timeString, data) => {
+    const timeArray = timeString.split(':');
+    const referenceTime = dayjs().hour(timeArray[0]).minute(timeArray[1]).second(timeArray[2]);
+  
+    // 주어진 시간보다 뒤에 있는 시간들만 필터링
+    return data.filter((el) => {
+      const time = dayjs().hour(el.startTime.split(':')[0])
+        .minute(el.startTime.split(':')[1])
+        .second(el.startTime.split(':')[2]);
+  
+      return referenceTime.isBefore(time); // referenceTime보다 뒤에 있는 시간
+    }).length;
+  };
 
+
+
+  
 
 
   useEffect(() => {
@@ -52,6 +75,22 @@ const Home = () => {
     getUserInfo();
     getSavingCount(setSavingCount);
     getRoutineCount(setRoutineCount);
+    getTodayTodo(setTodayTodo, setNowTodo);
+    // setNowTodo()
+    // console.log(todayTodo.find((el) => {
+    //   const timeString = el.startTime;
+    //   const timeArray = timeString.split(':');
+      
+    //   const time = dayjs().hour(timeArray[0]).minute(timeArray[1]).second(timeArray[2]);
+      
+    //   console.log(time.format()); // 오늘 날짜와 함께 주어진 시간 출력
+    // }))
+    // const timeArray = timeString.split(':');
+
+    // const time = dayjs().hour(timeArray[0]).minute(timeArray[1]).second(timeArray[2]);
+
+    // console.log(time.format()); // 오늘 날짜와 함께 주어진 시간 출력
+    console.log("now", nowTodo)
   }, [])
 
   return (
@@ -73,11 +112,11 @@ const Home = () => {
         <TodoArea>
           <View style={{display:'flex', flexDirection:'row', alignItems:'center', position:'absolute', zIndex:4, width:300, top:25, left:25}}>
             <View style={{flexGrow:1}}>
-            <TodoTime>오전 8:00 - 오전 9:25</TodoTime>
+            <TodoTime>{`${nowTodo.startTime?.slice(0,5)} - ${nowTodo.endTime?.slice(0,5)}`}</TodoTime>
             <MarginVertical top={5}/>
-            <TodoText>영어강의 Ch.1 듣기 외 2개</TodoText>
+            <TodoText>{`${nowTodo.title} 외 ${getTimesAfter(nowTodo.startTime, todayTodo)}개`}</TodoText>
             <MarginVertical top={10}/>
-            <TodoDuringTime>1H 25M</TodoDuringTime>
+            <TodoDuringTime>{`${getTimeDifference(nowTodo.startTime, nowTodo.endTime)}`}</TodoDuringTime>
             </View>
             <TouchableOpacity onPress={() => navigation.navigate("TodayTodo")}>
               <Image source={go_todo_icon} style={{width:64, height:50, marginRight:25, marginTop:40}}/>
@@ -187,14 +226,14 @@ const TodoAreaBg = styled.Image`
 
 const TodoTime = styled.Text`
   z-index:3;
-  font-size:12px;
+  font-size:14px;
   font-weight:500;
   color:#fff;
 `
 
 const TodoText = styled.Text`
   z-index:3;
-  font-size:16px;
+  font-size:18px;
   font-weight:500;
   color:#fff;
 `
