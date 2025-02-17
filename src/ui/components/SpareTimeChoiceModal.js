@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Dimensions, SafeAreaView, Text, View } from 'react-native';
 import Modal from 'react-native-modal';
 import styled from 'styled-components';
@@ -8,12 +8,20 @@ import TimeSliderBar from './TimeSliderBar';
 import MarginVertical from './MarginVertical';
 import Button from './Button';
 import { useNavigation } from '@react-navigation/native';
+import { getTimeDifference } from '../../util';
 
-const SpareTimeChoiceModal = ({isChoiceModalVisible, setIsChoiceModalVisible}) => {
+const SpareTimeChoiceModal = ({isChoiceModalVisible, setIsChoiceModalVisible, setTime, time, setTimeList}) => {
 
   const handleSpareTimeModal = () => {
+    setTimeList(prev => ([...prev, time]))
     setIsChoiceModalVisible(false);
   }
+
+  useEffect(() => {
+    console.log(time)
+
+  }, [time])
+  
   
   return (
     <SafeAreaView>
@@ -30,12 +38,12 @@ const SpareTimeChoiceModal = ({isChoiceModalVisible, setIsChoiceModalVisible}) =
           <SpareTimeModalText>{"자투리 시간이 생기는\n시각을 알려주세요"}</SpareTimeModalText>
           <TotalTimeArea>
             <Text style={{fontSize:18, fontWeight:600, color:colors.fontMain90}}>총 시간</Text>
-            <Text style={{fontWeight:600, fontSize:26, color:colors.fontMain90}}>1H 00M</Text>
+            <Text style={{fontWeight:600, fontSize:26, color:colors.fontMain90}}>{`${getTimeDifference(time.startTime, time.endTime)}`}</Text>
           </TotalTimeArea>
           <MarginVertical top={32}/>
-          <TimeSliderBar text={"에 시작해서"}/>
+          <TimeSliderBar text={"에 시작해서"} setTime={setTime} time={time} version={"start"}/>
           <MarginVertical top={48}/>
-          <TimeSliderBar text={"까지"}/>
+          <TimeSliderBar text={"까지"} setTime={setTime} version={"End"}/>
           <MarginVertical top={55}/>
           <Button text={"다음 단계로"} handleButton={handleSpareTimeModal}/>
         </SpareTimeModalBody>

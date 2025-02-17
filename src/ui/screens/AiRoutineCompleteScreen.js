@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView, View } from 'react-native'
 import styled from 'styled-components';
 
@@ -10,10 +10,18 @@ import { colors } from '../styles/colors';
 import MarginVertical from '../components/MarginVertical';
 import Button from '../components/Button';
 import { useNavigation } from '@react-navigation/native';
+import { useTest } from '../../hooks/useTest';
 
-const AiRoutineCompleteScreen = () => {
+const AiRoutineCompleteScreen = ({route}) => {
   const [isCreateComplete, setIsCreateComplete] = useState(false);
   const navigation = useNavigation();
+  const {spareTpo, spareTime, preference1, preference2, preference3, likeOption, extraRequest} = route.params;
+  const {handleSubmitTest} = useTest();
+
+  useEffect(() => {
+    handleSubmitTest(spareTpo, spareTime, preference1, preference2, preference3, likeOption, extraRequest, setIsCreateComplete)
+  }, [])
+  
 
   return (
     <>
