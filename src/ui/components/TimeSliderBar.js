@@ -11,8 +11,6 @@ const TimeSliderBar = ({ text, setTime, version}) => {
 
   useEffect(() => {
     console.log(value);
-    console.log(formattedTime)
-    console.log(formattedTime24)
     version === "start" ? setTime(prev => ({...prev, startTime:formattedTime24})) : setTime(prev => ({...prev, endTime:formattedTime24}))
   }, [value]);
 

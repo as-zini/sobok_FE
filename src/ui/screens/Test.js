@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Dimensions, SafeAreaView, View } from 'react-native'
+import { Dimensions, FlatList, Image, SafeAreaView, ScrollView, SectionList, Text, TouchableOpacity, View } from 'react-native'
 import styled from 'styled-components'
 
 import test_bg from '../../../assets/test_bg.png'
@@ -20,6 +20,13 @@ import Button from '../components/Button'
 import StepNumber from '../components/StepNumber'
 import { useNavigation } from '@react-navigation/native'
 import ChoiceModal from '../components/SpareTimeChoiceModal'
+import MarginVertical from '../components/MarginVertical'
+import clicked_bus_button from '../../../assets/clicked_bus_button.png';
+import clicked_car_button from '../../../assets/clicked_car_button.png';
+import clicked_game_button from '../../../assets/clicked_game_button.png';
+import clicked_time_button from '../../../assets/clicked_time_button.png';
+import SimpleTodoEl from '../components/SimpleTodoEl'
+import { getTimeDifference, minToHour } from '../../util'
 
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
@@ -28,27 +35,89 @@ const Test = () => {
   const [step, setStep] = useState(1);
   const [detailStep, setDetailStep] = useState(1);
   const [isChoiceModalVisible, setIsChoiceModalVisible] = useState(false);
-  const TestCategoryTextList = ["자투리 시간", "자투리 시간", "루틴 속성", "취향", ""]
-  const TestText = ["언제 자투리 시간이\n생기나요?", "자투리 시간이\n얼마나 생기나요?", ["지윤 님은 무엇을\n더 선호하시나요?","지윤 님은 어떤 계획을\n더 선호하시나요?","지윤 님은\n집중할 때 어때요?"], "지윤 님의 관심은\n어디로 향하고 있나요?"];
+  const TestCategoryTextList = ["자투리 시간", "자투리 시간", "루틴 속성", ["취향", "세부사항"], ""]
+  const TestText = ["언제 자투리 시간이\n생기나요?", "자투리 시간이\n얼마나 생기나요?", ["지윤 님은 무엇을\n더 선호하시나요?","지윤 님은 어떤 계획을\n더 선호하시나요?","지윤 님은\n집중할 때 어때요?"], ["지윤 님의 관심은\n어디로 향하고 있나요?","지윤 님,\n원하는 것을 말씀해주세요!"]];
   const iconHeight = detailStep === 2 ? 63 : 52;
   const iconWidth = detailStep === 2 ? 40 : 54;
   const navigation = useNavigation();
+  const [isClicked,setIsClicked] = useState(0);
+  const [time, setTime] = useState({});
+  const [timeList, setTimeList] = useState([])
+  const unChecked = step === 1 && isClicked === 0 ? true: step===2 && timeList?.length === 0 ? true : false;
+  const [step3Data, setStep3Data ] = useState({step1:"", step2:"", step3:""});
+  const interestCategory = ["언어", "공부"]
+  const interestList = [""]
+  const step3Value1 = ["여러가지를 다양하게", "느슨하고 여유로운", "오래 오래 집중하기"];
+  const step3Value2 = ["하나를 진득하게", "촘촘하고 체계적인", "쉽게 질려 금방 쉬기"];
+  const [step3Clicked, setStep3Clicked] = useState(0);
+  const [likeOption, setLikeOption] = useState([]);
+  const [step4Value, setStep4Value] = useState("");
+
+  
 
   
 
   const handleTestButton = () => {
-    if(step < 4){
+    if(step <= 4){
       if(step === 3 && detailStep < 3){
       setDetailStep((prev) => prev+1)
-      }else{
+      }else if(step === 3 && detailStep === 3){
+        setDetailStep(1);
+        setStep(prev => prev+1);
+      }else if(step === 4 && detailStep < 2){
+        setDetailStep(2);
+      }else if(step===4 && detailStep === 2){
+        navigation.navigate("AiRoutineComplete", {
+          spareTpo:isClicked === 1 ? "출퇴근 시간(대중교통)" : isClicked === 2 ? "출퇴근 시간(자가용)" : isClicked === 3? "쉬는 시간 및 자유 시간" : "대기 시간",
+          spareTime:timeList.map((el) => `${el.startTime}-${el.endTime}`),
+          preference1:step3Data.step1,
+          preference2:step3Data.step2,
+          preference3:step3Data.step3,
+          likeOption:likeOption,
+          extraRequest:step4Value
+        })
+      }
+      else{
       setStep((prev) => prev+1);
-      console.log("button!")
+      console.log(detailStep)
       
       }
-    } else{
-      navigation.navigate("AiRoutineComplete")
     }
   }
+
+  useEffect(() => {
+   console.log(step, detailStep, timeList)
+  }, [step, detailStep])
+  
+  const DataForLang = [
+      "회화", "문법","단어", "듣기", "영어", "중국어", "일본어"
+  ]
+
+  const RenderItem = ({item}) => {
+    return(
+      <InterestEl>
+      <InterestText>{item}</InterestText>
+
+      </InterestEl>
+    )
+  }
+
+  const ListHeader = ({title}) => {
+    return(
+      <>
+      <Text style={{fontWeight:600, fontSize:18, color:colors.fontMain}}>{title}</Text>
+      <MarginVertical top={15}/>
+      </>
+    )
+  }
+
+  // const handleLikeOption = (el) => {
+  //   if(likeOption.includes(el)){
+  //     setLikeOption(prev => prev.filter((item) => item !== el))
+  //   }else{
+  //     setLikeOption(prev => [...prev, el])
+  // }
+  // }
   
 
   return (
@@ -57,49 +126,68 @@ const Test = () => {
         <TestHeader>
           <BackArrowButton/>
         </TestHeader>
-        <View style={{display:'flex', justifyContent:'center', alignItems:'center', position:'absolute', top:10}}>
+        <View style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
           <Steps step={step}/>
         </View>
-        <TestContentsArea style={{marginTop:step==1 ? -40 : step===2 ? -260 : -200}}>
+        <MarginVertical top={57}/>
+        <TestContentsArea>
           <StepNumber step={step}/>
-          <TestCategoryText>{TestCategoryTextList[step-1]}</TestCategoryText>
-          <TestQuestionText>{step === 3 ? TestText[step-1][detailStep-1] : TestText[step-1]}</TestQuestionText>
+          <MarginVertical top={20}/>
+          <TestCategoryText>{step===4 ? TestCategoryTextList[step-1][detailStep-1] : TestCategoryTextList[step-1]}</TestCategoryText>
+          <TestQuestionText>{step === 3 ? TestText[step-1][detailStep-1] : step===4 ? TestText[step-1][detailStep-1] : TestText[step-1]}</TestQuestionText>
           
           <TestCheckArea>
           {step === 1? 
           <>
-            <TestCheckEl>
-              <TestCheckText>출퇴근 시간{"\n(대중교통)"}</TestCheckText>
-              <TestCheckIcon source={bus_icon} style={{width:76, height:55}}/>
+            <TestCheckEl onPress={() => setIsClicked(1)}>
+              <TestCheckText style={{color:isClicked === 1 ? "#fff" : colors.gray77}}>출퇴근 시간{"\n(대중교통)"}</TestCheckText>
+              {isClicked !== 1 ?
+              <TestCheckIcon source={bus_icon} style={{width:76, height:55}}/>:
+              <Image source={clicked_bus_button} style={{zIndex:-1}}/>
+              }
             </TestCheckEl>
-            <TestCheckEl>
-              <TestCheckText>출퇴근 시간{"\n(자가용)"}</TestCheckText>
+            <TestCheckEl onPress={() => setIsClicked(2)}>
+              <TestCheckText style={{color:isClicked === 2 ? "#fff" : colors.gray77}}>출퇴근 시간{"\n(자가용)"}</TestCheckText>
+              {isClicked !== 2 ?
               <TestCheckIcon source={car_icon} style={{width:62, height:40}}/>
+              :<Image source={clicked_car_button} style={{zIndex:-1}}/>
+              } 
             </TestCheckEl>
-            <TestCheckEl>
-              <TestCheckText>쉬는 시간 및{"\n"}자유 시간</TestCheckText>
+            <TestCheckEl onPress={() => setIsClicked(3)}>
+              <TestCheckText style={{color:isClicked === 3 ? "#fff" : colors.gray77}}>쉬는 시간 및{"\n"}자유 시간</TestCheckText>
+              {isClicked !== 3 ?
               <TestCheckIcon source={game_icon} style={{width:61, height:48}}/>
+              :<Image source={clicked_game_button} style={{zIndex:-1}}/>
+                }
             </TestCheckEl>
-            <TestCheckEl>
-              <TestCheckText>대기 시간</TestCheckText>
+            <TestCheckEl onPress={() => setIsClicked(4)}>
+              <TestCheckText style={{color:isClicked === 4 ? "#fff" : colors.gray77}}>대기 시간</TestCheckText>
+              {isClicked !== 4 ?
               <TestCheckIcon source={free_time_icon} style={{width:48, height:49}}/>
+              :<Image source={clicked_time_button} style={{zIndex:-1}}/>
+                }
             </TestCheckEl>
           
           </>
           : step === 2 ?
           <>
+            {timeList.map((el,index) => {
+              return(
+                <SimpleTodoEl key={index} index={index+1} data={[`${el.startTime} - ${el.endTime}`,"",`${getTimeDifference(el.startTime, el.endTime)}`]}/>
+              )
+            })}
             <SpareTimeAddButton onPress={() => setIsChoiceModalVisible(true)}>
               <SpareTimeButtonText>+</SpareTimeButtonText>
             </SpareTimeAddButton>
-            <ChoiceModal isChoiceModalVisible={isChoiceModalVisible} setIsChoiceModalVisible={setIsChoiceModalVisible}/>
+            <ChoiceModal isChoiceModalVisible={isChoiceModalVisible} setIsChoiceModalVisible={setIsChoiceModalVisible} setTime={setTime} time={time} setTimeList={setTimeList}/>
           </>
           : step === 3 ?
           <>
-            <TestCheckEl>
+            <TestCheckEl onPress={() => {setStep3Data({...step3Data, [`step${detailStep}`]:step3Value1[detailStep-1]}); setStep3Clicked(1)}}>
               <TestCheckText> {detailStep === 1 ? "여러가지를\n다양하게" : detailStep===2 ? "느슨하고\n여유로운" : "오래 오래\n집중하기"}</TestCheckText>
               <TestCheckIcon source={detailStep === 1 ? diversity_icon : detailStep===2 ? circle_graphic : trapezoid_graphic} style={{width:60, height:60}}/>
             </TestCheckEl>
-            <TestCheckEl>
+            <TestCheckEl onPress={() => {setStep3Data({...step3Data, [`step${detailStep}`]:step3Value2[detailStep-1]}); setStep3Clicked(2)}}>
               <TestCheckText>{detailStep === 1 ? "하나를\n진득하게" : detailStep===2 ? "촘촘하고\n체계적인" : "쉽게 질려\n금방 쉬기"} </TestCheckText>
               <TestCheckIcon source={detailStep === 1 ? mono_icon : detailStep===2 ? top_graphic : plat_graphic} style={{width:iconWidth, height:iconHeight}}/>
             </TestCheckEl>
@@ -107,10 +195,48 @@ const Test = () => {
           :
           <></>
           }
+          {step===4 && detailStep === 1 ?
+          <ScrollView>
+            <InterestCategory>언어</InterestCategory>
+            <MarginVertical top={15}/>
+            <InterestBody>
+              {DataForLang.map((el,index) => {
+                return(
+                  <InterestEl
+                    key={index}
+                    onPress={() => 
+                      setLikeOption(prev => 
+                        prev.includes(el) ? prev.filter(item => item !== el) : [...prev, el]
+                      )
+                    }
+                    style={{backgroundColor:likeOption.includes(el) ? colors.indigoBlue70:"rgba(255,255,255,.2)"}}>
+                    <InterestText>{el}</InterestText>
+                  </InterestEl>
+                )
+              })}
+              <InterestCategory></InterestCategory>
+            </InterestBody>
+
+          </ScrollView>
+          : step===4 && detailStep === 2 ?
+          <View style={{display:'flex', gap:10}}>
+            <Step4Input
+              placeholder={"ex)영어 강의 듣기를 포함시켜줘"}
+              value={step4Value}
+              onChange={(e) => setStep4Value(e.nativeEvent.text)}
+              placeholderTextColor="#fff"
+            />
+            <View style={{width:294, height:1, backgroundColor:"#fff"}}></View>
+            <Text style={{color:"#fff", fontWeight:500, fontSize:14}}>{`${step4Value.length}/20`}</Text>
+          </View>
+          :
+          <></>
+          }
+          
         </TestCheckArea>
         </TestContentsArea>
         <View style={{position:'absolute', bottom:100}}>
-          <Button text={"다음 단계로"} unChecked={true} handleButton={handleTestButton}/>
+          <Button text={"다음 단계로"} unChecked={unChecked} handleButton={handleTestButton}/>
         </View>  
       </TestBody>
       <TestBg source={test_bg}/>
@@ -123,10 +249,10 @@ export default Test
 
 const TestBody = styled.View`
   display:flex;
-  justify-content:center;
   align-items:center;
   width:${width}px;
   height:${height}px;
+  padding:0 30px;
 `
 
 const TestBg = styled.Image`
@@ -138,17 +264,15 @@ const TestBg = styled.Image`
 `
 
 const TestHeader = styled.View`
-  position:absolute;
-  left:25px;
-  top:20px;
+  width:100%;
+  height:50px;
+  display:flex;
+  justify-content:center;
 `
 
 const TestContentsArea = styled.View`
   display:flex;
-  justify-content:flex-start;
-  align-items:flex-start;
-  margin-left:40px;
-  margin-top:-40px;
+  width:100%;
 `
 
 const TestCategoryText = styled.Text`
@@ -212,3 +336,40 @@ const SpareTimeButtonText = styled.Text`
   font-weight:500;
   font-size:24px;
 `
+
+const InterestBody = styled.View`
+  flex-direction:row;
+  width:100%;
+  flex-wrap:wrap;
+  gap:10px;
+`
+
+const InterestEl = styled.TouchableOpacity`
+  width:64px;
+  height:36px;
+  backgroundColor:rgba(255,255,255,.2);
+  borderRadius:24px;
+  justifyContent:center;
+  alignItems:center;
+  border:1px solid rgba(255,255,255,.5);
+`
+
+const InterestText = styled.Text`
+  color:#fff;
+  font-weight:600;
+  font-size:18px;
+`
+
+const InterestCategory = styled.Text`
+  fontWeight:600;
+  fontSize:18px;
+  color:${colors.fontMain}
+`
+
+const Step4Input = styled.TextInput`
+  color:${colors.fontMain};
+  font-size:18px;
+  font-weight:500;
+  width:294px;
+`
+
