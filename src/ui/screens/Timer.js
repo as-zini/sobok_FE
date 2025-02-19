@@ -22,19 +22,19 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useUserInfoStore } from '../../store/user';
 import { useTodo } from '../../hooks/useTodo';
+import { useNowTodoStore } from '../../store/todo';
 
 
 
-const Timer = ({route}) => {
+const Timer = () => {
   // const [time, setTime] = useState(0);
   const [now, setNow] = useState(dayjs())
   const [isPause,setIsPause] = useState(false);
   const timeIndex = [now.subtract('30', 'm').format("h:mm"), "", now.format("A h:mm"), "", now.add('30', 'm').format("h:mm")]
   const navigation = useNavigation();
-  const {nowTodo} = route.params;
+  const {nowTodo} = useNowTodoStore();
   const {userInfo} = useUserInfoStore();
-  const {startTodo, endTodo} = useTodo();
-
+  const {completeTodo} = useTodo();
   const [elapsedTime, setElapsedTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
 
@@ -58,18 +58,17 @@ const Timer = ({route}) => {
     };
 
     startTimer();
-    startTodo(nowTodo.id)
   }, []);
 
   const handleComplete = async () => {
     setIsRunning(false);
     await AsyncStorage.removeItem("startTime"); // 완료하면 시작 시간 초기화
-    setElapsedTime(0);
+    completeTodo(nowTodo.id, elapsedTime/60)
     navigation.navigate("CompleteTimer",{
-      time:formatTime(elapsedTime),
-      nowTodo:nowTodo
+      time:formatTime(elapsedTime)
     })
-    endTodo(nowTodo.id)
+    setElapsedTime(0);
+
   };
 
   // 초를 분과 초로 변환하는 함수

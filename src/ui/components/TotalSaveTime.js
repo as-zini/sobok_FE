@@ -14,9 +14,11 @@ import SmallButton from './SmallButton';
 import Button from './Button';
 import { useNavigation } from '@react-navigation/native';
 import MarginVertical from './MarginVertical';
+import { useNowTodoStore } from '../../store/todo';
 
-const TotalSaveTime = ({time, nowTodo}) => {
+const TotalSaveTime = ({time}) => {
   const navigation = useNavigation();
+  const {nowTodo} = useNowTodoStore();
   const Data = [
     {
       title:"09:00 - 10:25",

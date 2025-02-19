@@ -11,15 +11,17 @@ import SnowFlakeIcon from '../components/SnowFlakeIcon';
 import { colors } from '../styles/colors';
 import MarginVertical from '../components/MarginVertical';
 import TotalSaveTime from '../components/TotalSaveTime';
+import { useNowTodoStore } from '../../store/todo';
 
 const CompleteTimer = ({route}) => {
   const [isDetailView, setIsDetailView] = useState(false);
-  const {time, nowTodo} = route.params;
+  const {time} = route.params;
+  const {nowTodo} = useNowTodoStore();
 
   return (
     <SafeAreaView>
       {isDetailView ?
-      <TotalSaveTime time={time} nowTodo={nowTodo}/>
+      <TotalSaveTime time={time}/>
       :
       <>
       <CompleteTimerBody>

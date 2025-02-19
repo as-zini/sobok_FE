@@ -2,25 +2,17 @@ import axios from "axios"
 import dayjs from "dayjs"
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import baseUrl from "../api/baseURL";
+import { useNowTodoStore } from "../store/todo";
 dayjs.extend(isSameOrBefore)
 
 export const useTodo = () => {
+  const {nowTodo, setNowTodo} = useNowTodoStore();
 
-  const getTodayTodo = async(setTodayTodo, setNowTodo, setIsReady) => {
+  const getTodayTodo = async(setTodayTodo,setIsReady) => {
     try {
       const response = await axios.get("https://sobok-app.com/todo/today")
       console.log(response.data)
       setTodayTodo(response.data)
-      const now = response.data.find((el) => {
-        const timeString = el.startTime;
-        const timeArray = timeString.split(':');
-        const time = dayjs().hour(timeArray[0]).minute(timeArray[1]).second(timeArray[2]);
-        // console.log(time.format());
-        console.log(`Checking time: ${time.format()} (Current: ${dayjs().format()})`);
-        return dayjs().isSameOrBefore(time)
-      })
-      console.log("now", now)
-      setNowTodo(now)
       setIsReady(true)
 
 
@@ -40,29 +32,40 @@ export const useTodo = () => {
     }
   }
 
-  const startTodo = async(id) => {
+  const completeTodo = async(id, time) => {
     try {
-      const response = await baseUrl.post(`/todo/start?todoId=${id}`)
+      const response = await baseUrl.post(`/todo/end?todoId=${id}&duration=${time}`)
       console.log(response.data)
     } catch (error) {
       console.log(error)
     }
   }
 
-  const endTodo = async(id) => {
+  const getNowTodo = async() => {
     try {
-      const response = await baseUrl.post(`/todo/end?todoId=${id}`)
-      console.log(response.data)
+      const response = await baseUrl.get("/todo/closest")
+      console.log("getNow",response.data);
+      setNowTodo(response.data)
     } catch (error) {
       console.log(error)
     }
   }
 
+  const getTodaySaveTime = async(setSaveTime) => {
+    try {
+      const response = await baseUrl.get("/routine/today/completed-time");
+      console.log(response.data);
+      setSaveTime(response.data.totalTime)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return {
     getTodayTodo,
     getNotCompletedTodo,
-    startTodo,
-    endTodo
+    completeTodo,
+    getNowTodo,
+    getTodaySaveTime
   }
 }

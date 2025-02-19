@@ -5,10 +5,14 @@ import { size } from '../styles/size'
 import SnowFlakeIcon from './SnowFlakeIcon'
 import MarginVertical from './MarginVertical'
 import { useNavigation } from '@react-navigation/native'
+import { useNowTodoStore } from '../../store/todo'
+import { useUserInfoStore } from '../../store/user'
 
-const StartCountDown = ({nowTodo}) => {
+const StartCountDown = () => {
   const[count, setCount] = useState(3);
   const navigation = useNavigation();
+  const {nowTodo} = useNowTodoStore();
+  const {userInfo} = useUserInfoStore();
 
 
   useEffect(() => {
@@ -20,7 +24,7 @@ const StartCountDown = ({nowTodo}) => {
 
     if(count===0){
       setTimeout(() => {
-        navigation.navigate("Timer",{nowTodo:nowTodo})
+        navigation.navigate("Timer")
       }, 1000);
     }
     
@@ -30,7 +34,7 @@ const StartCountDown = ({nowTodo}) => {
   return (
     
       <StartBody>
-        <StartText>{count === 0 ? "시작!" : "지윤 님\n화이팅!"}</StartText>
+        <StartText>{count === 0 ? "시작!" : `${userInfo.displayName} 님\n화이팅!`}</StartText>
         {count===0 ? <MarginVertical top={18}/> : <></>}
         {count===0 ? <SnowFlakeIcon color={'white'} size={66}/> : <StartNumber>{count}</StartNumber>}
       </StartBody>

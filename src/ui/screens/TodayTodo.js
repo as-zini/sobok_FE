@@ -20,15 +20,18 @@ import { useTodo } from '../../hooks/useTodo';
 import { minToHour } from '../../util';
 import { useRoutine } from '../../hooks/useRoutine';
 import dayjs from 'dayjs';
+import { useNowTodoStore } from '../../store/todo';
 
 const TodayTodo = () => {
   const [isStart, setIsStart] = useState(false);
-  const {getNotCompletedTodo} = useTodo();
+  const {getNotCompletedTodo, getTodaySaveTime} = useTodo();
   const [notCompletedTodo, setNotCompletedTodo] = useState([]);
   const [todayRoutine, setTodayRoutine] = useState([]);
   const {getRoutineByCalandar} = useRoutine();
-  const [nowTodo, setNowTodo] = useState({});
+  const {nowTodo} = useNowTodoStore();
   const [isReady, setIsReady] = useState(false);
+  const [saveTime, setSaveTime] = useState(0);
+  
 
   
   const Data = [
@@ -41,50 +44,51 @@ const TodayTodo = () => {
     }
   ]
 
-  function findNextTodo(data) {
-    const now = new Date();
-    const currentTime = now.toTimeString().split(" ")[0]; // 현재 시간 HH:mm:ss 형식으로 가져오기
+//   function findNextTodo(data) {
+//     const now = new Date();
+//     const currentTime = now.toTimeString().split(" ")[0]; // 현재 시간 HH:mm:ss 형식으로 가져오기
 
-    let nextTodo = null;
-    let minTimeDiff = Infinity;
+//     let nextTodo = null;
+//     let minTimeDiff = Infinity;
 
-    data.forEach(routine => {
-        routine.todos.forEach(todo => {
-            const todoStartTime = todo.startTime;
+//     data.forEach(routine => {
+//         routine.todos.forEach(todo => {
+//             const todoStartTime = todo.startTime;
 
-            // 현재 시간보다 큰 (미래의) startTime만 비교
-            if (todoStartTime > currentTime) {
-                const timeDiff = getTimeDifference(currentTime, todoStartTime);
+//             // 현재 시간보다 큰 (미래의) startTime만 비교
+//             if (todoStartTime > currentTime) {
+//                 const timeDiff = getTimeDifference(currentTime, todoStartTime);
 
-                if (timeDiff < minTimeDiff) {
-                    minTimeDiff = timeDiff;
-                    nextTodo = todo;
-                }
-            }
-        });
-    });
-    console.log("now!!",nextTodo)
-    setNowTodo(nextTodo)
-}
+//                 if (timeDiff < minTimeDiff) {
+//                     minTimeDiff = timeDiff;
+//                     nextTodo = todo;
+//                 }
+//             }
+//         });
+//     });
+//     console.log("now!!",nextTodo)
+//     setNowTodo(nextTodo)
+// }
 
-// 시간 차이를 초 단위로 계산하는 함수
-function getTimeDifference(current, target) {
-    const [ch, cm, cs] = current.split(":").map(Number);
-    const [th, tm, ts] = target.split(":").map(Number);
+// // 시간 차이를 초 단위로 계산하는 함수
+// function getTimeDifference(current, target) {
+//     const [ch, cm, cs] = current.split(":").map(Number);
+//     const [th, tm, ts] = target.split(":").map(Number);
 
-    return (th * 3600 + tm * 60 + ts) - (ch * 3600 + cm * 60 + cs);
-}
+//     return (th * 3600 + tm * 60 + ts) - (ch * 3600 + cm * 60 + cs);
+// }
 
   useEffect(() => {
     
     getNotCompletedTodo(setNotCompletedTodo, setIsReady);
     getRoutineByCalandar(dayjs().format("DD") ,setTodayRoutine);
+    getTodaySaveTime(setSaveTime);
 
   }, [])
 
-  useEffect(() => {
-    findNextTodo(notCompletedTodo);
-  }, [isReady])
+  // useEffect(() => {
+  //   findNextTodo(notCompletedTodo);
+  // }, [isReady])
   
 
   const notCompletedTodoCount = notCompletedTodo.reduce((sum, el) => sum + el.todos.length, 0);
@@ -120,7 +124,7 @@ function getTimeDifference(current, target) {
     return(
       <View style={{paddingHorizontal:30, paddingVertical:40}}>
         <View style={{display:'flex', flexDirection:'row', gap:4}}>
-          <Text>{`총 ${notCompletedTodoCount}개의 할 일`}</Text>
+          <Text style={{fontSize:18, fontWeight:600, color:colors.gray70}}>{`총 ${notCompletedTodoCount}개의 할 일`}</Text>
         </View>
         <MarginVertical top={32}/>
         {/* <SectionList
@@ -184,7 +188,7 @@ function getTimeDifference(current, target) {
         <Image source={time_icon} style={{width:40, height:48}}/>
         <MarginVertical top={20}/>
         <TodayTodoTitle>오늘 모은 시간</TodayTodoTitle>
-        <TodayTotalTime>1H 25M</TodayTotalTime>
+        <TodayTotalTime>{minToHour(saveTime)}</TodayTotalTime>
         <MarginVertical top={20}/>
         <SnowFlakeIcon color={"indigo"} size={16}/>
         <MarginVertical top={8}/>
@@ -209,7 +213,7 @@ function getTimeDifference(current, target) {
         </StartButton>
       </TodayTodoBody>
       <TodayTodoBg source={today_todo_bg}/>
-      {isStart ? <StartCountDown nowTodo={nowTodo}/> : <></>}
+      {isStart ? <StartCountDown/> : <></>}
     </SafeAreaView>
   )
 }

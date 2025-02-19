@@ -29,6 +29,7 @@ import { useRoutine } from '../../hooks/useRoutine';
 import { useTodo } from '../../hooks/useTodo';
 import dayjs from 'dayjs';
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
+import { useNowTodoStore } from '../../store/todo';
 dayjs.extend(isSameOrBefore)
 
 const Home = () => {
@@ -40,11 +41,11 @@ const Home = () => {
   const [savingCount, setSavingCount] = useState(0);
   const {getRoutineCount} = useRoutine();
   const [routineCount, setRoutineCount] = useState(0);
-  const {getTodayTodo} = useTodo();
+  const {getTodayTodo, getNowTodo} = useTodo();
   const [todayTodo, setTodayTodo] = useState([]);
-  const [nowTodo, setNowTodo] = useState({});
   const [isReady, setIsReady] = useState(false);
-  const isLoading = Object.keys(nowTodo).length > 0 ? true : false
+  const {nowTodo} = useNowTodoStore();
+
 
   const getUser = async() => {
     const token = await AsyncStorage.getItem("access_token")
@@ -82,11 +83,12 @@ const Home = () => {
     getUserInfo();
     getSavingCount(setSavingCount);
     getRoutineCount(setRoutineCount);
-    getTodayTodo(setTodayTodo, setNowTodo, setIsReady);
-    console.log("today",todayTodo)
-    console.log("now", nowTodo)
-    console.log(Object.keys(nowTodo).length)
+    getTodayTodo(setTodayTodo,setIsReady);
+    getNowTodo()
+    console.log("homenow", nowTodo)
     }, [])
+  const isLoading = Object.keys(nowTodo).length > 1 ? true : false;
+
 
   return (
     <>
@@ -109,16 +111,25 @@ const Home = () => {
         <MarginVertical top={17}/>
         <TodoArea>
           <View style={{display:'flex', flexDirection:'row', alignItems:'center', position:'absolute', zIndex:4, width:300, top:25, left:25}}>
+            
             <View style={{flexGrow:1}}>
+            {/* {isLoading ? 
+            <> */}
             <TodoTime>{`${isLoading ? nowTodo.startTime?.slice(0,5) : ""} - ${isLoading ? nowTodo.endTime?.slice(0,5) : ""}`}</TodoTime>
             <MarginVertical top={5}/>
             <TodoText>{isLoading ? `${nowTodo.title} 외 ${getTimesAfter(nowTodo.startTime, todayTodo)}개` : ""}</TodoText>
             <MarginVertical top={10}/>
-            <TodoDuringTime>{isLoading ? `${getTimeDifference(nowTodo.startTime, nowTodo.endTime)}` : "오늘 할 일을 다 끝냈어요!"}</TodoDuringTime>
+            {/* </>:<></>
+            } */}
+            <TodoDuringTime style={{fontSize:isLoading ? 48 : 40}}>{isLoading ? `${getTimeDifference(nowTodo.startTime, nowTodo.endTime)}` : "오늘 할 일을\n다 끝냈어요!"}</TodoDuringTime>
+            
             </View>
-            <TouchableOpacity onPress={() => navigation.navigate("TodayTodo")}>
+            {isLoading ?
+            <TouchableOpacity onPress={() => navigation.navigate("TodayTodo")} style={{justifyContent:'center', alignItems:'center'}}>
               <Image source={go_todo_icon} style={{width:64, height:50, marginRight:25, marginTop:40}}/>
             </TouchableOpacity>
+            :<></>
+            }
           </View>
           <TodoBgArea>
             <TodoAreaBg source={home_main_square_bg}/>
