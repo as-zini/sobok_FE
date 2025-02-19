@@ -1,6 +1,11 @@
-import axios from "axios";
 
+import axios from 'axios';
 
-export const baseURL = axios.create({
-  baseURL:"http://Sobok-env.eba-rw35wa8t.ap-northeast-2.elasticbeanstalk.com"
-})
+const baseUrl = axios.create({
+    baseURL: 'https://sobok-app.com',
+    timeout: 5000,
+    headers: { 'Content-Type': 'application/json' },
+    withCredentials: true
+});
+
+export default baseUrl;

@@ -11,30 +11,33 @@ import SnowFlakeIcon from '../components/SnowFlakeIcon';
 import { colors } from '../styles/colors';
 import MarginVertical from '../components/MarginVertical';
 import TotalSaveTime from '../components/TotalSaveTime';
+import { useNowTodoStore } from '../../store/todo';
 
-const CompleteTimer = () => {
+const CompleteTimer = ({route}) => {
   const [isDetailView, setIsDetailView] = useState(false);
+  const {time} = route.params;
+  const {nowTodo} = useNowTodoStore();
 
   return (
     <SafeAreaView>
       {isDetailView ?
-      <TotalSaveTime/>
+      <TotalSaveTime time={time}/>
       :
       <>
       <CompleteTimerBody>
-        <CompleteTimerHeader>
+        {/* <CompleteTimerHeader>
           <View>
             <BackArrowButton/>
           </View>
-        </CompleteTimerHeader>
+        </CompleteTimerHeader> */}
         <MarginVertical top={90}/>
         <SnowFlakeIcon color={'black'} size={20}/>
         <MarginVertical top={10}/>
         <CompleteTimerText>눈 다 내렸다!</CompleteTimerText>
         <MarginVertical top={80}/>
-        <TimerCategory>영어 강의 1강</TimerCategory>
+        <TimerCategory>{nowTodo.title}</TimerCategory>
         <MarginVertical top={5}/>
-        <TimerTime>1H 25M 5s</TimerTime>
+        <TimerTime>{time}</TimerTime>
         <MarginVertical top={35}/>
         <Image source={mild_cloud_icon} style={{width:96, height:69}}/>
         <MarginVertical top={17}/>

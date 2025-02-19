@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios'
+import { useUserInfoStore } from '../store/user';
 
 export const useLogin = () => {
   const navigation = useNavigation();
@@ -11,7 +12,7 @@ export const useLogin = () => {
         username:id,
         password:password,
       })
-      console.log(response.data);
+      console.log(response.headers['set-cookie']);
       const token = JSON.stringify(response.data.accessToken);
       await AsyncStorage.setItem("access_token", token);
       navigation.navigate("Tabs");

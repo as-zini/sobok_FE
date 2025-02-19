@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { Image, SafeAreaView, ScrollView, TouchableOpacity, View } from 'react-native'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
+import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import styled from 'styled-components'
 
 import home_bg from '../../../assets/home_bg.png';
@@ -29,6 +29,7 @@ import { useRoutine } from '../../hooks/useRoutine';
 import { useTodo } from '../../hooks/useTodo';
 import dayjs from 'dayjs';
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
+import { useNowTodoStore } from '../../store/todo';
 dayjs.extend(isSameOrBefore)
 
 const Home = () => {
@@ -40,9 +41,11 @@ const Home = () => {
   const [savingCount, setSavingCount] = useState(0);
   const {getRoutineCount} = useRoutine();
   const [routineCount, setRoutineCount] = useState(0);
-  const {getTodayTodo} = useTodo();
+  const {getTodayTodo, getNowTodo} = useTodo();
   const [todayTodo, setTodayTodo] = useState([]);
-  const [nowTodo, setNowTodo] = useState([]);
+  const [isReady, setIsReady] = useState(false);
+  const {nowTodo} = useNowTodoStore();
+
 
   const getUser = async() => {
     const token = await AsyncStorage.getItem("access_token")
@@ -51,8 +54,14 @@ const Home = () => {
   }
 
   const getTimesAfter = (timeString, data) => {
-    const timeArray = timeString.split(':');
+    const timeArray = timeString?.split(':');
     const referenceTime = dayjs().hour(timeArray[0]).minute(timeArray[1]).second(timeArray[2]);
+    console.log("After",data.filter((el) => {
+      const time = dayjs().hour(el.startTime.split(':')[0])
+        .minute(el.startTime.split(':')[1])
+        .second(el.startTime.split(':')[2]);
+        return referenceTime.isBefore(time);
+    }))
   
     // 주어진 시간보다 뒤에 있는 시간들만 필터링
     return data.filter((el) => {
@@ -64,37 +73,28 @@ const Home = () => {
     }).length;
   };
 
-
-
   
 
 
   useEffect(() => {
     getUser();
     console.log(getUser());
+    // console.log("now", nowTodo)
     getUserInfo();
     getSavingCount(setSavingCount);
     getRoutineCount(setRoutineCount);
-    getTodayTodo(setTodayTodo, setNowTodo);
-    // setNowTodo()
-    // console.log(todayTodo.find((el) => {
-    //   const timeString = el.startTime;
-    //   const timeArray = timeString.split(':');
-      
-    //   const time = dayjs().hour(timeArray[0]).minute(timeArray[1]).second(timeArray[2]);
-      
-    //   console.log(time.format()); // 오늘 날짜와 함께 주어진 시간 출력
-    // }))
-    // const timeArray = timeString.split(':');
+    getTodayTodo(setTodayTodo,setIsReady);
+    getNowTodo()
+    console.log("homenow", nowTodo)
+    }, [])
+  const isLoading = Object.keys(nowTodo).length > 1 ? true : false;
 
-    // const time = dayjs().hour(timeArray[0]).minute(timeArray[1]).second(timeArray[2]);
-
-    // console.log(time.format()); // 오늘 날짜와 함께 주어진 시간 출력
-    console.log("now", nowTodo)
-  }, [])
 
   return (
+    <>
+    
     <SafeAreaView>
+      {isReady?
       <ScrollView>
       <HomeBody>
         <View style={{display:'flex', alignItems:'flex-end', width:size.width, marginRight:25}}>
@@ -111,16 +111,25 @@ const Home = () => {
         <MarginVertical top={17}/>
         <TodoArea>
           <View style={{display:'flex', flexDirection:'row', alignItems:'center', position:'absolute', zIndex:4, width:300, top:25, left:25}}>
+            
             <View style={{flexGrow:1}}>
-            <TodoTime>{`${nowTodo.startTime?.slice(0,5)} - ${nowTodo.endTime?.slice(0,5)}`}</TodoTime>
+            {/* {isLoading ? 
+            <> */}
+            <TodoTime>{`${isLoading ? nowTodo.startTime?.slice(0,5) : ""} - ${isLoading ? nowTodo.endTime?.slice(0,5) : ""}`}</TodoTime>
             <MarginVertical top={5}/>
-            <TodoText>{`${nowTodo.title} 외 ${getTimesAfter(nowTodo.startTime, todayTodo)}개`}</TodoText>
+            <TodoText>{isLoading ? `${nowTodo.title} 외 ${getTimesAfter(nowTodo.startTime, todayTodo)}개` : ""}</TodoText>
             <MarginVertical top={10}/>
-            <TodoDuringTime>{`${getTimeDifference(nowTodo.startTime, nowTodo.endTime)}`}</TodoDuringTime>
+            {/* </>:<></>
+            } */}
+            <TodoDuringTime style={{fontSize:isLoading ? 48 : 40}}>{isLoading ? `${getTimeDifference(nowTodo.startTime, nowTodo.endTime)}` : "오늘 할 일을\n다 끝냈어요!"}</TodoDuringTime>
+            
             </View>
-            <TouchableOpacity onPress={() => navigation.navigate("TodayTodo")}>
+            {isLoading ?
+            <TouchableOpacity onPress={() => navigation.navigate("TodayTodo")} style={{justifyContent:'center', alignItems:'center'}}>
               <Image source={go_todo_icon} style={{width:64, height:50, marginRight:25, marginTop:40}}/>
             </TouchableOpacity>
+            :<></>
+            }
           </View>
           <TodoBgArea>
             <TodoAreaBg source={home_main_square_bg}/>
@@ -138,7 +147,7 @@ const Home = () => {
           <MarginVertical top={17}/>
           <TotalTimeList>
             <TotalTimeEl onPress={() => navigation.navigate("ViewSave")}>
-              <View style={{flexGrow:.5}}>
+              <View style={{flexGrow:.5, maxWidth:60, height:30, justifyContent:'center'}}>
                 <TotalTimeIcon source={installment_saving_icon} style={{width:40, height:30}}/>
               </View>
               <View style={{display:'flex', flexGrow:2}}>
@@ -150,7 +159,7 @@ const Home = () => {
             </TotalTimeEl>
             <BorderLine/>
             <TotalTimeEl onPress={() => navigation.navigate("ViewRoutine")}>
-              <View style={{flexGrow:.5}}>
+              <View style={{flexGrow:.5,maxWidth:60, height:30,justifyContent:'center'}}>
                 <TotalTimeIcon source={routine_icon} style={{width:40, height:25}}/>
               </View>
               <View style={{display:'flex', flexGrow:2}}>
@@ -161,7 +170,7 @@ const Home = () => {
             </TotalTimeEl>
             <BorderLine/>
             <TotalTimeEl onPress={() => navigation.navigate("ViewPoint")}>
-              <View style={{flexGrow:.5}}>
+              <View style={{flexGrow:.5, maxWidth:60, height:30,justifyContent:'center'}}>
                 <TotalTimeIcon source={point_icon} style={{width:40, height:40}}/>
               </View>
               <View style={{display:'flex', flexGrow:2}}>
@@ -177,8 +186,13 @@ const Home = () => {
         <AssetAddModal isAssetAddModalVisible={isAssetAddModalVisible} setIsAssetAddModalVisible={setIsAssetAddModalVisible}/>
       </HomeBody>
       </ScrollView>
+       :
+       <></>
+       }
       <HomeBg source={home_bg}/>
     </SafeAreaView>
+   
+    </>
   )
 }
 

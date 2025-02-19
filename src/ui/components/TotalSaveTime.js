@@ -14,9 +14,11 @@ import SmallButton from './SmallButton';
 import Button from './Button';
 import { useNavigation } from '@react-navigation/native';
 import MarginVertical from './MarginVertical';
+import { useNowTodoStore } from '../../store/todo';
 
-const TotalSaveTime = () => {
+const TotalSaveTime = ({time}) => {
   const navigation = useNavigation();
+  const {nowTodo} = useNowTodoStore();
   const Data = [
     {
       title:"09:00 - 10:25",
@@ -70,7 +72,7 @@ const TotalSaveTime = () => {
         <Image source={time_icon} style={{width:40, height:48}}/>
         <MarginVertical top={15}/>
         <TotalSaveTimeText>이번에 모은 시간</TotalSaveTimeText>
-        <TotalSaveTimeTitle>1H 25M</TotalSaveTimeTitle>
+        <TotalSaveTimeTitle>{time}</TotalSaveTimeTitle>
         <MarginVertical top={20}/>
         <SnowFlakeIcon color={'indigo'} size={16}/>
         <MarginVertical top={8}/>
@@ -98,7 +100,11 @@ const TotalSaveTime = () => {
         <MarginVertical top={60}/>
         <SmallText>영어 적금에{"\n"}소복!하게 저금 완료</SmallText>
         <MarginVertical top={8}/>
-        <Button text={"시간 모으러 가기"} handleButton={() => navigation.navigate("Tabs")}/>
+        <Button text={"시간 모으러 가기"} handleButton={() => navigation.reset({
+          routes:[{
+            name:'Tabs'
+          }]
+        })}/>
       </TotalSaveTimeBody>
     </View>
     </ScrollView>

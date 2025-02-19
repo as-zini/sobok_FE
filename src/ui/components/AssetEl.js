@@ -7,7 +7,7 @@ import LinkIcon from './LinkIcon'
 import { colors } from '../styles/colors'
 import MarginVertical from './MarginVertical'
 
-const AssetEl = ({item, index, isLink, category}) => {
+const AssetEl = ({item, index, isLink, category, isInvalid}) => {
   const navigation = useNavigation();
   console.log(item)
 
@@ -18,22 +18,22 @@ const AssetEl = ({item, index, isLink, category}) => {
                             : category === "Routine" ? navigation.navigate('DetailRoutine', {id:item[4]})
                             : navigation.navigate("DetailTodo")}>
         <View style={{flexGrow:.15}}>
-          <StepNumber step={index+1}/>
+          <StepNumber step={index+1} isInvalid={isInvalid}/>
         </View>
         <View style={{display:'flex', flexGrow:1}}>
-          <SavingTitle>{item[0]}</SavingTitle>
+          <SavingTitle style={{color:isInvalid ? "rgba(112, 113, 114, 0.8)" : ""}}>{item[0]}</SavingTitle>
           <MarginVertical top={7}/>
           <View style={{display:'flex', flexDirection:'row', gap:5}}>
             {isLink ? 
             <LinkIcon size={16}/>
             : <></>}
-            <LinkedRoutineTitle LinkedRoutineTitle>{item[1]}</LinkedRoutineTitle>
+            <LinkedRoutineTitle style={{color:isInvalid ? "rgba(112, 113, 114, 0.8)" : ""}}>{item[1]}</LinkedRoutineTitle>
           </View>
         </View>
         <View style={{display:'flex', alignItems:'flex-end'}}>
-          <SavingTime>{item[2]}</SavingTime>
+          <SavingTime style={{color:isInvalid ? "rgba(112, 113, 114, 0.8)" : ""}}>{item[2]}</SavingTime>
           <MarginVertical top={7}/>
-          <SavingAtFinish>{item[3]}</SavingAtFinish>
+          <SavingAtFinish style={{color:isInvalid ? "rgba(112, 113, 114, 0.8)" : ""}}>{item[3]}</SavingAtFinish>
         </View>
       </SavingEl>
       :

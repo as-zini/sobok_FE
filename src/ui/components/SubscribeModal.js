@@ -42,7 +42,7 @@ const SubscribeModal = ({isSubscribeModalVisible, setIsSubscribeModalVisible, se
         <MarginVertical top={35}/>
         <ToSubscribeText>{`${userPremium-userInfo.point}P만 모으면\n${dayjs().add(1, 'month').format("M월")} 구독권을 구매할 수 있어요!`}</ToSubscribeText>
         <MarginVertical top={35}/>
-        <ProgressBar version={"Point"} userPoint={userInfo.point}/>
+        <ProgressBar version={"Point"} userPoint={userInfo.point} />
         <MarginVertical top={40}/>
         <Button text={"구독권 구매하기"} handleButton={() => {
           setIsSubscribeModalVisible(false);

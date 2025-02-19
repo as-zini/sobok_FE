@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView, View } from 'react-native'
 import styled from 'styled-components'
 import { colors } from '../styles/colors'
@@ -11,6 +11,8 @@ import NavigateArrowButton from '../components/NavigateArrowButton';
 import SnowFlakeIcon from '../components/SnowFlakeIcon';
 import MarginVertical from '../components/MarginVertical';
 import { useNavigation } from '@react-navigation/native';
+import { useTodo } from '../../hooks/useTodo';
+import { minToHour } from '../../util';
 
 const containerWidth = size.width-50;
 
@@ -18,6 +20,15 @@ const Today = () => {
   const [today,setToday] = useState(dayjs().format("MMMM DD, YYYY"));
   const scale = ["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""];
   const navigation = useNavigation();
+  const {getNowTodo, getNotCompletedTodo} = useTodo();
+  const [notCompletedTodo, setNotCompletedTodo] = useState([]);
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    getNowTodo();
+    getNotCompletedTodo(setNotCompletedTodo, setIsReady);
+  }, [])
+  
 
   return (
     <SafeAreaView>
@@ -34,8 +45,8 @@ const Today = () => {
           </View>
           <TodayInfoBlueArea>
             <SnowFlakeIcon color={"white"} size={16}/>
-            <PlanedRoutineText>예정된 루틴 2개</PlanedRoutineText>
-            <TodayTotalTime>1H 25M</TodayTotalTime>
+            <PlanedRoutineText>{`예정된 루틴 ${notCompletedTodo?.length}개`}</PlanedRoutineText>
+            <TodayTotalTime>{`${minToHour(notCompletedTodo.reduce((sum, el) => sum + el.duration,0))}`}</TodayTotalTime>
           </TodayInfoBlueArea>
           <ScaleArea>
             {scale.map((el, index) => {

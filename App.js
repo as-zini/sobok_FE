@@ -8,6 +8,8 @@ import ChoiceModal from './src/ui/components/SpareTimeChoiceModal';
 import BottomTabNavigation from './src/navigation/BottomTabNavigation';
 
 export default function App() {
+  
+
   return (
    
       <NavigationContainer>
