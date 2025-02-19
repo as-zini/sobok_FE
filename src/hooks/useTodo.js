@@ -1,11 +1,12 @@
 import axios from "axios"
 import dayjs from "dayjs"
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
+import baseUrl from "../api/baseURL";
 dayjs.extend(isSameOrBefore)
 
 export const useTodo = () => {
 
-  const getTodayTodo = async(setTodayTodo, setNowTodo) => {
+  const getTodayTodo = async(setTodayTodo, setNowTodo, setIsReady) => {
     try {
       const response = await axios.get("https://sobok-app.com/todo/today")
       console.log(response.data)
@@ -18,8 +19,9 @@ export const useTodo = () => {
         console.log(`Checking time: ${time.format()} (Current: ${dayjs().format()})`);
         return dayjs().isSameOrBefore(time)
       })
-      console.log(now)
+      console.log("now", now)
       setNowTodo(now)
+      setIsReady(true)
 
 
     } catch (error) {
@@ -27,7 +29,40 @@ export const useTodo = () => {
     }
   }
 
+  const getNotCompletedTodo = async(setNotCompletedTodo, setIsReady) => {
+    try {
+      const response = await baseUrl.get('/routine/today/not-completed')
+      console.log("notCompletedTodo",response.data)
+      setNotCompletedTodo(response.data)
+      setIsReady(true)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const startTodo = async(id) => {
+    try {
+      const response = await baseUrl.post(`/todo/start?todoId=${id}`)
+      console.log(response.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const endTodo = async(id) => {
+    try {
+      const response = await baseUrl.post(`/todo/end?todoId=${id}`)
+      console.log(response.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
   return {
-    getTodayTodo
+    getTodayTodo,
+    getNotCompletedTodo,
+    startTodo,
+    endTodo
   }
 }

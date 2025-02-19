@@ -153,7 +153,7 @@ const InputBox = styled.TextInput`
 
 const BorderLine = styled.View`
   width:290px;
-  height:.5px;
+  height:.6px;
   background-color:${colors.fontMain};
   z-index:2;
 `

@@ -125,7 +125,7 @@ const AddFreeRoutine = () => {
           <WeekCalandar selectedDate={selectedDate} setSelectedDate={setSelectedDate} isDuplication={true}/>
           <MarginVertical top={44}/>
           <View style={{width:294, display:'flex', alignItems:'flex-start'}}>
-            <Text style={{fontWeight:600, fontSize:22, color:colors.gray70}}>총 2개의 할 일</Text>  
+            <Text style={{fontWeight:600, fontSize:22, color:colors.gray70}}>{`총 ${todoData.length}개의 할 일`}</Text>  
           </View>
           <MarginVertical top={40}/>
           {todoData.map((el, index) => {

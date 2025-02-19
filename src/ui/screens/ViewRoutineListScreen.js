@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Image, SafeAreaView, SectionList, Text, View } from 'react-native'
+import { Image, SafeAreaView, ScrollView, SectionList, Text, View } from 'react-native'
 import styled from 'styled-components'
 
 import routine_icon from '../../../assets/routine_icon.png';
@@ -122,6 +122,7 @@ const ViewRoutineListScreen = () => {
         }
         <MarginVertical top={isList ? 72 : 23}/>
         {isList ?
+        <ScrollView style={{marginBottom:200}} showsVerticalScrollIndicator={false}>
         <SectionList
           sections={DataForList}
           keyExtractor={(item, index) => item + index}
@@ -131,10 +132,15 @@ const ViewRoutineListScreen = () => {
           renderSectionHeader={({section: {title}}) => (
             <ListHeader title={title} version={isList}/>
           )}
-        
+          style={{marginBottom:1000}}
         >
         </SectionList>
+        </ScrollView>
         :
+        <></>
+          }
+        <ScrollView style={{marginBottom:620}} showsVerticalScrollIndicator={false}>
+        {!isList ? 
         todayRoutineList.map((el,index) => {
           return(
             <View key={index}>
@@ -146,7 +152,9 @@ const ViewRoutineListScreen = () => {
             <MarginVertical top={40}/>
             </View>
           )
-        })}
+        }): <></>}
+        </ScrollView>
+        
       </ViewRoutineListBody>
       <ViewRoutineListBg source={installment_saving_bg}/>
     </SafeAreaView>
@@ -158,7 +166,6 @@ export default ViewRoutineListScreen
 
 const ViewRoutineListBody = styled.View`
   display:flex;
-  justify-content:center;
   align-items:center;
 `
 

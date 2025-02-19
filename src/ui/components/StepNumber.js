@@ -14,8 +14,8 @@ const StepNumber = ({step, marginBottom}) => {
 export default StepNumber;
 
 const StepNumberBody = styled.View`
-  width:32px;
-  height:32px;
+  width:40px;
+  height:40px;
   background-color:${colors.indigoBlue};
   display:flex;
   justify-content:center;
@@ -24,7 +24,7 @@ const StepNumberBody = styled.View`
 `
 
 const StepNumberText = styled.Text`
-  font-size:16px;
+  font-size:24px;
   font-weight:600;
   color:#fff;
 `

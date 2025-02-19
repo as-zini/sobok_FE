@@ -6,7 +6,7 @@ import SnowFlakeIcon from './SnowFlakeIcon'
 import MarginVertical from './MarginVertical'
 import { useNavigation } from '@react-navigation/native'
 
-const StartCountDown = () => {
+const StartCountDown = ({nowTodo}) => {
   const[count, setCount] = useState(3);
   const navigation = useNavigation();
 
@@ -20,7 +20,7 @@ const StartCountDown = () => {
 
     if(count===0){
       setTimeout(() => {
-        navigation.navigate("Timer")
+        navigation.navigate("Timer",{nowTodo:nowTodo})
       }, 1000);
     }
     

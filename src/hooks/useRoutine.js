@@ -69,6 +69,8 @@ export const useRoutine = () => {
       navigation.navigate("CompleteAddRoutine")
     } catch (error) {
       console.log(error)
+      console.log(newRoutineData)
+      console.log(todoData)
     }
   }
 

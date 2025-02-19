@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
-import { Image, SafeAreaView, View } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { StyleSheet, Text, View, Image, SafeAreaView, TouchableOpacity, } from "react-native";
+// import {  View } from 'react-native'
 import styled from 'styled-components'
 
 import timer_bg from '../../../assets/timer_bg.png';
@@ -18,13 +19,66 @@ import snow_flake_icon_opacity from '../../../assets/snow_flake_icon_opacity.png
 import timer_pause_bg from '../../../assets/timer_pause_bg.png';
 import timer_continue_icon from '../../../assets/timer_continue_icon.png';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useUserInfoStore } from '../../store/user';
+import { useTodo } from '../../hooks/useTodo';
 
-const Timer = () => {
-  const [time, setTime] = useState(0);
+
+
+const Timer = ({route}) => {
+  // const [time, setTime] = useState(0);
   const [now, setNow] = useState(dayjs())
   const [isPause,setIsPause] = useState(false);
   const timeIndex = [now.subtract('30', 'm').format("h:mm"), "", now.format("A h:mm"), "", now.add('30', 'm').format("h:mm")]
   const navigation = useNavigation();
+  const {nowTodo} = route.params;
+  const {userInfo} = useUserInfoStore();
+  const {startTodo, endTodo} = useTodo();
+
+  const [elapsedTime, setElapsedTime] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
+
+  useEffect(() => {
+    const startTimer = async () => {
+      const storedStartTime = await AsyncStorage.getItem("startTime");
+      let startTime = storedStartTime ? parseInt(storedStartTime, 10) : null;
+
+      if (!startTime) {
+        startTime = Date.now();
+        await AsyncStorage.setItem("startTime", startTime.toString());
+      }
+
+      setIsRunning(true);
+
+      const interval = setInterval(() => {
+        setElapsedTime(Math.floor((Date.now() - startTime) / 1000)); // 경과 시간 (초 단위)
+      }, 1000);
+
+      return () => clearInterval(interval);
+    };
+
+    startTimer();
+    startTodo(nowTodo.id)
+  }, []);
+
+  const handleComplete = async () => {
+    setIsRunning(false);
+    await AsyncStorage.removeItem("startTime"); // 완료하면 시작 시간 초기화
+    setElapsedTime(0);
+    navigation.navigate("CompleteTimer",{
+      time:formatTime(elapsedTime),
+      nowTodo:nowTodo
+    })
+    endTodo(nowTodo.id)
+  };
+
+  // 초를 분과 초로 변환하는 함수
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const hour = Math.floor(minutes/60);
+    const remainingSeconds = seconds % 60;
+    return `${hour}H ${minutes}M ${remainingSeconds}s`;
+  };
 
 
 
@@ -37,17 +91,17 @@ const Timer = () => {
         <MarginVertical top={30}/>
         <SnowFlakeIcon color={'black'} size={20}/>
         <MarginVertical top={15}/>
-        <TimerText>지금 지윤 님은{"\n"}눈 내리는 중!</TimerText>
+        <TimerText>{`지금 ${userInfo.displayName} 님은\n눈 내리는 중!`}</TimerText>
         <MarginVertical top={25}/>
-        <TimerCategory>영어 강의 1강</TimerCategory>
-        <TimerTime>1H 25M 5s</TimerTime>
+        <TimerCategory>{nowTodo.title}</TimerCategory>
+        <TimerTime>{formatTime(elapsedTime)}</TimerTime>
         <MarginVertical top={10}/>
         <View style={{display:'flex', flexDirection:'row', gap:5, justifyContent:'center', alignItems:'center'}}>
           <LinkIcon size={20}/>
-          <LinkedText>스픽</LinkedText>
+          <LinkedText>{nowTodo.linkApp}</LinkedText>
         </View>
         <MarginVertical top={40}/>
-        <RestOfTimeText>25분만 더하면{"\n"}적금 채우기 완료!</RestOfTimeText>
+        <RestOfTimeText>{`25분만 더하면\n적금 채우기 완료!`}</RestOfTimeText>
         <MarginVertical top={10}/>
         <TimeBarArea>
           {timeIndex.map((el, index) => {
@@ -64,7 +118,7 @@ const Timer = () => {
             )
           } )}
         </TimeBarArea>
-        <PauseButton onPress={() => setIsPause(prev => !prev)} onLongPress={() => navigation.navigate("CompleteTimer")}>
+        <PauseButton onPress={() => setIsPause(prev => !prev)} onLongPress={handleComplete}>
           <ButtonImage source={isPause ? timer_continue_button_bg : timer_pause_button_bg}/>
           <Image source={isPause ? timer_continue_icon : pause_button_icon} style={{width:48, height:34}}/>
           <MarginVertical top={12}/>
@@ -189,3 +243,52 @@ const ButtonText = styled.Text`
 
 
 
+// const TimerScreen = () => {
+//   const [elapsedTime, setElapsedTime] = useState(0);
+//   const [isRunning, setIsRunning] = useState(false);
+//   const navigation = useNavigation();
+
+//   useEffect(() => {
+//     const startTimer = async () => {
+//       const storedStartTime = await AsyncStorage.getItem("startTime");
+//       let startTime = storedStartTime ? parseInt(storedStartTime, 10) : null;
+
+//       if (!startTime) {
+//         startTime = Date.now();
+//         await AsyncStorage.setItem("startTime", startTime.toString());
+//       }
+
+//       setIsRunning(true);
+
+//       const interval = setInterval(() => {
+//         setElapsedTime(Math.floor((Date.now() - startTime) / 1000)); // 경과 시간 (초 단위)
+//       }, 1000);
+
+//       return () => clearInterval(interval);
+//     };
+
+//     startTimer();
+//   }, []);
+
+//   const handleComplete = async () => {
+//     setIsRunning(false);
+//     await AsyncStorage.removeItem("startTime"); // 완료하면 시작 시간 초기화
+//     setElapsedTime(0);
+//     navigation.navigate("CompleteTimer")
+//   };
+
+//   // 초를 분과 초로 변환하는 함수
+//   const formatTime = (seconds) => {
+//     const minutes = Math.floor(seconds / 60);
+//     const remainingSeconds = seconds % 60;
+//     return `${minutes}분 ${remainingSeconds}초`;
+//   };
+
+//   return (
+//     <View style={{width:size.width, height:size.height, justifyContent:'center', alignItems:'center'}}> 
+      
+//     </View>
+//   );
+// };
+
+// export default TimerScreen;
