@@ -1,72 +1,97 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Animated, PanResponder, Text, View } from 'react-native';
 import styled from 'styled-components/native';
-import colors from '../styles/colors';
 
-const TimeSliderBar = ({ text, setTime, version}) => {
-  const [value, setValue] = useState(720); // 초기 값 (12:00 -> 720분)
+const TimeSliderBar = ({ text, setOutValue, version, type }) => {
+  const initValue = type === "time" ? 720 : type === "savingtime"?100 : 6
+  const [value, setValue] = useState(initValue); // 기본값: 12:00 (time) / 6개월 (duration) / 100시간 (savingtime)
   const trackPosition = useRef(new Animated.Value(0)).current;
-  
-
 
   useEffect(() => {
-    console.log(value);
-    version === "start" ? setTime(prev => ({...prev, startTime:formattedTime24})) : setTime(prev => ({...prev, endTime:formattedTime24}))
+    let formattedValue;
+    
+    if (type === "time") {
+      const hours = Math.floor(value / 60);
+      const minutes = value % 60;
+      formattedValue = `${hours < 10 ? `0${hours}` : hours}:${minutes < 10 ? `0${minutes}` : minutes}`;
+      version === "start"
+      ? setOutValue(prev => ({ ...prev, startTime: formattedValue }))
+      : setOutValue(prev => ({ ...prev, endTime: formattedValue }));
+    } 
+    else if (type === "duration") {
+      formattedValue = `${value}개월`;
+      setOutValue(prev => ({...prev, duration:value}))
+    } 
+    else if (type === "savingtime") {
+      const hours = Math.floor(value / 60);
+      const minutes = value % 60;
+      formattedValue = `${hours}시간 ${minutes}분`;
+      setOutValue(prev => ({...prev, time:value}))
+    }
+    console.log(value)
+    
   }, [value]);
 
-  // PanResponder 생성
+  // PanResponder 설정
   const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: () => true,
       onMoveShouldSetPanResponder: () => true,
       onPanResponderMove: (evt, gestureState) => {
-        // 트랙 위치 업데이트 (좌우 제한)
         const newValue = Math.max(-150, Math.min(gestureState.dx, 150)); // 범위: -150 ~ 150
         trackPosition.setValue(newValue);
-
-        // 값 계산 (예: -150 ~ 150을 0 ~ 1440으로 변환)
-        const calculatedValue = Math.round(((newValue + 150) / 300) * 1440);  // 1440분 범위
-        const roundedValue = Math.round(calculatedValue / 5) * 5; // 5분 단위로 반올림
-        setValue(roundedValue);
-      },
+      
+        let calculatedValue;
+        if (type === "time") {
+          calculatedValue = Math.round(((newValue + 150) / 300) * 1440); // 0~1440분
+          calculatedValue = Math.round(calculatedValue / 5) * 5; // 5분 단위 반올림
+        } 
+        else if (type === "duration") {
+          calculatedValue = Math.round(((150 - newValue) / 300) * 11) + 1; // 1~12개월
+        } 
+        else if (type === "savingtime") {
+          calculatedValue = Math.round(((150 - newValue) / 300) * 200 * 60); // 최대 200시간 (분 단위)
+          calculatedValue = Math.round(calculatedValue / 5) * 5; // 5분 단위 반올림
+        }
+      
+        setValue(calculatedValue);
+      }      
     })
   ).current;
 
-  // 시, 분 변환
-  const hours = Math.floor(value / 60);
-  const minutes = value % 60;
-  const formattedTime = `${hours % 12 === 0 ? 12 : hours % 12}:${minutes < 10 ? `0${minutes}` : minutes}`;
-  const formattedTime24 = `${hours < 10 ? `0${hours}` : hours}:${minutes < 10 ? `0${minutes}` : minutes}`;
-  const period = value < 720 ? '오전' : '오후'; // 값이 720 미만일 경우 오전, 초과일 경우 오후
+  // 표시할 값 계산
+  let displayText;
+  if (type === "time") {
+    const hours = Math.floor(value / 60);
+    const minutes = value % 60;
+    const period = value < 720 ? "오전" : "오후";
+    displayText = `${period} ${hours % 12 === 0 ? 12 : hours % 12}:${minutes < 10 ? `0${minutes}` : minutes}`;
+  } 
+  else if (type === "duration") {
+    displayText = `${value}개월`;
+  } 
+  else if (type === "savingtime") {
+    const hours = Math.floor(value / 60);
+    const minutes = value % 60;
+    displayText = `${hours}시간 ${minutes}분`;
+  }
 
   return (
     <Container>
-      <View style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 3, marginBottom: 20 }}>
+      <View style={{ justifyContent: 'center', alignItems: 'center', gap: 3, marginBottom: 20 }}>
         <ValueArea>
-          <Label>
-            {period} {formattedTime}
-          </Label>
+          <Label>{displayText}</Label>
         </ValueArea>
-        <Text style={{ fontSize: 14, fontWeight: 500, color: "#4c4c4c" }}>{text}</Text>
+        <Text style={{ fontSize: 14, fontWeight: '500', color: "#4c4c4c" }}>{text}</Text>
       </View>
       <SliderContainer>
-        {/* 고정된 버튼 */}
         <FixedButton source={require("../../../assets/snowflak_icon.png")} />
-
-        {/* 움직이는 트랙 */}
         <AnimatedTrack
           {...panResponder.panHandlers}
-          style={{
-            transform: [{ translateX: trackPosition }],
-          }}
+          style={{ transform: [{ translateX: trackPosition }] }}
         >
-          {/* 트랙 위의 세로선 */}
           <TicksContainer>
-            <Ticks
-              style={{
-                transform: [{ translateX: trackPosition }],
-              }}
-            >
+            <Ticks style={{ transform: [{ translateX: trackPosition }] }}>
               {Array.from({ length: 61 }, (_, i) => (
                 <Tick key={i} isMajor={i % 6 === 0} />
               ))}
@@ -80,7 +105,7 @@ const TimeSliderBar = ({ text, setTime, version}) => {
 
 export default TimeSliderBar;
 
-// Styled Components 정의
+// Styled Components
 const Container = styled.View`
   justify-content: center;
   align-items: center;
@@ -116,14 +141,14 @@ const AnimatedTrack = styled(Animated.View)`
 `;
 
 const TicksContainer = styled.View`
-  width: 600px; /* 트랙 전체 이동 범위를 커버하도록 설정 */
+  width: 600px;
   position: absolute;
-  left: -150px; /* 트랙 이동 범위 시작점 */
+  left: -150px;
   height: 100%;
 `;
 
 const Ticks = styled(Animated.View)`
-  width: 600px; /* 트랙 이동 범위를 커버하도록 설정 */
+  width: 600px;
   height: 100%;
   flex-direction: row;
   justify-content: space-between;

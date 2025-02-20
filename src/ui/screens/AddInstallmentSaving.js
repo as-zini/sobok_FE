@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Image, SafeAreaView, ScrollView, SectionList, Text, TouchableOpacity, View } from 'react-native'
 import styled from 'styled-components'
 
@@ -21,6 +21,8 @@ import TodoEl from '../components/TodoEl';
 import DoubleButton from '../components/DoubleButton';
 import search_icon from '../../../assets/search_icon.png';
 import AssetEl from '../components/AssetEl';
+import { useRoutine } from '../../hooks/useRoutine';
+import { minToHour } from '../../util';
 
 const AddFreeRoutine = () => {
   const [step, setStep] = useState(1);
@@ -28,150 +30,36 @@ const AddFreeRoutine = () => {
   const questionText = ["적금의 이름을\n지어주세요!","새로 만들 적금을\n소개해주세요!","적금에 루틴을\n연결시켜 볼까요?","얼마동안, 얼마만큼의\n시간을 모을까요?" ]
   const navigation = useNavigation();
   const data = [["영어 강의 1강", "스픽", "1H 30M", "06:00 - 07:00"], ["영어 단어 10개 암기", "말해보카", "1H 00M", "07:30 - -8:30"]]
+  const [newSavingData, setNewSavingData] = useState({title:"",target:"", isPublic:true, time:0, duration:0});
+  const [routineInfo, setRoutineInfo] = useState([]);
+  const [isComplete, setIsComplete] = useState(false);
+  const [pickedRoutines, setPickedRoutines] = useState([]);
+  const {getRoutineByList} = useRoutine();
+  const [savingTime, setSavingTime] = useState(0);
+  const [duration,setDuration] = useState(0);
+  const interest = newSavingData.time < 600 ? .3 : newSavingData.time < 1200 ? .4 : newSavingData.time < 2400 ? .5 : .7
   
   const handleNextStep = () => {
     if(step<4){
       setStep(prev => prev+1)
     } else {
-      navigation.navigate("CompleteAddSaving")
+      navigation.navigate("CompleteAddSaving",{
+        newSavingData:newSavingData
+      })
     }
   }
 
-  const Data = [
-    {
-      title:"총 2개의 루틴",
-      data:[["영어 천재 적금", "아침에는 영어 공부","1H 25M","D-120"], ["독서 적금", "저녁에는 독서","2H 50M","D-77"]]
-    },{
-      title:"선택된 루틴",
-      data:[["프랑스어 적금", "프랑스어 공부 루틴", "30M","D-1"]]
-    }
-  ]
-
-  const RenderItem = ({item, index}) => {
-    return(
-      <View>
-        <AssetEl item={item} index={index} isLink={true} category={"Save"}/>
-        <MarginVertical top={50}/>
-      </View>
-    )
-  }
-
-  const ListHeader = ({title}) => {
-
-    return(
-      <>
-      
-      <View>
-        <Text style={{fontSize:18, fontWeight:600, color:"#fff"}}>{title}</Text>
-        <MarginVertical top={40}/>
-      </View>
-      </>
-    )
-  }
-
-  const StepOwnContents = () => {
-    return(
-      <>
-        <MarginVertical top={40}/>
-        <AnswerInputArea>
-          <AnswerInput
-            placeholder="이름을 입력해주세요"
-            placeholderTextColor="rgba(255,255,255,.8)"
-          />
-          <Image source={check_icon_indigo} style={{width:30, height:30, position:'absolute', right:0}}/>
-        </AnswerInputArea>
-        <BorderLine/>
-        <MarginVertical top={296}/>
-      </>
-    )
-  }
-
-  const StepTwoContents = () => {
-    return(
-      <View>
-        <MarginVertical top={12}/>
-        <RoutineCategoryText style={{lineHeight:24}}>적금으로 달성하고 싶은{"\n"}목표를 추가해보세요!</RoutineCategoryText>
-        <MarginVertical top={56}/>
-        <Text style={{fontWeight:600, fontSize:18, color:"#fff"}}>목표</Text>
-        <MarginVertical top={11}/>
-        <AnswerInputArea>
-          <AnswerInput
-            placeholder="ex) 영어 100문장 말하기"
-            placeholderTextColor="rgba(255,255,255,.8)"
-          />
-          <Image source={check_icon_indigo} style={{width:30, height:30, position:'absolute', right:0}}/>
-        </AnswerInputArea>
-        <BorderLine/>
-        <MarginVertical top={100}/>
-        <Text style={{fontWeight:600, fontSize:18, color:"#fff"}}>공개 범위</Text>
-        <MarginVertical top={15}/>
-        <DoubleButton text1={"공개"} text2={"비공개"}/>
-        <MarginVertical top={30}/>
-      </View>
-    )
-  }
-
-  const StepThreeContents = () => {
-    return(
-      <>
-        <MarginVertical top={12}/>
-        <RoutineCategoryText style={{lineHeight:24}}>루틴으로 얻은 시간이{"\n"}자동으로 적금에 쌓여요!</RoutineCategoryText>
-        <MarginVertical top={44}/>
-        <AnswerInputArea>
-          <AnswerInput
-            placeholder="루틴을 검색해보세요"
-            placeholderTextColor="rgba(255,255,255,.8)"
-          />
-          <Image source={search_icon} style={{width:16, height:16, position:'absolute', right:15}}/>
-        </AnswerInputArea>
-        <BorderLine/>
-        <MarginVertical top={55}/>
-        <SectionList
-          sections={Data}
-          keyExtractor={(item, index) => item + index}
-          renderItem={({item, index}) => (
-            <RenderItem item={item} index={index}></RenderItem>
-          )}
-          renderSectionHeader={({section: {title}}) => (
-            <ListHeader title={title}/>
-          )}
-        
-        ></SectionList>
-        <MarginVertical top={70}/>
-        <TouchableOpacity style={{width:294, display:'flex', justifyContent:'center', alignItems:'center'}}>
-          <Text style={{fontWeight:500, fontSize:14, color:colors.gray70}}>나중에 설정하기</Text>
-        </TouchableOpacity>
-        <MarginVertical top={10}/>
-      </>
-    )
-  }
-
-  const StepFourContents = () => {
-    return(
-      <View style={{display:'flex', justifyContent:'center', alignItems:'center', width:294}}>
-      <MarginVertical top={70}/>
-      
-        <Text style={{fontSize:18, fontWeight:600, color:colors.fontMain80, marginBottom:5}}>12개월 뒤에</Text>
-        <Text style={{fontWeight:600, fontSize:26, color:colors.fontMain90}}>+365H 50M</Text>
-        <MarginVertical top={20}/>
-        <Text style={{fontSize:18, fontWeight:600, color:colors.fontMain80,marginBottom:5}}>연 3.7%</Text>
-        <Text style={{fontWeight:600, fontSize:26, color:colors.indigoBlue}}>+10,800P</Text>
-      <MarginVertical top={50}/>
-      <Text style={{fontSize:18, fontWeight:500, color:colors.fontMain80, marginBottom:5}}>한 달에</Text>
-      <TimeSliderBar text={"씩"}/>
-      <MarginVertical top={65}/>
-      <TimeSliderBar text={"동안"}/>
-      <MarginVertical top={56}/>
-      <Text style={{fontSize:14, fontWeight:500, color:colors.darkGray, textAlign:'center'}}>멋져요!{"\n"}12개월 뒤에는{"\n"}<Text style={{color:colors.indigoBlue}}>영어 100 문장</Text> 목표를 달성할 수 있어요!</Text>
-      <MarginVertical top={8}/>
-      </View>
-    )
-  }
+  useEffect(() => {
+    console.log(newSavingData)
+  }, [newSavingData])
+  
+  useEffect(() => {
+    getRoutineByList(setRoutineInfo, setIsComplete);
+  },[])
 
   return (
     <SafeAreaView>
-      <ScrollView
-      >
+      <ScrollView showsVerticalScrollIndicator={false}>
         <AddFreeRoutineBody>
           <AddFreeRoutineHeader>
             <BackArrowButton/>
@@ -184,7 +72,110 @@ const AddFreeRoutine = () => {
             <RoutineCategoryText>{categoryText[step-1]}</RoutineCategoryText>
             <RoutineQuestionText>{questionText[step-1]}</RoutineQuestionText>
             
-            {step===1 ? <StepOwnContents/> : step === 2 ? <StepTwoContents/> : step === 3 ? <StepThreeContents/> : <StepFourContents/>} 
+            {step===1 ?
+              <>
+              <MarginVertical top={40}/>
+              <AnswerInputArea>
+                <AnswerInput
+                  placeholder="이름을 입력해주세요"
+                  placeholderTextColor="rgba(255,255,255,.8)"
+                  value={newSavingData.title}
+                  onChange={(e) => setNewSavingData({...newSavingData, title:e.nativeEvent.text})}
+                />
+              </AnswerInputArea>
+              <BorderLine/>
+              <MarginVertical top={296}/>
+            </>
+            : step === 2 ? 
+            <View>
+              <MarginVertical top={12}/>
+              <RoutineCategoryText style={{lineHeight:24}}>적금으로 달성하고 싶은{"\n"}목표를 추가해보세요!</RoutineCategoryText>
+              <MarginVertical top={56}/>
+              <Text style={{fontWeight:600, fontSize:18, color:"#fff"}}>목표</Text>
+              <MarginVertical top={11}/>
+              <AnswerInputArea>
+                <AnswerInput
+                  placeholder="ex) 영어 100문장 말하기"
+                  placeholderTextColor="rgba(255,255,255,.8)"
+                  value={newSavingData.target}
+                  onChange={(e) => setNewSavingData({...newSavingData, target:e.nativeEvent.text})}
+                />
+              </AnswerInputArea>
+              <BorderLine/>
+              <MarginVertical top={180}/>
+            </View>
+            : step === 3 ?
+            <>
+              <MarginVertical top={12}/>
+              <RoutineCategoryText style={{lineHeight:24}}>루틴으로 얻은 시간이{"\n"}자동으로 적금에 쌓여요!</RoutineCategoryText>
+              <MarginVertical top={44}/>
+              <AnswerInputArea>
+                <AnswerInput
+                  placeholder="루틴을 검색해보세요"
+                  placeholderTextColor="rgba(255,255,255,.8)"
+                />
+                <Image source={search_icon} style={{width:16, height:16, position:'absolute', right:15}}/>
+              </AnswerInputArea>
+              <BorderLine/>
+              <MarginVertical top={55}/>
+              <ScrollView>
+                <View>
+                  <Text style={{fontSize:18, fontWeight:600, color:"#fff"}}>{`총 ${routineInfo.filter((el) => el.accountTitle.length === 0).length}개의 루틴`}</Text>
+                  <MarginVertical top={40}/>
+                </View>
+                {routineInfo.filter((el) => el.accountTitle.length === 0).map((el,index) => {
+                  return(
+                    <TouchableOpacity key={index} onPress={() => {
+                      setPickedRoutines(prev => [...prev, el])
+                      }}>
+                      <AssetEl item={[el.title,"",minToHour(el.duration),""]} index={index} isLink={false} category={"Save"} isTouchable={false}/>
+                      <MarginVertical top={50}/>
+                    </TouchableOpacity>
+                  )
+                })}
+                {pickedRoutines.length > 0 ?
+                  <View>
+                    <BorderLine/>
+                    <MarginVertical top={30}/>
+                    <Text style={{fontSize:18, fontWeight:600, color:"#fff"}}>선택된 루틴</Text>
+                    <MarginVertical top={40}/>
+                  </View>
+                  :
+                  <></>
+                }
+                {pickedRoutines.map((el,index) => {
+                  return(
+                    <TouchableOpacity key={index} onPress={() => setPickedRoutines(pickedRoutines.filter((j) => el !== j))}>
+                      <AssetEl item={[el.title,"",minToHour(el.duration),""]} index={index} isLink={false} category={"Save"} isTouchable={false}/>
+                      <MarginVertical top={50}/>
+                    </TouchableOpacity>
+                  )
+                })}
+              </ScrollView>
+              <MarginVertical top={70}/>
+              <TouchableOpacity style={{width:294, display:'flex', justifyContent:'center', alignItems:'center'}} onPress={() => setStep(prev => prev + 1)}>
+                <Text style={{fontWeight:500, fontSize:14, color:colors.gray70}}>나중에 설정하기</Text>
+              </TouchableOpacity>
+              <MarginVertical top={10}/>
+            </>
+            :
+            <View style={{display:'flex', justifyContent:'center', alignItems:'center', width:294}}>
+              <MarginVertical top={70}/>
+              
+                <Text style={{fontSize:18, fontWeight:600, color:colors.fontMain80, marginBottom:5}}>{`${newSavingData.duration}개월 뒤에`}</Text>
+                <Text style={{fontWeight:600, fontSize:26, color:colors.fontMain90}}>{`+${minToHour(newSavingData.time*newSavingData.duration)}`}</Text>
+                <MarginVertical top={20}/>
+                <Text style={{fontSize:18, fontWeight:600, color:colors.fontMain80,marginBottom:5}}>{`월 ${interest*10}%`}</Text>
+                <Text style={{fontWeight:600, fontSize:26, color:colors.indigoBlue}}>{`+${Math.floor(newSavingData.time*interest)}P`}</Text>
+              <MarginVertical top={50}/>
+              <Text style={{fontSize:18, fontWeight:500, color:colors.fontMain80, marginBottom:5}}>한 달에</Text>
+              <TimeSliderBar text={"씩"} setOutValue={setNewSavingData} type={"savingtime"}/>
+              <MarginVertical top={65}/>
+              <TimeSliderBar text={"동안"} setOutValue={setNewSavingData} type={"duration"}/>
+              <MarginVertical top={56}/>
+              <Text style={{fontSize:14, fontWeight:500, color:colors.darkGray, textAlign:'center'}}>{`멋져요!\n${newSavingData.duration}개월 뒤에 이자와 함께 찾아올게요!`}</Text>
+              <MarginVertical top={8}/>
+            </View>} 
           </InputArea>
           <Button text={"다음 단계로"} handleButton={handleNextStep}/>
         </AddFreeRoutineBody>

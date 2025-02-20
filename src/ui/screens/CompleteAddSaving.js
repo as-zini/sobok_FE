@@ -15,15 +15,21 @@ import Button from '../components/Button';
 import LinkIcon from '../components/LinkIcon';
 import snowflake_white from '../../../assets/snow_flake_icon_white.png';
 import { useNavigation } from '@react-navigation/native';
+import { useInstallmentSaving } from '../../hooks/useInstallmentSaving';
+import { useUserInfoStore } from '../../store/user';
+import { minToHour } from '../../util';
 
-const CompleteAddSaving = () => {
-  const [isCreateComplete, setIsCreateComplete] = useState(false);
+const CompleteAddSaving = ({route}) => {
+  const [isCreateComplete, setIsCreateComplete] = useState(true);
   const navigation = useNavigation();
+  const {newSavingData} = route.params;
+  const {handleAddSaving} = useInstallmentSaving();
+  const {userInfo} = useUserInfoStore();
+  const interest = newSavingData.time < 600 ? .3 : newSavingData.time < 1200 ? .4 : newSavingData.time < 2400 ? .5 : .7
+
 
   useEffect(() => {
-    setTimeout(() => {
-      setIsCreateComplete(true);
-    }, 3000);
+    handleAddSaving(newSavingData, setIsCreateComplete)
   }, [])
   
 
@@ -43,7 +49,7 @@ const CompleteAddSaving = () => {
           <CompleteAddSavingTitleArea>
             <Image source={mild_cloud_icon} style={{width:48, height:34}}/>
             <MarginVertical top={18}/>
-            <CompleteAddSavingTitle>지윤 님의{"\n"}영어 천재 적금이{"\n"}완성되었어요!</CompleteAddSavingTitle>
+            <CompleteAddSavingTitle>{`${userInfo.displayName} 님의\n${newSavingData.title} 적금이\n완성되었어요!`}</CompleteAddSavingTitle>
           </CompleteAddSavingTitleArea>
           <MarginVertical top={44}/>
           
@@ -63,7 +69,7 @@ const CompleteAddSaving = () => {
                 <View style={{display:'flex', width:200}}>
                   <Image source={snowman_graphic} style={{width:48, height:48}}/>
                   <MarginVertical top={15}/>
-                  <SavingInfoText style={{color:colors.fontMain70, textAlign:'start'}}>일주일에{"\n"}5H 50M 씩, 12개월 동안</SavingInfoText>
+                  <SavingInfoText style={{color:colors.fontMain70, textAlign:'start'}}>{`일주일에\n${minToHour(Math.floor(newSavingData.time/4))}씩, ${newSavingData.duration}개월 동안`}</SavingInfoText>
                   <View style={{display:'flex', flexDirection:'row', gap:5}}>
                     <LinkIcon size={16}/>
                     <SavingInfoText style={{color:colors.fontMain70, textAlign:'start'}}>아침에는 영어 공부 루틴</SavingInfoText>
@@ -75,10 +81,10 @@ const CompleteAddSaving = () => {
                 <MarginVertical top={14}/>
                 <View style={{width:200, display:'flex', flexDirection:'row', justifyContent:'space-between'}}>
                   <SavingInfoText style={{color:"#959595"}}>TOTAL</SavingInfoText>
-                  <Text style={{fontWeight:600, fontSize:22, color:colors.fontMain70}}>363H 50M</Text>
+                  <Text style={{fontWeight:600, fontSize:22, color:colors.fontMain70}}>{`${minToHour(newSavingData.time*newSavingData.duration)}`}</Text>
                 </View>
                 <View style={{width:200, display:'flex', alignItems:'flex-end'}}>
-                  <Text style={{fontWeight:600, fontSize:22, color:colors.fontMain}}>+ 10,800P</Text>
+                  <Text style={{fontWeight:600, fontSize:22, color:colors.fontMain}}>{`${Math.floor(newSavingData.time*newSavingData.duration*interest)}P`}</Text>
                 </View>
               </SavingInfoEl>
               <SavingInfoEl style={{backgroundColor:"rgba(106, 143, 246, 0.3)"}}>
@@ -86,15 +92,19 @@ const CompleteAddSaving = () => {
                 <MarginVertical top={16}/>
                 <Image source={snowflake_white} style={{width:14, height:14}}/>
                 <MarginVertical top={6}/>
-                <SavingInfoText style={{color:"#fff"}}>목표는{"\n"}영어 1000문장 말하기!</SavingInfoText>
+                <SavingInfoText style={{color:"#fff"}}>{`목표는\n${newSavingData.target}`}</SavingInfoText>
                 <MarginVertical top={30}/>
-                <SavingInfoText style={{color:"#fff"}}>영어 천재 적금과{"\n"}소복이 모아볼게요!</SavingInfoText>
+                <SavingInfoText style={{color:"#fff"}}>{`${newSavingData.title} 적금과\n소복이 모아볼게요!`}</SavingInfoText>
               </SavingInfoEl>
               <View style={{marginRight:50}}></View>
             </ScrollView>
           </SavingInfoArea>
           <View style={{zIndex:9, position:'absolute', bottom:100}}>
-            <Button text={"시간 모으러 가기"} handleButton={() => navigation.navigate("Tabs")}/>
+            <Button text={"시간 모으러 가기"} handleButton={() => navigation.reset({
+          routes:[{
+            name:'Tabs'
+          }]
+        })}/>
           </View>
         </CompleteAddSavingBody>
         <CompleteAddSavingBg source={complete_add_saving_bg}/>
