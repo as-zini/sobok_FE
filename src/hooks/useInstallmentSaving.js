@@ -1,4 +1,5 @@
 import axios from "axios"
+import baseUrl from "../api/baseURL";
 
 
 export const useInstallmentSaving = () => {
@@ -33,10 +34,27 @@ export const useInstallmentSaving = () => {
     }
   }
 
+  const handleAddSaving = async(newSavingData, isCreateComplete) => {
+    try {
+      const response = await baseUrl.post("/account/create",{
+          title : newSavingData.title,
+          target : newSavingData.target,
+          isPublic : newSavingData.isPublic,
+          time : newSavingData.time,
+          duration : newSavingData.duration
+      })
+      console.log(response.data)
+      isCreateComplete(true);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return {
     getSavingList,
     getSavingLog,
-    getSavingCount
+    getSavingCount,
+    handleAddSaving
   }
 }
 

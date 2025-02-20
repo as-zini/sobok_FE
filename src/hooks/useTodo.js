@@ -32,6 +32,15 @@ export const useTodo = () => {
     }
   }
 
+  const startTodo = async(id) => {
+    try {
+      const response = await baseUrl.post(`/todo/start?todoId=${id}`)
+      console.log(response.data);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   const completeTodo = async(id, time) => {
     try {
       const response = await baseUrl.post(`/todo/end?todoId=${id}&duration=${time}`)
@@ -66,6 +75,7 @@ export const useTodo = () => {
     getNotCompletedTodo,
     completeTodo,
     getNowTodo,
-    getTodaySaveTime
+    getTodaySaveTime,
+    startTodo
   }
 }
