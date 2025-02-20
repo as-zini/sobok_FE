@@ -74,7 +74,8 @@ const Test = () => {
           preference2:step3Data.step2,
           preference3:step3Data.step3,
           likeOption:likeOption,
-          extraRequest:step4Value
+          extraRequest:step4Value,
+          isComplete:false
         })
       }
       else{

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import styled from 'styled-components'
 
@@ -15,12 +15,21 @@ import Button from '../components/Button';
 import RoutineRepeatModal from '../components/RoutineRepeatModal';
 import AssetLinkModal from '../components/AssetLinkModal';
 import { useNavigation } from '@react-navigation/native';
+import { minToHour } from '../../util';
 
-const ViewAiRoutineResult = () => {
+const ViewAiRoutineResult = ({route}) => {
   const data = [["영어 강의 1강","스픽", "1H 30M","06:00 - 07:00"],["영어 단어 10개 암기", "말해보카", "1H:00","07:30 - 08:30"]]
   const [isRoutineRepeatModalVisible, setIsRoutineRepeatModalVisible] = useState(false);
   const [isAssetLinkModalVisible, setIsAssetLinkModalVisible] = useState(false);
   const navigation = useNavigation();
+  const {aiRoutineInfo} = route.params;
+  const [selectedDate, setSelectedDate] = useState([]);
+
+  useEffect(() => {
+    // console.log(aiRoutineInfo.todos.reduce((sum,el) => sum + Number(el.duration),0))
+    console.log("route",aiRoutineInfo)
+  }, [])
+  
 
   return (
     <SafeAreaView>
@@ -33,33 +42,33 @@ const ViewAiRoutineResult = () => {
         </ViewAiRoutineResultHeader>
         <MarginVertical top={44}/>
         <Image source={ai_routine_icon} style={{width:42, height:27}}/>
-        <ViewAiRoutineResultTitle>아침에는 영어 공부{"\n"}2H 30M</ViewAiRoutineResultTitle>
+        <ViewAiRoutineResultTitle>{`${aiRoutineInfo.title}\n${minToHour(aiRoutineInfo.todos.reduce((sum, el) => sum + Number(el.duration), 0))}`}</ViewAiRoutineResultTitle>
         <TouchableOpacity style={{display:'flex', flexDirection:'row', gap:4}} onPress={() => setIsAssetLinkModalVisible(true)}>
           <LinkIcon size={16}/>
           <ViewAiRoutineResultText>적금 연결하기</ViewAiRoutineResultText>
         </TouchableOpacity>
         <MarginVertical top={40}/>
         <TouchableOpacity onPress={() => setIsRoutineRepeatModalVisible(true)}>
-          <WeekCalandar/>
+          <WeekCalandar selectedDate={selectedDate} setSelectedDate={setSelectedDate} isDuplication={true} version={"day"}/>
         </TouchableOpacity>
         <MarginVertical top={47}/>
         <View style={{width:310}}>
-          <TodoCountText>총 2개의 할 일</TodoCountText>
+          <TodoCountText>{`총 ${aiRoutineInfo.todos.length}개의 할 일`}</TodoCountText>
         </View>
-        <ScrollView>
+        <ScrollView style={{height:'40%'}} showsVerticalScrollIndicator={false}>
           <MarginVertical top={40}/>
-          {data.map((el,index) => {
+          {aiRoutineInfo.todos.map((el,index) => {
             return(
               <View key={index}>
-                <AssetEl item={el} index={index} isLink={true}/>
+                <AssetEl item={[el.title,"", `${minToHour(el.duration)}`, `${el.start_time} - ${el.end_time}`]} index={index} isLink={false} isTouchable={false}/>
                 <MarginVertical top={40}/>
               </View>
             )
         })}
         </ScrollView>
 
-        <View style={{marginTop:40}}>
-          <Button text={"루틴 완성하기"} handleButton={() => navigation.navigate("AiRoutineComplete")}/>
+        <View>
+          <Button text={"루틴 완성하기"} handleButton={() => navigation.navigate("AiRoutineComplete",{isComplete:true})}/>
         </View>
       </ViewAiRoutineResultBody>
       <RoutineRepeatModal isRoutineRepeatModalVisible={isRoutineRepeatModalVisible} setIsRoutineRepeatModalVisible={setIsRoutineRepeatModalVisible}/>

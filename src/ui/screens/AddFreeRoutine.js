@@ -184,9 +184,9 @@ const AddFreeRoutine = () => {
               <MarginVertical top={40}/>
               <WeekCalandar selectedDate={selectedDate} setSelectedDate={setSelectedDate} isDuplication={true}/>
               <MarginVertical top={63}/>
-              <TimeSliderBar text={"에 시작해서"} setTime={setNewRoutineData} version={"start"}/>
+              <TimeSliderBar text={"에 시작해서"} setOutValue={setNewRoutineData} version={"start"} type={"time"}/>
               <MarginVertical top={63}/>
-              <TimeSliderBar text={"까지 끝내요"} setTime={setNewRoutineData} version={"end"}/>
+              <TimeSliderBar text={"까지 끝내요"} setOutValue={setNewRoutineData} version={"end"} type={"time"}/>
               <MarginVertical top={97}/>
             </View>
       : step === 3 ? <StepThreeContents/> : <StepFourContents/>} 
