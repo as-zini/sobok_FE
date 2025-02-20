@@ -89,6 +89,7 @@ const DetailInstallmentSavingScreen = ({route}) => {
 
   const BlurChild = () => {
     return(
+      <ScrollView>
       <View style={{paddingHorizontal:30, paddingVertical:40}}>
         <View style={{display:'flex', flexDirection:'row', gap:4}}>
           <SettingPeriodText>{`${selectedRange.startDate?.slice(5,7)}월 ${selectedRange.startDate?.slice(8,10)}일 - ${selectedRange.endDate?.slice(5,7)}월 ${selectedRange.endDate?.slice(8,10)}일`}</SettingPeriodText>
@@ -107,8 +108,22 @@ const DetailInstallmentSavingScreen = ({route}) => {
             )}
           >
         </SectionList> */}
-        {/* {savingLog.map((el) => <Text>{el}</Text>)} */}
+        
+        {savingLog.map((el,index) => {
+          return(
+            <View key={index}>
+              <Text style={{color:"#707172", fontWeight:500, fontSize:14}}>{`${dayjs(el.created_at).format("YYYY년 M월 D일")}`}</Text>
+              <MarginVertical top={20}/>
+              <AssetEl item={[`${index+1}회차`, `${dayjs(el.created_at).format("HH:MM")}`, `${minToHour(el.depositTime)}`, `${minToHour(el.balance)}`]} index={index} isLink={false} isTouchable={false}/>
+              <MarginVertical top={40}/>
+            </View>
+
+          )
+        })}
+        
       </View>
+      <MarginVertical top={500}/>
+      </ScrollView>
     )
   }
   
