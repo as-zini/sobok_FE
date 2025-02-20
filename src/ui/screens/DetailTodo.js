@@ -48,9 +48,9 @@ const DetailTodo = ({route}) => {
           <TotalTimeText style={{fontSize:26}}>{`${minToHour(todoInfo.duration)}`}</TotalTimeText>
         </TotalTimeArea>
         <MarginVertical top={32}/>
-        <TimeSliderBar text={"에 시작해서"} version={"Start"} time={todoInfo.startTime.slice(0,5)} setTime={setTime}/>
+        <TimeSliderBar text={"에 시작해서"} version={"Start"} time={todoInfo.startTime.slice(0,5)} setOutValue={setTime} type={"time"}/>
         <MarginVertical top={65}/>
-        <TimeSliderBar text={"까지 끝내요"} version={"End"} time={todoInfo.endTime.slice(0,5)} setTime={setTime}/>
+        <TimeSliderBar text={"까지 끝내요"} version={"End"} time={todoInfo.endTime.slice(0,5)} setOutValue={setTime} type={"time"}/>
         <MarginVertical top={80}/>
         <LinkedAppArea>
           <LinkedAppTitle>연동앱</LinkedAppTitle>

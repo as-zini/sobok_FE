@@ -34,7 +34,7 @@ const ViewInstallmentSavingScreen = () => {
   const RenderItem = ({item, index}) => {
     return(
       <>
-        <AssetEl item={item} index={index} isLink={false} category={"Save"}/>
+        <AssetEl item={item} index={index} isLink={false} category={"Save"} isTouchable={true}/>
         <MarginVertical top={50}/>
       </>
     )

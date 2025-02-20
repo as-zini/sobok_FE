@@ -57,7 +57,7 @@ const ViewRoutineListScreen = () => {
     return(
       
       <>
-        <AssetEl item={item} index={index} isLink={item[2] === "" ? false : true} category={"Routine"}/>
+        <AssetEl item={item} index={index} isLink={item[2] === "" ? false : true} category={"Routine"} isTouchable={true}/>
         <MarginVertical top={50}/>
       </>
       
@@ -148,7 +148,7 @@ const ViewRoutineListScreen = () => {
               <Text style={{fontSize:14, fontWeight:500, color:"#707172", marginBottom:-10}}>{`${el.startTime} - ${el.endTime}`}</Text>
             </View>
             <MarginVertical top={24}/>
-            <AssetEl item={[el.title, el.accountTitle, minToHour(el.duration),"", el.id]} index={index} isLink={true} category={"Routine"}/>
+            <AssetEl item={[el.title, el.accountTitle, minToHour(el.duration),"", el.id]} index={index} isLink={true} category={"Routine"} isTouchable={true}/>
             <MarginVertical top={40}/>
             </View>
           )
