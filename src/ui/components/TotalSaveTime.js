@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 import total_save_time_bg from '../../../assets/total_save_time_bg.png';
@@ -15,10 +15,15 @@ import Button from './Button';
 import { useNavigation } from '@react-navigation/native';
 import MarginVertical from './MarginVertical';
 import { useNowTodoStore } from '../../store/todo';
+import { useRoutine } from '../../hooks/useRoutine';
+import { minToHour } from '../../util';
 
 const TotalSaveTime = ({time}) => {
   const navigation = useNavigation();
   const {nowTodo} = useNowTodoStore();
+  const {getRoutineDetail} = useRoutine();
+  const [routineDetailInfo, setRoutineDetailInfo] = useState({});
+  const [isComplete, setIsComplete] = useState(false);
   const Data = [
     {
       title:"09:00 - 10:25",
@@ -29,8 +34,36 @@ const TotalSaveTime = ({time}) => {
     }
   ]
 
+  function convertToMinutes(timeStr) {
+    const timeRegex = /(\d+)(H|M|S)/g;
+    let totalMinutes = 0;
+
+    let match;
+    while ((match = timeRegex.exec(timeStr)) !== null) {
+        const value = parseInt(match[1]);
+        const unit = match[2];
+
+        if (unit === "H") totalMinutes += value * 60;
+        else if (unit === "M") totalMinutes += value;
+        else if (unit === "S") totalMinutes += value / 60;
+    }
+
+    return Math.floor(totalMinutes);
+}
+
+  useEffect(() => {
+    getRoutineDetail(nowTodo.routineId, setRoutineDetailInfo, setIsComplete)
+
+  }, [isComplete])
+
+  useEffect(() => {
+    console.log("info", routineDetailInfo)
+  },[routineDetailInfo])
+  
+
   const RenderItem = ({item, index}) => {
     return(
+      
       <>
       <View style={{display:'flex', flexDirection:'row'}}>
         <View style={{flexGrow:.1}}>
@@ -54,18 +87,11 @@ const TotalSaveTime = ({time}) => {
     )
   }
 
-  const ListHeader = ({title}) => {
-    return(
-      <>
-        <Text style={{fontWeight:500, fontSize:14, color:colors.gray70}}>{title}</Text>
-        <MarginVertical top={24}/>
-      </>
-    )
-  }
-
   return (
+
     <>
-    <ScrollView>
+    {isComplete ? 
+    <ScrollView showsVerticalScrollIndicator={false}>
     <View style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
       <TotalSaveTimeBody>
         <MarginVertical top={80}/>
@@ -76,29 +102,54 @@ const TotalSaveTime = ({time}) => {
         <MarginVertical top={20}/>
         <SnowFlakeIcon color={'indigo'} size={16}/>
         <MarginVertical top={8}/>
-        <CompletedTodo>총 2개의 할 일 중{"\n"}1개의 할 일 완료!</CompletedTodo>
+        <CompletedTodo>{Object.keys(routineDetailInfo).length > 0 ? `총 ${routineDetailInfo.todos.length}개의 할 일 중\n${routineDetailInfo.todos.filter((el) => el.isComplete===true)?.length}개의 할 일 완료!` : ""}</CompletedTodo>
         <MarginVertical top={40}/>
+        <View style={{width:"100%", justifyContent:'center', alignItems:'center'}}>
         <RestOfTime>
-          <RestOfTimeText>2H 5M 남았어요!</RestOfTimeText>
+          <RestOfTimeText>{`${minToHour(routineDetailInfo.todos.filter((el) => nowTodo.title === el.title)[0].duration - convertToMinutes(time))} 남았어요!`}</RestOfTimeText>
         </RestOfTime>
+        </View>
         <MarginVertical top={36}/>
-        <ProgressBar/>
+        <ProgressBar version={"SaveTime"} savedTime={convertToMinutes(time)} totalTimeGoal={100}/>
         <MarginVertical top={56}/>
-        <SectionList
-         sections={Data}
-         scrollEnabled={true}
-         keyExtractor={(item, index) => item + index}
-         renderItem={({item, index}) => (
-           <RenderItem item={item} index={index}></RenderItem>
-         )}
-         renderSectionHeader={({section: {title}}) => (
-           <ListHeader title={title}/>
-         )}
-        >
-
-        </SectionList>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {routineDetailInfo.todos?.map((el, index) => {
+            return(
+            <View key={index}>
+              <Text style={{fontWeight:500, fontSize:14, color:colors.gray70}}>{`${el.startTime} - ${el.endTime}`}</Text>
+              <MarginVertical top={24}/>
+              <>
+                <View style={{display:'flex', flexDirection:'row'}}>
+                  <View style={{flexGrow:.1}}>
+                    {el.isCompleted ? 
+                    <View style={{backgroundColor:colors.fontMain, borderRadius:'50%', width:40, height:40, display:'flex', justifyContent:'center', alignItems:'center'}}>
+                      <Image source={check_icon_white} style={{width:30, height:26}}/>
+                    </View>
+                    :
+                    <View style={{backgroundColor:colors.gray77, borderRadius:'50%', width:40, height:40, display:'flex', justifyContent:'center', alignItems:'center'}}>
+                      <Text style={{color:"#fff", fontSize:24, fontWeight:600}}>{index+1}</Text>
+                    </View>
+                    }
+                  </View>
+                  <View style={{flexGrow:1}}>
+                    <Text style={{fontSize:18, fontWeight:600, color:"#343434"}}>{el.title}</Text>
+                    <MarginVertical top={5}/>
+                    <View style={{display:'flex', flexDirection:'row', gap:5}}>
+                      <LinkIcon size={16}/>
+                      <SmallText style={{textAlign:'end'}}>{el.linkApp}</SmallText>
+                    </View>
+                  </View>
+                  <Text style={{color:colors.indigoBlue, fontWeight:600, fontSize:18}}>{minToHour(el.duration)}</Text>
+                  
+                </View>
+                <MarginVertical top={40}/>
+              </>
+            </View>
+            )
+          })}
+        </ScrollView>
         <MarginVertical top={60}/>
-        <SmallText>영어 적금에{"\n"}소복!하게 저금 완료</SmallText>
+        <SmallText>{`${routineDetailInfo.accountTitle} 적금에\n소복!하게 저금 완료`}</SmallText>
         <MarginVertical top={8}/>
         <Button text={"시간 모으러 가기"} handleButton={() => navigation.reset({
           routes:[{
@@ -108,8 +159,10 @@ const TotalSaveTime = ({time}) => {
       </TotalSaveTimeBody>
     </View>
     </ScrollView>
+    : <></>}
     <TotalSaveTimeBg source={total_save_time_bg}/>
     </>
+    
     
   )
 }

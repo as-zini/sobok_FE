@@ -23,6 +23,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useUserInfoStore } from '../../store/user';
 import { useTodo } from '../../hooks/useTodo';
 import { useNowTodoStore } from '../../store/todo';
+import { getTimeDifference, minToHour } from '../../util';
 
 
 
@@ -34,9 +35,10 @@ const Timer = () => {
   const navigation = useNavigation();
   const {nowTodo} = useNowTodoStore();
   const {userInfo} = useUserInfoStore();
-  const {completeTodo} = useTodo();
+  const {completeTodo, startTodo} = useTodo();
   const [elapsedTime, setElapsedTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
+  const [logId, setLogId] = useState(0);
 
   useEffect(() => {
     const startTimer = async () => {
@@ -58,12 +60,13 @@ const Timer = () => {
     };
 
     startTimer();
+    startTodo(nowTodo.id,setLogId);
   }, []);
 
   const handleComplete = async () => {
     setIsRunning(false);
     await AsyncStorage.removeItem("startTime"); // 완료하면 시작 시간 초기화
-    completeTodo(nowTodo.id, elapsedTime/60)
+    completeTodo(logId, Math.floor(elapsedTime/60))
     navigation.navigate("CompleteTimer",{
       time:formatTime(elapsedTime)
     })
@@ -78,6 +81,23 @@ const Timer = () => {
     const remainingSeconds = seconds % 60;
     return `${hour}H ${minutes}M ${remainingSeconds}s`;
   };
+
+  function convertToMinutes(timeStr) {
+    const timeRegex = /(\d+)(H|M|S)/g;
+    let totalMinutes = 0;
+
+    let match;
+    while ((match = timeRegex.exec(timeStr)) !== null) {
+        const value = parseInt(match[1]);
+        const unit = match[2];
+
+        if (unit === "H") totalMinutes += value * 60;
+        else if (unit === "M") totalMinutes += value;
+        else if (unit === "S") totalMinutes += value / 60;
+    }
+
+    return Math.floor(totalMinutes);
+  }
 
 
 
@@ -100,7 +120,7 @@ const Timer = () => {
           <LinkedText>{nowTodo.linkApp}</LinkedText>
         </View>
         <MarginVertical top={40}/>
-        <RestOfTimeText>{`25분만 더하면\n적금 채우기 완료!`}</RestOfTimeText>
+        <RestOfTimeText>{`${minToHour(convertToMinutes(getTimeDifference(nowTodo.startTime, nowTodo.endTime))-Math.floor(elapsedTime/60))}분만 더하면\n적금 채우기 완료!`}</RestOfTimeText>
         <MarginVertical top={10}/>
         <TimeBarArea>
           {timeIndex.map((el, index) => {

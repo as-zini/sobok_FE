@@ -37,7 +37,7 @@ export const useRoutine = () => {
     try {
       const response = await axios.get(`https://sobok-app.com/routine/detail?routineId=${id}`)
       console.log("detail",response.data)
-      setRoutineDetailInfo(...response.data)
+      setRoutineDetailInfo(response.data)
       setIsComplete(true)
     } catch (error) {
       console.log("detail",error)

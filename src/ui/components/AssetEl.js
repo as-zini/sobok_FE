@@ -67,6 +67,7 @@ const AssetEl = ({item, index, isLink, category, isInvalid, isTouchable}) => {
       </SavingElNotTouchable>
       :
       <></>
+      
     
       
   )
