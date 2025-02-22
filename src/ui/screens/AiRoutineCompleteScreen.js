@@ -11,32 +11,39 @@ import MarginVertical from '../components/MarginVertical';
 import Button from '../components/Button';
 import { useNavigation } from '@react-navigation/native';
 import { useTest } from '../../hooks/useTest';
+import { useUserInfoStore } from '../../store/user';
 
 const AiRoutineCompleteScreen = ({route}) => {
   const [isCreateComplete, setIsCreateComplete] = useState(false);
   const navigation = useNavigation();
-  const {spareTpo, spareTime, preference1, preference2, preference3, likeOption, extraRequest} = route.params;
+  const {spareTpo, spareTime, preference1, preference2, preference3, likeOption, extraRequest, isComplete} = route.params;
   const {handleSubmitTest} = useTest();
+  const {userInfo} = useUserInfoStore();
+  const [aiRoutineInfo, setAiRoutineInfo] = useState({});
 
   useEffect(() => {
-    handleSubmitTest(spareTpo, spareTime, preference1, preference2, preference3, likeOption, extraRequest, setIsCreateComplete)
+    if(!isComplete)handleSubmitTest(spareTpo, spareTime, preference1, preference2, preference3, likeOption, extraRequest, setIsCreateComplete, setAiRoutineInfo)
   }, [])
   
 
   return (
     <>
-    {!isCreateComplete
+    {!isComplete
       ? <CreateLoading/>
       :
       <SafeAreaView>
         <AiRoutineCompleteBody>
           <AiRoutineCompleteIcon source={complete_icon}/>
           <MarginVertical top={40}/>
-          <AiRoutingCompleteTitle>지윤 님만의{"\n"}AI루틴 만들기 완성!</AiRoutingCompleteTitle>
+          <AiRoutingCompleteTitle>{`${userInfo.displayName} 님만의\nAI루틴 만들기 완성!`}</AiRoutingCompleteTitle>
           <MarginVertical top={18}/>
-          <AiRoutineCompleteText>이제 지윤 님에게 딱 맞는{"\n"}루틴을 보러 가요!</AiRoutineCompleteText>
+          <AiRoutineCompleteText>{`이제 ${userInfo.displayName} 님에게 딱 맞는\n루틴을 보러 가요!`}</AiRoutineCompleteText>
           <View style={{position:'absolute', bottom:100}}>
-            <Button text={"루틴 보러 가기"} handleButton={() => navigation.navigate("Tabs")}/>
+            <Button text={"루틴 보러 가기"} handleButton={() => navigation.reset({
+        routes:[{
+          name:'Tabs',
+        }]
+      })}/>
           </View>
         </AiRoutineCompleteBody>
         <AiRoutineCompleteBg source={airoutine_complete_bg}/>

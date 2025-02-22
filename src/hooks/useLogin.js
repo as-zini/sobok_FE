@@ -15,7 +15,11 @@ export const useLogin = () => {
       console.log(response.headers['set-cookie']);
       const token = JSON.stringify(response.data.accessToken);
       await AsyncStorage.setItem("access_token", token);
-      navigation.navigate("Tabs");
+      navigation.reset({
+        routes:[{
+          name:'Tabs'
+        }]
+      })
     } catch (error) {
       console.log(error)
       setIsLoginFail(true);

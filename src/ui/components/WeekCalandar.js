@@ -4,7 +4,7 @@ import { Text } from 'react-native';
 import styled from 'styled-components'
 import { colors } from '../styles/colors';
 
-const WeekCalandar = ({selectedDate, setSelectedDate, isDuplication}) => {
+const WeekCalandar = ({selectedDate, setSelectedDate, isDuplication, version}) => {
   const [today, setToday] = useState(dayjs());
   const DayTexts = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
   const [weekDates, setWeekDates] = useState([]);
@@ -30,6 +30,7 @@ const WeekCalandar = ({selectedDate, setSelectedDate, isDuplication}) => {
 
   return (
     <WeekCalandarBody>
+      {version === "date" ? 
       <DayArea>
         {DayTexts.map((el,index) => {
           return(
@@ -39,8 +40,48 @@ const WeekCalandar = ({selectedDate, setSelectedDate, isDuplication}) => {
           )
         })}
       </DayArea>
+      :
+      <></>
+      }
       <WeekCalandarContentsBody>
-        {weekDates.map((el, index) =>{
+        {version === "day" ?
+          DayTexts.map((el,index) => {
+            return(
+              <DateEl
+              key={index} onPress={() => {
+                if(isDuplication){
+                  if(selectedDate.includes(el)){
+                    let result = selectedDate.filter((j) => el !== j)
+                    setSelectedDate(result);
+                  }else{
+                    setSelectedDate(prev => [...prev, el])
+                  }
+                }else{
+                  setSelectedDate(el)
+                }
+              }}>
+                {(isDuplication && selectedDate?.includes(el)) ||  (!isDuplication && selectedDate === el)?
+                <>
+                  <SelectedCircle/>
+                  <DateText style={{color:"#fff", fontSize:14}}>{el}</DateText>
+                </>
+                :
+                <DateText style={{fontSize:14}}>{el}</DateText>
+                }
+                {/* {!isDuplication && selectedDate === el   ?
+                <>
+                  <SelectedCircle/>
+                  <DateText style={{color:"#fff"}}>{el}</DateText>
+                </>
+                :
+                <DateText>{el}</DateText>
+                } */}
+              </DateEl>
+            )
+          })
+          
+          :
+          weekDates.map((el, index) =>{
           return(
             <DateEl key={index} onPress={() => {
               if(isDuplication){

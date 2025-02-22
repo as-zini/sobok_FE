@@ -50,11 +50,22 @@ export const useInstallmentSaving = () => {
     }
   }
 
+  const getInvalidSavingList = async(setInvalidSavingList) => {
+    try {
+      const response = await baseUrl.get("/account/list/invalid")
+      console.log("invalid",response.data)
+      setInvalidSavingList(response.data.account_list)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return {
     getSavingList,
     getSavingLog,
     getSavingCount,
-    handleAddSaving
+    handleAddSaving,
+    getInvalidSavingList
   }
 }
 

@@ -91,6 +91,7 @@ const StackNavigation = () => {
       <Stack.Screen name="CompleteSnowCard" component={CompleteSnowCard}/>
       <Stack.Screen name="SnowCardBook" component={SnowCardBook}/>
       <Stack.Screen name="ViewLinkedRoutine" component={ViewLinkedRoutine}/>
+      <Stack.Screen name="ViewAiRoutine" component={ViewAiRoutineResult}/>
   
     </Stack.Navigator>
   )

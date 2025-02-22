@@ -1,8 +1,10 @@
+import { useNavigation } from "@react-navigation/native"
 import axios from "axios"
 
 export const useTest = () => {
+  const navigation = useNavigation();
 
-  const handleSubmitTest = async(spareTpo, spareTime, preference1, preference2, preference3, likeOption, extraRequest, setIsCreateComplete) => {
+  const handleSubmitTest = async(spareTpo, spareTime, preference1, preference2, preference3, likeOption, extraRequest, setIsCreateComplete, setAiRoutineInfo) => {
     try {
       const response = await axios.post("https://sobok-app.com/survey/generate",{
         spareTpo:spareTpo,
@@ -21,7 +23,10 @@ export const useTest = () => {
     // "extraRequest" : "요리 영상 시청을 포함해줘"
       })
       console.log(response.data)
-      setIsCreateComplete(true)
+      setAiRoutineInfo(response.data)
+      navigation.navigate("ViewAiRoutine",{
+        aiRoutineInfo:response.data
+      })
     } catch (error) {
       console.log(error)
       console.log(spareTpo, spareTime, preference1, preference2, preference3, likeOption, extraRequest)

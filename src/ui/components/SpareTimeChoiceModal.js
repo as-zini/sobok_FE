@@ -41,9 +41,9 @@ const SpareTimeChoiceModal = ({isChoiceModalVisible, setIsChoiceModalVisible, se
             <Text style={{fontWeight:600, fontSize:26, color:colors.fontMain90}}>{`${getTimeDifference(time.startTime, time.endTime)}`}</Text>
           </TotalTimeArea>
           <MarginVertical top={32}/>
-          <TimeSliderBar text={"에 시작해서"} setTime={setTime} time={time} version={"start"}/>
+          <TimeSliderBar text={"에 시작해서"}  version={"start"} setOutValue={setTime} type={"time"}/>
           <MarginVertical top={48}/>
-          <TimeSliderBar text={"까지"} setTime={setTime} version={"End"}/>
+          <TimeSliderBar text={"까지"}  version={"End"} setOutValue={setTime} type={"time"}/>
           <MarginVertical top={55}/>
           <Button text={"다음 단계로"} handleButton={handleSpareTimeModal}/>
         </SpareTimeModalBody>
