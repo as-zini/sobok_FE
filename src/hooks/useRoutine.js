@@ -54,23 +54,22 @@ export const useRoutine = () => {
     }
   }
 
-  const handleAddRoutine = async(newRoutineData) => {
+  const handleAddRoutine = async(newRoutineData, isAiRoutine) => {
     try {
       const response = await axios.post("https://sobok-app.com/routine/create",{
-        accountId:49,
+        accountId:newRoutineData.id,
         title: newRoutineData.title,
         startTime: newRoutineData.startTime,
         endTime: newRoutineData.endTime,
         days: newRoutineData.days,
-        todos:todoData
+        todos:isAiRoutine ? newRoutineData.todos : todoData
       })
-      console.log(response.data);
+      console.log(isAiRoutine ? "AI" : "", response.data);
       setTodoData([]);
-      navigation.navigate("CompleteAddRoutine")
+      !isAiRoutine?navigation.navigate("CompleteAddRoutine"):null
     } catch (error) {
       console.log(error)
-      console.log(newRoutineData)
-      console.log(todoData)
+      console.log(newRoutineData.todos)
     }
   }
 

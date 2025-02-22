@@ -6,10 +6,11 @@ import LinkIcon from './LinkIcon'
 import MarginVertical from './MarginVertical'
 import { useNavigation } from '@react-navigation/native'
 
-const TodoEl = ({data, index, todoInfo, routineTitle}) => {
+const TodoEl = ({data, index, todoInfo, routineTitle, isTouchable}) => {
   const navigation = useNavigation();
 
   return(
+    isTouchable ? 
     <TodoElBody onPress={() => navigation.navigate("DetailTodo", {todoInfo:todoInfo, index:index, routineTitle:routineTitle})}>
     <TodoIndex>
       <TodoIndexText>{index+1}</TodoIndexText>
@@ -28,6 +29,26 @@ const TodoEl = ({data, index, todoInfo, routineTitle}) => {
       <TodoTime>{data[3]}</TodoTime>
     </SetTodoGap>
   </TodoElBody>
+  :
+  <TodoElBodyNotTouchable>
+    <TodoIndex>
+      <TodoIndexText>{index+1}</TodoIndexText>
+    </TodoIndex>
+    <SetTodoGap>
+      <TodoTitle>
+        {data[0]}
+      </TodoTitle>
+      <TodoDueTime>{data[2]}</TodoDueTime>
+    </SetTodoGap>
+    <SetTodoGap>
+      <View style={{display:'flex', flexDirection:'row', flexGrow:1}}>
+        <LinkIcon size={14}/>
+        <LinkedAppText>{data[1]}</LinkedAppText>
+      </View>
+      <TodoTime>{data[3]}</TodoTime>
+    </SetTodoGap>
+  </TodoElBodyNotTouchable>
+
   )
 }
 
@@ -35,6 +56,13 @@ export default TodoEl
 
 
 const TodoElBody = styled.TouchableOpacity`
+  width:300px;
+  height:64px;
+  display:flex;
+  gap:8px;
+`
+
+const TodoElBodyNotTouchable = styled.TouchableOpacity`
   width:300px;
   height:64px;
   display:flex;

@@ -23,7 +23,7 @@ const AssetEl = ({item, index, isLink, category, isInvalid, isTouchable}) => {
         <View style={{flexGrow:.15}}>
           <StepNumber step={index+1} isInvalid={isInvalid}/>
         </View>
-        <View style={{display:'flex', flexGrow:1}}>
+        <View style={{display:'flex', flexGrow:1, maxWidth:155}}>
           <SavingTitle style={{color:isInvalid ? "rgba(112, 113, 114, 0.8)" : ""}}>{item[0]}</SavingTitle>
           <MarginVertical top={7}/>
           <View style={{display:'flex', flexDirection:'row', gap:5}}>
@@ -49,7 +49,7 @@ const AssetEl = ({item, index, isLink, category, isInvalid, isTouchable}) => {
         <View style={{flexGrow:.15}}>
           <StepNumber step={index+1} isInvalid={isInvalid}/>
         </View>
-        <View style={{display:'flex', flexGrow:1}}>
+        <View style={{display:'flex', flexGrow:1, maxWidth:155}}>
           <SavingTitle style={{color:isInvalid ? "rgba(112, 113, 114, 0.8)" : ""}}>{item[0]}</SavingTitle>
           <MarginVertical top={7}/>
           <View style={{display:'flex', flexDirection:'row', gap:5}}>
@@ -60,7 +60,7 @@ const AssetEl = ({item, index, isLink, category, isInvalid, isTouchable}) => {
           </View>
         </View>
         <View style={{display:'flex', alignItems:'flex-end'}}>
-          <SavingTime style={{color:isInvalid ? "rgba(112, 113, 114, 0.8)" : ""}}>{item[2]}</SavingTime>
+          <SavingTime style={{color:isInvalid ? "rgba(112, 113, 114, 0.8)" : colors.indigoBlue}}>{item[2]}</SavingTime>
           <MarginVertical top={7}/>
           <SavingAtFinish style={{color:isInvalid ? "rgba(112, 113, 114, 0.8)" : ""}}>{item[3]}</SavingAtFinish>
         </View>
@@ -81,7 +81,7 @@ const SavingEl = styled.TouchableOpacity`
   flex-direction:row;
   justify-content:center;
   align-items:center;
-  width:290px;
+  width:300px;
 `
 
 const SavingElNotTouchable = styled.View`
@@ -107,7 +107,7 @@ const LinkedRoutineTitle = styled.Text`
 const SavingTime = styled.Text`
   font-size:18px;
   font-weight:600;
-  color:${colors.indigoBlue}
+  color:${colors.indigoBlue};
 `
 
 const SavingAtFinish = styled.Text`

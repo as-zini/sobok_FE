@@ -16,6 +16,8 @@ import RoutineRepeatModal from '../components/RoutineRepeatModal';
 import AssetLinkModal from '../components/AssetLinkModal';
 import { useNavigation } from '@react-navigation/native';
 import { minToHour } from '../../util';
+import TodoEl from '../components/TodoEl';
+import { useRoutine } from '../../hooks/useRoutine';
 
 const ViewAiRoutineResult = ({route}) => {
   const data = [["영어 강의 1강","스픽", "1H 30M","06:00 - 07:00"],["영어 단어 10개 암기", "말해보카", "1H:00","07:30 - 08:30"]]
@@ -24,11 +26,33 @@ const ViewAiRoutineResult = ({route}) => {
   const navigation = useNavigation();
   const {aiRoutineInfo} = route.params;
   const [selectedDate, setSelectedDate] = useState([]);
+  const [invalidSavingList, setInvalidSavingList] = useState([]);
+  const [pickedSaving, setPickedSaving] = useState([]);
+  const {handleAddRoutine} = useRoutine();
 
   useEffect(() => {
     // console.log(aiRoutineInfo.todos.reduce((sum,el) => sum + Number(el.duration),0))
     console.log("route",aiRoutineInfo)
+    console.log("picked",pickedSaving)
   }, [])
+
+
+  const handleAddButton = () => {
+    handleAddRoutine({
+      id:pickedSaving[0].id,
+      title:aiRoutineInfo.title,
+      startTime:aiRoutineInfo.todos[0].start_time,
+      endTime:aiRoutineInfo.todos[aiRoutineInfo.todos.length-1].end_time,
+      days:selectedDate,
+      todos:aiRoutineInfo.todos.map((el) => ({
+        title: el.title,
+        startTime: el.start_time,
+        endTime: el.end_time,
+        linkApp: "유튜브"  // 기본값 설정
+      }))
+    }, true);
+    navigation.navigate("AiRoutineComplete",{isComplete:true})
+  }
   
 
   return (
@@ -60,7 +84,7 @@ const ViewAiRoutineResult = ({route}) => {
           {aiRoutineInfo.todos.map((el,index) => {
             return(
               <View key={index}>
-                <AssetEl item={[el.title,"", `${minToHour(el.duration)}`, `${el.start_time} - ${el.end_time}`]} index={index} isLink={false} isTouchable={false}/>
+                <TodoEl data={[el.title,"", `${minToHour(el.duration)}`, `${el.start_time} - ${el.end_time}`]} index={index} isTouchable={false}/>
                 <MarginVertical top={40}/>
               </View>
             )
@@ -68,11 +92,17 @@ const ViewAiRoutineResult = ({route}) => {
         </ScrollView>
 
         <View>
-          <Button text={"루틴 완성하기"} handleButton={() => navigation.navigate("AiRoutineComplete",{isComplete:true})}/>
+          <Button text={"루틴 완성하기"} handleButton={handleAddButton}/>
         </View>
       </ViewAiRoutineResultBody>
       <RoutineRepeatModal isRoutineRepeatModalVisible={isRoutineRepeatModalVisible} setIsRoutineRepeatModalVisible={setIsRoutineRepeatModalVisible}/>
-      <AssetLinkModal isAssetLinkModalVisible={isAssetLinkModalVisible} setIsAssetLinkModalVisible={setIsAssetLinkModalVisible} />
+      <AssetLinkModal
+        isAssetLinkModalVisible={isAssetLinkModalVisible}
+        setIsAssetLinkModalVisible={setIsAssetLinkModalVisible}
+        invalidSavingList={invalidSavingList} 
+        setInvalidSavingList={setInvalidSavingList}
+        setPickedSaving={setPickedSaving}
+      />
       <ViewAiRoutineResultBg source={ai_routine_result_bg}/>
     </SafeAreaView>
   )
