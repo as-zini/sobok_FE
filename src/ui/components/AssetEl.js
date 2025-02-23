@@ -7,9 +7,9 @@ import LinkIcon from './LinkIcon'
 import { colors } from '../styles/colors'
 import MarginVertical from './MarginVertical'
 
-const AssetEl = ({item, index, isLink, category, isInvalid, isTouchable}) => {
+const AssetEl = ({item, index, isLink, category, isInvalid, isTouchable, indexColor}) => {
   const navigation = useNavigation();
-  console.log(item)
+  console.log(indexColor)
 
   return (
     
@@ -20,10 +20,10 @@ const AssetEl = ({item, index, isLink, category, isInvalid, isTouchable}) => {
                               : navigation.navigate("DetailTodo")}
       isTouchable={isTouchable}                   
     >
-        <View style={{flexGrow:.15}}>
-          <StepNumber step={index+1} isInvalid={isInvalid}/>
+        <View style={{flexGrow:.3}}>
+          <StepNumber step={index+1} isInvalid={isInvalid} indexColor={indexColor}/>
         </View>
-        <View style={{display:'flex', flexGrow:1, maxWidth:155}}>
+        <View style={{display:'flex', flexGrow:1, width:140}}>
           <SavingTitle style={{color:isInvalid ? "rgba(112, 113, 114, 0.8)" : ""}}>{item[0]}</SavingTitle>
           <MarginVertical top={7}/>
           <View style={{display:'flex', flexDirection:'row', gap:5}}>
@@ -34,7 +34,7 @@ const AssetEl = ({item, index, isLink, category, isInvalid, isTouchable}) => {
           </View>
         </View>
         <View style={{display:'flex', alignItems:'flex-end'}}>
-          <SavingTime style={{color:isInvalid ? "rgba(112, 113, 114, 0.8)" : ""}}>{item[2]}</SavingTime>
+          <SavingTime style={{color:isInvalid ? "rgba(112, 113, 114, 0.8)" : colors.indigoBlue}}>{item[2]}</SavingTime>
           <MarginVertical top={7}/>
           <SavingAtFinish style={{color:isInvalid ? "rgba(112, 113, 114, 0.8)" : ""}}>{item[3]}</SavingAtFinish>
         </View>

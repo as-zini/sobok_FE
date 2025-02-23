@@ -1,11 +1,16 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View } from 'react-native'
 import styled from 'styled-components';
 import { colors } from '../styles/colors';
 
-const StepNumber = ({step, marginBottom}) => {
+const StepNumber = ({step, marginBottom, indexColor}) => {
+  useEffect(() => {
+    console.log(step, marginBottom, indexColor)
+  }, [])
+  
+
   return (
-    <StepNumberBody style={{marginBottom:marginBottom}}>
+    <StepNumberBody style={{marginBottom:marginBottom, backgroundColor:indexColor === "black" ? colors.fontMain : colors.indigoBlue}}>
       <StepNumberText>{step}</StepNumberText>
     </StepNumberBody>
   )
