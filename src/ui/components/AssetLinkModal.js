@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Modal from 'react-native-modal'
 import styled from 'styled-components'
 
@@ -12,12 +12,17 @@ import search_icon from '../../../assets/search_icon.png'
 import { useInstallmentSaving } from '../../hooks/useInstallmentSaving';
 import AssetEl from './AssetEl';
 import { minToHour } from '../../util';
+import { useRoutine } from '../../hooks/useRoutine';
 
-const AssetLinkModal = ({isAssetLinkModalVisible, setIsAssetLinkModalVisible, invalidSavingList, setInvalidSavingList, setPickedSaving}) => {
+const AssetLinkModal = ({isAssetLinkModalVisible, setIsAssetLinkModalVisible, invalidSavingList, setInvalidSavingList, setPickedSaving, version, routineList, setRoutineList}) => {
   const {getInvalidSavingList} = useInstallmentSaving();
+  const {getRoutineByList} = useRoutine();
+  const [isComplete, setIsComplete] = useState(false);
 
   useEffect(() => {
-    getInvalidSavingList(setInvalidSavingList);
+    version === "Routine" ?
+    getRoutineByList(setRoutineList, setIsComplete)
+    : getInvalidSavingList(setInvalidSavingList);
   }, [])
   
 
@@ -35,7 +40,7 @@ const AssetLinkModal = ({isAssetLinkModalVisible, setIsAssetLinkModalVisible, in
         <AssetLinkModalText>루틴으로 모은 시간을{"\n"}적금에 연결할 수 있어요!</AssetLinkModalText>
         <MarginVertical top={40}/>
         <SearchArea>
-          <SearchInput placeholder={"적금을 검색해보세요"} placeholderTextColor="#fff"/>
+          <SearchInput placeholder={version === "Routine" ? "루틴을 검색해보세요": "적금을 검색해보세요"} placeholderTextColor="#fff"/>
           <BorderLine/>
           <TouchableOpacity style={{position:'absolute', right:0, bottom:10}}>
             <Image source={search_icon}/>
@@ -43,10 +48,27 @@ const AssetLinkModal = ({isAssetLinkModalVisible, setIsAssetLinkModalVisible, in
         </SearchArea>
         <MarginVertical top={55}/>
         <View style={{width:300}}>
-          <Text style={{color:"#fff", fontSize:18, fontWeight:600}}>{`총 ${invalidSavingList.length}개의 적금`}</Text>
+          <Text style={{color:"#fff", fontSize:18, fontWeight:600}}>{version === "Routine" ? `총 ${routineList.length}개의 루틴`:`총 ${invalidSavingList.length}개의 적금`}</Text>
         </View>
         <SavingListBody>
-          {invalidSavingList.length > 0 ?
+        <MarginVertical top={50}/>
+
+          {version === "Routine" ?
+          routineList.map((el,index) => {
+            return(
+              <View key={index}>
+              <TouchableOpacity  style={{flexDirection:'row', width:300, gap:13}} onPress={() => setPickedSaving([el])}>
+                <View style={{width:40, height:40, borderRadius:'50%', backgroundColor:colors.indigoBlue, justifyContent:'center', alignItems:'center'}}>
+                  <Text style={{fontWeight:600, fontSize:24, color:"#fff"}}>{index+1}</Text>
+                </View>
+                <Text style={{fontWeight:600, fontSize:18, color:"#343434", flexGrow:1}}>{el.title}</Text>
+                <Text style={{color:colors.indigoBlue, fontWeight:600, fontSize:18}}>{minToHour(el.duration)}</Text>
+              </TouchableOpacity>
+              <MarginVertical top={30}/>
+              </View>
+            )
+          })
+          :invalidSavingList.length > 0 ?
           invalidSavingList.map((el,index) => {
             return(
               <TouchableOpacity key={index} onPress={() => setPickedSaving([el])}>

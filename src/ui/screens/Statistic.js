@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components';
 import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 
@@ -13,11 +13,43 @@ import NavigateArrowButton from '../components/NavigateArrowButton';
 import Calandar from '../components/Calandar';
 import MarginVertical from '../components/MarginVertical';
 import { useNavigation } from '@react-navigation/native';
+import dayjs from 'dayjs';
+import { useStatistic } from '../../hooks/useStatistic';
+import AssetEl from '../components/AssetEl';
+import LinkIcon from '../components/LinkIcon';
+import WeekCalandar from '../components/WeekCalandar';
+import AssetAddModal from '../components/AssetAddModal';
+import AssetLinkModal from '../components/AssetLinkModal';
 
 const Statistic = () => {
   const [mode, setMode] = useState("월별");
   const [showDropDown, setShowDropDown] = useState(false);
   const navigation = useNavigation();
+  const [selectedRange, setSelectedRange] = useState({}) 
+  const [today, setToday] = useState(dayjs());
+  const {getStatisticInfo, getStatisticDate, getStatisticLog} = useStatistic();
+  const startDate = today.startOf('month').format("YYYY-MM-DD")
+  const endDate = today.endOf('month').format("YYYY-MM-DD")
+  const [statisticLog, setStatisticLog] = useState(["1"]);
+  const [selectedDate, setSelectedDate] = useState(dayjs().get('date'));
+  const [selectedRoutine, setSelectedRoutine] = useState([]);
+  const [isAssetLinkModalVisible, setIsAssetLinkModalVisible] = useState(false);
+  const [routineList, setRoutineList] = useState([]);
+  const [pickedRoutine, setPickedRoutine] = useState([]);
+ 
+  useEffect(() => {
+    // getStatisticInfo("2025-02-01","2025-02-27")
+    getStatisticDate()
+    console.log(startDate)
+    getStatisticLog("2025-02-18")
+  }, [])
+
+  useEffect(() => {
+    console.log("picked",pickedRoutine)
+    
+  }, [pickedRoutine])
+  
+  
 
   const DropDown = () => {
     return(
@@ -29,6 +61,27 @@ const Statistic = () => {
         <TouchableOpacity style={{width:'100%', height:40, borderRadius:14, display:'flex', justifyContent:'center', alignItems:'center'}} onPress={() => {setMode("루틴별");setShowDropDown(false)}}>
           <Text style={{color:"#fff", fontSize:18, fontWeight:600}}>루틴별</Text>
         </TouchableOpacity>
+      </View>
+    )
+  }
+
+  const TodoLog = () => {
+    return(
+      <View style={{display:'flex', flexDirection:'row', width:300, gap:13}}>
+        <View style={{width:40, display:'flex', justifyContent:'center', alignItems:'center', gap:5}}>
+          <View style={{width:8, height:8, borderRadius:'50%', backgroundColor:colors.fontMain}}></View>
+          <VerticalBorderLine/>
+        </View>
+        <View style={{ flexGrow:1}}>
+          <TodoText>영어 강의 1강</TodoText>
+          <View style={{flexDirection:'row'}}>
+            <LinkIcon size={16}/>
+            <LinkText>스픽</LinkText>
+          </View>
+        </View>
+        <View>
+          <DurationText>1H 25M</DurationText>
+        </View>
       </View>
     )
   }
@@ -62,13 +115,15 @@ const Statistic = () => {
           <>
           {mode === "루틴별" ? (
             <View style={{display:'flex', flexDirection:'row', alignItems:'flex-end'}}>
-              <StatisticTitle>{`아침에는\n영어 공부`}</StatisticTitle>
-              <DropDownArrowButton size={40} color={""}/>
+              <StatisticTitle>{pickedRoutine[0]?.title}</StatisticTitle>
+              <TouchableOpacity >
+              <DropDownArrowButton size={40} color={""} handleArrowButton={() => setIsAssetLinkModalVisible(true)}/>
+              </TouchableOpacity>
             </View>
           ) : (
             <View style={{display:'flex', flexDirection:'row', alignItems:'flex-end', gap:7, height:50}}>
-              <StatisticTitle>7월</StatisticTitle>
-              <YearText>2025년</YearText>
+              <StatisticTitle>{`${today.subtract(1,'month').format("M월")}`}</StatisticTitle>
+              <YearText>{`${today.get('year')}년`}</YearText>
             </View>
           )}
 
@@ -76,7 +131,7 @@ const Statistic = () => {
           </>
 
           <MarginVertical top={40}/>
-          <DuringText>07.01 - 07.31</DuringText>
+          <DuringText>{`${today.subtract(1,'month').startOf('month').format('MM.DD')} - ${today.subtract(1,'month').endOf('month').format('MM.DD')}`}</DuringText>
           <TotalTimeText>30H 40M</TotalTimeText>
           <MarginVertical top={10}/>
           <View style={{display:'flex', flexDirection:'row', alignItems:'flex-end'}}>
@@ -88,8 +143,33 @@ const Statistic = () => {
             </GotoReportButton>
           </View>
           <MarginVertical top={60}/>
-          <Calandar/>
+          {mode === "월별" ?
+          <Calandar selectedRange={selectedRange} setSelectedRange={setSelectedRange}/>
+          :
+          <WeekCalandar version={"date"}/>
+          } 
+          <MarginVertical top={40}/>
+          <BorderLine/>
+          <MarginVertical top={25}/>
+          <LogArea>
+            <LogInfoText>{`${dayjs().format("YYYY.MM.")}${selectedDate}`}</LogInfoText>
+            <MarginVertical top={10}/>
+            <LogInfoText style={{fontSize:20}}>{`60M`}</LogInfoText>
+            <MarginVertical top={30}/>
+            <TimeText>09:00 - 10:00</TimeText>
+            <MarginVertical top={20}/>
+            {statisticLog.map((el,index) => {
+              return(
+                <View key={index}>
+                  <AssetEl item={["하이","하이","하이","하이"]} index={index} isLink={true} isTouchable={false} indexColor={"black"}/>
+                  <VerticalBorderLine/>
+                  <TodoLog/>
+                </View>
+              )
+            })}
+          </LogArea>
           <MarginVertical top={100}/>
+          <AssetLinkModal isAssetLinkModalVisible={isAssetLinkModalVisible} setIsAssetLinkModalVisible={setIsAssetLinkModalVisible} version={"Routine"} routineList={routineList} setRoutineList={setRoutineList} setPickedSaving={setPickedRoutine}/>
         </StatisticBody>
       </ScrollView>
       <StatisticBg source={statistic_bg}/>
@@ -103,7 +183,6 @@ export default Statistic
 const StatisticBody = styled.View`
   width:${size.width}px;
   display:flex;
-
   padding:0 30px;
 `
 
@@ -194,5 +273,51 @@ const GotoReportText = styled.Text`
   font-size:14px;
   font-weight:500;
   color:${colors.fontMain80};
+`
+
+const BorderLine = styled.View`
+  width:304px;
+  height:1px;
+  background-color:#fff;
+`
+
+const LogArea = styled.View`
+  width:100%;
+`
+
+const LogInfoText = styled.Text`
+  font-size:16px;
+  font-weight:600;
+  color:#4A5660;
+`
+
+const TimeText = styled.Text`
+  font-weight:500;
+  font-size:14px;
+  color:${colors.gray70};
+`
+
+const VerticalBorderLine = styled.View`
+  width:.4px;
+  height:30px;
+  background-color:${colors.fontMain};
+`
+
+const TodoText = styled.Text`
+  font-size:16px;
+  font-weight:600;
+  color:#343434;
+`
+
+const LinkText = styled.Text`
+  font-weight:500;
+  font-size:14px;
+  color:${colors.gray70};
+`
+
+const DurationText = styled.Text`
+  font-weight:500;
+  font-size:18px;
+  color:${colors.indigoBlue};
 `
 
