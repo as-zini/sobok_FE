@@ -23,10 +23,21 @@ export const useStatistic = () => {
     }
   }
 
-  const getStatisticDate = async() => {
+  const getStatisticDate = async(startDate, endDate, setAchieveList) => {
     try {
-      const response = await baseUrl.get(`/statistics/date?startDate=2025-02-01&endDate=2025-02-28`)
-      console.log(response.data)
+      const response = await baseUrl.get(`/statistics/date?startDate=${startDate}&endDate=${endDate}`)
+      console.log("date",response.data)
+      setAchieveList(response.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const getStatisticDateByRoutine = async(routineId, startDate, endDate,setAchieveList) => {
+    try {
+      const response = await baseUrl.get(`/statistics/routine?routineId=${routineId}&startDate=${startDate}&endDate=${endDate}`)
+      console.log("date",response.data)
+      setAchieveList(response.data)
     } catch (error) {
       console.log(error)
     }
@@ -45,6 +56,7 @@ export const useStatistic = () => {
     getStatisticInfo,
     getStatisticDate,
     getStatisticLog,
-    getStatisticInfoByRoutine
+    getStatisticInfoByRoutine,
+    getStatisticDateByRoutine
   }
 }

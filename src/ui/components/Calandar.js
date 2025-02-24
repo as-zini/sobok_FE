@@ -9,34 +9,40 @@ import calandar_arrow_left from '../../../assets/calandar_arrow_left.png';
 import calandar_arrow_right from '../../../assets/calandar_arrow_right.png';
 import { colors } from '../styles/colors';
 import MarginVertical from './MarginVertical';
-import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
-const Calandar = ({type, selectedRange, setSelectedRange}) => {
+const Calandar = ({ type, selectedRange, setSelectedRange, version, achieveList }) => {
   const [today, setToday] = useState(dayjs());
   const [weeks, setWeeks] = useState([]);
+  
+  const someAchieveDate = version === "statistic"&&achieveList.length>0 ? achieveList.map((el) => el.status === "SOME_ACHIEVED" ? Number(el.date.slice(8,10)) : "") : []
+  const AllAchieveDate = version === "statistic"&&achieveList.length>0 ? achieveList.map((el) => el.status === "ALL_ACHIEVED" ? Number(el.date.slice(8,10)) : "") : []
+  
 
-  // const handleRange = (date) => {
-  //   if(!selectedRange.startDate){
-  //     setSelectedRange({...selectedRange, startDate:date})
-  //   } else if(!selectedRange.endDate){
-  //     setSelectedRange({...selectedRange, endDate:date})
-  //   } else if(selectedRange.startDate && selectedRange){
-  //     setSelectedRange({})
-  //   }
-  // }
+
+  useEffect(() => {
+    console.log("achieve",achieveList)
+    console.log(someAchieveDate, AllAchieveDate)
+  }, [achieveList])
+  
 
   const handleRange = (date) => {
-    const fullDate = dayjs(today).date(date).format("YYYY-MM-DD"); // 현재 보고 있는 달(today) 기준으로 날짜 설정
-    console.log(date, fullDate)
-    if (!selectedRange.startDate) {
-      setSelectedRange({ startDate: fullDate });
-    } else if (!selectedRange.endDate) {
-      setSelectedRange({
-        startDate: selectedRange.startDate,
-        endDate: fullDate
-      });
+    const fullDate = dayjs(today).date(date).format("YYYY-MM-DD");
+    
+    if (version === "statistic") {
+      // 단일 날짜 선택 모드
+      setSelectedRange({ startDate: fullDate, endDate: null });
     } else {
-      setSelectedRange({});
+      // 기존 범위 선택 모드
+      if (!selectedRange.startDate) {
+        setSelectedRange({ startDate: fullDate });
+      } else if (!selectedRange.endDate) {
+        setSelectedRange({
+          startDate: selectedRange.startDate,
+          endDate: fullDate
+        });
+      } else {
+        setSelectedRange({});
+      }
     }
   };
 
@@ -53,22 +59,16 @@ const Calandar = ({type, selectedRange, setSelectedRange}) => {
       weeks.push(result.slice(i, i + 7));
     }
 
-    // 마지막 주의 요소가 7개가 되도록 빈칸 추가
     const lastWeek = weeks[weeks.length - 1];
     if (lastWeek.length < 7) {
       weeks[weeks.length - 1] = [...lastWeek, ...Array(7 - lastWeek.length).fill(null)];
     }
 
     setWeeks(weeks);
-};
-
+  };
 
   useEffect(() => {
     getCalandarData();
-    console.log(selectedRange)
-    console.log(dayjs(today).date('2025-04-23').isAfter(dayjs(selectedRange.startDate), 'day') )
-    console.log(dayjs(today).date('2025-04-23').isAfter(dayjs("2025-04-22")))
-    // dayjs(today).date('2025-04-23').isBefore(dayjs(selectedRange.endDate), 'day'))
   }, [today, selectedRange]);
 
   return (
@@ -82,7 +82,7 @@ const Calandar = ({type, selectedRange, setSelectedRange}) => {
           <ArrowButtonIcon source={calandar_arrow_right} />
         </ArrowButton>
       </SettingMonthArea>
-      <MarginVertical top={15}/>
+      <MarginVertical top={15} />
       <DayArea>
         {["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"].map((el, index) => (
           <DayEl key={index}>
@@ -90,56 +90,47 @@ const Calandar = ({type, selectedRange, setSelectedRange}) => {
           </DayEl>
         ))}
       </DayArea>
-      <MarginVertical top={10}/>
+      <MarginVertical top={10} />
       <CalandarContentsBody>
         {weeks.map((week, weekIndex) => (
           <View key={weekIndex}>
-          <WeekRow>
-            {week.map((date, dateIndex) => (
-              // <DateEl
-              //   key={dateIndex}
-              //   isEmpty={!date} 
-              //   onPress={() => handleRange(date)}
-              //   style={{backgroundColor: date < selectedRange["startDate"] && date > selectedRange["endDate"] ? "rgba(176, 195, 255, 0.3)"
-              //   :date === selectedRange.startDate || date === selectedRange.endDate ? colors.fontMain : "",
-              //   borderRadius:date === selectedRange.startDate || date === selectedRange.endDate ? "50%" : ""
-              //   }}>
-                
-              //   <DateText style={{color:date === selectedRange.startDate || date === selectedRange.endDate ? "#fff" : ""}}>{date || ""}</DateText>
-              // </DateEl>
-              <DateEl
-  key={dateIndex}
-  isEmpty={!date} 
-  onPress={() => handleRange(date)} // 숫자(일)만 전달
-  style={{
-    backgroundColor: 
-      selectedRange.startDate && selectedRange.endDate &&
-      dayjs(today).date(date).isAfter(dayjs(selectedRange.startDate), 'day') &&
-      dayjs(today).date(date).isBefore(dayjs(selectedRange.endDate), 'day')
-        ? "rgba(176, 195, 255, 0.3)"  // 선택한 기간 중간 부분 배경색
-        : dayjs(today).date(date).isSame(dayjs(selectedRange.startDate), 'day') ||
-          dayjs(today).date(date).isSame(dayjs(selectedRange.endDate), 'day')
-          ? colors.fontMain // 시작과 끝 날짜 색상
-          : "",
-    borderRadius: 
-      dayjs(today).date(date).isSame(dayjs(selectedRange.startDate), 'day') ||
-      dayjs(today).date(date).isSame(dayjs(selectedRange.endDate), 'day')
-        ? "50%" 
-        : ""
-  }}
->
-  <DateText style={{
-    color: dayjs(today).date(date).isSame(dayjs(selectedRange.startDate), 'day') ||
-          dayjs(today).date(date).isSame(dayjs(selectedRange.endDate), 'day') 
-      ? "#fff" 
-      : ""
-  }}>
-    {date || ""}
-  </DateText>
-</DateEl>
-            ))}
-          </WeekRow>
-          <MarginVertical top={6}/>
+            <WeekRow>
+              {week.map((date, dateIndex) => (
+                <DateEl
+                  key={dateIndex}
+                  isEmpty={!date}
+                  onPress={() => handleRange(date)}
+                  style={{
+                    backgroundColor: 
+                      version !== "statistic" &&
+                      selectedRange.startDate && selectedRange.endDate &&
+                      dayjs(today).date(date).isAfter(dayjs(selectedRange.startDate), 'day') &&
+                      dayjs(today).date(date).isBefore(dayjs(selectedRange.endDate), 'day')
+                        ? "rgba(176, 195, 255, 0.3)"
+                        : dayjs(today).date(date).isSame(dayjs(selectedRange.startDate), 'day') ||
+                          (selectedRange.endDate && dayjs(today).date(date).isSame(dayjs(selectedRange.endDate), 'day'))
+                        ? colors.fontMain
+                        : "",
+                    borderRadius: 
+                      dayjs(today).date(date).isSame(dayjs(selectedRange.startDate), 'day') ||
+                      (selectedRange.endDate && dayjs(today).date(date).isSame(dayjs(selectedRange.endDate), 'day'))
+                        ? "50%" 
+                        : ""
+                  }}
+                >
+                  {someAchieveDate.includes(date) ? <SomeAchievedState/> : AllAchieveDate.includes(date) ? <AllAchieveDate/> : <></>}
+                  <DateText style={{
+                    color: dayjs(today).date(date).isSame(dayjs(selectedRange.startDate), 'day') ||
+                          (selectedRange.endDate && dayjs(today).date(date).isSame(dayjs(selectedRange.endDate), 'day'))
+                      ? "#fff" 
+                      : ""
+                  }}>
+                    {date || ""}
+                  </DateText>
+                </DateEl>
+              ))}
+            </WeekRow>
+            <MarginVertical top={6} />
           </View>
         ))}
       </CalandarContentsBody>
@@ -147,9 +138,7 @@ const Calandar = ({type, selectedRange, setSelectedRange}) => {
   );
 };
 
-
-export default Calandar
-
+export default Calandar;
 
 const CalandarBody = styled.View`
   display:flex;
@@ -233,3 +222,20 @@ const DateText = styled.Text`
   color:#4A5660;
 `
 
+const SomeAchievedState = styled.View`
+  width:4px;
+  height:4px;
+  border-radius:50%;
+  background-color:rgba(176, 195, 255, 0.9);
+  position:absolute;
+  top:3px;
+`
+
+const AllAchivedState = styled.View`
+width:4px;
+height:4px;
+border-radius:50%;
+background-color:rgba(0, 60, 255, 1);
+position:absolute;
+  top:3px;
+`

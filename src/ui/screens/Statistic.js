@@ -28,7 +28,7 @@ const Statistic = () => {
   const navigation = useNavigation();
   const [selectedRange, setSelectedRange] = useState({}) 
   const [today, setToday] = useState(dayjs());
-  const {getStatisticInfo, getStatisticDate, getStatisticLog, getStatisticInfoByRoutine} = useStatistic();
+  const {getStatisticInfo, getStatisticDate, getStatisticLog, getStatisticInfoByRoutine, getStatisticDateByRoutine} = useStatistic();
   const startDate = today.startOf('month').format("YYYY-MM-DD")
   const endDate = today.endOf('month').format("YYYY-MM-DD")
   const [statisticLog, setStatisticLog] = useState(["1"]);
@@ -39,14 +39,21 @@ const Statistic = () => {
   const [pickedRoutine, setPickedRoutine] = useState([]);
   const [dateInfo, setDateInfo] = useState({});
   const [dateInfoByRoutine, setDateInfoByRoutine] = useState({});
+  const [achieveList,setAchieveList] = useState([]);
 
  
   useEffect(() => {
-    mode === "루틴별" ? 
+    if(mode === "루틴별"){ 
     getStatisticInfoByRoutine(pickedRoutine[0]?.id, setDateInfoByRoutine)
-    :getStatisticInfo(today.startOf('month').format("YYYY-MM-DD"),today.format("YYYY-MM-DD"),setDateInfo)
-    getStatisticDate()
-    getStatisticLog("2025-02-18")
+    getStatisticDateByRoutine(pickedRoutine[0]?.id,today.startOf('week').format("YYYY-MM-DD"),today.format("YYYY-MM-DD"), setAchieveList)
+    }else if(mode==="월별"){
+    getStatisticInfo(today.startOf('month').format("YYYY-MM-DD"),today.format("YYYY-MM-DD"),setDateInfo)
+    getStatisticDate(today.startOf('month').format("YYYY-MM-DD"),today.format("YYYY-MM-DD"),setAchieveList)
+    }else if(mode==="주별"){
+    getStatisticInfo(today.startOf('week').format("YYYY-MM-DD"),today.format("YYYY-MM-DD"),setDateInfo)
+    getStatisticDate(today.startOf('week').format("YYYY-MM-DD"),today.format("YYYY-MM-DD"), setAchieveList)
+
+    }
 
   }, [mode, pickedRoutine])
 
@@ -60,12 +67,12 @@ const Statistic = () => {
   const DropDown = () => {
     return(
       <View style={{width:90, height:80, backgroundColor:colors.indigoBlue50, position:'absolute', bottom:-85, borderRadius:14, display:'flex', justifyContent:'center', alignItems:'center'}}>
-        <TouchableOpacity style={{width:'100%', height:40, borderRadius:14, display:'flex', justifyContent:'center', alignItems:'center'}} onPress={() => {setMode("주별");setShowDropDown(false)}}>
-          <Text style={{color:"#fff", fontSize:18, fontWeight:600}}>주별</Text>
+        <TouchableOpacity style={{width:'100%', height:40, borderRadius:14, display:'flex', justifyContent:'center', alignItems:'center'}} onPress={() => {setMode(mode==="월별" ? "주별" : "월별");setShowDropDown(false)}}>
+          <Text style={{color:"#fff", fontSize:18, fontWeight:600}}>{mode==="월별" ? "주별" : "월별"}</Text>
         </TouchableOpacity>
         <View style={{width:80, height:.7, backgroundColor:"#fff"}}></View>
-        <TouchableOpacity style={{width:'100%', height:40, borderRadius:14, display:'flex', justifyContent:'center', alignItems:'center'}} onPress={() => {setMode("루틴별");setShowDropDown(false)}}>
-          <Text style={{color:"#fff", fontSize:18, fontWeight:600}}>루틴별</Text>
+        <TouchableOpacity style={{width:'100%', height:40, borderRadius:14, display:'flex', justifyContent:'center', alignItems:'center'}} onPress={() => {setMode(mode==="루틴별" ? "주별" : "루틴별");setShowDropDown(false)}}>
+          <Text style={{color:"#fff", fontSize:18, fontWeight:600}}>{mode==="루틴별" ? "주별" : "루틴별"}</Text>
         </TouchableOpacity>
       </View>
     )
@@ -150,9 +157,9 @@ const Statistic = () => {
           </View>
           <MarginVertical top={60}/>
           {mode === "월별" ?
-          <Calandar selectedRange={selectedRange} setSelectedRange={setSelectedRange}/>
+          <Calandar selectedRange={selectedRange} setSelectedRange={setSelectedRange} version={"statistic"} achieveList={achieveList}/>
           :
-          <WeekCalandar version={"date"} selectedDate={selectedDate} setSelectedDate={setSelectedDate}/>
+          <WeekCalandar version={"statistic"} selectedDate={selectedDate} setSelectedDate={setSelectedDate} achieveList={achieveList}/>
           } 
           <MarginVertical top={40}/>
           <BorderLine/>
