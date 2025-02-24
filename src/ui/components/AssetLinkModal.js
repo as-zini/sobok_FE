@@ -13,17 +13,23 @@ import { useInstallmentSaving } from '../../hooks/useInstallmentSaving';
 import AssetEl from './AssetEl';
 import { minToHour } from '../../util';
 import { useRoutine } from '../../hooks/useRoutine';
+import { useStatistic } from '../../hooks/useStatistic';
 
-const AssetLinkModal = ({isAssetLinkModalVisible, setIsAssetLinkModalVisible, invalidSavingList, setInvalidSavingList, setPickedSaving, version, routineList, setRoutineList}) => {
+const AssetLinkModal = ({isAssetLinkModalVisible, setIsAssetLinkModalVisible, invalidSavingList, setInvalidSavingList, setPickedSaving, version, routineList, setRoutineList, setDateInfoByRoutine}) => {
   const {getInvalidSavingList} = useInstallmentSaving();
   const {getRoutineByList} = useRoutine();
   const [isComplete, setIsComplete] = useState(false);
+  const pickedEl = [];
 
   useEffect(() => {
     version === "Routine" ?
     getRoutineByList(setRoutineList, setIsComplete)
     : getInvalidSavingList(setInvalidSavingList);
   }, [])
+
+  const handleCompleteButton = () => {
+    setIsAssetLinkModalVisible(false)
+  }
   
 
   return (
@@ -71,7 +77,7 @@ const AssetLinkModal = ({isAssetLinkModalVisible, setIsAssetLinkModalVisible, in
           :invalidSavingList.length > 0 ?
           invalidSavingList.map((el,index) => {
             return(
-              <TouchableOpacity key={index} onPress={() => setPickedSaving([el])}>
+              <TouchableOpacity key={index} onPress={() => {setPickedSaving([el])}}>
                 <MarginVertical top={55}/>
                 <AssetEl item={[el.title, "", `${minToHour(el.time)}`,`${el.time*30}`]} index={index} isLink={false}/>
               </TouchableOpacity>
@@ -82,7 +88,7 @@ const AssetLinkModal = ({isAssetLinkModalVisible, setIsAssetLinkModalVisible, in
         }
         </SavingListBody>
         <View>
-          <Button text={"확인"} handleButton={() => setIsAssetLinkModalVisible(false)}/>
+          <Button text={"확인"} handleButton={handleCompleteButton}/>
         </View>
       </AssetLinkModalBody>
       <AssetLinkModalBg source={asset_link_modal_bg}/>

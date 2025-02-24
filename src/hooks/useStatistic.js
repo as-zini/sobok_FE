@@ -3,13 +3,21 @@ import baseUrl from "../api/baseURL"
 
 export const useStatistic = () => {
 
-  const getStatisticInfo = async(startDate, endDate) => {
+  const getStatisticInfo = async(startDate, endDate, setDateInfo) => {
     try {
-      const response = await axios.get('https://sobok-app.com/statistics/date/count',{
-        startDate:startDate,
-        endDate:endDate
-      })
+      const response = await baseUrl.get(`/statistics/date/count?startDate=${startDate}&endDate=${endDate}`,)
       console.log(response.data)
+      setDateInfo(response.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const getStatisticInfoByRoutine = async(routineId, setDateInfoByRoutine) => {
+    try {
+      const response = await baseUrl.get(`/statistics/routine/count?routineId=${routineId}`)
+      console.log(response.data)
+      setDateInfoByRoutine(response.data)
     } catch (error) {
       console.log(error)
     }
@@ -17,11 +25,8 @@ export const useStatistic = () => {
 
   const getStatisticDate = async() => {
     try {
-      const response = await baseUrl.get('/statistics/date',{
-        startDate:"2025-02-01",
-        endDeate:'2025-02-28'
-      })
-      console.log(response)
+      const response = await baseUrl.get(`/statistics/date?startDate=2025-02-01&endDate=2025-02-28`)
+      console.log(response.data)
     } catch (error) {
       console.log(error)
     }
@@ -39,6 +44,7 @@ export const useStatistic = () => {
   return {
     getStatisticInfo,
     getStatisticDate,
-    getStatisticLog
+    getStatisticLog,
+    getStatisticInfoByRoutine
   }
 }

@@ -20,6 +20,7 @@ import LinkIcon from '../components/LinkIcon';
 import WeekCalandar from '../components/WeekCalandar';
 import AssetAddModal from '../components/AssetAddModal';
 import AssetLinkModal from '../components/AssetLinkModal';
+import { minToHour } from '../../util';
 
 const Statistic = () => {
   const [mode, setMode] = useState("월별");
@@ -27,7 +28,7 @@ const Statistic = () => {
   const navigation = useNavigation();
   const [selectedRange, setSelectedRange] = useState({}) 
   const [today, setToday] = useState(dayjs());
-  const {getStatisticInfo, getStatisticDate, getStatisticLog} = useStatistic();
+  const {getStatisticInfo, getStatisticDate, getStatisticLog, getStatisticInfoByRoutine} = useStatistic();
   const startDate = today.startOf('month').format("YYYY-MM-DD")
   const endDate = today.endOf('month').format("YYYY-MM-DD")
   const [statisticLog, setStatisticLog] = useState(["1"]);
@@ -36,13 +37,18 @@ const Statistic = () => {
   const [isAssetLinkModalVisible, setIsAssetLinkModalVisible] = useState(false);
   const [routineList, setRoutineList] = useState([]);
   const [pickedRoutine, setPickedRoutine] = useState([]);
+  const [dateInfo, setDateInfo] = useState({});
+  const [dateInfoByRoutine, setDateInfoByRoutine] = useState({});
+
  
   useEffect(() => {
-    // getStatisticInfo("2025-02-01","2025-02-27")
+    mode === "루틴별" ? 
+    getStatisticInfoByRoutine(pickedRoutine[0]?.id, setDateInfoByRoutine)
+    :getStatisticInfo(today.startOf('month').format("YYYY-MM-DD"),today.format("YYYY-MM-DD"),setDateInfo)
     getStatisticDate()
-    console.log(startDate)
     getStatisticLog("2025-02-18")
-  }, [])
+
+  }, [mode, pickedRoutine])
 
   useEffect(() => {
     console.log("picked",pickedRoutine)
@@ -122,7 +128,7 @@ const Statistic = () => {
             </View>
           ) : (
             <View style={{display:'flex', flexDirection:'row', alignItems:'flex-end', gap:7, height:50}}>
-              <StatisticTitle>{`${today.subtract(1,'month').format("M월")}`}</StatisticTitle>
+              <StatisticTitle>{`${today.format("M월")}`}</StatisticTitle>
               <YearText>{`${today.get('year')}년`}</YearText>
             </View>
           )}
@@ -131,12 +137,12 @@ const Statistic = () => {
           </>
 
           <MarginVertical top={40}/>
-          <DuringText>{`${today.subtract(1,'month').startOf('month').format('MM.DD')} - ${today.subtract(1,'month').endOf('month').format('MM.DD')}`}</DuringText>
-          <TotalTimeText>30H 40M</TotalTimeText>
+          <DuringText>{`${today.startOf('month').format('MM.DD')} - ${today.format('MM.DD')}`}</DuringText>
+          <TotalTimeText>{mode === "루틴별"&&Object.keys(dateInfoByRoutine).length > 0?minToHour(dateInfoByRoutine.totalDuration): mode!=="루틴별"&&Object.keys(dateInfo).length > 0 ? minToHour(dateInfo.totalDuration) : ""}</TotalTimeText>
           <MarginVertical top={10}/>
           <View style={{display:'flex', flexDirection:'row', alignItems:'flex-end'}}>
             <StatisticText>
-            {`15일 동안\n눈이 내렸어요`}</StatisticText>
+            {`${mode==="루틴별"&&Object.keys(dateInfoByRoutine).length > 0 ? dateInfoByRoutine.totalAchievedCount : mode!=="루틴별"&&Object.keys(dateInfo).length > 0 ? dateInfo?.totalAchievedCount:""}일 동안\n눈이 내렸어요`}</StatisticText>
             <GotoReportButton onPress={() => navigation.navigate("Report")}>
               <GotoReportText>리포트 보러가기</GotoReportText>
               <NavigateArrowButton/>
@@ -146,7 +152,7 @@ const Statistic = () => {
           {mode === "월별" ?
           <Calandar selectedRange={selectedRange} setSelectedRange={setSelectedRange}/>
           :
-          <WeekCalandar version={"date"}/>
+          <WeekCalandar version={"date"} selectedDate={selectedDate} setSelectedDate={setSelectedDate}/>
           } 
           <MarginVertical top={40}/>
           <BorderLine/>
@@ -169,7 +175,14 @@ const Statistic = () => {
             })}
           </LogArea>
           <MarginVertical top={100}/>
-          <AssetLinkModal isAssetLinkModalVisible={isAssetLinkModalVisible} setIsAssetLinkModalVisible={setIsAssetLinkModalVisible} version={"Routine"} routineList={routineList} setRoutineList={setRoutineList} setPickedSaving={setPickedRoutine}/>
+          <AssetLinkModal
+          isAssetLinkModalVisible={isAssetLinkModalVisible} 
+          setIsAssetLinkModalVisible={setIsAssetLinkModalVisible} 
+          version={"Routine"} routineList={routineList} 
+          setRoutineList={setRoutineList} 
+          setPickedSaving={setPickedRoutine}
+          setDateInfoByRoutine={setDateInfoByRoutine}
+          />
         </StatisticBody>
       </ScrollView>
       <StatisticBg source={statistic_bg}/>
@@ -235,6 +248,7 @@ const StatisticTitle = styled.Text`
   font-size:50px;
   font-weight:600;
   color:${colors.fontMain};
+  max-width:300px;
 `
 
 const YearText = styled.Text`
