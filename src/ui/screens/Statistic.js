@@ -28,7 +28,7 @@ const Statistic = () => {
   const navigation = useNavigation();
   const [selectedRange, setSelectedRange] = useState({}) 
   const [today, setToday] = useState(dayjs());
-  const {getStatisticInfo, getStatisticDate, getStatisticLog, getStatisticInfoByRoutine, getStatisticDateByRoutine} = useStatistic();
+  const {getStatisticInfo, getStatisticDate, getStatisticLog, getStatisticInfoByRoutine, getStatisticDateByRoutine, getStatisticLogByRoutine} = useStatistic();
   const startDate = today.startOf('month').format("YYYY-MM-DD")
   const endDate = today.endOf('month').format("YYYY-MM-DD")
   const [statisticLog, setStatisticLog] = useState(["1"]);
@@ -46,21 +46,23 @@ const Statistic = () => {
     if(mode === "루틴별"){ 
     getStatisticInfoByRoutine(pickedRoutine[0]?.id, setDateInfoByRoutine)
     getStatisticDateByRoutine(pickedRoutine[0]?.id,today.startOf('week').format("YYYY-MM-DD"),today.format("YYYY-MM-DD"), setAchieveList)
+    getStatisticLogByRoutine(`${today.format("YYYY-MM")}-${selectedDate}`,pickedRoutine[0]?.id,setStatisticLog)
     }else if(mode==="월별"){
     getStatisticInfo(today.startOf('month').format("YYYY-MM-DD"),today.format("YYYY-MM-DD"),setDateInfo)
-    getStatisticDate(today.startOf('month').format("YYYY-MM-DD"),today.format("YYYY-MM-DD"),setAchieveList)
+    getStatisticDate(today.startOf('month').format("YYYY-MM-DD"),"2025-02-25",setAchieveList)
+    getStatisticLog(selectedRange.startDate, setStatisticLog)
     }else if(mode==="주별"){
     getStatisticInfo(today.startOf('week').format("YYYY-MM-DD"),today.format("YYYY-MM-DD"),setDateInfo)
     getStatisticDate(today.startOf('week').format("YYYY-MM-DD"),today.format("YYYY-MM-DD"), setAchieveList)
-
+    getStatisticLog(`${today.format("YYYY-MM")}-${selectedDate}`, setStatisticLog)
     }
 
-  }, [mode, pickedRoutine])
+  }, [mode, pickedRoutine,selectedDate,selectedRange])
 
   useEffect(() => {
-    console.log("picked",pickedRoutine)
+    console.log(statisticLog[0])
     
-  }, [pickedRoutine])
+  }, [statisticLog])
   
   
 
@@ -78,24 +80,33 @@ const Statistic = () => {
     )
   }
 
-  const TodoLog = () => {
+  const TodoLog = ({todo}) => {
     return(
-      <View style={{display:'flex', flexDirection:'row', width:300, gap:13}}>
-        <View style={{width:40, display:'flex', justifyContent:'center', alignItems:'center', gap:5}}>
-          <View style={{width:8, height:8, borderRadius:'50%', backgroundColor:colors.fontMain}}></View>
-          <VerticalBorderLine/>
-        </View>
-        <View style={{ flexGrow:1}}>
-          <TodoText>영어 강의 1강</TodoText>
-          <View style={{flexDirection:'row'}}>
-            <LinkIcon size={16}/>
-            <LinkText>스픽</LinkText>
+      <>
+      {todo.map((el,index) => {
+        return(
+        <View style={{display:'flex', flexDirection:'row', width:300, gap:13}} key={index}>
+                <View style={{width:40, display:'flex', justifyContent:'center', alignItems:'center', gap:5}}>
+                  <View style={{width:8, height:8, borderRadius:'50%', backgroundColor:colors.fontMain}}></View>
+                  <VerticalBorderLine/>
+                </View>
+                <View style={{ flexGrow:1}}>
+                  <TodoText>{el.title}</TodoText>
+                  <MarginVertical top={10}/>
+                  <View style={{flexDirection:'row'}}>
+                    <LinkIcon size={16}/>
+                    <LinkText>{el.linkApp}</LinkText>
+                  </View>
+                </View>
+                <View>
+                  <DurationText>{minToHour(el.duration)}</DurationText>
+                </View>
           </View>
-        </View>
-        <View>
-          <DurationText>1H 25M</DurationText>
-        </View>
-      </View>
+        )
+      })
+      
+      }
+      </>
     )
   }
 
@@ -167,16 +178,17 @@ const Statistic = () => {
           <LogArea>
             <LogInfoText>{`${dayjs().format("YYYY.MM.")}${selectedDate}`}</LogInfoText>
             <MarginVertical top={10}/>
-            <LogInfoText style={{fontSize:20}}>{`60M`}</LogInfoText>
+            <LogInfoText style={{fontSize:20}}>{`${statisticLog.length>0?minToHour(statisticLog.reduce((sum,el) => sum+ el.duration,0)) : 0}`}</LogInfoText>
             <MarginVertical top={30}/>
-            <TimeText>09:00 - 10:00</TimeText>
-            <MarginVertical top={20}/>
             {statisticLog.map((el,index) => {
               return(
                 <View key={index}>
-                  <AssetEl item={["하이","하이","하이","하이"]} index={index} isLink={true} isTouchable={false} indexColor={"black"}/>
-                  <VerticalBorderLine/>
-                  <TodoLog/>
+                  <TimeText>{`${dayjs(el.startTime).format("HH:mm")} - ${dayjs(el.endTime).format("HH:mm")}`}</TimeText>
+                  <MarginVertical top={20}/>
+                  <AssetEl item={[el.title,el.accountTitle,minToHour(el.duration),""]} index={index} isLink={true} isTouchable={false} indexColor={"black"}/>
+                  <MarginVertical top={20}/>
+==
+                  <TodoLog todo={el.todoLogs?.length > 0 ? el.todoLogs : []}/>
                 </View>
               )
             })}
