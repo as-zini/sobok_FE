@@ -4,10 +4,12 @@ import { Text } from 'react-native';
 import styled from 'styled-components'
 import { colors } from '../styles/colors';
 
-const WeekCalandar = ({selectedDate, setSelectedDate, isDuplication, version}) => {
+const WeekCalandar = ({selectedDate, setSelectedDate, isDuplication, version, achieveList}) => {
   const [today, setToday] = useState(dayjs());
   const DayTexts = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
   const [weekDates, setWeekDates] = useState([]);
+  const SomeAchieveDate = version==="statistic" ? achieveList.map((el) => el.status === "SOME_ACHIEVED" ? Number(el.date.slice(8,10)) : "") : []
+  const AllAchieveDate = version==="statistic" ? achieveList.map((el) => (el.status === "ALL_ACHIEVED") || (el.status === "ACHIEVED") ? Number(el.date.slice(8,10)) : ""):[]
 
 
   const getWeekDate = () => {
@@ -95,6 +97,7 @@ const WeekCalandar = ({selectedDate, setSelectedDate, isDuplication, version}) =
                 setSelectedDate(el)
               }
             }}>
+              {SomeAchieveDate.includes(el) ? <SomeAchievedState/> : AllAchieveDate.includes(el) ? <AllAchivedState/> : <></>}
               {(isDuplication && selectedDate?.includes(index)) ||  (!isDuplication && selectedDate === el)?
               <>
                 <SelectedCircle/>
@@ -184,4 +187,22 @@ const SelectedCircle = styled.View`
   background-color:${colors.fontMain};
   border-radius:50%;
   position:absolute;
+`
+
+const SomeAchievedState = styled.View`
+  width:4px;
+  height:4px;
+  border-radius:50%;
+  background-color:rgba(176, 195, 255, 0.9);
+  position:absolute;
+  top:0px;
+`
+
+const AllAchivedState = styled.View`
+width:4px;
+height:4px;
+border-radius:50%;
+background-color:rgba(0, 60, 255, 1);
+position:absolute;
+top:0px;
 `

@@ -20,7 +20,7 @@ const AssetEl = ({item, index, isLink, category, isInvalid, isTouchable, indexCo
                               : navigation.navigate("DetailTodo")}
       isTouchable={isTouchable}                   
     >
-        <View style={{flexGrow:.3}}>
+        <View>
           <StepNumber step={index+1} isInvalid={isInvalid} indexColor={indexColor}/>
         </View>
         <View style={{display:'flex', flexGrow:1, width:140}}>
@@ -46,10 +46,10 @@ const AssetEl = ({item, index, isLink, category, isInvalid, isTouchable, indexCo
                               : navigation.navigate("DetailTodo")}
       isTouchable={isTouchable}                   
     >
-        <View style={{flexGrow:.15}}>
+        <View style={{width:60}}>
           <StepNumber step={index+1} isInvalid={isInvalid}/>
         </View>
-        <View style={{display:'flex', flexGrow:1, maxWidth:155}}>
+        <View style={{display:'flex', flexGrow:1, width:155, display:'flex', alignItems:'flex-start'}}>
           <SavingTitle style={{color:isInvalid ? "rgba(112, 113, 114, 0.8)" : ""}}>{item[0]}</SavingTitle>
           <MarginVertical top={7}/>
           <View style={{display:'flex', flexDirection:'row', gap:5}}>

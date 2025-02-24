@@ -20,6 +20,7 @@ import LinkIcon from '../components/LinkIcon';
 import WeekCalandar from '../components/WeekCalandar';
 import AssetAddModal from '../components/AssetAddModal';
 import AssetLinkModal from '../components/AssetLinkModal';
+import { minToHour } from '../../util';
 
 const Statistic = () => {
   const [mode, setMode] = useState("월별");
@@ -27,7 +28,7 @@ const Statistic = () => {
   const navigation = useNavigation();
   const [selectedRange, setSelectedRange] = useState({}) 
   const [today, setToday] = useState(dayjs());
-  const {getStatisticInfo, getStatisticDate, getStatisticLog} = useStatistic();
+  const {getStatisticInfo, getStatisticDate, getStatisticLog, getStatisticInfoByRoutine, getStatisticDateByRoutine, getStatisticLogByRoutine} = useStatistic();
   const startDate = today.startOf('month').format("YYYY-MM-DD")
   const endDate = today.endOf('month').format("YYYY-MM-DD")
   const [statisticLog, setStatisticLog] = useState(["1"]);
@@ -36,53 +37,76 @@ const Statistic = () => {
   const [isAssetLinkModalVisible, setIsAssetLinkModalVisible] = useState(false);
   const [routineList, setRoutineList] = useState([]);
   const [pickedRoutine, setPickedRoutine] = useState([]);
+  const [dateInfo, setDateInfo] = useState({});
+  const [dateInfoByRoutine, setDateInfoByRoutine] = useState({});
+  const [achieveList,setAchieveList] = useState([]);
+
  
   useEffect(() => {
-    // getStatisticInfo("2025-02-01","2025-02-27")
-    getStatisticDate()
-    console.log(startDate)
-    getStatisticLog("2025-02-18")
-  }, [])
+    if(mode === "루틴별"){ 
+    getStatisticInfoByRoutine(pickedRoutine[0]?.id, setDateInfoByRoutine)
+    getStatisticDateByRoutine(pickedRoutine[0]?.id,today.startOf('week').format("YYYY-MM-DD"),today.format("YYYY-MM-DD"), setAchieveList)
+    getStatisticLogByRoutine(`${today.format("YYYY-MM")}-${selectedDate}`,pickedRoutine[0]?.id,setStatisticLog)
+    }else if(mode==="월별"){
+    getStatisticInfo(today.startOf('month').format("YYYY-MM-DD"),today.format("YYYY-MM-DD"),setDateInfo)
+    getStatisticDate(today.startOf('month').format("YYYY-MM-DD"),"2025-02-25",setAchieveList)
+    getStatisticLog(selectedRange.startDate, setStatisticLog)
+    }else if(mode==="주별"){
+    getStatisticInfo(today.startOf('week').format("YYYY-MM-DD"),today.format("YYYY-MM-DD"),setDateInfo)
+    getStatisticDate(today.startOf('week').format("YYYY-MM-DD"),today.format("YYYY-MM-DD"), setAchieveList)
+    getStatisticLog(`${today.format("YYYY-MM")}-${selectedDate}`, setStatisticLog)
+    }
+
+  }, [mode, pickedRoutine,selectedDate,selectedRange])
 
   useEffect(() => {
-    console.log("picked",pickedRoutine)
+    console.log(statisticLog[0])
     
-  }, [pickedRoutine])
+  }, [statisticLog])
   
   
 
   const DropDown = () => {
     return(
       <View style={{width:90, height:80, backgroundColor:colors.indigoBlue50, position:'absolute', bottom:-85, borderRadius:14, display:'flex', justifyContent:'center', alignItems:'center'}}>
-        <TouchableOpacity style={{width:'100%', height:40, borderRadius:14, display:'flex', justifyContent:'center', alignItems:'center'}} onPress={() => {setMode("주별");setShowDropDown(false)}}>
-          <Text style={{color:"#fff", fontSize:18, fontWeight:600}}>주별</Text>
+        <TouchableOpacity style={{width:'100%', height:40, borderRadius:14, display:'flex', justifyContent:'center', alignItems:'center'}} onPress={() => {setMode(mode==="월별" ? "주별" : "월별");setShowDropDown(false)}}>
+          <Text style={{color:"#fff", fontSize:18, fontWeight:600}}>{mode==="월별" ? "주별" : "월별"}</Text>
         </TouchableOpacity>
         <View style={{width:80, height:.7, backgroundColor:"#fff"}}></View>
-        <TouchableOpacity style={{width:'100%', height:40, borderRadius:14, display:'flex', justifyContent:'center', alignItems:'center'}} onPress={() => {setMode("루틴별");setShowDropDown(false)}}>
-          <Text style={{color:"#fff", fontSize:18, fontWeight:600}}>루틴별</Text>
+        <TouchableOpacity style={{width:'100%', height:40, borderRadius:14, display:'flex', justifyContent:'center', alignItems:'center'}} onPress={() => {setMode(mode==="루틴별" ? "주별" : "루틴별");setShowDropDown(false)}}>
+          <Text style={{color:"#fff", fontSize:18, fontWeight:600}}>{mode==="루틴별" ? "주별" : "루틴별"}</Text>
         </TouchableOpacity>
       </View>
     )
   }
 
-  const TodoLog = () => {
+  const TodoLog = ({todo}) => {
     return(
-      <View style={{display:'flex', flexDirection:'row', width:300, gap:13}}>
-        <View style={{width:40, display:'flex', justifyContent:'center', alignItems:'center', gap:5}}>
-          <View style={{width:8, height:8, borderRadius:'50%', backgroundColor:colors.fontMain}}></View>
-          <VerticalBorderLine/>
-        </View>
-        <View style={{ flexGrow:1}}>
-          <TodoText>영어 강의 1강</TodoText>
-          <View style={{flexDirection:'row'}}>
-            <LinkIcon size={16}/>
-            <LinkText>스픽</LinkText>
+      <>
+      {todo.map((el,index) => {
+        return(
+        <View style={{display:'flex', flexDirection:'row', width:300, gap:13}} key={index}>
+                <View style={{width:40, display:'flex', justifyContent:'center', alignItems:'center', gap:5}}>
+                  <View style={{width:8, height:8, borderRadius:'50%', backgroundColor:colors.fontMain}}></View>
+                  <VerticalBorderLine/>
+                </View>
+                <View style={{ flexGrow:1}}>
+                  <TodoText>{el.title}</TodoText>
+                  <MarginVertical top={10}/>
+                  <View style={{flexDirection:'row'}}>
+                    <LinkIcon size={16}/>
+                    <LinkText>{el.linkApp}</LinkText>
+                  </View>
+                </View>
+                <View>
+                  <DurationText>{minToHour(el.duration)}</DurationText>
+                </View>
           </View>
-        </View>
-        <View>
-          <DurationText>1H 25M</DurationText>
-        </View>
-      </View>
+        )
+      })
+      
+      }
+      </>
     )
   }
 
@@ -122,7 +146,7 @@ const Statistic = () => {
             </View>
           ) : (
             <View style={{display:'flex', flexDirection:'row', alignItems:'flex-end', gap:7, height:50}}>
-              <StatisticTitle>{`${today.subtract(1,'month').format("M월")}`}</StatisticTitle>
+              <StatisticTitle>{`${today.format("M월")}`}</StatisticTitle>
               <YearText>{`${today.get('year')}년`}</YearText>
             </View>
           )}
@@ -131,12 +155,12 @@ const Statistic = () => {
           </>
 
           <MarginVertical top={40}/>
-          <DuringText>{`${today.subtract(1,'month').startOf('month').format('MM.DD')} - ${today.subtract(1,'month').endOf('month').format('MM.DD')}`}</DuringText>
-          <TotalTimeText>30H 40M</TotalTimeText>
+          <DuringText>{`${today.startOf('month').format('MM.DD')} - ${today.format('MM.DD')}`}</DuringText>
+          <TotalTimeText>{mode === "루틴별"&&Object.keys(dateInfoByRoutine).length > 0?minToHour(dateInfoByRoutine.totalDuration): mode!=="루틴별"&&Object.keys(dateInfo).length > 0 ? minToHour(dateInfo.totalDuration) : ""}</TotalTimeText>
           <MarginVertical top={10}/>
           <View style={{display:'flex', flexDirection:'row', alignItems:'flex-end'}}>
             <StatisticText>
-            {`15일 동안\n눈이 내렸어요`}</StatisticText>
+            {`${mode==="루틴별"&&Object.keys(dateInfoByRoutine).length > 0 ? dateInfoByRoutine.totalAchievedCount : mode!=="루틴별"&&Object.keys(dateInfo).length > 0 ? dateInfo?.totalAchievedCount:""}일 동안\n눈이 내렸어요`}</StatisticText>
             <GotoReportButton onPress={() => navigation.navigate("Report")}>
               <GotoReportText>리포트 보러가기</GotoReportText>
               <NavigateArrowButton/>
@@ -144,9 +168,9 @@ const Statistic = () => {
           </View>
           <MarginVertical top={60}/>
           {mode === "월별" ?
-          <Calandar selectedRange={selectedRange} setSelectedRange={setSelectedRange}/>
+          <Calandar selectedRange={selectedRange} setSelectedRange={setSelectedRange} version={"statistic"} achieveList={achieveList}/>
           :
-          <WeekCalandar version={"date"}/>
+          <WeekCalandar version={"statistic"} selectedDate={selectedDate} setSelectedDate={setSelectedDate} achieveList={achieveList}/>
           } 
           <MarginVertical top={40}/>
           <BorderLine/>
@@ -154,22 +178,30 @@ const Statistic = () => {
           <LogArea>
             <LogInfoText>{`${dayjs().format("YYYY.MM.")}${selectedDate}`}</LogInfoText>
             <MarginVertical top={10}/>
-            <LogInfoText style={{fontSize:20}}>{`60M`}</LogInfoText>
+            <LogInfoText style={{fontSize:20}}>{`${statisticLog.length>0?minToHour(statisticLog.reduce((sum,el) => sum+ el.duration,0)) : 0}`}</LogInfoText>
             <MarginVertical top={30}/>
-            <TimeText>09:00 - 10:00</TimeText>
-            <MarginVertical top={20}/>
             {statisticLog.map((el,index) => {
               return(
                 <View key={index}>
-                  <AssetEl item={["하이","하이","하이","하이"]} index={index} isLink={true} isTouchable={false} indexColor={"black"}/>
-                  <VerticalBorderLine/>
-                  <TodoLog/>
+                  <TimeText>{`${dayjs(el.startTime).format("HH:mm")} - ${dayjs(el.endTime).format("HH:mm")}`}</TimeText>
+                  <MarginVertical top={20}/>
+                  <AssetEl item={[el.title,el.accountTitle,minToHour(el.duration),""]} index={index} isLink={true} isTouchable={false} indexColor={"black"}/>
+                  <MarginVertical top={20}/>
+==
+                  <TodoLog todo={el.todoLogs?.length > 0 ? el.todoLogs : []}/>
                 </View>
               )
             })}
           </LogArea>
           <MarginVertical top={100}/>
-          <AssetLinkModal isAssetLinkModalVisible={isAssetLinkModalVisible} setIsAssetLinkModalVisible={setIsAssetLinkModalVisible} version={"Routine"} routineList={routineList} setRoutineList={setRoutineList} setPickedSaving={setPickedRoutine}/>
+          <AssetLinkModal
+          isAssetLinkModalVisible={isAssetLinkModalVisible} 
+          setIsAssetLinkModalVisible={setIsAssetLinkModalVisible} 
+          version={"Routine"} routineList={routineList} 
+          setRoutineList={setRoutineList} 
+          setPickedSaving={setPickedRoutine}
+          setDateInfoByRoutine={setDateInfoByRoutine}
+          />
         </StatisticBody>
       </ScrollView>
       <StatisticBg source={statistic_bg}/>
@@ -235,6 +267,7 @@ const StatisticTitle = styled.Text`
   font-size:50px;
   font-weight:600;
   color:${colors.fontMain};
+  max-width:300px;
 `
 
 const YearText = styled.Text`
