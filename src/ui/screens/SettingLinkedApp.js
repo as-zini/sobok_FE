@@ -15,16 +15,20 @@ import Button from '../components/Button';
 import SnowFlakeIcon from '../components/SnowFlakeIcon';
 import TodoEl from '../components/TodoEl';
 import { useNavigation } from '@react-navigation/native';
+import { openApp } from '../components/Linking';
+import * as Linking from 'expo-linking'
+import check_icon_black from '../../../assets/check_icon_black.png';
 
 const SettingLinkedApp = () => {
   const navigation = useNavigation();
-  const linkedAppTitle = ["스픽", "밀리의 서재"];
+  const linkedAppTitle = ["스픽", "말해보카", "Duolingo","산타", "Cake","야나두","Netflix","YouTube","교보eBook","예스24 eBook","밀리의서재","윌라","Class101","Udemy","Notion","Goodnotes","HelloLMS","LearninX student","메가스터디 스마트러닝","대성마이맥 Player","이투스 수강앱-Smart Study","Planfit","Nike Run Club","Fleek","Melon","spotify","YouTubeMusic","지니뮤직","FLO"];
   const linkedAppImg = [speack_icon, milli_icon];
-  const appListTitle = ["스픽", "밀리의 서재"];
+  const appListTitle = ["스픽", "말해보카", "Duolingo","산타", "Cake","야나두","Netflix","YouTube","교보eBook","예스24 eBook","밀리의서재","윌라","Class101","Udemy","Notion","Goodnotes","HelloLMS","LearninX student","메가스터디 스마트러닝","대성마이맥 Player","이투스 수강앱-Smart Study","Planfit","Nike Run Club","Fleek","Melon","spotify","YouTubeMusic","지니뮤직","FLO"];
   const appListImg = [speack_icon, milli_icon];
   const [isAppList, setIsAppList] = useState(false);
   const [showTodoList, setShowTodoList] = useState(false);
   const [todoData, setTodoData] = useState([["영어 강의 1강", "스픽", "1H 30M", "06:00 - 07:30"],["영어 단어 10개 암기", "말해보카","1H 00M", "08:00 - 09:00"]])
+  const [selectedApp, setSelectedApp] = useState("");
 
   const LinkedTodoList = () => {
     return(
@@ -32,7 +36,7 @@ const SettingLinkedApp = () => {
         <View>
           <SnowFlakeIcon color={"indigo"} size={16}/>
           <MarginVertical top={11}/>
-          <Text style={{fontSize:22, fontWeight:600, color:colors.fontMain80}}>스픽</Text>
+          <Text style={{fontSize:22, fontWeight:600, color:colors.fontMain80}}>{selectedApp}</Text>
           <MarginVertical top={33}/>
         </View>
         <View>
@@ -46,6 +50,7 @@ const SettingLinkedApp = () => {
             )
           })}
         </ScrollView>
+
         </View>
         
       </>
@@ -70,19 +75,23 @@ const SettingLinkedApp = () => {
         <MarginVertical top={showTodoList ? 10:56}/>
         <SettingLinkedAppCount>{isAppList ? "총 54개의 앱" : showTodoList ? null : "총 2개의 연동 앱"}</SettingLinkedAppCount>
         <MarginVertical top={13}/>
-        <ScrollView>
+        <ScrollView style={{height:330}}>
           <SettingLinkedAppContentsArea>
             {isAppList ? 
             appListTitle.map((el,index) => {
               return(
+                
                 <LinkedAppEl key={index} onPress={() => {
                   setIsAppList(false);
                   setShowTodoList(true);
+                  setSelectedApp(el)
+                  // Linking.openURL("music://")
                 }}>
+                
                   <LinkedAppImg source={isAppList ? appListImg[index] : linkedAppImg[index]}/>
                   <LinkedAppTitle>{el}</LinkedAppTitle>
                   <NavigateArrowButton/>
-                </LinkedAppEl>
+                  </LinkedAppEl>
               )
             })
             : showTodoList ?
@@ -98,8 +107,8 @@ const SettingLinkedApp = () => {
               )
             })}
           </SettingLinkedAppContentsArea>
+
         </ScrollView>
-        <MarginVertical top={showTodoList ? 60 : 170}/>
         {isAppList? <></> : <Button text={showTodoList ? "완료하기" : "연동앱 추가하기"} handleButton={() => {
           showTodoList ? navigation.navigate("Setting") : setIsAppList(true)}}/>}
       </SettingLinkedAppBody>

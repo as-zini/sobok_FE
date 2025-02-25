@@ -14,8 +14,19 @@ export const useGetInfo = () => {
     }
   }
 
+  const getContinuitySuccess = async(setAchieve) => {
+    try {
+      const response = await axios.get("https://sobok-app.com/user/achieve")
+      console.log(response.data);
+      setAchieve(response.data.achieveCount);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return {
-    getUserInfo
+    getUserInfo,
+    getContinuitySuccess
   }
 }
 

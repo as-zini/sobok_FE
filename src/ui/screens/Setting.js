@@ -10,11 +10,13 @@ import snowman_graphic from '../../../assets/snowman_graphic.png';
 import NavigateArrowButton from '../components/NavigateArrowButton';
 import MarginVertical from '../components/MarginVertical';
 import { useNavigation } from '@react-navigation/native';
+import { useUserInfoStore } from '../../store/user';
 
 const Setting = () => {
-  const settingCategory = ["계정 설정", "알림 설정", "연동 설정", "시간 모드 설정", "방해 금지 모드 설정", "공개 설정", "지원 문의", "약관 및 개인정보 처리 동의", "앱 버전"]
-  const goToCategory = ["", "", "LinkedApp", "", "", "","","",""];
+  const settingCategory = ["계정 설정", "연동 설정","지원 문의" ,"약관 및 개인정보 처리 동의", "앱 버전"]
+  const goToCategory = ["", "LinkedApp", "", "", ""];
   const navigation = useNavigation();
+  const {userInfo} = useUserInfoStore();
 
   return (
     <SafeAreaView>
@@ -25,12 +27,13 @@ const Setting = () => {
           </View>
           <Text style={{fontWeight:600, fontSize:18, color:colors.darkGray}}>설정</Text>
         </SettingHeader>
+        <MarginVertical top={35}/>
         <ProfileArea>
           <ProfileImageArea>
             <Image source={snowman_graphic} style={{width:40, height:40}}/>
           </ProfileImageArea>
           <View>
-            <UserName>지윤</UserName>
+            <UserName>{userInfo.displayName}</UserName>
             <EditButton>
               <EditText>프로필 편집</EditText>
               <NavigateArrowButton/>
@@ -46,7 +49,7 @@ const Setting = () => {
                 <SettingTitle>{el}</SettingTitle>
                 <NavigateArrowButton/>
               </SettingEl>
-              {index===0 || index ===5 ? <BorderLine/> : <></>}
+              {index===1 ? <BorderLine/> : <></>}
               </View>
             )
           })}
