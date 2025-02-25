@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Image, SafeAreaView, View } from 'react-native'
 import styled from 'styled-components'
 import { colors } from '../styles/colors'
@@ -10,11 +10,21 @@ import SnowFlakeIcon from '../components/SnowFlakeIcon';
 import { size } from '../styles/size';
 import MarginVertical from '../components/MarginVertical';
 import { useNavigation } from '@react-navigation/native';
+import { useUserInfoStore } from '../../store/user';
+import { useGetInfo } from '../../hooks/useGetInfo';
 
 const MyPage = () => {
   const categoryText = ["총 시간", "연속 달성일", "포인트", "적금"];
   const categoryValue = ["52H 14M", "58일", "5,824P", "3개"];
   const navigation = useNavigation();
+  const {userInfo} = useUserInfoStore();
+  const {getContinuitySuccess} = useGetInfo();
+  const [achieve, setAchieve] = useState(0);
+
+  useEffect(() => {
+    getContinuitySuccess(setAchieve)
+  }, [])
+  
 
   return (
     <SafeAreaView>
@@ -23,7 +33,7 @@ const MyPage = () => {
           <View style={{flexGrow:.04}}>
             <SnowFlakeIcon color={'indigo'} size={16}/>
           </View>
-          <ContinuitySuccessText>8일</ContinuitySuccessText>
+          <ContinuitySuccessText>{`${achieve}일`}</ContinuitySuccessText>
           <SettingButton onPress={() => navigation.navigate("Setting")}>
             <Image source={setting_icon} style={{width:24, height:24}}/>
           </SettingButton>
@@ -33,7 +43,7 @@ const MyPage = () => {
             <Image source={snowman_graphic} style={{width:40, height:40}}/>
           </ProfileImageArea>
           <MarginVertical top={12}/>
-          <MyPageTitle>{`안녕하세요,\n지윤 님`}</MyPageTitle>
+          <MyPageTitle>{`안녕하세요,\n${userInfo.displayName} 님`}</MyPageTitle>
           <MarginVertical top={15}/>
           <MyPageText>오늘도 소복이{"\n"}시간을  쌓아볼까요?</MyPageText>
         </ProfileArea>

@@ -3,6 +3,7 @@ import dayjs from "dayjs"
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import baseUrl from "../api/baseURL";
 import { useNowTodoStore } from "../store/todo";
+import { openApp } from "../ui/components/Linking";
 dayjs.extend(isSameOrBefore)
 
 export const useTodo = () => {
@@ -32,13 +33,17 @@ export const useTodo = () => {
     }
   }
 
-  const startTodo = async(id, setLogId) => {
+  const startTodo = async(id, setLogId, linkApp) => {
     try {
       const response = await baseUrl.post(`/todo/start?todoId=${id}`)
       console.log(response.data);
       setLogId(response.data.todoLogId)
+      
+        openApp("YouTube")
+      
     } catch (error) {
       console.log(error)
+      console.log(linkApp)
     }
   }
 
