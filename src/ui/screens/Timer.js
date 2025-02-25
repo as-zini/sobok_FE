@@ -60,7 +60,7 @@ const Timer = () => {
     };
 
     startTimer();
-    startTodo(nowTodo.id,setLogId);
+    startTodo(nowTodo.id,setLogId,nowTodo.linkApp);
   }, []);
 
   const handleComplete = async () => {
