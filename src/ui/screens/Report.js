@@ -22,14 +22,33 @@ import Button from '../components/Button';
 import { useNavigation } from '@react-navigation/native';
 import { useReport } from '../../hooks/useReport';
 import dayjs from 'dayjs';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { minToHour } from '../../util';
+import { useUserInfoStore } from '../../store/user';
 
 const Report = () => {
   const navigation = useNavigation();
   const {getReportInfo} = useReport();
   const [today, setToday] = useState(dayjs().subtract(1,'month'))
+  const [reportInfo, setReportInfo] = useState({});
+  const {userInfo} = useUserInfoStore();
+  const userName = userInfo.displayName;
+  const [isReady, setIsReady] = useState(false);
+
+  const init = async() => {
+    const result = await AsyncStorage.getItem(`reportOn${dayjs().get('month')+1}`)
+    setReportInfo(JSON.parse(result))
+    console.log(JSON.parse(result))
+  
+    setIsReady(true)
+  }
 
   useEffect(() => {
-    getReportInfo()
+    if(dayjs().get('date') === 1){
+      getReportInfo()
+    }else{
+    init()
+    }
   }, [])
   
 
@@ -43,7 +62,7 @@ const Report = () => {
         </View>
         <ReportTitle>리포트 도착!</ReportTitle>
         <MarginVertical top={15}/>
-        <ReportText>{`지윤 님의\n${today.get('month')+1}월 눈 리포트가 도착했습니다!\n얼른 보러 가봐요!`}</ReportText>
+        <ReportText>{`${userName} 님의\n${today.get('month')+1}월 눈 리포트가 도착했습니다!\n얼른 보러 가봐요!`}</ReportText>
         <MarginVertical top={20}/>
         <DownIcon>
           <DownIconImg source={down_navigate_icon}/>
@@ -57,10 +76,10 @@ const Report = () => {
     const data = [
       {
         title:"루틴",
-        data:[["아침에는 영어 공부","5H 25M"], ["저녁에는 독서","6H 25M"]]
+        data:reportInfo.routineStatistics?.map((el,index) => [el.title,minToHour(el.duration)])
       },{
         title:"적금",
-        data:[["영어 적금","9H 10M"]]
+        data:reportInfo.accountStatistics?.map((el,index) => [el.title,minToHour(el.duration)])
       }
     ]
 
@@ -96,11 +115,11 @@ const Report = () => {
       <MarginVertical top={16}/>
       <Text style={{fontSize:26, fontWeight:600, color:colors.fontMain80, lineHeight:34}}>{`${today.format("YYYY년 M월")}\n총 적설량`}</Text>
       <MarginVertical top={12}/>
-      <ReportTitle>30H 40M</ReportTitle>
+      <ReportTitle>{minToHour(reportInfo?.totalTime)}</ReportTitle>
       <MarginVertical top={30}/>
       <SnowFlakeIcon color={"indigo"} size={16}/>
       <MarginVertical top={10}/>
-      <ReportText>{"상위 10%의\n눈을 내렸어요!"}</ReportText>
+      <ReportText>{`상위 ${reportInfo?.totalTimePercent}%의\n눈을 내렸어요!`}</ReportText>
       <MarginVertical top={40}/>
       <SectionList
         sections={data}
@@ -135,22 +154,24 @@ const Report = () => {
       <Text style={{fontSize:26, fontWeight:600, color:colors.fontMain80, lineHeight:34}}>{"하루평균"}</Text>
       <MarginVertical top={12}/>
       <View style={{flexDirection:'row'}}>
-        <ReportTitle>1H 24M</ReportTitle>
+        <ReportTitle>{minToHour(reportInfo?.averageTime)}</ReportTitle>
         <ReportTitle style={{color:colors.fontMain80}}> 의</ReportTitle>
       </View>
         <ReportTitle style={{color:colors.fontMain80}}>눈이 내렸어요!</ReportTitle>
       <MarginVertical top={30}/>
       <SnowFlakeIcon color={"indigo"} size={16}/>
       <MarginVertical top={10}/>
-      <ReportText>{"다른 유저들보다\n14M 많이 내렸네요:)"}</ReportText>
+      <ReportText>{`다른 유저들보다\n${minToHour(reportInfo?.averageTimeCompare)} 많이 내렸네요:)`}</ReportText>
       <MarginVertical top={40}/>
+      
       <View style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
         <ReportText style={{fontWeight:500, textAlign:'center'}}>가장 많은 눈이{"\n"}쌓인 시각은</ReportText>
         <MarginVertical top={8}/>
-        <TimeSliderBar/>
+        <Text style={{fontWeight:600, fontSize:26, color:colors.fontMain90}}>오전 8:00</Text>
+        <TimeSliderBar version={"report"}/>
       </View>
       <MarginVertical top={86}/>      
-      <ReportText>{"지윤 님 덕분에\n아침부터 예쁜 눈을 볼 수 있었어요!"}</ReportText>
+      <ReportText>{`${userName} 님 덕분에\n아침부터 예쁜 눈을 볼 수 있었어요!`}</ReportText>
       <MarginVertical top={10}/>
       
       <DownIcon>
@@ -171,15 +192,15 @@ const Report = () => {
       <Text style={{fontSize:26, fontWeight:600, color:colors.fontMain80, lineHeight:34}}>{`${today.format("M월")}에는`}</Text>
       <MarginVertical top={12}/>
       <View style={{flexDirection:'row'}}>
-        <ReportTitle>24일</ReportTitle>
+        <ReportTitle>{`${reportInfo?.totalAchievedCount}일`}</ReportTitle>
       </View>
         <ReportText style={{fontSize:26, fontWeight:600, color:colors.fontMain80, lineHeight:34}}>눈이 내렸어요!</ReportText>
       <MarginVertical top={30}/>
       <SnowFlakeIcon color={"indigo"} size={16}/>
       <MarginVertical top={10}/>
-      <ReportText>{"눈 예보 정확도\n90% 달성!"}</ReportText>
+      <ReportText>{`눈 예보 정확도\n${reportInfo?.totalAchievedPercent}% 달성!`}</ReportText>
       <MarginVertical top={40}/>
-      {/* <Calandar/> */}
+      <Calandar version={"report"} achieveList={reportInfo?.dailyAchieve}/>
       <MarginVertical top={86}/>      
       <ReportText>{`눈을 볼 수 있는 날이 많아\n행복했던 ${today.format("M월")}이네요!`}</ReportText>
       <MarginVertical top={10}/>
@@ -194,7 +215,7 @@ const Report = () => {
   }
 
   const ReportContents5 = () => {
-    const continuitySuccess = ["","", "", "", "", "", "", "", "", "", ""];
+    const continuitySuccess = new Array(reportInfo.consecutiveAchieveCount).fill("");
     
     return(
     <ReportContentsBody>
@@ -203,7 +224,7 @@ const Report = () => {
       <Text style={{fontSize:26, fontWeight:600, color:colors.fontMain80, lineHeight:34}}>{`${today.format("M월")}의\n최종 연속 기록은`}</Text>
       <MarginVertical top={12}/>
       <View style={{flexDirection:'row'}}>
-        <ReportTitle>11일</ReportTitle>
+        <ReportTitle>{`${reportInfo.consecutiveAchieveCount}일`}</ReportTitle>
       </View>
       <MarginVertical top={30}/>
       <SnowFlakeIcon color={"indigo"} size={16}/>
@@ -246,13 +267,13 @@ const Report = () => {
       <View style={{width:'100%', justifyContent:'center', alignItems:'center'}}>
         <ReportText style={{textAlign:'center'}}>{"가장 많은 눈이\n쌓인 적금은"}</ReportText>
         <MarginVertical top={8}/>
-        <Text style={{fontSize:26, fontWeight:600, color:colors.fontMain90}}>영어 적금</Text>
+        <Text style={{fontSize:26, fontWeight:600, color:colors.fontMain90}}>{reportInfo.mostAchievedAccount.title}</Text>
         <MarginVertical top={37}/>
         <SnowFlakeIcon size={16} color={"indigo"}/>
         <MarginVertical top={20}/>
         <View style={{width:200, height:200, padding:20}}>
-          <Text style={{color:"#fff", fontSize:22, fontWeight:600, zIndex:2}}>영어 적금</Text>
-          <Text style={{color:"#fff", fontSize:22, fontWeight:600, zIndex:2, position:'absolute', bottom:20, right:20}}>+18H 30M</Text>
+          <Text style={{color:"#fff", fontSize:22, fontWeight:600, zIndex:2}}>{reportInfo.mostAchievedAccount.title}</Text>
+          <Text style={{color:"#fff", fontSize:22, fontWeight:600, zIndex:2, position:'absolute', bottom:20, right:20}}>{minToHour(reportInfo.mostAchievedAccount.duration)}</Text>
           <Image source={report_save_bg} style={{position:'absolute', top:0, left:0}}/>
         </View>
         <MarginVertical top={43}/>
@@ -309,7 +330,7 @@ const Report = () => {
           </View>
           <View style={{width:200, height:200, padding:20, marginRight:100}}>
             <Text style={{color:"#fff", fontSize:34, fontWeight:600, zIndex:2}}>{today.format("M월")}</Text>
-            <Text style={{color:"#fff", fontSize:22, fontWeight:600, zIndex:2, position:'absolute', bottom:20, right:20}}>+18H 30M</Text>
+            <Text style={{color:"#fff", fontSize:22, fontWeight:600, zIndex:2, position:'absolute', bottom:20, right:20}}>{minToHour(reportInfo.totalTime)}</Text>
             <Image source={report_save_bg} style={{position:'absolute', top:0, left:0}}/>
           </View>
         </ScrollView>
@@ -328,7 +349,7 @@ const Report = () => {
         <Text style={{fontSize:26, fontWeight:600, color:colors.fontMain90, textAlign:'center'}}>{"0H 15M\n더 쌓았어요!"}</Text>
         <MarginVertical top={20}/>
         <MarginVertical top={20}/>
-        <TimeSliderBar/>
+        <TimeSliderBar version={"reportCompare"} compareValue1={reportInfo.averageTime} compareValue2={50}/>
         <MarginVertical top={40}/>      
         <DownIcon>
           <DownIconImg source={down_navigate_icon}/>
@@ -346,9 +367,9 @@ const Report = () => {
         <SnowFlakeIcon size={16} color={"indigo"}/>
         <MarginVertical top={20}/>
         <ReportText>{today.format("M월")}</ReportText>
-        <Text style={{fontWeight:600, fontSize:22, color:colors.fontMain90}}>총 24일</Text>
+        <Text style={{fontWeight:600, fontSize:22, color:colors.fontMain90}}>{`총 ${reportInfo.totalAchievedCount}일`}</Text>
         <MarginVertical top={16}/>
-        {/* <Calandar/> */}
+        <Calandar version={"report"} achieveList={reportInfo.dailyAchieve}/>
         <MarginVertical top={76}/>     
         <Text style={{fontSize:14, fontWeight:500, color:colors.gray77, textAlign:'center'}}>{`${today.format("M월")}도 수고하셨어요!\n${today.format("M월")}의 키워드를 볼까요?`}</Text> 
         <MarginVertical top={8}/>
@@ -363,7 +384,9 @@ const Report = () => {
 
   return (
     <SafeAreaView style={{backgroundColor:'#fff'}}>
+      
       <ScrollView>
+      {isReady ? 
         <ReportBody>
           <ReportHeader>
             <View style={{position:'absolute', left:0}}>
@@ -383,6 +406,9 @@ const Report = () => {
           <ReportContents6/>
           <ReportContents7/>
         </ReportBody>
+        :
+        <></>
+        }
         <ReportBg source={report_bg}/>
         
 
@@ -397,7 +423,6 @@ export default Report
 const ReportBody = styled.View`
   width:${size.width}px;
   padding:0 30px;
-  height:7400px;
   
 `
 

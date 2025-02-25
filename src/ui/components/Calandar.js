@@ -14,25 +14,22 @@ const Calandar = ({ type, selectedRange, setSelectedRange, version, achieveList 
   const [today, setToday] = useState(dayjs());
   const [weeks, setWeeks] = useState([]);
   
-  const someAchieveDate = version === "statistic"&&achieveList.length>0 ? achieveList.map((el) => el.status === "SOME_ACHIEVED" ? Number(el.date.slice(8,10)) : "") : []
-  const AllAchieveDate = version === "statistic"&&achieveList.length>0 ? achieveList.map((el) => el.status === "ALL_ACHIEVED" ? Number(el.date.slice(8,10)) : "") : []
+  const someAchieveDate = (version === "statistic" || version==="report")&&achieveList.length>0 ? achieveList.map((el) => el.status === "SOME_ACHIEVED" ? Number(el.date.slice(8,10)) : "") : []
+  const AllAchieveDate = (version === "statistic"||version==="report")&&achieveList.length>0 ? achieveList.map((el) => el.status === "ALL_ACHIEVED" ? Number(el.date.slice(8,10)) : "") : []
   
-
-
   useEffect(() => {
     console.log("achieve",achieveList)
     console.log(someAchieveDate, AllAchieveDate)
   }, [achieveList])
   
-
   const handleRange = (date) => {
+    if (version === "report") return; // report 모드에서는 선택 불가
+    
     const fullDate = dayjs(today).date(date).format("YYYY-MM-DD");
     
     if (version === "statistic") {
-      // 단일 날짜 선택 모드
       setSelectedRange({ startDate: fullDate, endDate: null });
     } else {
-      // 기존 범위 선택 모드
       if (!selectedRange.startDate) {
         setSelectedRange({ startDate: fullDate });
       } else if (!selectedRange.endDate) {
@@ -73,6 +70,7 @@ const Calandar = ({ type, selectedRange, setSelectedRange, version, achieveList 
 
   return (
     <CalandarBody>
+      {version !== 'report' ?
       <SettingMonthArea>
         <ArrowButton onPress={() => setToday(today.subtract(1, "month"))}>
           <ArrowButtonIcon source={calandar_arrow_left} />
@@ -82,6 +80,9 @@ const Calandar = ({ type, selectedRange, setSelectedRange, version, achieveList 
           <ArrowButtonIcon source={calandar_arrow_right} />
         </ArrowButton>
       </SettingMonthArea>
+      :
+      <></>
+      }
       <MarginVertical top={15} />
       <DayArea>
         {["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"].map((el, index) => (
@@ -92,18 +93,21 @@ const Calandar = ({ type, selectedRange, setSelectedRange, version, achieveList 
       </DayArea>
       <MarginVertical top={10} />
       <CalandarContentsBody>
+        
         {weeks.map((week, weekIndex) => (
           <View key={weekIndex}>
+            {version !== 'report' ?
             <WeekRow>
               {week.map((date, dateIndex) => (
                 <DateEl
                   key={dateIndex}
                   isEmpty={!date}
                   onPress={() => handleRange(date)}
+                  disabled={version === "report"} // report 모드에서는 클릭 비활성화
                   style={{
                     backgroundColor: 
                       version !== "statistic" &&
-                      selectedRange.startDate && selectedRange.endDate &&
+                      selectedRange?.startDate && selectedRange?.endDate &&
                       dayjs(today).date(date).isAfter(dayjs(selectedRange.startDate), 'day') &&
                       dayjs(today).date(date).isBefore(dayjs(selectedRange.endDate), 'day')
                         ? "rgba(176, 195, 255, 0.3)"
@@ -118,7 +122,7 @@ const Calandar = ({ type, selectedRange, setSelectedRange, version, achieveList 
                         : ""
                   }}
                 >
-                  {someAchieveDate.includes(date) ? <SomeAchievedState/> : AllAchieveDate.includes(date) ? <AllAchieveDate/> : <></>}
+                  {someAchieveDate.includes(date) ? <SomeAchievedState/> : AllAchieveDate.includes(date) ? <AllAchieveState/> : <></>}
                   <DateText style={{
                     color: dayjs(today).date(date).isSame(dayjs(selectedRange.startDate), 'day') ||
                           (selectedRange.endDate && dayjs(today).date(date).isSame(dayjs(selectedRange.endDate), 'day'))
@@ -129,7 +133,32 @@ const Calandar = ({ type, selectedRange, setSelectedRange, version, achieveList 
                   </DateText>
                 </DateEl>
               ))}
+
             </WeekRow>
+            :
+            <WeekRow>
+              {week.map((date, dateIndex) => (
+                <DateEl
+                  key={dateIndex}
+                  isEmpty={!date}
+                  disabled={true} // report 모드에서는 클릭 비활성화
+                  style={{
+                    backgroundColor:someAchieveDate.includes(date)?"rgba(106, 143, 246, 0.4)" : AllAchieveDate.includes(date) ? colors.indigoBlue : "",
+                    borderRadius:someAchieveDate.includes(date)||AllAchieveDate.includes(date) ? '50%' : 0
+                    
+                  }}
+                >
+                  <DateText style={{
+                    color:someAchieveDate.includes(date)||AllAchieveDate.includes(date) ? '#fff' : "#4A5660"
+                  }}>
+                    {date || ""}
+                  </DateText>
+                </DateEl>
+              ))}
+
+            </WeekRow>
+
+            }
             <MarginVertical top={6} />
           </View>
         ))}
@@ -159,8 +188,8 @@ const ArrowButton = styled.TouchableOpacity`
 `
 
 const ArrowButtonIcon = styled.Image`
-
 `
+
 
 const CurrentMonthText = styled.Text`
   color:#4A5660;
@@ -188,15 +217,15 @@ const DayArea = styled.View`
 `
 
 const DayEl = styled.View`
-  
-`
+  `
+
 
 const DayText = styled.Text`
   color:${colors.gray77};
   font-weight:500;
   font-size:12px;
-
 `
+
 
 const WeekRow = styled.View`
   display:flex;
@@ -220,6 +249,7 @@ const DateText = styled.Text`
   font-size:18px;
   font-weight:500;
   color:#4A5660;
+  z-index:2;
 `
 
 const SomeAchievedState = styled.View`
@@ -238,4 +268,4 @@ border-radius:50%;
 background-color:rgba(0, 60, 255, 1);
 position:absolute;
   top:3px;
-`
+  `
