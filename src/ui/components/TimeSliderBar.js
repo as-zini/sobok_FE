@@ -1,8 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Animated, PanResponder, Text, View } from 'react-native';
 import styled from 'styled-components/native';
+import { minToHour } from '../../util';
+import dayjs from 'dayjs';
+import { colors } from '../styles/colors';
 
-const TimeSliderBar = ({ text, setOutValue, version, type }) => {
+const TimeSliderBar = ({ text, setOutValue, version, type, compareValue1, compareValue2 }) => {
   const initValue = type === "time" ? 720 : type === "savingtime"?100 : 6
   const [value, setValue] = useState(initValue); // 기본값: 12:00 (time) / 6개월 (duration) / 100시간 (savingtime)
   const trackPosition = useRef(new Animated.Value(0)).current;
@@ -32,32 +35,34 @@ const TimeSliderBar = ({ text, setOutValue, version, type }) => {
     
   }, [value]);
 
-  // PanResponder 설정
-  const panResponder = useRef(
-    PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-      onMoveShouldSetPanResponder: () => true,
-      onPanResponderMove: (evt, gestureState) => {
-        const newValue = Math.max(-150, Math.min(gestureState.dx, 150)); // 범위: -150 ~ 150
-        trackPosition.setValue(newValue);
-      
-        let calculatedValue;
-        if (type === "time") {
-          calculatedValue = Math.round(((newValue + 150) / 300) * 1440); // 0~1440분
-          calculatedValue = Math.round(calculatedValue / 5) * 5; // 5분 단위 반올림
-        } 
-        else if (type === "duration") {
-          calculatedValue = Math.round(((150 - newValue) / 300) * 11) + 1; // 1~12개월
-        } 
-        else if (type === "savingtime") {
-          calculatedValue = Math.round(((150 - newValue) / 300) * 200 * 60); // 최대 200시간 (분 단위)
-          calculatedValue = Math.round(calculatedValue / 5) * 5; // 5분 단위 반올림
-        }
-      
-        setValue(calculatedValue);
-      }      
-    })
-  ).current;
+const panResponder = useRef(
+  PanResponder.create({
+    onStartShouldSetPanResponder: () => version !== "report", // report 모드면 반응 안함
+    onMoveShouldSetPanResponder: () => version !== "report",  // report 모드면 반응 안함
+    onPanResponderMove: (evt, gestureState) => {
+      if (version === "report") return; // report 모드면 슬라이더 움직이지 않음
+
+      const newValue = Math.max(-150, Math.min(gestureState.dx, 150)); // 범위: -150 ~ 150
+      trackPosition.setValue(newValue);
+
+      let calculatedValue;
+      if (type === "time") {
+        calculatedValue = Math.round(((newValue + 150) / 300) * 1440); // 0~1440분
+        calculatedValue = Math.round(calculatedValue / 5) * 5; // 5분 단위 반올림
+      } 
+      else if (type === "duration") {
+        calculatedValue = Math.round(((150 - newValue) / 300) * 11) + 1; // 1~12개월
+      } 
+      else if (type === "savingtime") {
+        calculatedValue = Math.round(((150 - newValue) / 300) * 200 * 60); // 최대 200시간 (분 단위)
+        calculatedValue = Math.round(calculatedValue / 5) * 5; // 5분 단위 반올림
+      }
+
+      setValue(calculatedValue);
+    }
+  })
+).current;
+
 
   // 표시할 값 계산
   let displayText;
@@ -79,9 +84,12 @@ const TimeSliderBar = ({ text, setOutValue, version, type }) => {
   return (
     <Container>
       <View style={{ justifyContent: 'center', alignItems: 'center', gap: 3, marginBottom: 20 }}>
-        <ValueArea>
-          <Label>{displayText}</Label>
+      {version === "reportCompare" ? <Text style={{fontSize:18, fontWeight:500, color:colors.fontMain80}}>{dayjs().subtract(1,'month').format('M월')}</Text> : <></>}
+        {version === "report" ? <></>
+        :<ValueArea>
+          <Label>{version === "reportCompare" ? minToHour(compareValue1) : displayText}</Label>
         </ValueArea>
+        }
         <Text style={{ fontSize: 14, fontWeight: '500', color: "#4c4c4c" }}>{text}</Text>
       </View>
       <SliderContainer>
@@ -165,7 +173,7 @@ const Label = styled.Text`
   font-size: 16px;
   color: #fff;
   font-weight: 500;
-`;
+`
 
 const ValueArea = styled.View`
   background-color: rgba(106, 143, 246, 0.5);
@@ -175,4 +183,5 @@ const ValueArea = styled.View`
   display: flex;
   justify-content: center;
   align-items: center;
-`;
+`
+
