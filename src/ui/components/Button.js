@@ -17,12 +17,13 @@ const Button = ({text, handleButton, unChecked}) => {
 export default Button
 
 const ButtonBody = styled.TouchableOpacity`
-  width:310px;
+  width:328px;
   height:56px;
   display:flex;
   justify-content:center;
   align-items:center;
   z-index:3;
+  border-radius:15px;
 `
 
 const ButtonBg = styled.Image`
