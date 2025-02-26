@@ -39,7 +39,7 @@ export const useTodo = () => {
       console.log(response.data);
       setLogId(response.data.todoLogId)
       
-        openApp("YouTube")
+        openApp("산타")
       
     } catch (error) {
       console.log(error)
