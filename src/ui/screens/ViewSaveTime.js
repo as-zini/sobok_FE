@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import styled from 'styled-components'
 import { size } from '../styles/size'
@@ -11,20 +11,31 @@ import { colors } from '../styles/colors'
 import WeekCalandar from '../components/WeekCalandar'
 import dayjs from 'dayjs'
 import Octicons from '@expo/vector-icons/Octicons';
-import { useNavigation } from '@react-navigation/native'
+import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import save_time_bg_first from '../../../assets/report_bg.png';
 import SnowFlakeIcon from '../components/SnowFlakeIcon'
 import Button from '../components/Button'
+import { useSaveTime } from '../../hooks/useSaveTime'
+import { minToHour } from '../../util'
 
 const ViewSaveTime = ({route}) => {
   const [selectedDate, setSelectedDate] = useState(dayjs().format('ddd').toUpperCase())
   const navigation = useNavigation();
   const timeData = [["06:00","출근 시간","06:00 - 7:40","1H 20M"],["06:00","출근 시간","06:00 - 7:40","1H 20M"],["06:00","출근 시간","06:00 - 7:40","1H 20M"]]
   const {version, username} = route.params;
+  const {getSpareTimeByDay} = useSaveTime()
+  const [spareTimeList, setSpareTimeList] = useState([]);
 
-  useEffect(() => {
-    console.log(version, username)
-  }, [])
+  const getFullDay = (day) => {
+    return day === 'MON' ? "MONDAY" : day==="TUE" ? "TUESDAY" : day==="WED" ? "WEDNESDAY" : day==="THU" ? "THURSDAY" : day=="FRI" ? "FRIDAY" : day === "SAT" ? "SATURDAY" : "SUNDAY"
+  }
+
+
+  useFocusEffect(
+    useCallback(() => {
+      getSpareTimeByDay(getFullDay(selectedDate), setSpareTimeList)
+    }, [selectedDate]),
+  )
 
   const handleSaveButton = () => {
     if(version==='first'){
@@ -33,9 +44,16 @@ const ViewSaveTime = ({route}) => {
           name:'StartAddAsset',
           params:{version:"Saving"}
         }]
-      })}
+      })}else{
+        navigation.reset({
+          routes:[{
+            name:'tabs'
+          }]
+        })
+      }
     }
-  
+    
+    
   
 
   return (
@@ -54,7 +72,7 @@ const ViewSaveTime = ({route}) => {
         <MarginVertical top={15}/>
         <SaveTimeText style={{color:colors.fontMain90}}>{version === 'first' ? `자투리 시간`:`화요일\n자투리 시간`}</SaveTimeText>
         {version === "first" ? <MarginVertical top={10}/> : <></>}
-        <SaveTimeTitle style={{fontSize:version==='first' ? 26 : undefined}}>{version === 'first' ? "자투리 시간이\n얼마나 생기나요?":`3H 15M`}</SaveTimeTitle>
+        <SaveTimeTitle style={{fontSize:version==='first' ? 26 : 50}}>{version === 'first' ? "자투리 시간이\n얼마나 생기나요?":`3H 15M`}</SaveTimeTitle>
         {version === 'first' ?
         <>
         <MarginVertical top={32}/>
@@ -68,37 +86,37 @@ const ViewSaveTime = ({route}) => {
         <WeekCalandar selectedDate={selectedDate} setSelectedDate={setSelectedDate} version={'day'}/>
         <MarginVertical top={32}/>
         <HorizonBorderLine/>
-        <ScrollView style={{maxHeight:'28%'}} showsVerticalScrollIndicator={false}>
+        <ScrollView style={{maxHeight:version==='first' ? '28%' : '38%'}} showsVerticalScrollIndicator={false}>
         <MarginVertical top={26}/>
-        {timeData.map((el,index) => {
+        {spareTimeList.length > 0 ? spareTimeList.map((el,index) => {
           return(
             <View key={index}>
-            <View style={{flexDirection:'row', gap:14, alignItems:'flex-start'}}>
+            <TouchableOpacity style={{flexDirection:'row', gap:14, alignItems:'flex-start'}} onPress={() => navigation.navigate('AddSaveTime', {spareTimeEl:el})}>
               <View style={{justifyContent:'center', alignItems:'center',width:64,gap:12}}>
                 <TimeLabel>
-                  <SaveTimeText style={{color:"#fff"}}>{el[0]}</SaveTimeText>
+                  <SaveTimeText style={{color:"#fff"}}>{el.startTime}</SaveTimeText>
                 </TimeLabel>
                 <VerticalBorderLine/>
               </View>
               <View style={{height:40, flexGrow:1}}>
                 <MarginVertical top={5}/>
-                <SaveTimeText style={{color:"#343434"}}>{el[1]}</SaveTimeText>
-                <MarginVertical top={12}/>
-                <SaveTimeText style={{fontSize:16, color:"rgba(112, 113, 114, 0.8)"}}>{el[2]}</SaveTimeText>
+                <SaveTimeText style={{color:"#343434"}}>{el.title}</SaveTimeText>
+                <MarginVertical top={8}/>
+                <SaveTimeText style={{fontSize:16, color:"rgba(112, 113, 114, 0.8)"}}>{`${el.startTime} - ${el.endTime}`}</SaveTimeText>
               </View>
               
               <View style={{flexDirection:'row', alignItems:'center', gap:3}}>
                 <MarginVertical top={5}/>
                 <Octicons name="clock" size={16} color="rgba(20, 36, 72, 0.2)" />
-                <SaveTimeText style={{color:colors.indigoBlue}}>{el[3]}</SaveTimeText>
+                <SaveTimeText style={{color:colors.indigoBlue}}>{minToHour(el.duration)}</SaveTimeText>
               </View>
               
-            </View>
+            </TouchableOpacity>
             <MarginVertical top={12}/>
             </View>
           )
-        })}
-        <TouchableOpacity style={{flexDirection:'row', gap:14, alignItems:'flex-start'}} onPress={() => navigation.navigate("AddSaveTime")}>
+        }) : <></>}
+        <TouchableOpacity style={{flexDirection:'row', gap:14, alignItems:'flex-start'}} onPress={() => navigation.navigate("AddSaveTime",{spareTimeEl:false})}>
           <View style={{justifyContent:'center', alignItems:'center',width:64,gap:12}}>
             <TimeLabel>
               <SaveTimeText style={{color:"#fff"}}>+</SaveTimeText>

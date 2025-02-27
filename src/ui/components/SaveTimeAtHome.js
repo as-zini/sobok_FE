@@ -2,13 +2,14 @@ import React, { useRef, useState, useEffect } from "react";
 import { View, Text, Animated, Dimensions } from "react-native";
 import styled from "styled-components/native";
 import SnowFlakeIcon from "./SnowFlakeIcon";
+import { minToHour } from "../../util";
 
-const originalDays = ["일", "월", "화", "수", "목", "금", "토"];
-const loopedDays = [...originalDays, "", ...originalDays, ""]; // 루프 구조로 만듦
+const originalDays = ["일", "월", "화", "수", "목", "금", "토",""];
+const loopedDays = [...originalDays, ...originalDays,...originalDays]; // 루프 구조로 만듦
 const screenWidth = Dimensions.get("window").width;
 const itemWidth = screenWidth / 3.5; // 간격 줄이기
 
-const SaveTimeAtHome = () => {
+const SaveTimeAtHome = ({totalList}) => {
   const scrollX = useRef(new Animated.Value(0)).current;
   const listRef = useRef(null);
   const [selectedIndex, setSelectedIndex] = useState(originalDays.length);
@@ -68,22 +69,37 @@ const SaveTimeAtHome = () => {
     return originalDays[dayIndex];
   };
 
+  const getSelectedTime = () => {
+    const dayIndex = selectedIndex % originalDays.length; // 요일 인덱스 변환
+    const timeMap = {
+      0: minToHour(totalList.saturday), // 토요일
+      1: minToHour(Object.values(totalList).reduce((sum,el) => sum+el, 0)), // 일요일
+      2: minToHour(totalList.sunday), // 월요일
+      3: minToHour(totalList.monday), // 화요일
+      4: minToHour(totalList.tuesday), // 수요일
+      5: minToHour(totalList.wednesday), // 수요일
+      6: minToHour(totalList.thursday), // 목요일
+      7: minToHour(totalList.friday)//금요일
+    };
+    return timeMap[dayIndex] || "3H 15M"; // 기본값
+  };
+  
   return (
     <Container>
-      <TimeText>3H 15M</TimeText>
+      {/* selectedIndex 값에 따라 바뀌는 시간 표시 */}
+      <TimeText>{getSelectedTime()}</TimeText>
+      
       <SubText>{"의 자투리 시간이\n생깁니다!"}</SubText>
-      {/* 현재 선택된 요일 표시 */}
-      {/* <SelectedDayText>{getSelectedDay()}</SelectedDayText>  */}
-      <SnowFlakeIcon color={"white"} size={16}/>
+      <SnowFlakeIcon color={"white"} size={16} />
+      
       <SliderContainer>
-        <Animated.FlatList
+        {/* <Animated.FlatList
           ref={listRef}
           data={loopedDays}
           keyExtractor={(item, index) => index.toString()}
           horizontal
           showsHorizontalScrollIndicator={false}
           pagingEnabled
-          snapToAlignment="center"
           snapToInterval={itemWidth}
           decelerationRate="fast"
           contentContainerStyle={{
@@ -96,18 +112,48 @@ const SaveTimeAtHome = () => {
               <DayText
                 style={{
                   fontSize: isRedText(index) ? 20 : 16,
-                  color: isRedText(index) ? "rgba(255,255,255,1)" : "rgba(255,255,255,.6)", // 빨간색 조건 추가
-                  fontWeigt:isRedText(index) ? 600 : 500
+                  color: isRedText(index) ? "rgba(255,255,255,1)" : "rgba(255,255,255,.6)",
+                  fontWeight: isRedText(index) ? "600" : "500",
                 }}
               >
                 {item}
               </DayText>
-              <Line style={{
-                height:isRedText(index) ? 26: 16
-              }}/>
+              <Line style={{ height: isRedText(index) ? 26 : 16 }} />
             </ItemContainer>
           )}
-        />
+        /> */}
+        <Animated.FlatList
+  ref={listRef}
+  data={loopedDays}
+  keyExtractor={(item, index) => index.toString()}
+  horizontal
+  showsHorizontalScrollIndicator={false}
+  pagingEnabled
+  snapToAlignment="center"
+  snapToInterval={itemWidth}
+  decelerationRate="fast"
+  scrollEventThrottle={16} // 스크롤 이벤트 최적화
+  onScroll={handleScroll}
+  onMomentumScrollEnd={onMomentumScrollEnd}
+  snapToOffsets={loopedDays.map((_, index) => index * itemWidth)} // 정확한 위치 지정
+  contentContainerStyle={{
+    paddingHorizontal: itemWidth * 3, // 중앙 정렬을 위한 패딩 추가
+  }}
+  renderItem={({ item, index }) => (
+    <ItemContainer width={itemWidth}>
+      <DayText
+        style={{
+          fontSize: isRedText(index) ? 20 : 16,
+          color: isRedText(index) ? "rgba(255,255,255,1)" : "rgba(255,255,255,.6)",
+          fontWeight: isRedText(index) ? "600" : "500",
+        }}
+      >
+        {item}
+      </DayText>
+      <Line style={{ height: isRedText(index) ? 26 : 16 }} />
+    </ItemContainer>
+  )}
+/>
       </SliderContainer>
     </Container>
   );

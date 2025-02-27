@@ -33,6 +33,7 @@ import { useNowTodoStore } from '../../store/todo';
 import SaveTimeAtHome from '../components/SaveTimeAtHome';
 import saving_time_home_bg from '../../../assets/saving_time_home_bg.png';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { useSaveTime } from '../../hooks/useSaveTime';
 dayjs.extend(isSameOrBefore)
 
 const Home = () => {
@@ -48,6 +49,8 @@ const Home = () => {
   const [todayTodo, setTodayTodo] = useState([]);
   const [isReady, setIsReady] = useState(false);
   const {nowTodo} = useNowTodoStore();
+  const {getTotalSpareTime} = useSaveTime();
+  const [spareTimeTotal, setSpareTimeTotal] = useState({})
 
 
   const getUser = async() => {
@@ -89,6 +92,7 @@ const Home = () => {
     getTodayTodo(setTodayTodo,setIsReady);
     getNowTodo()
     console.log("homenow", nowTodo)
+    getTotalSpareTime(setSpareTimeTotal)
     }, [])
   const isLoading = Object.keys(nowTodo).length > 1 ? true : false;
 
@@ -98,8 +102,9 @@ const Home = () => {
     
     <SafeAreaView>
       {isReady?
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
       <HomeBody>
+        <MarginVertical top={20}/>
         <View style={{display:'flex', alignItems:'flex-end', width:size.width, marginRight:25}}>
           <ContinuitySuccess/>
         </View>
@@ -188,15 +193,16 @@ const Home = () => {
         </View>
         <View style={{width:327, flexDirection:'row', alignItems:"flex-end"}}>
           <SaveTimeTitle>{`${userInfo.displayName} 님의\n총 자투리 시간`}</SaveTimeTitle>
-          <TouchableOpacity onPress={() => navigation.navigate("ViewSaveTime")}>
+          <TouchableOpacity onPress={() => navigation.navigate("ViewSaveTime", {version:""})}>
             <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
           </TouchableOpacity>
         </View>
         <SaveTimeBody>
-          <SaveTimeAtHome/>
+          <SaveTimeAtHome totalList={spareTimeTotal}/>
           <SaveTimeBg source={saving_time_home_bg}/>
         </SaveTimeBody>
-        <MarginVertical top={400}/>
+        <MarginVertical top={100}/>
+        
         <AssetAddModal isAssetAddModalVisible={isAssetAddModalVisible} setIsAssetAddModalVisible={setIsAssetAddModalVisible}/>
       </HomeBody>
       </ScrollView>
@@ -218,7 +224,6 @@ const HomeBody = styled.View`
   justify-content:center;
   align-items:center;
   width:${size.width}px;
-  height:800px;
   `
 
 const HomeBg = styled.Image`

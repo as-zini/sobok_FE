@@ -14,6 +14,7 @@ import StepNumber from '../components/StepNumber';
 import { size } from '../styles/size';
 import check_icon from '../../../assets/check_icon_indigo.png';
 import { useSignup } from '../../hooks/useSignup';
+import { useLogin } from '../../hooks/useLogin';
 
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
@@ -24,6 +25,7 @@ const SignupScreen = () => {
   const [idChecked, setIdChecked] = useState(false);
   const [emailChecked, setEmailChecked] = useState(false);
   const [nicknameChecked, setNicknameChecked] = useState(false);
+  const {handleLogin} = useLogin()
   const [values, setValues] = useState({
     username:"",
     displayName:"",
@@ -41,9 +43,11 @@ const SignupScreen = () => {
       setStep((prev) => prev+1);
       setUnChecked(true)
     } else if(step===4){
-      // handleSignup(values, setStep);
-      setStep(prev => prev+1)
+      handleSignup(values, setStep);
+      // setStep(prev => prev+1)
+      
     }else{
+      handleLogin(values.username, values.password, "", true)
       navigation.navigate("ViewSaveTime", {version:'first', username:values.displayName});
     }
   }
