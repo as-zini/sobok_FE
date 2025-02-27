@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Image, SafeAreaView, TouchableOpacity, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import styled from 'styled-components'
 import { size } from '../styles/size'
 
@@ -12,11 +12,30 @@ import WeekCalandar from '../components/WeekCalandar'
 import dayjs from 'dayjs'
 import Octicons from '@expo/vector-icons/Octicons';
 import { useNavigation } from '@react-navigation/native'
+import save_time_bg_first from '../../../assets/report_bg.png';
+import SnowFlakeIcon from '../components/SnowFlakeIcon'
+import Button from '../components/Button'
 
-const ViewSaveTime = () => {
+const ViewSaveTime = ({route}) => {
   const [selectedDate, setSelectedDate] = useState(dayjs().format('ddd').toUpperCase())
   const navigation = useNavigation();
   const timeData = [["06:00","출근 시간","06:00 - 7:40","1H 20M"],["06:00","출근 시간","06:00 - 7:40","1H 20M"],["06:00","출근 시간","06:00 - 7:40","1H 20M"]]
+  const {version, username} = route.params;
+
+  useEffect(() => {
+    console.log(version, username)
+  }, [])
+
+  const handleSaveButton = () => {
+    if(version==='first'){
+      navigation.reset({
+        routes:[{
+          name:'StartAddAsset',
+          params:{version:"Saving"}
+        }]
+      })}
+    }
+  
   
 
   return (
@@ -26,17 +45,30 @@ const ViewSaveTime = () => {
           <View style={{position:'absolute', left:0}}>
             <BackArrowButton/>
           </View>
+          {version === "first" ? <></> :
           <SaveTimeText style={{color:"#4c4c4c"}}>자투리 시간</SaveTimeText>
+          }
         </ViewSaveTimeHeader>
         <MarginVertical top={30}/>
         <Image source={time_icon} style={{width:40, height:48}}/>
         <MarginVertical top={15}/>
-        <SaveTimeText style={{color:colors.fontMain90}}>{`화요일\n자투리 시간`}</SaveTimeText>
-        <SaveTimeTitle>{`3H 15M`}</SaveTimeTitle>
+        <SaveTimeText style={{color:colors.fontMain90}}>{version === 'first' ? `자투리 시간`:`화요일\n자투리 시간`}</SaveTimeText>
+        {version === "first" ? <MarginVertical top={10}/> : <></>}
+        <SaveTimeTitle style={{fontSize:version==='first' ? 26 : undefined}}>{version === 'first' ? "자투리 시간이\n얼마나 생기나요?":`3H 15M`}</SaveTimeTitle>
+        {version === 'first' ?
+        <>
+        <MarginVertical top={32}/>
+        <SnowFlakeIcon color={'indigo'} size={16}/>
+        <MarginVertical top={10}/>
+        <Text style={{fontWeight:600, fontSize:18, color:colors.fontMain70}}>{`${username} 님의 일상에서 생기는\n모든 자투리 시간을 알려주세요!`}</Text>
+        </>
+        :<></>
+        }
         <MarginVertical top={40}/>
         <WeekCalandar selectedDate={selectedDate} setSelectedDate={setSelectedDate} version={'day'}/>
         <MarginVertical top={32}/>
         <HorizonBorderLine/>
+        <ScrollView style={{maxHeight:'28%'}} showsVerticalScrollIndicator={false}>
         <MarginVertical top={26}/>
         {timeData.map((el,index) => {
           return(
@@ -84,12 +116,16 @@ const ViewSaveTime = () => {
             <SaveTimeText style={{color:colors.indigoBlue}}></SaveTimeText>
           </View>
         </TouchableOpacity>
-
+        <MarginVertical top={20}/>
+     </ScrollView>
+      <View style={{width:size.width,height:100,position:'absolute',bottom:70,right:0, display:'flex',justifyContent:'center', alignItems:'center'}}>
+        <Button text={"저장하기"} handleButton={handleSaveButton}/>
+      </View>
       </ViewSaveTimeBody>
-      <ViewSaveTimeBg source={savetime_bg}/>
+      <ViewSaveTimeBg source={version === "first" ? save_time_bg_first : savetime_bg} version={version}/>
     </SafeAreaView>
   )
-}
+      }
 
 export default ViewSaveTime
 
@@ -103,7 +139,7 @@ const ViewSaveTimeBody = styled.View`
 
 const ViewSaveTimeBg = styled.Image`
   position:absolute;
-  top:0;
+  top:${props => props.version === 'first' ? -750 : 0}
   z-index:-1;
 `
 
