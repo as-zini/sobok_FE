@@ -32,6 +32,8 @@ import CompleteSnowCard from '../ui/screens/CompleteSnowCard';
 import SnowCardBook from '../ui/screens/SnowCardBook';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ViewLinkedRoutine from '../ui/screens/ViewLinkedRoutine';
+import ViewSaveTime from '../ui/screens/ViewSaveTime';
+import AddSaveTime from '../ui/screens/AddSaveTime';
 
 
 
@@ -92,7 +94,8 @@ const StackNavigation = () => {
       <Stack.Screen name="SnowCardBook" component={SnowCardBook}/>
       <Stack.Screen name="ViewLinkedRoutine" component={ViewLinkedRoutine}/>
       <Stack.Screen name="ViewAiRoutine" component={ViewAiRoutineResult}/>
-  
+      <Stack.Screen name="ViewSaveTime" component={ViewSaveTime}/>
+      <Stack.Screen name="AddSaveTime" component={AddSaveTime}/>
     </Stack.Navigator>
   )
 }

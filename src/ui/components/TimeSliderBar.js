@@ -5,9 +5,15 @@ import { minToHour } from '../../util';
 import dayjs from 'dayjs';
 import { colors } from '../styles/colors';
 
-const TimeSliderBar = ({ text, setOutValue, version, type, compareValue1, compareValue2 }) => {
+const TimeSliderBar = ({ text, setOutValue, version, type, compareValue1, compareValue2, timeInit }) => {
+  const parseTimeToMinutes = (timeString) => {
+    if (!timeString) return 720; // 기본값: 12:00 (오전/오후 개념 고려)
+    const [hours, minutes] = timeString.split(":").map(Number);
+    return hours * 60 + minutes; // 분 단위 변환
+  };
+
   const initValue = type === "time" ? 720 : type === "savingtime"?100 : 6
-  const [value, setValue] = useState(initValue); // 기본값: 12:00 (time) / 6개월 (duration) / 100시간 (savingtime)
+  const [value, setValue] = useState(type === "time" ? parseTimeToMinutes(timeInit) : initValue); // 기본값: 12:00 (time) / 6개월 (duration) / 100시간 (savingtime)
   const trackPosition = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {

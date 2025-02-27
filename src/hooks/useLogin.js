@@ -6,7 +6,7 @@ import { useUserInfoStore } from '../store/user';
 export const useLogin = () => {
   const navigation = useNavigation();
 
-  const handleLogin = async(id, password, setIsLoginFail) => {
+  const handleLogin = async(id, password, setIsLoginFail, isFirst) => {
     try {
       const response = await axios.post("https://sobok-app.com/user/login/jwt",{
         username:id,
@@ -15,11 +15,12 @@ export const useLogin = () => {
       console.log(response.headers['set-cookie']);
       const token = JSON.stringify(response.data.accessToken);
       await AsyncStorage.setItem("access_token", token);
+      if(!isFirst){
       navigation.reset({
         routes:[{
           name:'Tabs'
         }]
-      })
+      })}
     } catch (error) {
       console.log(error)
       setIsLoginFail(true);

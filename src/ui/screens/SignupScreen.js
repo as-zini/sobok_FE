@@ -14,6 +14,7 @@ import StepNumber from '../components/StepNumber';
 import { size } from '../styles/size';
 import check_icon from '../../../assets/check_icon_indigo.png';
 import { useSignup } from '../../hooks/useSignup';
+import { useLogin } from '../../hooks/useLogin';
 
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
@@ -24,6 +25,7 @@ const SignupScreen = () => {
   const [idChecked, setIdChecked] = useState(false);
   const [emailChecked, setEmailChecked] = useState(false);
   const [nicknameChecked, setNicknameChecked] = useState(false);
+  const {handleLogin} = useLogin()
   const [values, setValues] = useState({
     username:"",
     displayName:"",
@@ -42,8 +44,11 @@ const SignupScreen = () => {
       setUnChecked(true)
     } else if(step===4){
       handleSignup(values, setStep);
+      // setStep(prev => prev+1)
+      
     }else{
-      navigation.navigate("StartAddAsset", {version:"Saving"});
+      handleLogin(values.username, values.password, "", true)
+      navigation.navigate("ViewSaveTime", {version:'first', username:values.displayName});
     }
   }
   const contentsText = ["성함을 \n알려주세요", "소복에서는 \n어떻게 불러드릴까요?", "아이디와 \n비밀번호를 설정할게요!", `${values.displayName} 님에 대해 \n더 알려주세요!`,""]
