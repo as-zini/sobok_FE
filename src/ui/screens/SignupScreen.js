@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Dimensions, Image, SafeAreaView, ScrollView, TouchableOpacity, View } from 'react-native'
+import { Dimensions, Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import styled from 'styled-components';
 
 import signup_bg from '../../../assets/signup_bg.png';
@@ -15,6 +15,7 @@ import { size } from '../styles/size';
 import check_icon from '../../../assets/check_icon_indigo.png';
 import { useSignup } from '../../hooks/useSignup';
 import { useLogin } from '../../hooks/useLogin';
+import MarginVertical from '../components/MarginVertical';
 
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
@@ -22,9 +23,12 @@ const height = Dimensions.get('screen').height;
 const SignupScreen = () => {
   const [step, setStep] = useState(1);
   const [unChecked, setUnChecked] = useState(true);
-  const [idChecked, setIdChecked] = useState(false);
+  const [idChecked, setIdChecked] = useState(true);
   const [emailChecked, setEmailChecked] = useState(false);
   const [nicknameChecked, setNicknameChecked] = useState(false);
+  const [phoneChecked, setPhoneChecked] = useState(false);
+  const [isVarified, setIsVarified] = useState(false);
+  const [varifyCode, setVarifyCode] = useState("");
   const {handleLogin} = useLogin()
   const [values, setValues] = useState({
     username:"",
@@ -37,7 +41,7 @@ const SignupScreen = () => {
     birth:""
   })
   const navigation = useNavigation();
-  const {handleSignup, checkAvailability} = useSignup();
+  const {handleSignup, checkAvailability, handleSmsSend, handleSmsVarify} = useSignup();
   const handleButton = () => {
     if(step<4){
       setStep((prev) => prev+1);
@@ -52,7 +56,7 @@ const SignupScreen = () => {
     }
   }
   const contentsText = ["성함을 \n알려주세요", "소복에서는 \n어떻게 불러드릴까요?", "아이디와 \n비밀번호를 설정할게요!", `${values.displayName} 님에 대해 \n더 알려주세요!`,""]
-  const placeholderText = ["이름을 입력해주세요", "닉네임을 입력해주세요", ["아이디를 입력해주세요", "대/소문자, 숫자, 특수문자의 조합", "비밀번호를 한 번 더 입력해주세요"],["이메일을 입력해주세요", "전화번호를 입력해주세요", "인증번호를 입력해주세요", "생년월일을 입력해주세요"],""]
+  const placeholderText = ["이름을 입력해주세요", "닉네임을 입력해주세요", ["아이디를 입력하세요(5-15자)", "비밀번호를 입력하세요 (8~16글자)", "비밀번호를 한 번 더 입력해주세요"],["이메일을 입력해주세요", "전화번호를 입력해주세요", "인증번호를 입력해주세요", "ex)20000101"],""]
   const categoryText = ["","", ["아이디", "비밀번호"], ["이메일", "전화번호", "생년월일"]]
   const categoryState = ["name", "displayName", ["userName", "password", "password2"], ["email", "phoneNumber", "birth"]]
   const currentValue = values[categoryState[step-1]];
@@ -60,14 +64,15 @@ const SignupScreen = () => {
   // 하나라도 입력되었으면 버튼 활성화
   const isActive = step === 1 || step === 2 ? currentValue.trim() !== "" :
                   step === 3 ? values.username.trim() !=="" && values.password.trim() !=="" && values.password2.trim() !=="" : values.email.trim() !=="" && values.phoneNumber.trim() !== "" && values.birth.trim() !== ""
-  const isSame = values.password !== values.password2
+  const isSame = values.password !== values.password2 || values.password.length < 7 || values.password.length >17
   const step3Check = !isActive || isSame
   const checkList = [!isActive || nicknameChecked, !isActive || isSame || idChecked, !isActive || emailChecked];
 
   const handleIdCheck = async() => {
     const response = await checkAvailability(values.username, "username");
     console.log(response);
-    setIdChecked(response.isDuplicated);
+    console.log(response.isDuplicated && (values.username.length <=4 || values.username.length >=16))
+    setIdChecked(response.isDuplicated || (values.username.length <=4 || values.username.length >=16));
   }
 
   const handleNichnameCheck = async() => {
@@ -95,11 +100,15 @@ const SignupScreen = () => {
     handleIdCheck()
     :
     handleEmailCheck();
+
     console.log(idChecked);
     console.log(values);
     console.log(checkList);
   }, [values])
 
+  useEffect(() => {
+    handleSmsVarify(values.phoneNumber, varifyCode, setIsVarified)
+  },[varifyCode])
 
   return (
     <>
@@ -130,7 +139,7 @@ const SignupScreen = () => {
               step === 1 ? setValues({...values,  "name" : e.nativeEvent.text}) : setValues({...values, "displayName": e.nativeEvent.text})
             }}
           ></SignupInput>
-          {step === 2 && !nicknameChecked? <Image source={check_icon} style={{width:32, height:32, position:'absolute', right:0}}/> : <></>}
+          {step === 2 && !nicknameChecked && values.displayName.length !== 0?<Image source={check_icon} style={{width:32, height:32, position:'absolute', right:0}}/> : <></>}
         </View>
         <BorderLine />
         </>
@@ -147,7 +156,7 @@ const SignupScreen = () => {
               setValues({...values, 'username':e.nativeEvent.text});
             }}
           />
-          {idChecked || values.username.length ===0 ? <></> : <Image source={check_icon} style={{width:32, height:32, position:'absolute', right:0}}/>}
+          {idChecked ? <></> : <Image source={check_icon} style={{width:32, height:32, position:'absolute', right:0}}/>}
         </View>
         <BorderLine/>
         <View >
@@ -176,7 +185,7 @@ const SignupScreen = () => {
         </View>
         </>
         : step === 4 ?
-        <ScrollView style={{height:400}}>
+        <ScrollView style={{height:400}} showsVerticalScrollIndicator={false}>
           <SignupContentsText>{contentsText[step-1]}</SignupContentsText>
           <SignupCategoryText style={{marginTop:10}}>{categoryText[step-1][0]}</SignupCategoryText>
           <View style={{display:'flex', flexDirection:'row', justifyContent:'center', alignItems:'center', width:294}}>
@@ -194,20 +203,23 @@ const SignupScreen = () => {
               placeholder={placeholderText[step-1][1]}
               value={values.phoneNumber}
               onChange={(e) => {setValues({...values, "phoneNumber":e.nativeEvent.text})}}
+              style={{width:250, marginRight:40}}
               />
-            <PhoneAuthButton>
+            <PhoneAuthButton onPress={() => handleSmsSend(values.phoneNumber,setPhoneChecked)}>
               <PhoneAuthIcon source={phone_number_auth_icon}/>
             </PhoneAuthButton>
           </View>
           <BorderLine/>
-          <SignupInput placeholder={placeholderText[step-1][2]}/>
+          <MarginVertical top={10}/>
+          {phoneChecked ? <></> : <Text style={{color:colors.fontMain, fontWeight:500, fontSize:16}}>이미 가입된 전화번호입니다</Text>}
+          <SignupInput placeholder={placeholderText[step-1][2]} value={varifyCode} onChange={(e) => setVarifyCode(e.nativeEvent.text)}/>
           <BorderLine/>
           <SignupCategoryText SignupCategoryText>{categoryText[step-1][2]}</SignupCategoryText>
           <SignupInput
             placeholder={placeholderText[step-1][3]} 
             placeholderTextColor="#fff"
             value={values.birth}
-            onChange={(e) => {setValues({...values, "birth":e.nativeEvent.text})}}
+            onChange={(e) => {setValues({...values, "birth":e.nativeEvent.text});}}
             />
           <BorderLine/>
         </ScrollView>
@@ -294,8 +306,14 @@ const BorderLine = styled.View`
 `
 
 const PhoneAuthButton = styled.TouchableOpacity`
-  position:absolute;
-  right:0;
+  z-index:2;
+  margin-left:-55px;
+  width:50px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:30px;
+  z-index:2;
 `
 
 const PhoneAuthIcon = styled.Image`
