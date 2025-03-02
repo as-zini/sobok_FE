@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 
 import setting_linked_app_bg from '../../../assets/home_bg.png';
@@ -18,6 +18,8 @@ import { useNavigation } from '@react-navigation/native';
 import { openApp } from '../components/Linking';
 import * as Linking from 'expo-linking'
 import check_icon_black from '../../../assets/check_icon_black.png';
+import { useMyPage } from '../../hooks/useMyPage';
+import Fontisto from '@expo/vector-icons/Fontisto';
 
 const SettingLinkedApp = () => {
   const navigation = useNavigation();
@@ -29,6 +31,14 @@ const SettingLinkedApp = () => {
   const [showTodoList, setShowTodoList] = useState(false);
   const [todoData, setTodoData] = useState([["영어 강의 1강", "스픽", "1H 30M", "06:00 - 07:30"],["영어 단어 10개 암기", "말해보카","1H 00M", "08:00 - 09:00"]])
   const [selectedApp, setSelectedApp] = useState("");
+  const {getUserLinkedApp, handleSetLinkedApp} = useMyPage()
+  const [myLinkedAppList, setMyLinkedAppList] = useState([]);
+  const [addLinkedAppList, setAddLinkedAppList] = useState([]);
+
+  useEffect(() => {
+    getUserLinkedApp(setMyLinkedAppList)
+  }, [])
+  
 
   const LinkedTodoList = () => {
     return(
@@ -55,6 +65,17 @@ const SettingLinkedApp = () => {
         
       </>
     )
+
+  }
+
+  useEffect(() => {
+    console.log([...myLinkedAppList,...addLinkedAppList])
+  }, [addLinkedAppList])
+  
+
+  const handleAddLinkButton = () => {
+    
+    handleSetLinkedApp([...myLinkedAppList,...addLinkedAppList])
   }
 
   return (
@@ -73,7 +94,7 @@ const SettingLinkedApp = () => {
         <MarginVertical top={16}/>
         <SettingLinkedAppText>{isAppList ? "연동하고 싶은 앱을 선택해주세요!" : showTodoList ? "스픽을 할 일과 연결하면\n자동으로 이동해요!":"할 일을 자동으로 시작할 수 있도록\n앱을 연동시킬 수 있어요!"}</SettingLinkedAppText>
         <MarginVertical top={showTodoList ? 10:56}/>
-        <SettingLinkedAppCount>{isAppList ? "총 54개의 앱" : showTodoList ? null : "총 2개의 연동 앱"}</SettingLinkedAppCount>
+        <SettingLinkedAppCount>{isAppList ? `총 ${linkedAppTitle.length}개의 앱` : showTodoList ? null : `총 ${myLinkedAppList?.length}개의 연동 앱`}</SettingLinkedAppCount>
         <MarginVertical top={13}/>
         <ScrollView style={{height:330}}>
           <SettingLinkedAppContentsArea>
@@ -82,35 +103,36 @@ const SettingLinkedApp = () => {
               return(
                 
                 <LinkedAppEl key={index} onPress={() => {
-                  setIsAppList(false);
-                  setShowTodoList(true);
-                  setSelectedApp(el)
-                  // Linking.openURL("music://")
+                  setAddLinkedAppList(prev => [...prev, el])
                 }}>
                 
                   <LinkedAppImg source={isAppList ? appListImg[index] : linkedAppImg[index]}/>
                   <LinkedAppTitle>{el}</LinkedAppTitle>
-                  <NavigateArrowButton/>
+                  {myLinkedAppList.includes(el) || addLinkedAppList.includes(el)? 
+                  <Fontisto name="check" size={12} color={colors.fontMain} />
+                  :
+                  <></>
+                  }
                   </LinkedAppEl>
               )
             })
             : showTodoList ?
             <LinkedTodoList/>
             :
-            linkedAppTitle.map((el, index) => {
+            myLinkedAppList?.map((el, index) => {
               return(
                 <LinkedAppEl key={index}>
                   <LinkedAppImg source={isAppList ? appListImg[index] : linkedAppImg[index]}/>
                   <LinkedAppTitle>{el}</LinkedAppTitle>
-                  <NavigateArrowButton/>
+                  <NavigateArrowButton handleArrowButton={() => {setSelectedApp(el);setShowTodoList(true)}}/>
                 </LinkedAppEl>
               )
             })}
           </SettingLinkedAppContentsArea>
 
         </ScrollView>
-        {isAppList? <></> : <Button text={showTodoList ? "완료하기" : "연동앱 추가하기"} handleButton={() => {
-          showTodoList ? navigation.navigate("Setting") : setIsAppList(true)}}/>}
+        <View><Button text={showTodoList ? "완료하기" : isAppList ? '연동하기' :"연동앱 추가하기"} handleButton={() => {
+          showTodoList ? navigation.navigate("Setting") : isAppList ? handleAddLinkButton(): setIsAppList(true)}}/></View>
       </SettingLinkedAppBody>
       <SettingLinkedAppBg source={setting_linked_app_bg}/>
     </SafeAreaView>
@@ -124,7 +146,7 @@ const SettingLinkedAppBody = styled.View`
   width:${size.width}px;
   display:flex;
   justify-content:center;
-  padding:0 36px;
+  padding:0 30px;
 `
 
 const SettingLinkedAppBg = styled.Image`
