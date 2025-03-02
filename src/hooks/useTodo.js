@@ -4,6 +4,7 @@ import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import baseUrl from "../api/baseURL";
 import { useNowTodoStore } from "../store/todo";
 import { openApp } from "../ui/components/Linking";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 dayjs.extend(isSameOrBefore)
 
 export const useTodo = () => {
@@ -11,7 +12,12 @@ export const useTodo = () => {
 
   const getTodayTodo = async(setTodayTodo,setIsReady) => {
     try {
-      const response = await axios.get("https://sobok-app.com/todo/today")
+      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+      const response = await axios.get("https://sobok-app.com/todo/today",{
+        headers:{
+          Authorization:`Bearer ${token}`
+        }
+      })
       console.log(response.data)
       setTodayTodo(response.data)
       setIsReady(true)
@@ -24,7 +30,13 @@ export const useTodo = () => {
 
   const getNotCompletedTodo = async(setNotCompletedTodo, setIsReady) => {
     try {
-      const response = await baseUrl.get('/routine/today/not-completed')
+      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+
+      const response = await baseUrl.get('/routine/today/not-completed',{
+        headers:{
+          Authorization:`Bearer ${token}`
+        }
+      })
       console.log("notCompletedTodo",response.data)
       setNotCompletedTodo(response.data)
       setIsReady(true)
@@ -35,7 +47,13 @@ export const useTodo = () => {
 
   const startTodo = async(id, setLogId, linkApp) => {
     try {
-      const response = await baseUrl.post(`/todo/start?todoId=${id}`)
+      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+
+      const response = await baseUrl.post(`/todo/start?todoId=${id}`,{},{
+        headers:{
+          Authorization:`Bearer ${token}`
+        }
+      })
       console.log(response.data);
       setLogId(response.data.todoLogId)
       
@@ -49,7 +67,13 @@ export const useTodo = () => {
 
   const completeTodo = async(id, time) => {
     try {
-      const response = await baseUrl.post(`/todo/end?todoLogId=${id}&duration=${time}`)
+      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+
+      const response = await baseUrl.post(`/todo/end?todoLogId=${id}&duration=${time}`,{},{
+        headers:{
+          Authorization:`Bearer ${token}`
+        }
+      })
       console.log(response.data)
     } catch (error) {
       console.log(error)
@@ -58,7 +82,13 @@ export const useTodo = () => {
 
   const getNowTodo = async() => {
     try {
-      const response = await baseUrl.get("/todo/closest")
+      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+
+      const response = await baseUrl.get("/todo/closest",{
+        headers:{
+          Authorization:`Bearer ${token}`
+        }
+      })
       console.log("getNow",response.data);
       setNowTodo(response.data)
     } catch (error) {
@@ -68,7 +98,13 @@ export const useTodo = () => {
 
   const getTodaySaveTime = async(setSaveTime) => {
     try {
-      const response = await baseUrl.get("/routine/today/completed-time");
+      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+
+      const response = await baseUrl.get("/routine/today/completed-time",{
+        headers:{
+          Authorization:`Bearer ${token}`
+        }
+      });
       console.log(response.data);
       setSaveTime(response.data.totalTime)
     } catch (error) {

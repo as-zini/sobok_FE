@@ -2,6 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import axios from "axios"
 import dayjs from "dayjs";
 import { useTodoStore } from "../store/todo";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const useRoutine = () => {
   const navigation = useNavigation();
@@ -9,7 +10,12 @@ export const useRoutine = () => {
 
   const getRoutineByList = async(setRoutineInfo, setIsComplete) => {
     try {
-      const response = await axios.get("https://sobok-app.com/routine/by-list")
+      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+      const response = await axios.get("https://sobok-app.com/routine/by-list",{
+        headers:{
+          Authorization:`Bearer ${token}`
+        }
+      })
       console.log("Routine",response.data);
       setRoutineInfo(response.data)
       setIsComplete(true)
@@ -24,7 +30,13 @@ export const useRoutine = () => {
     
     
     try {
-      const response = await axios.get(`https://sobok-app.com/routine/by-date?dateString=${year}-${month}-${selectedDate}`)
+      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+
+      const response = await axios.get(`https://sobok-app.com/routine/by-date?dateString=${year}-${month}-${selectedDate}`,{
+        headers:{
+          Authorization:`Bearer ${token}`
+        }
+      })
       console.log("cal",response.data)
       console.log(response.data.message)
       response.data.message ? setTodayRoutineList([]) : setTodayRoutineList(response.data)
@@ -35,7 +47,13 @@ export const useRoutine = () => {
 
   const getRoutineDetail = async(id, setRoutineDetailInfo, setIsComplete) => {
     try {
-      const response = await axios.get(`https://sobok-app.com/routine/detail?routineId=${id}`)
+      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+
+      const response = await axios.get(`https://sobok-app.com/routine/detail?routineId=${id}`,{
+        headers:{
+          Authorization:`Bearer ${token}`
+        }
+      })
       console.log("detail",response.data)
       setRoutineDetailInfo(response.data)
       setIsComplete(true)
@@ -46,7 +64,13 @@ export const useRoutine = () => {
 
   const handleRoutineSuspend = async(id, setIsComplete) => {
     try {
-      const response = await axios.get(`https://sobok-app.com/routine/suspend?routineId=${id}`)
+      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+
+      const response = await axios.get(`https://sobok-app.com/routine/suspend?routineId=${id}`,{
+        headers:{
+          Authorization:`Bearer ${token}`
+        }
+      })
       console.log(response.data);
       setIsComplete(true);
     } catch (error) {
@@ -56,6 +80,8 @@ export const useRoutine = () => {
 
   const handleAddRoutine = async(newRoutineData, isAiRoutine) => {
     try {
+      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+
       const response = await axios.post("https://sobok-app.com/routine/create",{
         accountId:newRoutineData.id,
         title: newRoutineData.title,
@@ -63,6 +89,10 @@ export const useRoutine = () => {
         endTime: newRoutineData.endTime,
         days: newRoutineData.days,
         todos:isAiRoutine ? newRoutineData.todos : todoData
+      },{
+        headers:{
+          Authorization:`Bearer ${token}`
+        }
       })
       console.log(isAiRoutine ? "AI" : "", response.data);
       setTodoData([]);
@@ -75,10 +105,23 @@ export const useRoutine = () => {
 
   const getRoutineCount = async(setRoutineCount) => {
     try {
-      const response = await axios.get("https://sobok-app.com/routine/by-list");
+      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+
+      const response = await axios.get("https://sobok-app.com/routine/by-list",{
+        headers:{
+          Authorization:`Bearer ${token}`
+        }
+      });
+      console.log(response.data)
       setRoutineCount(response.data.length)
     } catch (error) {
-      console.log(error)
+      if (error.response) {
+        console.log("서버 응답 에러:", error.response.status, error.response.data);
+      } else if (error.request) {
+        console.log("요청은 갔는데 응답이 없음:", error.request);
+      } else {
+        console.log("기타 에러:", error.message);
+      }
     }
   }
 

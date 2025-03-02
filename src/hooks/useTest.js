@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native"
 import axios from "axios"
 
@@ -6,6 +7,7 @@ export const useTest = () => {
 
   const handleSubmitTest = async(spareTpo, spareTime, preference1, preference2, preference3, likeOption, extraRequest, setIsCreateComplete, setAiRoutineInfo) => {
     try {
+      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
       const response = await axios.post("https://sobok-app.com/survey/generate",{
         spareTpo:spareTpo,
         spareTime:spareTime,
@@ -21,6 +23,10 @@ export const useTest = () => {
 	  // "preference3": "쉽게 질려 금방 쉬기",
 	  // "likeOption": ["요리", "영어"],
     // "extraRequest" : "요리 영상 시청을 포함해줘"
+      },{
+        headers:{
+          Authorization:`Bearer ${token}`
+        }
       })
       console.log(response.data)
       setAiRoutineInfo(response.data)

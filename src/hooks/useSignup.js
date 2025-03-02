@@ -1,5 +1,6 @@
 import { useNavigation } from "@react-navigation/native"
 import axios from "axios"
+import baseUrl from "../api/baseURL";
 
 
 export const useSignup = () => {
@@ -34,9 +35,36 @@ export const useSignup = () => {
     }
   }
 
+  const handleSmsSend = async(phone, setPhoneChecked) => {
+    try {
+      const response = await baseUrl.post('/sms/send',{
+        phoneNumber:phone
+      })
+      console.log(response.data)
+      setPhoneChecked(true);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleSmsVarify = async(phone,code, setIsVarified) => {
+    try {
+      const response = await baseUrl.post('/sms/verify',{
+        phoneNumber:phone,
+        code:code
+      })
+      console.log(response)
+      setIsVarified(true)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
 
   return {
     handleSignup,
-    checkAvailability
+    checkAvailability,
+    handleSmsSend,
+    handleSmsVarify
   }
 }

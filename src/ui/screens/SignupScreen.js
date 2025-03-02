@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Dimensions, Image, SafeAreaView, ScrollView, TouchableOpacity, View } from 'react-native'
+import { Dimensions, Image, Keyboard, KeyboardAvoidingView, Platform, SafeAreaView, ScrollView, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import styled from 'styled-components';
 
 import signup_bg from '../../../assets/signup_bg.png';
@@ -15,6 +15,8 @@ import { size } from '../styles/size';
 import check_icon from '../../../assets/check_icon_indigo.png';
 import { useSignup } from '../../hooks/useSignup';
 import { useLogin } from '../../hooks/useLogin';
+import MarginVertical from '../components/MarginVertical';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
@@ -22,9 +24,12 @@ const height = Dimensions.get('screen').height;
 const SignupScreen = () => {
   const [step, setStep] = useState(1);
   const [unChecked, setUnChecked] = useState(true);
-  const [idChecked, setIdChecked] = useState(false);
+  const [idChecked, setIdChecked] = useState(true);
   const [emailChecked, setEmailChecked] = useState(false);
   const [nicknameChecked, setNicknameChecked] = useState(false);
+  const [phoneChecked, setPhoneChecked] = useState("");
+  const [isVarified, setIsVarified] = useState(false);
+  const [varifyCode, setVarifyCode] = useState("");
   const {handleLogin} = useLogin()
   const [values, setValues] = useState({
     username:"",
@@ -37,7 +42,7 @@ const SignupScreen = () => {
     birth:""
   })
   const navigation = useNavigation();
-  const {handleSignup, checkAvailability} = useSignup();
+  const {handleSignup, checkAvailability, handleSmsSend, handleSmsVarify} = useSignup();
   const handleButton = () => {
     if(step<4){
       setStep((prev) => prev+1);
@@ -52,7 +57,7 @@ const SignupScreen = () => {
     }
   }
   const contentsText = ["성함을 \n알려주세요", "소복에서는 \n어떻게 불러드릴까요?", "아이디와 \n비밀번호를 설정할게요!", `${values.displayName} 님에 대해 \n더 알려주세요!`,""]
-  const placeholderText = ["이름을 입력해주세요", "닉네임을 입력해주세요", ["아이디를 입력해주세요", "대/소문자, 숫자, 특수문자의 조합", "비밀번호를 한 번 더 입력해주세요"],["이메일을 입력해주세요", "전화번호를 입력해주세요", "인증번호를 입력해주세요", "생년월일을 입력해주세요"],""]
+  const placeholderText = ["이름을 입력해주세요", "닉네임을 입력해주세요", ["아이디를 입력하세요(5-15자)", "비밀번호를 입력하세요 (8~16글자)", "비밀번호를 한 번 더 입력해주세요"],["이메일을 입력해주세요", "전화번호를 입력해주세요", "인증번호를 입력해주세요", "ex)20000101"],""]
   const categoryText = ["","", ["아이디", "비밀번호"], ["이메일", "전화번호", "생년월일"]]
   const categoryState = ["name", "displayName", ["userName", "password", "password2"], ["email", "phoneNumber", "birth"]]
   const currentValue = values[categoryState[step-1]];
@@ -60,14 +65,15 @@ const SignupScreen = () => {
   // 하나라도 입력되었으면 버튼 활성화
   const isActive = step === 1 || step === 2 ? currentValue.trim() !== "" :
                   step === 3 ? values.username.trim() !=="" && values.password.trim() !=="" && values.password2.trim() !=="" : values.email.trim() !=="" && values.phoneNumber.trim() !== "" && values.birth.trim() !== ""
-  const isSame = values.password !== values.password2
+  const isSame = values.password !== values.password2 || values.password.length < 7 || values.password.length >17
   const step3Check = !isActive || isSame
-  const checkList = [!isActive || nicknameChecked, !isActive || isSame || idChecked, !isActive || emailChecked];
+  const checkList = [!isActive || nicknameChecked, !isActive || isSame || idChecked, !isActive || emailChecked || !isVarified];
 
   const handleIdCheck = async() => {
     const response = await checkAvailability(values.username, "username");
     console.log(response);
-    setIdChecked(response.isDuplicated);
+    console.log(response.isDuplicated && (values.username.length <=4 || values.username.length >=16))
+    setIdChecked(response.isDuplicated || (values.username.length <=4 || values.username.length >=16));
   }
 
   const handleNichnameCheck = async() => {
@@ -95,11 +101,15 @@ const SignupScreen = () => {
     handleIdCheck()
     :
     handleEmailCheck();
+
     console.log(idChecked);
     console.log(values);
     console.log(checkList);
   }, [values])
 
+  useEffect(() => {
+    handleSmsVarify(values.phoneNumber, varifyCode, setIsVarified)
+  },[varifyCode])
 
   return (
     <>
@@ -130,13 +140,13 @@ const SignupScreen = () => {
               step === 1 ? setValues({...values,  "name" : e.nativeEvent.text}) : setValues({...values, "displayName": e.nativeEvent.text})
             }}
           ></SignupInput>
-          {step === 2 && !nicknameChecked? <Image source={check_icon} style={{width:32, height:32, position:'absolute', right:0}}/> : <></>}
+          {step === 2 && !nicknameChecked && values.displayName.length !== 0?<Image source={check_icon} style={{width:32, height:32, position:'absolute', right:0}}/> : <></>}
         </View>
         <BorderLine />
         </>
         : step === 3 ?
         <>
-        <SignupContentsText>{contentsText[step-1]}</SignupContentsText>
+        {/* <SignupContentsText>{contentsText[step-1]}</SignupContentsText>
         <SignupCategoryText style={{marginTop:0}}>{categoryText[step-1][0]}</SignupCategoryText>
         <View style={{display:'flex', flexDirection:'row', justifyContent:'center', alignItems:'center', width:294}}>
           <SignupInput
@@ -147,7 +157,7 @@ const SignupScreen = () => {
               setValues({...values, 'username':e.nativeEvent.text});
             }}
           />
-          {idChecked || values.username.length ===0 ? <></> : <Image source={check_icon} style={{width:32, height:32, position:'absolute', right:0}}/>}
+          {idChecked ? <></> : <Image source={check_icon} style={{width:32, height:32, position:'absolute', right:0}}/>}
         </View>
         <BorderLine/>
         <View >
@@ -173,49 +183,146 @@ const SignupScreen = () => {
             }
           </View>
           <BorderLine/>
+        </View> */}
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <KeyboardAwareScrollView
+        extraScrollHeight={0}
+        enableOnAndroid={true}
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"  // 키보드 바깥 터치 시 닫히게 설정
+        contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 20 }}  // 스크롤 안에서 여백 설정
+      >
+        {/* 첫 번째 인풋박스 */}
+        <SignupContentsText>{contentsText[step - 1]}</SignupContentsText>
+        <SignupCategoryText style={{ marginTop: 0 }}>
+          {categoryText[step - 1][0]}
+        </SignupCategoryText>
+        <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', width: 294 }}>
+          <SignupInput
+            placeholder={placeholderText[step - 1][0]}
+            placeholderTextColor="#fff"
+            value={values.username}
+            onChange={(e) => {
+              setValues({ ...values, 'username': e.nativeEvent.text });
+            }}
+          />
+          {idChecked ? null : (
+            <Image source={check_icon} style={{ width: 32, height: 32, position: 'absolute', right: 0 }} />
+          )}
         </View>
+        <BorderLine />
+
+        {/* 두 번째 인풋박스 */}
+        <View>
+          <SignupCategoryText>{categoryText[step - 1][1]}</SignupCategoryText>
+          <SignupInput
+            placeholder={placeholderText[step - 1][1]}
+            placeholderTextColor="#fff"
+            value={values.password}
+            onChange={(e) => { setValues({ ...values, 'password': e.nativeEvent.text }) }}
+            secureTextEntry={true}
+          />
+          <BorderLine />
+
+          {/* 세 번째 인풋박스 */}
+          <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', width: 294 }}>
+            <SignupInput
+              placeholder={placeholderText[step - 1][2]}
+              placeholderTextColor="#fff"
+              value={values.password2}
+              onChange={(e) => { setValues({ ...values, 'password2': e.nativeEvent.text }) }}
+              secureTextEntry={true}
+            />
+            {isSame ? null : (
+              <Image source={check_icon} style={{ width: 32, height: 32, position: 'absolute', right: 0 }} />
+            )}
+          </View>
+          <BorderLine />
+        </View>
+      </KeyboardAwareScrollView>
+    </TouchableWithoutFeedback>
         </>
         : step === 4 ?
-        <ScrollView style={{height:400}}>
-          <SignupContentsText>{contentsText[step-1]}</SignupContentsText>
-          <SignupCategoryText style={{marginTop:10}}>{categoryText[step-1][0]}</SignupCategoryText>
-          <View style={{display:'flex', flexDirection:'row', justifyContent:'center', alignItems:'center', width:294}}>
-            <SignupInput
-              placeholder={placeholderText[step-1][0]}
-              value={values.email}
-              onChange={(e) => {setValues({...values, "email" : e.nativeEvent.text})}}/>
-          {emailChecked ? <></> : <Image source={check_icon} style={{width:32, height:32, position:'absolute', right:0}}/>}
-          </View>
-          <BorderLine/>
+        
+    <KeyboardAwareScrollView
+      style={{ height: 400 }}
+      extraScrollHeight={5}    // 키보드가 뜰 때 추가로 스크롤되는 높이
+      enableOnAndroid={true}    // 안드로이드에서도 동작하게 설정
+      showsVerticalScrollIndicator={false}
+    >
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <View style={{ paddingBottom: 20 }}>
+          <SignupContentsText style={{ marginBottom: 20 }}>
+            {contentsText[step - 1]}
+          </SignupContentsText>
 
-          <SignupCategoryText>{categoryText[step-1][1]}</SignupCategoryText>
-          <View style={{display:'flex', flexDirection:'row', justifyContent:'center', alignItems:'center'}}>
+          <SignupCategoryText style={{ marginTop: 10 }}>
+            {categoryText[step - 1][0]}
+          </SignupCategoryText>
+          <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', width: 294 }}>
             <SignupInput
-              placeholder={placeholderText[step-1][1]}
+              placeholder={placeholderText[step - 1][0]}
+              value={values.email}
+              onChange={(e) => { setValues({ ...values, "email": e.nativeEvent.text }) }}
+            />
+            {emailChecked ? null : (
+              <Image source={check_icon} style={{ width: 32, height: 32, position: 'absolute', right: 0 }} />
+            )}
+          </View>
+          <BorderLine />
+
+          <SignupCategoryText>{categoryText[step - 1][1]}</SignupCategoryText>
+          <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+            <SignupInput
+              placeholder={placeholderText[step - 1][1]}
               value={values.phoneNumber}
-              onChange={(e) => {setValues({...values, "phoneNumber":e.nativeEvent.text})}}
-              />
-            <PhoneAuthButton>
-              <PhoneAuthIcon source={phone_number_auth_icon}/>
+              onChange={(e) => { setValues({ ...values, "phoneNumber": e.nativeEvent.text }) }}
+              style={{ width: 250, marginRight: 40 }}
+              keyboardType="phone-pad"
+            />
+            <PhoneAuthButton onPress={() => handleSmsSend(values.phoneNumber, setPhoneChecked)}>
+              <PhoneAuthIcon source={phone_number_auth_icon} />
             </PhoneAuthButton>
           </View>
-          <BorderLine/>
-          <SignupInput placeholder={placeholderText[step-1][2]}/>
-          <BorderLine/>
-          <SignupCategoryText SignupCategoryText>{categoryText[step-1][2]}</SignupCategoryText>
+          <BorderLine />
+
+          <MarginVertical top={10} />
+          {phoneChecked ? null : phoneChecked.length === 0 ? null : (
+            <Text style={{ color: colors.fontMain, fontWeight: '500', fontSize: 16 }}>
+              이미 가입된 전화번호입니다
+            </Text>
+          )}
+
+          <View>
+            <SignupInput
+              placeholder={placeholderText[step - 1][2]}
+              value={varifyCode}
+              onChange={(e) => setVarifyCode(e.nativeEvent.text)}
+              keyboardType="numeric"
+            />
+            {isVarified ? (
+              <Image source={check_icon} style={{ width: 32, height: 32, position: 'absolute', right: 0, bottom: 5 }} />
+            ) : null}
+          </View>
+          <BorderLine />
+
+          <SignupCategoryText>{categoryText[step - 1][2]}</SignupCategoryText>
           <SignupInput
-            placeholder={placeholderText[step-1][3]} 
+            placeholder={placeholderText[step - 1][3]}
             placeholderTextColor="#fff"
             value={values.birth}
-            onChange={(e) => {setValues({...values, "birth":e.nativeEvent.text})}}
-            />
-          <BorderLine/>
-        </ScrollView>
+            onChange={(e) => { setValues({ ...values, "birth": e.nativeEvent.text }); }}
+            keyboardType="numeric"
+          />
+          <BorderLine />
+        </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAwareScrollView>
         :
         <SignupCompleteBody>
           <SignupCompleteTitle>{`${values.displayName} 님\n환영합니다!`}</SignupCompleteTitle>
           <SignupCompleteIcon source={clock_graphic}/>
-          <SignupCompleteText>이제 지윤 님에게 딱 맞는{"\n"}자투리 시간 활용을 해볼까요?</SignupCompleteText>
+          <SignupCompleteText>{`제 ${values.displayName}님에게 딱 맞는{"\n"}자투리 시간 활용을 해볼까요?`}</SignupCompleteText>
         </SignupCompleteBody>
           }
           
@@ -294,8 +401,14 @@ const BorderLine = styled.View`
 `
 
 const PhoneAuthButton = styled.TouchableOpacity`
-  position:absolute;
-  right:0;
+  z-index:2;
+  margin-left:-55px;
+  width:50px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:30px;
+  z-index:2;
 `
 
 const PhoneAuthIcon = styled.Image`

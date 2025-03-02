@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react'
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import styled from 'styled-components'
 
@@ -18,7 +18,7 @@ import NavigateArrowButton from '../components/NavigateArrowButton';
 import Button from '../components/Button';
 import ContinuitySuccess from '../components/ContinuitySuccess';
 import AssetAddModal from '../components/AssetAddModal';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useGetInfo } from '../../hooks/useGetInfo';
 import { useUserInfoStore } from '../../store/user';
@@ -39,7 +39,7 @@ dayjs.extend(isSameOrBefore)
 const Home = () => {
   const [isAssetAddModalVisible, setIsAssetAddModalVisible] = useState(false);
   const navigation = useNavigation();
-  const {getUserInfo} = useGetInfo();
+  const {getUserInfo, getContinuitySuccess} = useGetInfo();
   const {userInfo, setUserInfo} = useUserInfoStore();
   const {getSavingCount} = useInstallmentSaving();
   const [savingCount, setSavingCount] = useState(0);
@@ -51,13 +51,6 @@ const Home = () => {
   const {nowTodo} = useNowTodoStore();
   const {getTotalSpareTime} = useSaveTime();
   const [spareTimeTotal, setSpareTimeTotal] = useState({})
-
-
-  const getUser = async() => {
-    const token = await AsyncStorage.getItem("access_token")
-    console.log(token)
-    return(JSON.parse(token));
-  }
 
   const getTimesAfter = (timeString, data) => {
     const timeArray = timeString?.split(':');
@@ -80,19 +73,19 @@ const Home = () => {
   };
 
   
-
-
-  useEffect(() => {
-    getUser();
-    console.log(getUser());
-    // console.log("now", nowTodo)
-    getUserInfo();
-    getSavingCount(setSavingCount);
+  useFocusEffect(
+    useCallback(() => {
+    getUserInfo()
     getRoutineCount(setRoutineCount);
+    getSavingCount(setSavingCount);
     getTodayTodo(setTodayTodo,setIsReady);
     getNowTodo()
-    console.log("homenow", nowTodo)
     getTotalSpareTime(setSpareTimeTotal)
+    }, []),
+  )
+
+  useEffect(() => {
+    // console.log("homenow", nowTodo)
     }, [])
   const isLoading = Object.keys(nowTodo).length > 1 ? true : false;
 
