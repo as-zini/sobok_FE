@@ -12,7 +12,7 @@ export const useTodo = () => {
 
   const getTodayTodo = async(setTodayTodo,setIsReady) => {
     try {
-      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+      const token = await AsyncStorage.getItem("access_token")
       const response = await axios.get("https://sobok-app.com/todo/today",{
         headers:{
           Authorization:`Bearer ${token}`
@@ -30,7 +30,7 @@ export const useTodo = () => {
 
   const getNotCompletedTodo = async(setNotCompletedTodo, setIsReady) => {
     try {
-      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+      const token = await AsyncStorage.getItem("access_token")
 
       const response = await baseUrl.get('/routine/today/not-completed',{
         headers:{
@@ -47,7 +47,7 @@ export const useTodo = () => {
 
   const startTodo = async(id, setLogId, linkApp) => {
     try {
-      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+      const token = await AsyncStorage.getItem("access_token")
 
       const response = await baseUrl.post(`/todo/start?todoId=${id}`,{},{
         headers:{
@@ -67,7 +67,7 @@ export const useTodo = () => {
 
   const completeTodo = async(id, time) => {
     try {
-      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+      const token = await AsyncStorage.getItem("access_token")
 
       const response = await baseUrl.post(`/todo/end?todoLogId=${id}&duration=${time}`,{},{
         headers:{
@@ -82,7 +82,7 @@ export const useTodo = () => {
 
   const getNowTodo = async() => {
     try {
-      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+      const token = await AsyncStorage.getItem("access_token")
 
       const response = await baseUrl.get("/todo/closest",{
         headers:{
@@ -98,7 +98,7 @@ export const useTodo = () => {
 
   const getTodaySaveTime = async(setSaveTime) => {
     try {
-      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+      const token = await AsyncStorage.getItem("access_token")
 
       const response = await baseUrl.get("/routine/today/completed-time",{
         headers:{

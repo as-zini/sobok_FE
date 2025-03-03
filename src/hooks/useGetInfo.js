@@ -10,13 +10,8 @@ export const useGetInfo = () => {
   const getUserInfo = async() => {
 
     try {
-      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
-      // const response = await axios.get("https://sobok-app.com/user/info",{
-      //   headers:{
-      //     Authorization:`Bearer ${token}`
-      //   }
-      // });
-      // console.log(response.data);
+      const token = await AsyncStorage.getItem("access_token")
+      // 
       console.log(token)
       const response = await baseUrl.get("/user/info", {
         headers: {
@@ -40,21 +35,21 @@ export const useGetInfo = () => {
 
   const getContinuitySuccess = async(setAchieve) => {
     try {
-      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+      const token = await AsyncStorage.getItem("access_token")
       const response = await axios.get("https://sobok-app.com/user/achieve",{
         headers:{
           Authorization:`Bearer ${token}`
         }
       })
       console.log(response.data);
-      // setAchieve(response.data.achieveCount);
+      setAchieve(response.data.achieveCount);
     } catch (error) {
       if (error.response) {
         console.log("서버 응답 에러:", error.response.status, error.response.data);
       } else if (error.request) {
         console.log("요청은 갔는데 응답이 없음:", error.request);
       } else {
-        console.log("기타 에러:", error.message);
+        console.log("연속달성일 기타 에러:", error.message);
       }
     }
   }

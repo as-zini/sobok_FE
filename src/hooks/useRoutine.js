@@ -10,7 +10,7 @@ export const useRoutine = () => {
 
   const getRoutineByList = async(setRoutineInfo, setIsComplete) => {
     try {
-      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+      const token = await AsyncStorage.getItem("access_token")
       const response = await axios.get("https://sobok-app.com/routine/by-list",{
         headers:{
           Authorization:`Bearer ${token}`
@@ -30,7 +30,7 @@ export const useRoutine = () => {
     
     
     try {
-      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+      const token = await AsyncStorage.getItem("access_token")
 
       const response = await axios.get(`https://sobok-app.com/routine/by-date?dateString=${year}-${month}-${selectedDate}`,{
         headers:{
@@ -47,7 +47,7 @@ export const useRoutine = () => {
 
   const getRoutineDetail = async(id, setRoutineDetailInfo, setIsComplete) => {
     try {
-      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+      const token = await AsyncStorage.getItem("access_token")
 
       const response = await axios.get(`https://sobok-app.com/routine/detail?routineId=${id}`,{
         headers:{
@@ -64,7 +64,7 @@ export const useRoutine = () => {
 
   const handleRoutineSuspend = async(id, setIsComplete) => {
     try {
-      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+      const token = await AsyncStorage.getItem("access_token")
 
       const response = await axios.get(`https://sobok-app.com/routine/suspend?routineId=${id}`,{
         headers:{
@@ -80,7 +80,7 @@ export const useRoutine = () => {
 
   const handleAddRoutine = async(newRoutineData, isAiRoutine) => {
     try {
-      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+      const token = await AsyncStorage.getItem("access_token")
 
       const response = await axios.post("https://sobok-app.com/routine/create",{
         accountId:newRoutineData.id,
@@ -105,7 +105,7 @@ export const useRoutine = () => {
 
   const getRoutineCount = async(setRoutineCount) => {
     try {
-      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+      const token = await AsyncStorage.getItem("access_token")
 
       const response = await axios.get("https://sobok-app.com/routine/by-list",{
         headers:{

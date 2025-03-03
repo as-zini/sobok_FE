@@ -13,9 +13,12 @@ export const useLogin = () => {
         password:password,
       })
       console.log(response.data)
-      // console.log(response.headers['set-cookie']);
-      const token = JSON.stringify(response.data.accessToken);
-      await AsyncStorage.setItem("access_token", token);
+      console.log(response.headers['set-cookie'])
+      const refreshToken = response.headers['set-cookie'][0].match(/refreshToken=([^;]*)/)?.[1];
+      const accessToken = response.data.accessToken;
+      // const refreshToken = JSON.stringify(response.headers['set-cookie'])
+      await AsyncStorage.setItem("access_token", accessToken);
+      await AsyncStorage.setItem("refresh_token",refreshToken)
       if(!isFirst){
       navigation.reset({
         routes:[{

@@ -4,7 +4,7 @@ import axios from "axios"
 export const usePoint = () => {
   const getUserPremium = async(setUserPremium) => {
     try {
-      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+      const token = await AsyncStorage.getItem("access_token")
       const response = await axios.get("https://sobok-app.com/user/premium",{
         headers:{
           Authorization:`Bearer ${token}`
@@ -19,7 +19,7 @@ export const usePoint = () => {
 
   const getSubscribe = async(setIsComplete) => {
     try {
-      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+      const token = await AsyncStorage.getItem("access_token")
       const response = await axios.put("https://sobok-app.com/user/premium",{},{
         headers:{
           Authorization:`Bearer ${token}`
@@ -34,7 +34,7 @@ export const usePoint = () => {
 
   const getPointLog = async(startDate, endDate, setPointLog) => {
     try {
-      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+      const token = await AsyncStorage.getItem("access_token")
       const response = await axios.get(`https://sobok-app.com/user/point/log?startDate=${startDate}&endDate=${endDate}`,{
         headers:{
           Authorization:`Bearer ${token}`

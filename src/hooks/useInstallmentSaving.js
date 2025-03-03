@@ -7,7 +7,7 @@ export const useInstallmentSaving = () => {
 
   const getSavingList = async(setOnGoingAccountList, version) => {
     try {
-      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+      const token = await AsyncStorage.getItem("access_token")
       const response = await axios.get(version === "onGoing" ? "https://sobok-app.com/account/list/ongoing" : "https://sobok-app.com/account/list/expired",{
         headers:{
           Authorization:`Bearer ${token}`
@@ -22,7 +22,7 @@ export const useInstallmentSaving = () => {
 
   const getSavingLog = async(id, startDate, endDate, setSavingLog) => {
     try {
-      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+      const token = await AsyncStorage.getItem("access_token")
       const response = await axios.get(`https://sobok-app.com/account/log?accountId=${id}&startDate=${startDate}&endDate=${endDate}`,{
         headers:{
           Authorization:`Bearer ${token}`
@@ -37,7 +37,7 @@ export const useInstallmentSaving = () => {
 
   const getSavingCount = async(setSavingCount) => {
     try {
-      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+      const token = await AsyncStorage.getItem("access_token")
       const response = await axios.get("https://sobok-app.com/account/list/ongoing",{
         headers:{
           Authorization:`Bearer ${token}`
@@ -52,7 +52,7 @@ export const useInstallmentSaving = () => {
 
   const handleAddSaving = async(newSavingData, isCreateComplete) => {
     try {
-      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+      const token = await AsyncStorage.getItem("access_token")
       const response = await baseUrl.post("/account/create",{
           title : newSavingData.title,
           target : newSavingData.target,
@@ -73,7 +73,7 @@ export const useInstallmentSaving = () => {
 
   const getInvalidSavingList = async(setInvalidSavingList) => {
     try {
-      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+      const token = await AsyncStorage.getItem("access_token")
       const response = await baseUrl.get("/account/list/invalid",{
         headers:{
           Authorization:`Bearer ${token}`
