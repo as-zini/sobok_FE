@@ -4,10 +4,18 @@ import styled from 'styled-components'
 import { colors } from '../styles/colors'
 import StartScreenModal from '../components/StartScreenModal'
 import { useNavigation } from '@react-navigation/native'
+import { useGetInfo } from '../../hooks/useGetInfo'
 
 const StartScreen = () => {
   const [isSignupModalVisible, setIsSignupModalVisible] = useState(false);
   const navigation = useNavigation();
+  const {getUserInfo} = useGetInfo();
+
+
+  useEffect(() => {
+    getUserInfo()
+  }, [])
+  
 
   return (
     <StartScreenBody>

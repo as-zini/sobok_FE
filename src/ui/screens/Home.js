@@ -72,6 +72,13 @@ const Home = () => {
     }).length;
   };
 
+  const getToken = async() => {
+    const refreshToken = await AsyncStorage.getItem('refresh_token')
+    const accessToken = await AsyncStorage.getItem('access_token')
+    console.log('refresh!!',refreshToken)
+    console.log('access!!',accessToken)
+  }
+
   
   useFocusEffect(
     useCallback(() => {
@@ -81,6 +88,7 @@ const Home = () => {
     getTodayTodo(setTodayTodo,setIsReady);
     getNowTodo()
     getTotalSpareTime(setSpareTimeTotal)
+    getToken()
     }, []),
   )
 

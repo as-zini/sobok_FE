@@ -6,7 +6,7 @@ export const useStatistic = () => {
 
   const getStatisticInfo = async(startDate, endDate, setDateInfo) => {
     try {
-      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+      const token = await AsyncStorage.getItem("access_token")
 
       const response = await baseUrl.get(`/statistics/date/count?startDate=${startDate}&endDate=${endDate}`,{
         headers:{
@@ -22,7 +22,7 @@ export const useStatistic = () => {
 
   const getStatisticInfoByRoutine = async(routineId, setDateInfoByRoutine) => {
     try {
-      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+      const token = await AsyncStorage.getItem("access_token")
 
       const response = await baseUrl.get(`/statistics/routine/count?routineId=${routineId}`,{
         headers:{
@@ -38,7 +38,7 @@ export const useStatistic = () => {
 
   const getStatisticDate = async(startDate, endDate, setAchieveList) => {
     try {
-      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+      const token = await AsyncStorage.getItem("access_token")
 
       const response = await baseUrl.get(`/statistics/date?startDate=${startDate}&endDate=${endDate}`,{
         headers:{
@@ -54,7 +54,7 @@ export const useStatistic = () => {
 
   const getStatisticDateByRoutine = async(routineId, startDate, endDate,setAchieveList) => {
     try {
-      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+      const token = await AsyncStorage.getItem("access_token")
 
       const response = await baseUrl.get(`/statistics/routine?routineId=${routineId}&startDate=${startDate}&endDate=${endDate}`,{
         headers:{
@@ -70,7 +70,7 @@ export const useStatistic = () => {
 
   const getStatisticLog = async(date, setStatisticLog) => {
     try {
-      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+      const token = await AsyncStorage.getItem("access_token")
 
       const response = await baseUrl.get(`/statistics/date/log?date=${date}`,{
         headers:{
@@ -86,7 +86,7 @@ export const useStatistic = () => {
 
   const getStatisticLogByRoutine = async(date,routineId, setStatisticLog) => {
     try {
-      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+      const token = await AsyncStorage.getItem("access_token")
 
       const response = await baseUrl.get(`/statistics/routine/log?date=${date}&routineId=${routineId}`,{
         headers:{

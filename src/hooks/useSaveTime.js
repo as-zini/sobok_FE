@@ -8,7 +8,7 @@ export const useSaveTime = () => {
 
   const handleSaveSpareTime = async(data) => {
     try {
-      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+      const token = await AsyncStorage.getItem("access_token")
       
       const response = await baseUrl.post("/spare-time",{
         title:data.title,
@@ -29,7 +29,7 @@ export const useSaveTime = () => {
 
   const getSpareTimeByDay = async(day, setSpareTimeList) => {
     try {
-      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+      const token = await AsyncStorage.getItem("access_token")
 
       const response = await baseUrl.get(`/spare-time/by-day?day=${day}`,{
         headers:{
@@ -45,7 +45,7 @@ export const useSaveTime = () => {
 
   const handleEditSpareTime = async(data) => {
     try {
-      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+      const token = await AsyncStorage.getItem("access_token")
 
       const response = await baseUrl.put("/spare-time",{
         id:data.id,
@@ -68,7 +68,7 @@ export const useSaveTime = () => {
 
   const handleDeleteSpareTime = async(id) => {
     try {
-      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+      const token = await AsyncStorage.getItem("access_token")
 
       const response = await baseUrl.delete(`/spare-time?spareTimeId=${id}`,{
         headers:{

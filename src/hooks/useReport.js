@@ -6,7 +6,7 @@ export const useReport = () => {
 
   const getReportInfo = async(setReportInfo) => {
     try {
-      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+      const token = await AsyncStorage.getItem("access_token")
       const response = await baseUrl.get("/report",{
         headers:{
           Authorization:`Bearer ${token}`

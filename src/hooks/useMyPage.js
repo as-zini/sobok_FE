@@ -6,7 +6,7 @@ export const useMyPage = () => {
 
   const getUserLinkedApp = async(setMyLinkedAppList) => {
     try {
-      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+      const token = await AsyncStorage.getItem("access_token")
       const response = await baseUrl.get('/user/link-app',{
         headers:{
           Authorization:`Bearer ${token}`
@@ -21,7 +21,7 @@ export const useMyPage = () => {
 
   const handleSetLinkedApp = async(linkAppList) => {
     try {
-      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+      const token = await AsyncStorage.getItem("access_token")
       const response = await baseUrl.post('/user/link-app',{
         linkApps:linkAppList
       },{
