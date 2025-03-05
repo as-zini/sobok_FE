@@ -34,92 +34,6 @@ baseUrl.interceptors.request.use( async (config) =>
         return Promise.reject(error);
       });
 
-// baseUrl.interceptors.response.use(
-//   (response) => {
-
-//     return response;
-//   },
-//   async (error) => {
-//     if (error.response?.status === 401) {
-//         console.log('토큰 만료됨, 리프레시 시도!');
-//         const refreshToken = JSON.parse(await AsyncStorage.getItem('refresh_token'))
-//         const accessToken = JSON.parse(await AsyncStorage.getItem('access_token'))
-
-//         if (refreshToken) {
-//             try {
-//                 console.log(refreshToken)
-//               const { data } = await axios.post('https://sobok-app.com/user/refresh-token',{},{
-//                 headers: {
-//                     // 'Content-Type': 'application/json',
-//                     'Cookie': `refreshToken=${refreshToken}`,
-//                     Authorization:`Bearer ${accessToken}`
-//                   }
-//               });
-//               await AsyncStorage.setItem('access_token', data.accessToken);
-              
-//               // 🔄 실패했던 요청 다시 시도!
-//               originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
-//               return api(originalRequest);
-//             } catch (err) {
-//                 console.log(err)
-//               console.log('리프레시 토큰도 만료됨!');
-//             //   NavigationService.navigate('Start')
-//             }
-//           }
-//     }
-//     return Promise.reject(error);
-//   }
-// );
-
-
-// baseUrl.interceptors.response.use(
-//     (response) => {
-//       return response;
-//     },
-//     async (error) => {
-//       const originalRequest = error.config; // 실패한 요청 저장
-//       console.log("Original Request:", originalRequest);
-  
-//       if (error.response?.status === 401) {
-//           console.log('토큰 만료됨, 리프레시 시도!');
-//           const refreshToken = await AsyncStorage.getItem('refresh_token');
-//           console.log("refresh",refreshToken)
-//         //   const accessToken = JSON.parse(await AsyncStorage.getItem('access_token'));
-  
-//           if (refreshToken) {
-//               try {
-//                   console.log(refreshToken);
-//                   try {
-//                     const response = await axios.post('https://sobok-app.com/user/refresh-token', {
-//                       headers: {
-//                           'Authorization': `refreshToken=${refreshToken}`,
-//                           'Content-Type': 'application/json',
-//                       },
-//                       withCredentials: true
-//                   });
-//                   console.log(response.data)
-//                   await AsyncStorage.setItem('access_token', response.data.accessToken);
-//                   console.log("reaccess",response.data.accessToken)
-                  
-//                   // 실패했던 요청 다시 시도!
-//                   console.log("Retrying original request with new token...");
-//                   originalRequest.headers['Authorization'] = `Bearer ${response.data.accessToken}`;
-//                   return baseUrl(originalRequest); // 재시도
-//                   } catch (error) {
-//                     console.log('token error!!!', error.response ? error.response.data : error);
-//                   }
-                  
-                  
-//               } catch (err) {
-//                   console.log(err);
-//                   console.log('리프레시 토큰도 만료됨!');
-//                 //   NavigationService.navigate('Start');
-//               }
-//           }
-//       }
-//       return Promise.reject(error);
-//     }
-//   );
 
 let isTokenRefreshing = false;  // 토큰 갱신 상태를 추적
 
@@ -171,8 +85,7 @@ baseUrl.interceptors.response.use(
         // 토큰 갱신을 할 수 없는 경우 (예: 리프레시 토큰도 만료됨)
         if (isTokenRefreshing) {
             console.log('토큰 갱신 실패, 사용자 로그아웃 처리 또는 다른 조치 필요');
-            // 필요시, 사용자 로그아웃이나 다른 처리
-            // NavigationService.navigate('Start');
+            NavigationService.navigate('Start');
         }
 
         return Promise.reject(error);
