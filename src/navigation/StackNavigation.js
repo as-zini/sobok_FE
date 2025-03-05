@@ -1,5 +1,5 @@
 import { createStackNavigator } from '@react-navigation/stack'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import StartScreen from '../ui/screens/StartScreen';
 import LoginScreen from '../ui/screens/LoginScreen';
 import SignupScreen from '../ui/screens/SignupScreen';
@@ -34,6 +34,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import ViewLinkedRoutine from '../ui/screens/ViewLinkedRoutine';
 import ViewSaveTime from '../ui/screens/ViewSaveTime';
 import AddSaveTime from '../ui/screens/AddSaveTime';
+import axios from 'axios';
 
 
 
@@ -44,15 +45,28 @@ const Stack = createStackNavigator();
 
 
 const StackNavigation = () => {
-  const getUser = async() => {
-    const token = await AsyncStorage.getItem("access_token")
-    console.log(token)
-    return(JSON.parse(token));
+  const [version, setVersion] = useState('Tabs')
+
+  const isValidUser = async() => {
+    try {
+      const refreshToken = await AsyncStorage.getItem('refresh_token')
+      const response = await axios.post('https://sobok-app.com/user/refresh-token', {}, {
+                        headers: {
+                            'Authorization': `Bearer ${refreshToken}`,
+                            'Content-Type': 'application/json',
+                        },
+                        withCredentials: true
+                    });
+      await AsyncStorage.setItem('access_token', response.data.accessToken);
+
+    } catch (error) {
+      console.log(error)
+      setVersion('Start')
+    }
   }
 
   useEffect(() => {
-    getUser();
-    console.log(getUser());
+    isValidUser()
   }, [])
   
 
@@ -62,7 +76,7 @@ const StackNavigation = () => {
         headerShown:false,
       }}
       // initialRouteName={getUser() ? "Tabs" : 'Start'}
-      initialRouteName='Start'  
+      initialRouteName={version}  
     >
       <Stack.Screen name='Start' component={StartScreen} />
       <Stack.Screen name="Login" component={LoginScreen} />

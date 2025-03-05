@@ -88,7 +88,7 @@ const Home = () => {
     getTodayTodo(setTodayTodo,setIsReady);
     getNowTodo()
     getTotalSpareTime(setSpareTimeTotal)
-    getToken()
+    // getToken()
     }, []),
   )
 

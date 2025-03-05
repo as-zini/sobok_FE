@@ -9,11 +9,9 @@ import { useGetInfo } from '../../hooks/useGetInfo'
 const StartScreen = () => {
   const [isSignupModalVisible, setIsSignupModalVisible] = useState(false);
   const navigation = useNavigation();
-  const {getUserInfo} = useGetInfo();
 
 
   useEffect(() => {
-    getUserInfo()
   }, [])
   
 
