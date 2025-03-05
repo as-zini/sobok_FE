@@ -18,7 +18,23 @@ export const useReport = () => {
       console.log(error)
     }
   }
+
+  const getSnowCard = async(month) => {
+    try {
+      const token = await AsyncStorage.getItem("access_token")
+      const response = await baseUrl.get(`/snowcard?yearMonth=${month}`,{
+        headers:{
+          Authorization:`Bearer ${token}`
+        }
+      })
+      console.log(response.data)
+      navigation.navigate("CompleteSnowCard",{type:'rolypoly'})
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return {
-    getReportInfo
+    getReportInfo,
+    getSnowCard
   }
 }

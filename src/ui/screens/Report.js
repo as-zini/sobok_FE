@@ -28,7 +28,7 @@ import { useUserInfoStore } from '../../store/user';
 
 const Report = () => {
   const navigation = useNavigation();
-  const {getReportInfo} = useReport();
+  const {getReportInfo, getSnowCard} = useReport();
   const [today, setToday] = useState(dayjs().subtract(1,'month'))
   const [reportInfo, setReportInfo] = useState({});
   const {userInfo} = useUserInfoStore();
@@ -373,7 +373,7 @@ const Report = () => {
         <MarginVertical top={76}/>     
         <Text style={{fontSize:14, fontWeight:500, color:colors.gray77, textAlign:'center'}}>{`${today.format("M월")}도 수고하셨어요!\n${today.format("M월")}의 키워드를 볼까요?`}</Text> 
         <MarginVertical top={8}/>
-        <Button text={"눈 카드 만들기"} handleButton={() => navigation.navigate("CompleteSnowCard")}/>
+        <Button text={"눈 카드 만들기"} handleButton={() => {getSnowCard(today.format('YYYY-MM'));navigation.navigate("CompleteSnowCard",{type:'rolypoly'})}}/>
       </View>
 
       
