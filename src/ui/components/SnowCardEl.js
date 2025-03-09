@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { colors } from '../styles/colors'
 import snow_card_bg from '../../../assets/snow_card_bg.png';
-import { ImageBackground } from 'react-native';
+import { ImageBackground, View } from 'react-native';
 import SnowFlakeIcon from './SnowFlakeIcon';
 
 import snowman from '../../../assets/glass_snow_graphic.png';
@@ -24,10 +24,11 @@ import pudding from '../../../assets/pudding_graphic.png';
 import arrow_left from '../../../assets/calandar_arrow_left.png';
 import arrow_right from '../../../assets/calandar_arrow_right.png';
 import MarginVertical from './MarginVertical';
+import quarter from '../../../assets/quarter_moon_graphic.png';
 
 
 const SnowCardEl = ({text, type, isArrow, date}) => {
-  const imgList = [snowman, top, beaker, donut, book, victory, heart, halfMoon, snake, angel, cloud, hexagon, hermitCrab, spring, rolypoly, pudding]
+  const imgList = [top, beaker, donut, book, heart,quarter, halfMoon, snake, angel, cloud, hexagon, hermitCrab, spring, rolypoly, pudding]
 
   
 
@@ -42,9 +43,10 @@ const SnowCardEl = ({text, type, isArrow, date}) => {
       }
       <SnowCard>
         <SnowCardText>{date}</SnowCardText>
-        <MarginVertical top={15}/>
-        <SnowCardImg source={imgList[type]}/>
-        <MarginVertical top={25}/>
+        <View style={{width:150,height:150, alignItems:'center',justifyContent:'center'}}>
+          <SnowCardImg source={imgList[type]}/>
+        </View>
+        <MarginVertical top={10}/>
         <SnowFlakeIcon color={"white"} size={16}/>
         <MarginVertical top={10}/>
         <SnowCardText>{text}</SnowCardText>  
@@ -88,7 +90,9 @@ const SnowCardBg = styled.Image`
   z-index:-1;
 `
 const SnowCardImg = styled.Image`
-
+  width: 90%;      
+  height:90%;
+  resize-mode:contain;
 `
 
 const SnowCardText = styled.Text`

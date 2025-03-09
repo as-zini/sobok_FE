@@ -35,6 +35,7 @@ import ViewLinkedRoutine from '../ui/screens/ViewLinkedRoutine';
 import ViewSaveTime from '../ui/screens/ViewSaveTime';
 import AddSaveTime from '../ui/screens/AddSaveTime';
 import axios from 'axios';
+import DetailSnowCard from '../ui/screens/DetailSnowCard';
 
 
 
@@ -110,6 +111,7 @@ const StackNavigation = () => {
       <Stack.Screen name="ViewAiRoutine" component={ViewAiRoutineResult}/>
       <Stack.Screen name="ViewSaveTime" component={ViewSaveTime}/>
       <Stack.Screen name="AddSaveTime" component={AddSaveTime}/>
+      <Stack.Screen name="DetailSnowCard" component={DetailSnowCard}/>
     </Stack.Navigator>
   )
 }
