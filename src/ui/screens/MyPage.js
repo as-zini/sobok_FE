@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Image, SafeAreaView, View } from 'react-native'
+import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import styled from 'styled-components'
 import { colors } from '../styles/colors'
 
@@ -12,22 +12,69 @@ import MarginVertical from '../components/MarginVertical';
 import { useNavigation } from '@react-navigation/native';
 import { useUserInfoStore } from '../../store/user';
 import { useGetInfo } from '../../hooks/useGetInfo';
+import { minToHour } from '../../util';
+import { useInstallmentSaving } from '../../hooks/useInstallmentSaving';
+import ticket from '../../../assets/checked_ticket_img.png';
+import dayjs from 'dayjs';
+import { useReport } from '../../hooks/useReport';
+
+import top from '../../../assets/top_graphic.png';
+import beaker from '../../../assets/beaker_graphic.png';
+import donut from '../../../assets/donut_graphic.png';
+import book from '../../../assets/book_graphic.png';
+import victory from '../../../assets/victory_graphic.png';
+import heart from '../../../assets/heart_graphic.png';
+import halfMoon from '../../../assets/half_moon_graphic.png';
+import snake from '../../../assets/snake_graphic.png';
+import angel from '../../../assets/angel_graphic.png';
+import cloud from '../../../assets/cloud_graphic.png';
+import hexagon from '../../../assets/hexagon_graphic.png';
+import hermitCrab from '../../../assets/hermit_crab_graphic.png';
+import spring from '../../../assets/spring_graphic.png';
+import rolypoly from '../../../assets/rolypoly_graphic.png';
+import pudding from '../../../assets/pudding_graphic.png';
+import quarter from '../../../assets/quarter_moon_graphic.png';
+import card_icon from '../../../assets/email_icon.png';
+import full from '../../../assets/full_moon_graphic.png'
+import exercise from '../../../assets/exercise_graphic.png';
+import globe from '../../../assets/globe_graphic.png';
+import guitar from '../../../assets/guitar_graphic.png'
+import fairy from '../../../assets/fairy_graphic.png';
+import sun from '../../../assets/sun_graphic.png';
+import present from '../../../assets/present_graphic.png';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 const MyPage = () => {
-  const categoryText = ["총 시간", "연속 달성일", "포인트", "적금"];
-  const categoryValue = ["52H 14M", "58일", "5,824P", "3개"];
-  const navigation = useNavigation();
   const {userInfo} = useUserInfoStore();
+  const categoryText = ["총 시간", "적금"];
+  const navigation = useNavigation();
   const {getContinuitySuccess} = useGetInfo();
   const [achieve, setAchieve] = useState(0);
+  const [savingCount, setSavingCount] = useState(0)
+  const {getSavingCount} = useInstallmentSaving()
+  const [cardData, setCardData] = useState(["beaker", "donut", "reading", "like"])
+  const {getSnowCardList} = useReport()
+  const categoryValue = [minToHour(userInfo.totalAchievedTime), `${savingCount}개`];
+
+  const allCardData = [{type:'english',title:'알파벳 A의'},{type:'beaker',title:'비커 모양의'},{type:"donut",title:"도넛 모양의"},{type:"reading",title:"두꺼운 책 모양의"},{type:'like',title:'좋아하는 마음의'},
+  {type:'quarter',title:'초승달 모양의'},{type:'half',title:'반달 모양의'},{type:'full',title:'보름달 모양의'},{type:'angel',title:'천사 날개의'},{type:'cloud',title:"구름 모양의"},{type:'hexagon',title:'육각형 모양의'},
+  {type:'crab',title:'소라게 모양의'},{type:'exercise',title:'아령 모양의'},{type:'spring',title:'스프링 모양의'},{type:'rolypoly',title:'오뚝이 모양의'},{type:'pudding',title:'한 입 베어먹은\n푸딩의'},{type:'second-language',title:'지구본 모양의'},
+  {type:'other',title:'기타 모양의'},{type:'fairy',title:'요정 모양의'},{type:'snake',title:'뱀 모양의'},
+  {type:'self-improvement',title:'햇님 모양의'},{type:'hobby',title:'선물 상자 모양의'}
+]
+  const cardImgList = [top, beaker, donut, book, heart,quarter, halfMoon, full, angel, cloud, hexagon, hermitCrab,exercise, spring, rolypoly, pudding,globe,guitar,fairy, snake,sun, present]
+
 
   useEffect(() => {
     getContinuitySuccess(setAchieve)
+    getSavingCount(setSavingCount)
+    // getSnowCardList(setCardData)
   }, [])
   
 
   return (
     <SafeAreaView>
+      <ScrollView>
       <MyPageBody>
         <MyPageHeader>
           <View style={{flexGrow:.04}}>
@@ -63,12 +110,43 @@ const MyPage = () => {
                 </InfoEl>
               )
             })}
-            
+            <View style={{width:295,height:140,borderRadius:16,backgroundColor:"#fff",paddingVertical:22,paddingHorizontal:28}}>
+              <Image source={ticket} style={{width:40,height:21}}/>
+              <MarginVertical top={10}/>
+              <View style={{flexDirection:'row'}}>
+                <Text style={{flexGrow:1, fontWeight:500,fontSize:18,color:colors.fontMain80}}>{userInfo.isPremium ? `${dayjs().get('month')+1}월\n구독권 사용중` : "프리미엄 구독권\n미사용중"}</Text>
+                <InfoText style={{fontSize:26}}>D-4</InfoText>
+              </View>
+              <MarginVertical top={10}/>
+              <BorderLine style={{width:'100%'}}/>
+              <MarginVertical top={7}/>
+              <Text style={{fontWeight:500,fontSize:14,color:colors.darkGray,textAlign:'right'}}>1월 29일까지</Text>
+            </View>
           </View>
         </MyInfoArea>
-        <BorderLine/>
-        
+        <MarginVertical top={72}/>
+        <SnowCardArea >
+          <View style={{flexDirection:'row',width:'95%'}}>
+            <Text style={{fontWeight:600,fontSize:22,color:colors.darkGray,flexGrow:1}}>{`눈카드 ${cardData.length}개`}</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('SnowCardBook')}>
+              <MaterialIcons name="keyboard-arrow-right" size={24} color={colors.fontMains} />
+            </TouchableOpacity>
+          </View>
+          <MarginVertical top={16}/>
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+          {cardData.map((el,index) => {
+            return(
+              <CardEl key={index}>
+                <Text style={{fontWeight:600,fontSize:18,color:colors.gray77}}>{`${allCardData.find((card) => card.type === el).title}\n눈조각`}</Text>
+                <Image source={cardImgList[allCardData.findIndex((card) => card.type === el)]} style={{resizeMode:'contain',width:60,height:60, position:'absolute',bottom:16,right:16}}/>
+              </CardEl>
+            )
+          })}
+          </ScrollView>
+        </SnowCardArea>
+        <MarginVertical top={100}/>
       </MyPageBody>
+      </ScrollView>
       <MyPageBg source={mypage_bg}/>
     </SafeAreaView>
   )
@@ -167,4 +245,17 @@ const InfoText = styled.Text`
   font-size:18px;
   color:${colors.fontMain90};
   line-height:28px;
+`
+
+const SnowCardArea = styled.View`
+
+`
+
+const CardEl = styled.View`
+  width:140px;
+  height:140px;
+  background-color:#fff;
+  border-radius:16px;
+  margin-right:12px;
+  padding:16px;
 `
