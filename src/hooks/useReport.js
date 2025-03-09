@@ -33,8 +33,29 @@ export const useReport = () => {
       console.log(error)
     }
   }
+
+  const getSnowCardList = async(setCardData, setMyCardData) => {
+    try {
+      const token = await AsyncStorage.getItem('access_token')
+      const response = await baseUrl.get('snowcard/all',{
+        headers:{
+          Authorization:`Bearer ${token}`
+        }
+      })
+      console.log('cardbook',response.data)
+      setCardData(response.data)
+      const cardType = []
+      response.data.forEach((el) => {
+        cardType.push(el.snowCard)
+      })
+      setMyCardData(cardType)
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return {
     getReportInfo,
-    getSnowCard
+    getSnowCard,
+    getSnowCardList
   }
 }

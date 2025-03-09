@@ -373,7 +373,7 @@ const Report = () => {
         <MarginVertical top={76}/>     
         <Text style={{fontSize:14, fontWeight:500, color:colors.gray77, textAlign:'center'}}>{`${today.format("M월")}도 수고하셨어요!\n${today.format("M월")}의 키워드를 볼까요?`}</Text> 
         <MarginVertical top={8}/>
-        <Button text={"눈 카드 만들기"} handleButton={() => {getSnowCard(today.format('YYYY-MM'));navigation.navigate("CompleteSnowCard",{type:'rolypoly'})}}/>
+        <Button text={"눈 카드 만들기"} handleButton={() => {getSnowCard(today.format('YYYY-MM'));navigation.navigate("CompleteSnowCard",{type:'quarter'})}}/>
       </View>
 
       
@@ -395,7 +395,7 @@ const Report = () => {
             <ReportHeaderText>리포트</ReportHeaderText>
           </ReportHeader>
           <MarginVertical top={40}/>
-          <SnowCardEl text={`${dayjs().subtract(1,'month').format("YYYY년 M월")}의\n눈은 어떤 모양일까요?`} type={0}/>
+          <SnowCardEl text={`${dayjs().subtract(1,'month').format("YYYY년 M월")}의\n눈은 어떤 모양일까요?`} type={1}/>
           <MarginVertical top={60}/>
           <ReportContents1/>
           <MarginVertical top={365}/>
