@@ -1,8 +1,10 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import baseUrl from "../api/baseURL"
 import dayjs from "dayjs"
+import { useNavigation } from "@react-navigation/native"
 
 export const useReport = () => {
+  const navigation = useNavigation()
 
   const getReportInfo = async(setReportInfo) => {
     try {
@@ -28,7 +30,7 @@ export const useReport = () => {
         }
       })
       console.log(response.data)
-      navigation.navigate("CompleteSnowCard",{type:'rolypoly'})
+      navigation.navigate("CompleteSnowCard",{type:response.data.snowCard})
     } catch (error) {
       console.log(error)
     }

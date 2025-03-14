@@ -52,9 +52,10 @@ const MyPage = () => {
   const [achieve, setAchieve] = useState(0);
   const [savingCount, setSavingCount] = useState(0)
   const {getSavingCount} = useInstallmentSaving()
-  const [cardData, setCardData] = useState(["beaker", "donut", "reading", "like"])
+  const [cardData, setCardData] = useState([])
   const {getSnowCardList} = useReport()
   const categoryValue = [minToHour(userInfo.totalAchievedTime), `${savingCount}개`];
+  const [myCardData, setMyCardData] = useState([])
 
   const allCardData = [{type:'english',title:'알파벳 A의'},{type:'beaker',title:'비커 모양의'},{type:"donut",title:"도넛 모양의"},{type:"reading",title:"두꺼운 책 모양의"},{type:'like',title:'좋아하는 마음의'},
   {type:'quarter',title:'초승달 모양의'},{type:'half',title:'반달 모양의'},{type:'full',title:'보름달 모양의'},{type:'angel',title:'천사 날개의'},{type:'cloud',title:"구름 모양의"},{type:'hexagon',title:'육각형 모양의'},
@@ -68,13 +69,13 @@ const MyPage = () => {
   useEffect(() => {
     getContinuitySuccess(setAchieve)
     getSavingCount(setSavingCount)
-    // getSnowCardList(setCardData)
+    getSnowCardList(setCardData, setMyCardData)
   }, [])
   
 
   return (
     <SafeAreaView>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
       <MyPageBody>
         <MyPageHeader>
           <View style={{flexGrow:.04}}>
@@ -134,10 +135,10 @@ const MyPage = () => {
           </View>
           <MarginVertical top={16}/>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-          {cardData.map((el,index) => {
+          {myCardData.map((el,index) => {
             return(
               <CardEl key={index}>
-                <Text style={{fontWeight:600,fontSize:18,color:colors.gray77}}>{`${allCardData.find((card) => card.type === el).title}\n눈조각`}</Text>
+                <Text style={{fontWeight:600,fontSize:18,color:colors.gray77}}>{`${allCardData.find((card) => card.type === el)?.title}\n눈조각`}</Text>
                 <Image source={cardImgList[allCardData.findIndex((card) => card.type === el)]} style={{resizeMode:'contain',width:60,height:60, position:'absolute',bottom:16,right:16}}/>
               </CardEl>
             )
