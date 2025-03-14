@@ -25,10 +25,17 @@ import arrow_left from '../../../assets/calandar_arrow_left.png';
 import arrow_right from '../../../assets/calandar_arrow_right.png';
 import MarginVertical from './MarginVertical';
 import quarter from '../../../assets/quarter_moon_graphic.png';
+import full from '../../../assets/full_moon_graphic.png'
+import exercise from '../../../assets/exercise_graphic.png';
+import globe from '../../../assets/globe_graphic.png';
+import guitar from '../../../assets/guitar_graphic.png'
+import fairy from '../../../assets/fairy_graphic.png';
+import sun from '../../../assets/sun_graphic.png';
+import present from '../../../assets/present_graphic.png';
 
 
 const SnowCardEl = ({text, type, isArrow, date}) => {
-  const imgList = [top, beaker, donut, book, heart,quarter, halfMoon, snake, angel, cloud, hexagon, hermitCrab, spring, rolypoly, pudding]
+  const imgList = [top, beaker, donut, book, heart,quarter, halfMoon, full, angel, cloud, hexagon, hermitCrab,exercise, spring, rolypoly, pudding,globe,guitar,fairy, snake,sun, present]
 
   
 
