@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
+import React, { use, useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import styled from 'styled-components'
 
@@ -34,6 +34,8 @@ import SaveTimeAtHome from '../components/SaveTimeAtHome';
 import saving_time_home_bg from '../../../assets/saving_time_home_bg.png';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useSaveTime } from '../../hooks/useSaveTime';
+import smile_icon from '../../../assets/smile_icon.png';
+import home_button_bg from '../../../assets/home_button_bg.png';
 dayjs.extend(isSameOrBefore)
 
 const Home = () => {
@@ -93,8 +95,8 @@ const Home = () => {
   )
 
   useEffect(() => {
-    // console.log("homenow", nowTodo)
-    }, [])
+    console.log("spare!!!",spareTimeTotal)
+    }, [spareTimeTotal])
   const isLoading = Object.keys(nowTodo).length > 1 ? true : false;
 
 
@@ -106,7 +108,7 @@ const Home = () => {
       <ScrollView showsVerticalScrollIndicator={false}>
       <HomeBody>
         <MarginVertical top={20}/>
-        <View style={{display:'flex', alignItems:'flex-end', width:size.width, marginRight:25}}>
+        <View style={{display:'flex', justifyContent:'flex-start', width:size.width-30}}>
           <ContinuitySuccess/>
         </View>
         <MarginVertical top={25}/>
@@ -124,21 +126,29 @@ const Home = () => {
             <View style={{flexGrow:1}}>
             {/* {isLoading ? 
             <> */}
-            <TodoTime>{`${isLoading ? nowTodo.startTime?.slice(0,5) : ""} - ${isLoading ? nowTodo.endTime?.slice(0,5) : ""}`}</TodoTime>
-            <MarginVertical top={5}/>
-            <TodoText>{isLoading ? `${nowTodo.title} 외 ${getTimesAfter(nowTodo.startTime, todayTodo)}개` : ""}</TodoText>
-            <MarginVertical top={10}/>
-            {/* </>:<></>
-            } */}
-            <TodoDuringTime style={{fontSize:isLoading ? 48 : 40}}>{isLoading ? `${getTimeDifference(nowTodo.startTime, nowTodo.endTime)}` : "오늘 할 일을\n다 끝냈어요!"}</TodoDuringTime>
-            
-            </View>
-            {isLoading ?
+            {nowTodo ?
+            <>
+              <TodoTime>{`${nowTodo ? nowTodo.startTime?.slice(0,5) : ""} - ${isLoading ? nowTodo.endTime?.slice(0,5) : ""}`}</TodoTime>
+              <MarginVertical top={5}/>
+              <TodoText>{nowTodo ? `${nowTodo.title} 외 ${getTimesAfter(nowTodo.startTime, todayTodo)}개` : ""}</TodoText>
+              <MarginVertical top={10}/>
+            </>
+            :
+            <>
+            <Text style={{fontWeight:500,color:"#fff", fontSize:18}}>어서오세요!</Text>
+            <MarginVertical top={9}/>
+            </>
+            }  
+            <View style={{flexDirection:'row', justifyContent:'center',alignItems:'center'}}>
+            <TodoDuringTime style={{fontSize:nowTodo ? 48 : 34, flexGrow:1}}>{isLoading ? `${getTimeDifference(nowTodo.startTime, nowTodo.endTime)}` : "오늘은\n할 일이 없어요!"}</TodoDuringTime>
             <TouchableOpacity onPress={() => navigation.navigate("TodayTodo")} style={{justifyContent:'center', alignItems:'center'}}>
-              <Image source={go_todo_icon} style={{width:64, height:50, marginRight:25, marginTop:40}}/>
+              <Image source={nowTodo ? go_todo_icon : smile_icon} style={{width:nowTodo ? 64 : 88, height:nowTodo?50:80}}/>
             </TouchableOpacity>
-            :<></>
-            }
+            </View>
+            </View>
+            
+            
+            
           </View>
           <TodoBgArea>
             <TodoAreaBg source={home_main_square_bg}/>
@@ -148,7 +158,7 @@ const Home = () => {
         </TodoArea>
         <MarginVertical top={50}/>
         <TotalTimeArea>
-          <TotalTimeTitle>나의 총 시간</TotalTimeTitle>
+          <TotalTimeTitle>{`${userInfo.displayName} 님의 총 시간`}</TotalTimeTitle>
           <MarginVertical top={5}/>
           <View style={{display:'flex', flexDirection:'row'}}>
             <TotalTimeText>{minToHour(userInfo.totalAchievedTime)}</TotalTimeText>
@@ -166,7 +176,7 @@ const Home = () => {
               <TotalTimeClock>{minToHour(userInfo.totalAccountBalance)}</TotalTimeClock>
               
             </TotalTimeEl>
-            <BorderLine/>
+            <BorderLine style={{height:1}}/>
             <TotalTimeEl onPress={() => navigation.navigate("ViewRoutine")}>
               <View style={{flexGrow:.5,maxWidth:60, height:30,justifyContent:'center'}}>
                 <TotalTimeIcon source={routine_icon} style={{width:40, height:25}}/>
@@ -177,7 +187,7 @@ const Home = () => {
               </View>
               <TotalTimeClock>{minToHour(userInfo.weeklyRoutineTime)}</TotalTimeClock>
             </TotalTimeEl>
-            <BorderLine/>
+            <View style={{height:1, width:264, marginVertical:20, backgroundColor:"#f4f4f4"}}></View>
             <TotalTimeEl onPress={() => navigation.navigate("ViewPoint")}>
               <View style={{flexGrow:.5, maxWidth:60, height:30,justifyContent:'center'}}>
                 <TotalTimeIcon source={point_icon} style={{width:40, height:40}}/>
@@ -190,7 +200,7 @@ const Home = () => {
           </TotalTimeList>
         </TotalTimeArea>
         <View style={{marginTop:20, marginBottom:50}} >
-          <Button text={"자산 추가하기"} handleButton={() => setIsAssetAddModalVisible(true)}/>
+          <Button text={"자산 추가하기"} handleButton={() => setIsAssetAddModalVisible(true)} bg={home_button_bg}/>
         </View>
         <View style={{width:327, flexDirection:'row', alignItems:"flex-end"}}>
           <SaveTimeTitle>{`${userInfo.displayName} 님의\n총 자투리 시간`}</SaveTimeTitle>
@@ -225,13 +235,13 @@ const HomeBody = styled.View`
   justify-content:center;
   align-items:center;
   width:${size.width}px;
+  padding:0 30px;
   `
 
 const HomeBg = styled.Image`
   position:absolute;
   top:0;
   width:${size.width}px;
-  height:${size.height}px;
   z-index:-1;
 `
 
@@ -274,7 +284,7 @@ const TodoText = styled.Text`
 
 const TodoDuringTime = styled.Text`
   z-index:3;
-  font-weight:500;
+  font-weight:600;
   font-size:48px;
   color:#fff;
 `
@@ -340,11 +350,12 @@ const TotalTimeClock = styled.Text`
 `
 
 const BorderLine = styled.View`
-  background-color:#777;
+  background-color:#f4f4f4;
   height:.4px;
   width:264px;
   margin: 20px 0;
   z-index:5;
+
 `
 
 const SaveTimeTitle = styled.Text`

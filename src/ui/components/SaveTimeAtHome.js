@@ -202,12 +202,14 @@ const DayText = styled.Text`
   font-weight: ${({ isSelected }) => (isSelected ? "bold" : "normal")};
   color: ${({ isSelected }) => (isSelected ? "#4A90E2" : "#A0A0A0")};
   margin-bottom: 8px;
+  margin-right:50px;
 `;
 
 const Line = styled.View`
   width: 2px;
   height: 16px;
   background-color: #e0e0e0;
+  margin-right:50px;
 `;
 
 export default SaveTimeAtHome;
