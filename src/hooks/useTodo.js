@@ -90,7 +90,7 @@ export const useTodo = () => {
         }
       })
       console.log("getNow",response.data);
-      setNowTodo(response.data)
+      setNowTodo(response.data.message === '오늘의 할 일이 없습니다.' ? false : response.data)
     } catch (error) {
       console.log(error)
     }

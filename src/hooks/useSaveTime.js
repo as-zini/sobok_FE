@@ -86,7 +86,7 @@ export const useSaveTime = () => {
 
   const getTotalSpareTime = async(setSpareTimeTotal) => {
     try {
-      const token = JSON.parse(await AsyncStorage.getItem("access_token"))
+      const token = await AsyncStorage.getItem("access_token")
 
       const response = await baseUrl.get("/spare-time/duration",{
         headers:{
