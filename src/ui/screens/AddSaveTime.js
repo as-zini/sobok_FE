@@ -17,7 +17,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useSaveTime } from '../../hooks/useSaveTime';
 
 const AddSaveTime = ({route}) => {
-  const {spareTimeEl} = route.params;
+  const {spareTimeEl, length} = route.params;
   const [selectedDate, setSelectedDate] = useState(!spareTimeEl?[]:spareTimeEl.days.map(day => day.slice(0, 3)))
   const [time, setTime] = useState({})
   const navigation = useNavigation();
@@ -35,8 +35,11 @@ const AddSaveTime = ({route}) => {
   }
 
   const handleDeleteButton = () => {
-    handleDeleteSpareTime(spareTimeEl.id)
+    if(!spareTimeEl){
+      navigation.goBack()
+    }else{handleDeleteSpareTime(spareTimeEl.id)
     console.log(spareTimeEl.id)
+    }
   }
   
 
@@ -51,7 +54,7 @@ const AddSaveTime = ({route}) => {
         </AddSaveTimeHeader>
         <MarginVertical top={30}/>
         <Image source={time_icon} style={{width:35,height:42}}/>
-        <AddSaveTimeText style={{color:colors.fontMain70}}>자투리 시간 1</AddSaveTimeText>
+        <AddSaveTimeText style={{color:colors.fontMain70}}>{`자투리 시간 ${length+1}`}</AddSaveTimeText>
         <MarginVertical top={10}/>
         
         <SaveTimeTitle placeholder={!spareTimeEl?'자투리 시간 이름':spareTimeEl.title} placeholderTextColor={colors.gray70} value={title} onChange={(e) => setTitle(e.nativeEvent.text)}></SaveTimeTitle>
@@ -129,7 +132,10 @@ const AddSaveTimeTitle = styled.Text`
 `
 
 const TrashButton = styled.TouchableOpacity`
-
+  width:40px;
+  height:40px;
+  justify-content:center;
+  align-items:center;
 `
 
 const SetTimeArea = styled.View`

@@ -27,7 +27,7 @@ export const useSaveTime = () => {
     }
   }
 
-  const getSpareTimeByDay = async(day, setSpareTimeList) => {
+  const getSpareTimeByDay = async(day, setSpareTimeList,setDurationByDay) => {
     try {
       const token = await AsyncStorage.getItem("access_token")
 
@@ -38,6 +38,7 @@ export const useSaveTime = () => {
       })
       console.log(response.data)
       setSpareTimeList(response.data.spareTimeList)
+      setDurationByDay(response.data.duration)
     } catch (error) {
       console.log(error)
     }
