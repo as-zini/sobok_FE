@@ -25,6 +25,8 @@ const ViewSaveTime = ({route}) => {
   const {version, username} = route.params;
   const {getSpareTimeByDay} = useSaveTime()
   const [spareTimeList, setSpareTimeList] = useState([]);
+  const dayToKo = {SUN:'일요일',MON:'월요일',TUE:'화요일',WED:'수요일',THU:'목요일',FRI:'금요일',SAT:'토요일'}
+  const [durationByDay, setDurationByDay] = useState(0);
 
   const getFullDay = (day) => {
     return day === 'MON' ? "MONDAY" : day==="TUE" ? "TUESDAY" : day==="WED" ? "WEDNESDAY" : day==="THU" ? "THURSDAY" : day=="FRI" ? "FRIDAY" : day === "SAT" ? "SATURDAY" : "SUNDAY"
@@ -33,7 +35,7 @@ const ViewSaveTime = ({route}) => {
 
   useFocusEffect(
     useCallback(() => {
-      getSpareTimeByDay(getFullDay(selectedDate), setSpareTimeList)
+      getSpareTimeByDay(getFullDay(selectedDate), setSpareTimeList,setDurationByDay)
     }, [selectedDate]),
   )
 
@@ -45,11 +47,12 @@ const ViewSaveTime = ({route}) => {
           params:{version:"Saving"}
         }]
       })}else{
-        navigation.reset({
-          routes:[{
-            name:'tabs'
-          }]
-        })
+        // navigation.reset({
+        //   routes:[{
+        //     name:'Tabs'
+        //   }]
+        // })
+        navigation.goBack()
       }
     }
     
@@ -70,9 +73,9 @@ const ViewSaveTime = ({route}) => {
         <MarginVertical top={30}/>
         <Image source={time_icon} style={{width:40, height:48}}/>
         <MarginVertical top={15}/>
-        <SaveTimeText style={{color:colors.fontMain90}}>{version === 'first' ? `자투리 시간`:`화요일\n자투리 시간`}</SaveTimeText>
+        <SaveTimeText style={{color:colors.fontMain90}}>{version === 'first' ? `자투리 시간`:`${dayToKo[selectedDate]}\n자투리 시간`}</SaveTimeText>
         {version === "first" ? <MarginVertical top={10}/> : <></>}
-        <SaveTimeTitle style={{fontSize:version==='first' ? 26 : 50}}>{version === 'first' ? "자투리 시간이\n얼마나 생기나요?":`3H 15M`}</SaveTimeTitle>
+        <SaveTimeTitle style={{fontSize:version==='first' ? 26 : 50}}>{version === 'first' ? "자투리 시간이\n얼마나 생기나요?":minToHour(durationByDay)}</SaveTimeTitle>
         {version === 'first' ?
         <>
         <MarginVertical top={32}/>
@@ -91,7 +94,7 @@ const ViewSaveTime = ({route}) => {
         {spareTimeList.length > 0 ? spareTimeList.map((el,index) => {
           return(
             <View key={index}>
-            <TouchableOpacity style={{flexDirection:'row', gap:14, alignItems:'flex-start'}} onPress={() => navigation.navigate('AddSaveTime', {spareTimeEl:el})}>
+            <TouchableOpacity style={{flexDirection:'row', gap:14, alignItems:'flex-start'}} onPress={() => navigation.navigate('AddSaveTime', {spareTimeEl:el, length:index})}>
               <View style={{justifyContent:'center', alignItems:'center',width:64,gap:12}}>
                 <TimeLabel>
                   <SaveTimeText style={{color:"#fff"}}>{el.startTime}</SaveTimeText>
@@ -116,7 +119,7 @@ const ViewSaveTime = ({route}) => {
             </View>
           )
         }) : <></>}
-        <TouchableOpacity style={{flexDirection:'row', gap:14, alignItems:'flex-start'}} onPress={() => navigation.navigate("AddSaveTime",{spareTimeEl:false})}>
+        <TouchableOpacity style={{flexDirection:'row', gap:14, alignItems:'flex-start'}} onPress={() => navigation.navigate("AddSaveTime",{spareTimeEl:false, length:spareTimeList.length})}>
           <View style={{justifyContent:'center', alignItems:'center',width:64,gap:12}}>
             <TimeLabel>
               <SaveTimeText style={{color:"#fff"}}>+</SaveTimeText>
