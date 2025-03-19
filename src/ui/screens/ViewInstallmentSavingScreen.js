@@ -79,9 +79,9 @@ const ViewInstallmentSavingScreen = () => {
         <TotalSavingArea>
           <Image source={installment_icon} style={{width:48, height:34}}/>
           <MarginVertical top={18}/>
-          <TotalSavingText>총 5개의 적금</TotalSavingText>
+          <TotalSavingText>{`총 ${onGoingAccountList.filter((el) => el.isValid).length}개의 적금`}</TotalSavingText>
           <MarginVertical top={5}/>
-          <TotalSavingTitle>18H 30M</TotalSavingTitle>
+          <TotalSavingTitle>{minToHour(onGoingAccountList.filter((el) => el.isValid).reduce((sum,time) => sum+=time,0))}</TotalSavingTitle>
         </TotalSavingArea>
         <MarginVertical top={72}/>
         <SectionList
