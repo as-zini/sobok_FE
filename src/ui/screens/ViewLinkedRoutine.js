@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Image, SafeAreaView, View } from 'react-native'
+import { Image, SafeAreaView, ScrollView, View } from 'react-native'
 
 import bg from '../../../assets/installment_saving_bg.png';
 import styled from 'styled-components';
@@ -20,6 +20,7 @@ const ViewLinkedRoutine = ({route}) => {
 
   return (
     <SafeAreaView>
+      <ScrollView showsVerticalScrollIndicator={false}>
       <ViewLinkedRoutineBody>
         <BackArrowButton/>
         <MarginVertical top={50}/>
@@ -37,6 +38,7 @@ const ViewLinkedRoutine = ({route}) => {
             <MarginVertical top={55}/>
           </View>)}
       </ViewLinkedRoutineBody>
+      </ScrollView>
       <ViewLinkedRoutineBg source={bg}/>
     </SafeAreaView>
   )

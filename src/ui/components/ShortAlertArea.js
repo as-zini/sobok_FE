@@ -30,6 +30,6 @@ const ShortAlertAreaBg = styled.Image`
 
 const ShortAlertText = styled.Text`
   font-size:14px;
-  font-weight:500;
+  font-weight:600;
   color:#fff;
 `

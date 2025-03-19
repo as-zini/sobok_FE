@@ -8,7 +8,8 @@ export const useInstallmentSaving = () => {
   const getSavingList = async(setOnGoingAccountList, version) => {
     try {
       const token = await AsyncStorage.getItem("access_token")
-      const response = await axios.get(version === "onGoing" ? "https://sobok-app.com/account/list/ongoing" : "https://sobok-app.com/account/list/expired",{
+      const response = await baseUrl.get(
+        version === "onGoing" ? "/account/list/ongoing" : version === 'expired' ? "/account/list/expired" : '/account/list/ended',{
         headers:{
           Authorization:`Bearer ${token}`
         }
@@ -29,7 +30,8 @@ export const useInstallmentSaving = () => {
         }
       })
       console.log(response.data)
-      setSavingLog(response.data.account_logs)
+      const reverse = response.data.account_logs.reverse()
+      setSavingLog(reverse)
     } catch (error) {
       console.log(error)
     }
@@ -86,12 +88,29 @@ export const useInstallmentSaving = () => {
     }
   }
 
+  const getSavingDetail = async(id,setSavingInfo) => {
+    try {
+      const token = await AsyncStorage.getItem("access_token")
+      const response = await axios.get(`https://sobok-app.com/account/details?accountId=${id}`,{
+        headers:{
+          Authorization:`Bearer ${token}`
+        }
+      })
+      console.log(response.data);
+      setSavingInfo(response.data)
+      
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return {
     getSavingList,
     getSavingLog,
     getSavingCount,
     handleAddSaving,
-    getInvalidSavingList
+    getInvalidSavingList,
+    getSavingDetail
   }
 }
 

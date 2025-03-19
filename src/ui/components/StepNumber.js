@@ -3,14 +3,12 @@ import { View } from 'react-native'
 import styled from 'styled-components';
 import { colors } from '../styles/colors';
 
-const StepNumber = ({step, marginBottom, indexColor}) => {
-  useEffect(() => {
-    console.log(step, marginBottom, indexColor)
-  }, [])
+const StepNumber = ({step, marginBottom, indexColor, isValid, stepColor}) => {
+  
   
 
   return (
-    <StepNumberBody style={{marginBottom:marginBottom, backgroundColor:indexColor === "black" ? colors.fontMain : colors.indigoBlue}}>
+    <StepNumberBody style={{marginBottom:marginBottom, backgroundColor:indexColor === "black" ? colors.fontMain :stepColor==='red' ? "#FF4848" : colors.indigoBlue}}>
       <StepNumberText>{step}</StepNumberText>
     </StepNumberBody>
   )
