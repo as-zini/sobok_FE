@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import installment_saving_bg from '../../../assets/installment_saving_bg.png';
 import installment_icon from '../../../assets/save_icon.png';
 import MarginVertical from '../components/MarginVertical';
-import { Image, ScrollView, SectionList, Text, View } from 'react-native';
+import { Image, ScrollView, SectionList, Text, TouchableOpacity, View } from 'react-native';
 import BackArrowButton from '../components/BackArrowButton';
 import { colors } from '../styles/colors';
 import { size } from '../styles/size';
@@ -23,6 +23,8 @@ import { minToHour } from '../../util';
 import { useNavigation } from '@react-navigation/native';
 import dayjs from 'dayjs';
 import { useInstallmentSaving } from '../../hooks/useInstallmentSaving';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import SavingAlerteModal from '../components/SavingAlertModal';
 
 const DetailInstallmentSavingScreen = ({route}) => {
   const [isCalandarModalVisible, setIsCalandarModalVisible] = useState(false);
@@ -32,6 +34,7 @@ const DetailInstallmentSavingScreen = ({route}) => {
   const navigation = useNavigation();
   const [selectedRange, setSelectedRange] = useState({startDate:dayjs().startOf('month').format("YYYY-MM-DD"), endDate:dayjs().endOf('month').format("YYYY-MM-DD")});
   const [savingLog, setSavingLog] = useState([]);
+  const [isAlertModal, setIsAlertModal] = useState(false);
 
 
   
@@ -42,6 +45,12 @@ const DetailInstallmentSavingScreen = ({route}) => {
     
     
   }, [selectedRange])
+
+  useEffect(() => {
+    if(!savingInfo.is_valid)setIsAlertModal(true)
+    
+    
+  }, [savingInfo])
   // const startedAt = dayjs(new Date(Number(savingInfo.created_at.slice(0,4)),Number(savingInfo.created_at.slice(5,7))-1,Number(savingInfo.created_at.slice(8,10))+1))
   const startedAt = dayjs(`${savingInfo.created_at} 00:00`)
 
@@ -104,11 +113,19 @@ const DetailInstallmentSavingScreen = ({route}) => {
           <MarginVertical top={18}/>
           <View style={{display:'flex', flexDirection:'row', alignItems:'center', gap:5}}>
             <LinkedRoutineText>{savingInfo.title}</LinkedRoutineText>
+            <TouchableOpacity style={{width:24, height:24}}>
+              <MaterialIcons name="mode-edit" size={20} color="rgba(20, 36, 72, 0.3)"/>
+            </TouchableOpacity>
           </View>
           <MarginVertical top={5}/>
           <TotalSavingTitle>{minToHour(savingInfo.balance)}</TotalSavingTitle>
           <MarginVertical top={32}/>
-          <InterestText>{`연 ${savingInfo.interest}%`}</InterestText>
+          <View style={{flexDirection:'row',alignItems:'center'}}>
+            <InterestText>{`월 ${savingInfo.interest}%`}</InterestText>
+            <TouchableOpacity>
+              <MaterialIcons name="keyboard-arrow-right" size={22} color="rgba(20, 36, 72, 0.4)" />
+            </TouchableOpacity>
+          </View>
           <PushPeriodText>{`매주 ${minToHour(savingInfo.time)}`}</PushPeriodText>
         </SavingIntroArea>
         <MarginVertical top={24}/>
@@ -135,6 +152,7 @@ const DetailInstallmentSavingScreen = ({route}) => {
         id={id}
         setSavingLog={setSavingLog}/>
       </ScrollView>
+      <SavingAlerteModal isPauseModalVisible={isAlertModal} setIsPauseModalVisible={setIsAlertModal}/>
       </View>
       <DetailInstallmentSavingBg source={installment_saving_bg}/>
     </SafeAreaProvider>
