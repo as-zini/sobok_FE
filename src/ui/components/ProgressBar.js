@@ -4,6 +4,7 @@ import { colors } from "../styles/colors";
 
 import snowflake_icon from '../../../assets/snowflak_icon.png';
 import dayjs from "dayjs";
+import MarginVertical from "./MarginVertical";
 
 // 분 → H M 변환 함수
 const formatTime = (minutes) => {
@@ -67,7 +68,7 @@ const ProgressBar = ({ startedAt, duration, version, userPoint, totalPoints, sav
           </Animated.View>
         </View>
       </View>
-
+      <MarginVertical top={10}/>
       {version === 'Time' ? (
         <View style={styles.dateContainer}>
           <Text style={styles.dateText}>{startedAt.format("YYYY년 M월 D일")}</Text>

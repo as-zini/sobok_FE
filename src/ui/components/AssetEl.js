@@ -7,9 +7,10 @@ import LinkIcon from './LinkIcon'
 import { colors } from '../styles/colors'
 import MarginVertical from './MarginVertical'
 
-const AssetEl = ({item, index, isLink, category, isInvalid, isTouchable, indexColor}) => {
+const AssetEl = ({item, index, isLink, category, isInvalid, isTouchable, indexColor, stepColor}) => {
   const navigation = useNavigation();
-  console.log(indexColor)
+  console.log(item[4])
+  
 
   return (
     
@@ -21,7 +22,7 @@ const AssetEl = ({item, index, isLink, category, isInvalid, isTouchable, indexCo
       isTouchable={isTouchable}                   
     >
         <View>
-          <StepNumber step={index+1} isInvalid={isInvalid} indexColor={indexColor}/>
+          <StepNumber step={index+1} isInvalid={isInvalid} indexColor={indexColor} stepColor={stepColor}/>
         </View>
         <View style={{display:'flex', flexGrow:1, width:140}}>
           <SavingTitle style={{color:isInvalid ? "rgba(112, 113, 114, 0.8)" : ""}}>{item[0]}</SavingTitle>
@@ -81,7 +82,8 @@ const SavingEl = styled.TouchableOpacity`
   flex-direction:row;
   justify-content:center;
   align-items:center;
-  width:300px;
+  gap:13px;
+  width:290px;
 `
 
 const SavingElNotTouchable = styled.View`

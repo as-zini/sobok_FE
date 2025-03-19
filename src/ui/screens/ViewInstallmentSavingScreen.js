@@ -20,21 +20,25 @@ const ViewInstallmentSavingScreen = () => {
   const {getSavingList} = useInstallmentSaving();
   const [onGoingAccountList, setOnGoingAccountList] = useState([]);
   const [expiredAccountList, setExpiredAccountList] = useState([]);
+  const [endedAccountList, setEndedAccountList] = useState([]);
 
   const Data = [
     {
       title:["진행 중인 적금", onGoingAccountList.length],
-      data:onGoingAccountList.map((el,index) => [el.title, "", minToHour(el.time), `D-${el.duration*30}`, el.id])
+      data:onGoingAccountList.map((el,index) => [el.title, "", minToHour(el.time), `D-${el.duration*30}`, el.id, el.isValid])
     },{
       title:["만기된 적금",expiredAccountList.length],
-      data:expiredAccountList.map((el) => [el.title,"",minToHour(el.time), `D-${el.duration}`, el.id])
+      data:expiredAccountList.map((el) => [el.title,"",minToHour(el.time), `D-0`, el.id])
+    },{
+      title:["완료된 적금",endedAccountList.length],
+      data:endedAccountList.map((el) => [el.title,"",minToHour(el.time), `D-0`, el.id])
     }
   ]
 
   const RenderItem = ({item, index}) => {
     return(
       <>
-        <AssetEl item={item} index={index} isLink={false} category={"Save"} isTouchable={true}/>
+        <AssetEl item={item} index={index} isLink={false} category={"Save"} isTouchable={true} stepColor={!item[5] ? 'red' : 'indigo'} isInvalid={item[5] ? false : true}/>
         <MarginVertical top={50}/>
       </>
     )
@@ -56,6 +60,7 @@ const ViewInstallmentSavingScreen = () => {
   useEffect(() => {
     getSavingList(setOnGoingAccountList, "onGoing");
     getSavingList(setExpiredAccountList, "expired");
+    getSavingList(setEndedAccountList, 'ended')
   }, [])
   
   

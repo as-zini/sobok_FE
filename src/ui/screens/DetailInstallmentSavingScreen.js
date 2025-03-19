@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaProvider, SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import styled from 'styled-components';
 
 import installment_saving_bg from '../../../assets/installment_saving_bg.png';
@@ -27,65 +27,23 @@ import { useInstallmentSaving } from '../../hooks/useInstallmentSaving';
 const DetailInstallmentSavingScreen = ({route}) => {
   const [isCalandarModalVisible, setIsCalandarModalVisible] = useState(false);
   const {id} = route.params;
-  const {getSavingLog} = useInstallmentSaving();
+  const {getSavingLog, getSavingDetail} = useInstallmentSaving();
   const [savingInfo, setSavingInfo] = useState([]);
   const navigation = useNavigation();
   const [selectedRange, setSelectedRange] = useState({startDate:dayjs().startOf('month').format("YYYY-MM-DD"), endDate:dayjs().endOf('month').format("YYYY-MM-DD")});
   const [savingLog, setSavingLog] = useState([]);
 
 
-  const getSavingDetail = async() => {
-    try {
-      const response = await axios.get(`https://sobok-app.com/account/details?accountId=${id}`)
-      console.log(response.data);
-      setSavingInfo(response.data)
-      
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  useEffect(() => {
-    console.log(id);
-    getSavingDetail();
-    getSavingLog(id, selectedRange.startDate, selectedRange.endDate, setSavingLog)
-    console.log("date",startedAt)
-  }, [selectedRange])
-  // const startedAt = dayjs(new Date(Number(savingInfo.created_at.slice(0,4)),Number(savingInfo.created_at.slice(5,7))-1,Number(savingInfo.created_at.slice(8,10))+1))
-  const startedAt = dayjs()
-
   
 
-  const Data = [
-    {
-      title:["2월 6일 - 2월 13일"],
-      data:[["5회차", "09:00", "1H 30M", "7H 30M"]]
-    },{
-      title:["1월 30일 - 2월 5일"],
-      data:[["4회차", "09:00", "1H 30M", "6H 30M"]]
-    },{
-      title:["1월 23일 - 1월 29일"],
-      data:[["3회차", "09:00", "1H 30M", "4H 30M"]]
-    }
-  ]
-
-  const ListHeader = ({title}) => {
-    return(
-      <>
-        <Text style={{color:"#707172", fontWeight:500, fontSize:14}}>{title}</Text>
-        <MarginVertical top={20}/>
-      </>
-    )
-  }
-
-  const LenderItem = ({item, index}) => {
-    return(
-      <>
-        <AssetEl item={item} index={index} isLink={false}/>
-        <MarginVertical top={40}/>
-      </>
-    )
-  }
+  useEffect(() => {
+    getSavingDetail(id, setSavingInfo);
+    getSavingLog(id, selectedRange.startDate, selectedRange.endDate, setSavingLog)
+    
+    
+  }, [selectedRange])
+  // const startedAt = dayjs(new Date(Number(savingInfo.created_at.slice(0,4)),Number(savingInfo.created_at.slice(5,7))-1,Number(savingInfo.created_at.slice(8,10))+1))
+  const startedAt = dayjs(`${savingInfo.created_at} 00:00`)
 
   const BlurChild = () => {
     return(
@@ -114,21 +72,23 @@ const DetailInstallmentSavingScreen = ({route}) => {
             <View key={index}>
               <Text style={{color:"#707172", fontWeight:500, fontSize:14}}>{`${dayjs(el.created_at).format("YYYY년 M월 D일")}`}</Text>
               <MarginVertical top={20}/>
-              <AssetEl item={[`${index+1}회차`, `${dayjs(el.created_at).format("HH:MM")}`, `${minToHour(el.depositTime)}`, `${minToHour(el.balance)}`]} index={index} isLink={false} isTouchable={false}/>
+              <AssetEl item={[`${savingLog.length-index}회차`, `${dayjs(el.created_at).format("HH:MM")}`, `${minToHour(el.depositTime)}`, `${minToHour(el.balance)}`]} index={index} isLink={false} isTouchable={false}/>
               <MarginVertical top={40}/>
             </View>
 
           )
         })}
-        
-      </View>
+       </View>
       <MarginVertical top={500}/>
       </ScrollView>
     )
   }
+
+  const insets = useSafeAreaInsets();
   
   return (
-    <SafeAreaView>
+    <SafeAreaProvider style={{paddingTop:insets.top}}>
+      <View>
       <ScrollView>
       <DetailInstallmentSavingBody>
         <MarginVertical top={20}/>
@@ -153,7 +113,7 @@ const DetailInstallmentSavingScreen = ({route}) => {
         </SavingIntroArea>
         <MarginVertical top={24}/>
         
-        <ShortAlertArea text={`${savingInfo.duration}개월 남았어요!`} width={114} height={30}/>
+        <ShortAlertArea text={`${savingInfo.duration-(dayjs().get('month')-startedAt.get('month'))}개월 남았어요!`} width={114} height={30}/>
         {/* 기간바 */}
         <MarginVertical top={36}/>
         <ProgressBar startedAt={startedAt} duration={savingInfo.duration} version={"Time"}/>
@@ -175,8 +135,9 @@ const DetailInstallmentSavingScreen = ({route}) => {
         id={id}
         setSavingLog={setSavingLog}/>
       </ScrollView>
+      </View>
       <DetailInstallmentSavingBg source={installment_saving_bg}/>
-    </SafeAreaView>
+    </SafeAreaProvider>
   )
 }
 
@@ -209,27 +170,27 @@ const SavingIntroArea = styled.View`
 `
 
 const LinkedRoutineText = styled.Text`
-  font-size:16px;
+  font-size:18px;
   font-weight:500;
   color:${colors.fontMain90};
 `
 
 const TotalSavingTitle = styled.Text`
-  font-size:48px;
+  font-size:50px;
   font-weight:600;
   color:${colors.fontMain};
 `
 
 const InterestText = styled.Text`
   font-weight:500;
-  font-size:16px;
+  font-size:18px;
   color:${colors.fontMain70};
   line-height:24px;
 `
 
 const PushPeriodText = styled.Text`
   font-weight:500;
-  font-size:16px;
+  font-size:18px;
   color:${colors.fontMain70};
   line-height:25px;
 `
