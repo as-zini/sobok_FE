@@ -13,7 +13,7 @@ import MarginVertical from './MarginVertical';
 import check_icon_indigo from '../../../assets/check_icon_indigo.png';
 import { useRoutine } from '../../hooks/useRoutine';
 
-const RoutinePauseModal = ({isPauseModalVisible, setIsPauseModalVisible, version, id, setRoutineDetailInfo, setIsComplete}) => {
+const RoutinePauseModal = ({isPauseModalVisible, setIsPauseModalVisible, version, id, setRoutineDetailInfo, setIsComplete, isPause}) => {
   const [isReturn, setIsReturn] = useState(false);
   const {handleRoutineSuspend} = useRoutine();
   const {getRoutineDetail} = useRoutine();
@@ -35,9 +35,17 @@ const RoutinePauseModal = ({isPauseModalVisible, setIsPauseModalVisible, version
         <MarginVertical top={isReturn ? 52 : 0}/>
         <Image source={isReturn ? check_icon_indigo:snowflake_icon} style={{width:isReturn ? 44 : 16, height: isReturn ? 44 : 16}}/>
         <MarginVertical top={15}/>
-        <RoutinePauseModalTitle>루틴을 보관함에{"\n"}{isReturn ? "넣어두었어요!" : "넣어둘까요?"}</RoutinePauseModalTitle>
+        {isPause ? 
+        <RoutinePauseModalTitle>{!isReturn ? "루틴을 다시\n시작할까요?" : "루틴이 다시\n시작되었어요!"}</RoutinePauseModalTitle>
+        :
+        <RoutinePauseModalTitle>{isReturn ? "루틴을 보관함에 넣어두었어요!" : "루틴을 보관함에 넣어둘까요?"}</RoutinePauseModalTitle>
+        }
         <MarginVertical top={30}/>
+        {isPause ?
+        <RoutinePauseModalText>{isReturn ? "루틴 페이지에서\n잠시 미뤄둘 수 있어요!" : "돌아오셨군요!\n다시 열심히 해봐요!"}</RoutinePauseModalText>
+        :
         <RoutinePauseModalText>{isReturn ? "루틴 페이지에서 언제든\n다시 시작할 수 있어요!" : "잠시 미뤄두었다가\n언제든 다시 시작할 수 있어요!"}</RoutinePauseModalText>
+        }
         <MarginVertical top={isReturn? 72 : 50}/>
         {isReturn ? <></>
         :

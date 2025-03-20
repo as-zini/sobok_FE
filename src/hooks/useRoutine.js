@@ -3,6 +3,7 @@ import axios from "axios"
 import dayjs from "dayjs";
 import { useTodoStore } from "../store/todo";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import baseUrl from "../api/baseURL";
 
 export const useRoutine = () => {
   const navigation = useNavigation();
@@ -11,7 +12,7 @@ export const useRoutine = () => {
   const getRoutineByList = async(setRoutineInfo, setIsComplete) => {
     try {
       const token = await AsyncStorage.getItem("access_token")
-      const response = await axios.get("https://sobok-app.com/routine/by-list",{
+      const response = await baseUrl.get("/routine/by-list",{
         headers:{
           Authorization:`Bearer ${token}`
         }
@@ -32,7 +33,7 @@ export const useRoutine = () => {
     try {
       const token = await AsyncStorage.getItem("access_token")
 
-      const response = await axios.get(`https://sobok-app.com/routine/by-date?dateString=${year}-${month}-${selectedDate}`,{
+      const response = await baseUrl.get(`/routine/by-date?dateString=${year}-${month}-${selectedDate}`,{
         headers:{
           Authorization:`Bearer ${token}`
         }
@@ -49,7 +50,7 @@ export const useRoutine = () => {
     try {
       const token = await AsyncStorage.getItem("access_token")
 
-      const response = await axios.get(`https://sobok-app.com/routine/detail?routineId=${id}`,{
+      const response = await baseUrl.get(`/routine/detail?routineId=${id}`,{
         headers:{
           Authorization:`Bearer ${token}`
         }
@@ -66,7 +67,7 @@ export const useRoutine = () => {
     try {
       const token = await AsyncStorage.getItem("access_token")
 
-      const response = await axios.get(`https://sobok-app.com/routine/suspend?routineId=${id}`,{
+      const response = await baseUrl.get(`/routine/suspend?routineId=${id}`,{
         headers:{
           Authorization:`Bearer ${token}`
         }
@@ -82,7 +83,7 @@ export const useRoutine = () => {
     try {
       const token = await AsyncStorage.getItem("access_token")
 
-      const response = await axios.post("https://sobok-app.com/routine/create",{
+      const response = await baseUrl.post("/routine/create",{
         accountId:newRoutineData.id,
         title: newRoutineData.title,
         startTime: newRoutineData.startTime,
@@ -107,7 +108,7 @@ export const useRoutine = () => {
     try {
       const token = await AsyncStorage.getItem("access_token")
 
-      const response = await axios.get("https://sobok-app.com/routine/by-list",{
+      const response = await baseUrl.get("/routine/by-list",{
         headers:{
           Authorization:`Bearer ${token}`
         }
@@ -125,12 +126,29 @@ export const useRoutine = () => {
     }
   }
 
+  const handleRoutineDelete = async(id) => {
+    console.log("호출!!!")
+    try {
+      const token = await AsyncStorage.getItem("access_token")
+
+      const response = await baseUrl.delete(`/routine/delete`,{
+        params: { routineId:id }, // 쿼리 파라미터
+        headers: { "Authorization": `Bearer ${token}`}
+      })
+      console.log(response.data)
+      navigation.goBack()
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return {
     getRoutineByList,
     getRoutineByCalandar,
     getRoutineDetail,
     handleRoutineSuspend,
     handleAddRoutine,
-    getRoutineCount
+    getRoutineCount,
+    handleRoutineDelete
   }
 }

@@ -112,6 +112,16 @@ export const useTodo = () => {
     }
   }
 
+  // const handleTodoDelete = async() => {
+  //   try {
+  //     const token = await AsyncStorage.getItem("access_token")
+
+  //     const response = await baseUrl.delete('/')
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
+
   return {
     getTodayTodo,
     getNotCompletedTodo,

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Image, SafeAreaView, ScrollView, SectionList, Text, View } from 'react-native'
 import styled from 'styled-components'
 
@@ -13,7 +13,9 @@ import AssetEl from '../components/AssetEl';
 import WeekCalandar from '../components/WeekCalandar';
 import dayjs from 'dayjs';
 import { useRoutine } from '../../hooks/useRoutine';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { minToHour } from '../../util';
+import { useFocusEffect } from '@react-navigation/native';
 
 const ViewRoutineListScreen = () => {
   const[isList,setIsList] = useState(true);
@@ -29,10 +31,12 @@ const ViewRoutineListScreen = () => {
     totalTime += routineInfo[i].duration
   }
 
-  useEffect(() => {
-    getRoutineByList(setRoutineInfo, setIsComplete)
-    getRoutineByCalandar(selectedDate, setTodayRoutineList)
-  }, [isComplete, isList, selectedDate])
+  useFocusEffect(
+    useCallback(() => {
+      getRoutineByList(setRoutineInfo, setIsComplete)
+      getRoutineByCalandar(selectedDate, setTodayRoutineList)
+    }, [isComplete, isList, selectedDate]),
+  )
   
   const ingRoutine = routineInfo.filter((el) => el.isSuspended === false);
   const suspendedRoutine = routineInfo.filter((el) => el.isSuspended === true);
@@ -47,7 +51,7 @@ const ViewRoutineListScreen = () => {
       data:suspendedRoutine.map((el) => [el.title, el.accountTitle, minToHour(el.duration),"", el.id])
     },
     {
-      title:["완료한 루틴", 1],
+      title:["완료한 루틴", 0],
       data:[]
     }
   ]
@@ -97,7 +101,7 @@ const ViewRoutineListScreen = () => {
           </View>
           <ChangeViewMethodButton onPress={() => setIsList((prev) => !prev)}>
             <ChangeViewMethodButtonText>{isList ? "리스트" : "캘린더"}</ChangeViewMethodButtonText>
-            <DropDownArrowButton color={"white"} size={16}/>
+            <MaterialIcons name="keyboard-arrow-right" size={20} color="white"/>
           </ChangeViewMethodButton>
         </ViewRoutineListHeader>
         <MarginVertical top={45}/>
@@ -105,9 +109,9 @@ const ViewRoutineListScreen = () => {
         <TotalRoutineArea>
           <Image source={routine_icon} style={{width:51, height:33}}/>
           <MarginVertical top={18}/>
-          <TotalRoutineText>{`총 ${routineInfo.length}개의 루틴`}</TotalRoutineText>
+          <TotalRoutineText>{`총 ${routineInfo.filter((el) => !el.isSuspended).length}개의 루틴`}</TotalRoutineText>
           <MarginVertical top={5}/>
-          <TotalRoutineTitle>{`${minToHour(totalTime)}`}</TotalRoutineTitle>
+          <TotalRoutineTitle>{`${minToHour(routineInfo.filter((el) => !el.isSuspended).reduce((sum,time) => sum+=time.duration,0))}`}</TotalRoutineTitle>
         </TotalRoutineArea>
         :
         <>
@@ -192,6 +196,7 @@ const ChangeViewMethodButton = styled.TouchableOpacity`
   justify-content:center;
   align-items:center;
   gap:12px;
+  padding:0 20px;
   background-color:${colors.indigoBlue50};
   border-radius:29px;
 `
@@ -200,6 +205,7 @@ const ChangeViewMethodButtonText = styled.Text`
   font-size:16px;
   font-weight:500;
   color:#fff;
+  margin-right:-5px;
 `
 
 const TotalRoutineArea = styled.View`

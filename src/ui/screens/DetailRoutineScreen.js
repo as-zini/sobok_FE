@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import installment_saving_bg from '../../../assets/installment_saving_bg.png';
 import installment_icon from '../../../assets/save_icon.png';
 import MarginVertical from '../components/MarginVertical';
-import { Image, ScrollView, SectionList, Text, View } from 'react-native';
+import { Image, ScrollView, SectionList, Text, TouchableOpacity, View } from 'react-native';
 import BackArrowButton from '../components/BackArrowButton';
 import { colors } from '../styles/colors';
 import { size } from '../styles/size';
@@ -23,12 +23,15 @@ import { useRoutine } from '../../hooks/useRoutine';
 import { minToHour } from '../../util';
 import TodoEl from '../components/TodoEl';
 import axios from 'axios';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import baseUrl from '../../api/baseURL';
 
 const DetailRoutineScreen = ({route}) => {
   const [isPauseModalVisible, setIsPauseModalVisible] = useState(false);
   const {id} = route.params;
   // const {getRoutineDetail} = useRoutine();
-  const [routineDetailInfo, setRoutineDetailInfo] = useState([]);
+  const {handleRoutineDelete} = useRoutine();
+  const [routineDetailInfo, setRoutineDetailInfo] = useState({});
   const [isComplete, setIsComplete] = useState(false);
 
   const getRoutineDetail = async(id, setRoutineDetailInfo, setIsComplete) => {
@@ -52,7 +55,7 @@ const DetailRoutineScreen = ({route}) => {
   const Data = [
     {
       title:"",
-      data:Object.keys(routineDetailInfo).length !== 0 ?routineDetailInfo.todos.map((el) => [el.title, el.linkApp, minToHour(el.duration), `${el.startTime} - ${el.endTime}`]) : []
+      data:Object.keys(routineDetailInfo).length !== 0 ?routineDetailInfo.todos.map((el) => [el.title, el.linkApp, minToHour(el.duration), `${el.startTime.slice(0,5)} - ${el.endTime.slice(0,5)}`]) : []
     }
   ]
 
@@ -68,7 +71,7 @@ const DetailRoutineScreen = ({route}) => {
   const LenderItem = ({item, index, todoInfo, routineTitle}) => {
     return(
       <>
-        <TodoEl data={item} index={index} todoInfo={todoInfo} routineTitle={routineTitle}/>
+        <TodoEl data={item} index={index} todoInfo={todoInfo} routineTitle={routineTitle} isTouchable={true}/>
         <MarginVertical top={40}/>
       </>
     )
@@ -102,38 +105,38 @@ const DetailRoutineScreen = ({route}) => {
   return (
     <>
     <SafeAreaView>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
       <DetailInstallmentSavingBody>
         <MarginVertical top={20}/>
         <DetailInstallmentSavingHeader>
           <View style={{position:'absolute', left:20}}>
             <BackArrowButton/>
           </View>
-          <Text style={{fontWeight:600, fontSize:18, color:colors.fontSub}}>{routineDetailInfo.title}</Text>
+          <Text style={{fontWeight:600, fontSize:18, color:colors.fontSub}}>{"루틴"}</Text>
+          <TouchableOpacity style={{position:'absolute',right:20}} onPress={() => handleRoutineDelete(routineDetailInfo.id)}>
+            <Ionicons name="trash-outline" size={24} color={colors.fontMain80} />
+          </TouchableOpacity>
         </DetailInstallmentSavingHeader>
         <MarginVertical top={47}/>
         <SavingIntroArea>
           <Image source={routine_icon} style={{width:51, height:33}}/>
           <MarginVertical top={18}/>
-          <View style={{display:'flex', flexDirection:'row', alignItems:'center', gap:5}}>
-            <LinkIcon size={16}/>
-            <LinkedRoutineText>{routineDetailInfo.accountTitle}</LinkedRoutineText>
-          </View>
+          <LinkedRoutineText>{routineDetailInfo.title}</LinkedRoutineText>
           <MarginVertical top={5}/>
           <TotalSavingTitle>{minToHour(routineDetailInfo.duration)}</TotalSavingTitle>
           <MarginVertical top={32}/>
           <View style={{flexDirection:'row', gap:5}}>
           {Object.keys(routineDetailInfo).length !== 0 ? routineDetailInfo.days.map((el, index) => {
             return(
-            <InterestText key={index}>{el === "MONDAY" ? "월" : el === "TUESDAY" ? "화" : el==="WEDNESDAY" ? "수" : el==="THURSDAY" ? "목" : el==="FRIDAY" ? "금" : el ==="SATURDAY" ? "토" : "일"}</InterestText>
+            <InterestText key={index}>{el === "MON" || el==="MONDAY" ? "월" : el === "TUE"|| el==="TUESDAY" ? "화" : el==="WED"|| el==="WEDNESDAY" ? "수" : el==="THU"|| el==="THURSDAY" ? "목" : el==="FRI"|| el==="FRIDAY" ? "금" : el ==="SAT"|| el==="SATURDAY" ? "토" : "일"}</InterestText>
             )
           }) : null}
           </View>
           <View style={{display:'flex', flexDirection:'row', alignItems:'center'}}>
             <PushPeriodText style={{flexGrow:1}}>{Object.keys(routineDetailInfo).length === 0 ? "" : `${routineDetailInfo.startTime.slice(0,5)} - ${routineDetailInfo.endTime.slice(0,5)}`}</PushPeriodText>
             <View style={{display:'flex', flexDirection:'row', alignItems:'center', gap:8}}>
-              <View style={{width:8, height:8, borderRadius:'50%', backgroundColor:colors.indigoBlue}}></View>
-              <PushPeriodText>{routineDetailInfo.isEnded ? "종료" : "진행중"}</PushPeriodText>
+              <LinkIcon size={16}/>
+              <PushPeriodText>{routineDetailInfo.accountTitle}</PushPeriodText>
             </View>
           </View>
         </SavingIntroArea>
@@ -143,7 +146,7 @@ const DetailRoutineScreen = ({route}) => {
         <MarginVertical top={40}/>
         
         <BlurComponent child={BlurChild}/>
-        <RoutinePauseModal isPauseModalVisible={isPauseModalVisible} setIsPauseModalVisible={setIsPauseModalVisible} version={"Routine"} id={id} setRoutineDetailInfo={setRoutineDetailInfo} setIsComplete={setIsComplete}/>
+        <RoutinePauseModal isPauseModalVisible={isPauseModalVisible} setIsPauseModalVisible={setIsPauseModalVisible} version={"Routine"} id={id} setRoutineDetailInfo={setRoutineDetailInfo} setIsComplete={setIsComplete} isPause={routineDetailInfo.isSuspended}/>
       </DetailInstallmentSavingBody>
       
       </ScrollView>
@@ -190,8 +193,8 @@ const SavingIntroArea = styled.View`
 `
 
 const LinkedRoutineText = styled.Text`
-  font-size:16px;
-  font-weight:500;
+  font-size:22px;
+  font-weight:600;
   color:${colors.fontMain90};
 `
 

@@ -452,6 +452,7 @@ const LoginScreen = () => {
                 placeholder="아이디를 입력해주세요"
                 value={id}
                 onChangeText={setId}
+                placeholderTextColor="#fff"
               />
               <BorderLine />
             </InputEl>
@@ -463,7 +464,8 @@ const LoginScreen = () => {
                 onChangeText={setPassword}
                 secureTextEntry={true}
                 onFocus={handleFocusPassword}  // 🔥 비밀번호 입력란 포커스 시 이동
-                onBlur={handleBlurPassword}    // 🔥 포커스 해제 시 원래 위치로 복귀
+                onBlur={handleBlurPassword}
+                placeholderTextColor="#fff"    // 🔥 포커스 해제 시 원래 위치로 복귀
               />
               <BorderLine />
             </InputEl>

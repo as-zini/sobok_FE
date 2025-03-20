@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { SafeAreaView, ScrollView, View } from 'react-native'
+import React, { use, useEffect, useState } from 'react'
+import { SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import styled from 'styled-components';
 
 import todo_bg from '../../../assets/home_bg.png';
@@ -14,15 +14,42 @@ import LinkIcon from '../components/LinkIcon';
 import DropDownArrowButton from '../components/DropDownArrowButton';
 import Button from '../components/Button';
 import { minToHour } from '../../util';
+import CategoryEl from '../components/CategoryEl';
+import { useMyPage } from '../../hooks/useMyPage';
+import { useNavigation } from '@react-navigation/native';
 
 const DetailTodo = ({route}) => {
   const {todoInfo, index, routineTitle} = route.params;
   const [time, setTime] = useState({});
+  const categoryText = ["영어","제2외국어","독서","운동","취미","자기계발","기타"]
+  const [selected,setSelected] = useState("")
+  const {getUserLinkedApp} = useMyPage();
+  const [myLinkedApp, setMyLinkedApp] = useState(['하이하이','하이하이'])
+  const [selectedApp, setSelectedApp] = useState(todoInfo.linkApp)
+  const [showDropDown, setShowDropDown] = useState(false)
+  const navigation = useNavigation();
 
   useEffect(() => {
     console.log(todoInfo)
     console.log(index)
+    getUserLinkedApp(setMyLinkedApp)
   }, [])
+
+  const DropDownContents = ({list}) => {
+
+
+    return(
+      <View style={{width:295, borderRadius:8, backgroundColor:"#fff", paddingHorizontal:30, paddingVertical:10}}>
+        {list.map((el,index) => {
+          return(
+          <TouchableOpacity key={index} style={{width:'100%', paddingVertical:10, alignItems:'flex-start'}} onPress={() => {setSelectedApp(el);setShowDropDown(false)}}>
+            <Text style={{fontSize:18, fontWeight:500}}>{el}</Text>
+          </TouchableOpacity>
+          )
+        })}
+      </View>
+    )
+  }
   
 
   return (
@@ -52,18 +79,37 @@ const DetailTodo = ({route}) => {
         <MarginVertical top={65}/>
         <TimeSliderBar text={"까지 끝내요"} version={"End"} setOutValue={setTime} type={"time"}/>
         <MarginVertical top={80}/>
+        <View style={{width:300}}>
+          <Text style={{fontWeight:600, fontSize:18, textAlign:'left', color:colors.fontMain70}}>카테고리</Text>
+        </View>
+        <MarginVertical top={15}/>
+        <CategoryArea>
+          {categoryText.map((el,index) => {
+            return(
+              <View key={index}>
+              <CategoryEl text={el} selected={selected} setSelected={setSelected}/>
+              </View>
+            )
+          })}
+        </CategoryArea>
+        <MarginVertical top={50}/>
         <LinkedAppArea>
           <LinkedAppTitle>연동앱</LinkedAppTitle>
           <LinkedAppBody>
             <LinkedAppIcon>
               <LinkIcon size={24}/>
             </LinkedAppIcon>
-            <LinkedAppText>{`${todoInfo.linkApp}`}</LinkedAppText>
-            <DropDownArrowButton size={24}/>
+            <LinkedAppText>{`${selectedApp}`}</LinkedAppText>
+            <DropDownArrowButton size={24} handleArrowButton={() => setShowDropDown(prev => !prev)}/>
           </LinkedAppBody>
+          {showDropDown ? 
+          <DropDownContents list={myLinkedApp}/>
+          :
+          <></>
+          }
         </LinkedAppArea>
         <MarginVertical top={80}/>
-        <Button text={"저장하기"}/>
+        <Button text={"저장하기"} handleButton={() => navigation.goBack()}/>
         <MarginVertical top={24}/>
         <TrashButton>
           <TrashButtonImage source={trash_icon}/>
@@ -186,6 +232,15 @@ const TrashButton = styled.TouchableOpacity`
 const TrashButtonImage = styled.Image`
   width:24px;
   height:24px;
+`
+
+const CategoryArea = styled.View`
+  display:flex;
+  flex-direction:row;
+  flex-wrap:wrap;
+  justify-content:flex-start;
+  width:300px;
+  gap:8px;
 `
 
 
