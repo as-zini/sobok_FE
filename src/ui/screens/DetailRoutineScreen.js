@@ -128,7 +128,7 @@ const DetailRoutineScreen = ({route}) => {
           <View style={{flexDirection:'row', gap:5}}>
           {Object.keys(routineDetailInfo).length !== 0 ? routineDetailInfo.days.map((el, index) => {
             return(
-            <InterestText key={index}>{el === "MON" ? "월" : el === "TUE" ? "화" : el==="WED" ? "수" : el==="THU" ? "목" : el==="FRI" ? "금" : el ==="SAT" ? "토" : "일"}</InterestText>
+            <InterestText key={index}>{el === "MON" || el==="MONDAY" ? "월" : el === "TUE"|| el==="TUESDAY" ? "화" : el==="WED"|| el==="WEDNESDAY" ? "수" : el==="THU"|| el==="THURSDAY" ? "목" : el==="FRI"|| el==="FRIDAY" ? "금" : el ==="SAT"|| el==="SATURDAY" ? "토" : "일"}</InterestText>
             )
           }) : null}
           </View>
