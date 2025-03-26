@@ -22,7 +22,6 @@ export default BlurComponent
 
 const BlurComponentBody = styled.View`
   width:${size.width}px;
-  overflow:hidden;
   border-radius:16px;
   border:.5px solid rgba(204, 204, 204, 1);
 `
