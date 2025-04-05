@@ -27,6 +27,13 @@ import clicked_game_button from '../../../assets/clicked_game_button.png';
 import clicked_time_button from '../../../assets/clicked_time_button.png';
 import SimpleTodoEl from '../components/SimpleTodoEl'
 import { getTimeDifference, minToHour } from '../../util'
+import selected_step1_1 from '../../../assets/selected_step1_1.png';
+import selected_step1_2 from '../../../assets/selected_step1_2.png';
+import selected_step2_1 from '../../../assets/selected_step2_1.png';
+import selected_step2_2 from '../../../assets/selected_step2_2.png';
+import selected_step3_1 from '../../../assets/selected_step3_1.png';
+import selected_step3_2 from '../../../assets/selected_step3_2.png';
+import { useUserInfoStore } from '../../store/user'
 
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
@@ -34,16 +41,18 @@ const height = Dimensions.get('screen').height;
 const Test = () => {
   const [step, setStep] = useState(1);
   const [detailStep, setDetailStep] = useState(1);
+  const {userInfo, setUserInfo} = useUserInfoStore()
   const [isChoiceModalVisible, setIsChoiceModalVisible] = useState(false);
   const TestCategoryTextList = ["자투리 시간", "자투리 시간", "루틴 속성", ["취향", "세부사항"], ""]
-  const TestText = ["언제 자투리 시간이\n생기나요?", "자투리 시간이\n얼마나 생기나요?", ["지윤 님은 무엇을\n더 선호하시나요?","지윤 님은 어떤 계획을\n더 선호하시나요?","지윤 님은\n집중할 때 어때요?"], ["지윤 님의 관심은\n어디로 향하고 있나요?","지윤 님,\n원하는 것을 말씀해주세요!"]];
+  const TestText = ["언제 자투리 시간이\n생기나요?", "자투리 시간이\n얼마나 생기나요?", [`${userInfo.displayName} 님은 무엇을\n더 선호하시나요?`,`${userInfo.displayName} 님은 어떤 계획을\n더 선호하시나요?`,`${userInfo.displayName} 님은\n집중할 때 어때요?`], [`${userInfo.displayName} 님의 관심은\n어디로 향하고 있나요?`,`${userInfo.displayName} 님,\n원하는 것을 말씀해주세요!`]];
   const iconHeight = detailStep === 2 ? 63 : 52;
   const iconWidth = detailStep === 2 ? 40 : 54;
   const navigation = useNavigation();
   const [isClicked,setIsClicked] = useState(0);
   const [time, setTime] = useState({});
   const [timeList, setTimeList] = useState([])
-  const unChecked = step === 1 && isClicked === 0 ? true: step===2 && timeList?.length === 0 ? true : false;
+  const [step4Value, setStep4Value] = useState("");
+  const unChecked = step === 1 && isClicked === 0 ? true: step===2 && timeList?.length === 0 ? true : step === 4 && detailStep === 2 && (step4Value.length > 30) ? true : false
   const [step3Data, setStep3Data ] = useState({step1:"", step2:"", step3:""});
   const interestCategory = ["언어", "공부"]
   const interestList = [""]
@@ -51,7 +60,7 @@ const Test = () => {
   const step3Value2 = ["하나를 진득하게", "촘촘하고 체계적인", "쉽게 질려 금방 쉬기"];
   const [step3Clicked, setStep3Clicked] = useState(0);
   const [likeOption, setLikeOption] = useState([]);
-  const [step4Value, setStep4Value] = useState("");
+  
 
   
 
@@ -61,6 +70,7 @@ const Test = () => {
     if(step <= 4){
       if(step === 3 && detailStep < 3){
       setDetailStep((prev) => prev+1)
+      setStep3Clicked(0)
       }else if(step === 3 && detailStep === 3){
         setDetailStep(1);
         setStep(prev => prev+1);
@@ -92,6 +102,21 @@ const Test = () => {
   
   const DataForLang = [
       "회화", "문법","단어", "듣기", "영어", "중국어", "일본어"
+  ]
+  const DataForRead = [
+    "소설", "에세이","인문","역사","예술","경영" , "경제과학", "자기계발서"
+  ]
+  const DataForExercies = [
+    "수영", "헬스", "필라테스","요가", "줄넘기","골프","걷기","등산","자전거","배드민턴","축구","농구","족구","테니스"
+  ]
+  const DataForDevelop = [
+    "자격증","학업","재테크","취업/이직","뉴스, 신문 보기","독서","운동","교양 쌓기 (철학강좌, 인문학 등)","외국어 공부","업무 관련 툴 공부"
+  ]
+  const DataForHabit = [
+    "드로잉","베이킹","요리","공예","글쓰기","음악","사진","영상","댄스/무용","일기"
+  ]
+  const DataForEtc = [
+    "디자인","마케팅","메이크업/뷰티","데이터사이언스","코딩","교육","명상"
   ]
 
   const RenderItem = ({item}) => {
@@ -185,19 +210,26 @@ const Test = () => {
           : step === 3 ?
           <>
             <TestCheckEl onPress={() => {setStep3Data({...step3Data, [`step${detailStep}`]:step3Value1[detailStep-1]}); setStep3Clicked(1)}}>
-              <TestCheckText> {detailStep === 1 ? "여러가지를\n다양하게" : detailStep===2 ? "느슨하고\n여유로운" : "오래 오래\n집중하기"}</TestCheckText>
-              <TestCheckIcon source={detailStep === 1 ? diversity_icon : detailStep===2 ? circle_graphic : trapezoid_graphic} style={{width:60, height:60}}/>
+              <TestCheckText style={{color:step3Clicked === 1 ? "#fff" : "#777"}}> {detailStep === 1 ? "여러가지를\n다양하게" : detailStep===2 ? "느슨하고\n여유로운" : "오래 오래\n집중하기"}</TestCheckText>
+              {step3Clicked === 1 ?
+              <Image style={{width:'100%', height:'100%',zIndex:-1}} source={detailStep === 1 ? selected_step1_1: detailStep===2 ? selected_step2_1 : selected_step3_1}/>
+              :<TestCheckIcon source={detailStep === 1 ? diversity_icon : detailStep===2 ? circle_graphic : trapezoid_graphic} style={{width:60, height:60}}/>
+              } 
             </TestCheckEl>
             <TestCheckEl onPress={() => {setStep3Data({...step3Data, [`step${detailStep}`]:step3Value2[detailStep-1]}); setStep3Clicked(2)}}>
-              <TestCheckText>{detailStep === 1 ? "하나를\n진득하게" : detailStep===2 ? "촘촘하고\n체계적인" : "쉽게 질려\n금방 쉬기"} </TestCheckText>
-              <TestCheckIcon source={detailStep === 1 ? mono_icon : detailStep===2 ? top_graphic : plat_graphic} style={{width:iconWidth, height:iconHeight}}/>
+              
+              <TestCheckText style={{color:step3Clicked === 2 ? "#fff" : "#777"}}>{detailStep === 1 ? "하나를\n진득하게" : detailStep===2 ? "촘촘하고\n체계적인" : "쉽게 질려\n금방 쉬기"} </TestCheckText>
+              {step3Clicked === 2 ?
+              <Image style={{width:'100%', height:'100%',zIndex:-1}} source={detailStep===1 ? selected_step1_2 : detailStep === 2 ? selected_step2_2 : selected_step3_2}/>
+              :<TestCheckIcon source={detailStep === 1 ? mono_icon : detailStep===2 ? top_graphic : plat_graphic} style={{width:iconWidth, height:iconHeight}}/> 
+              }
             </TestCheckEl>
           </>
           :
           <></>
           }
           {step===4 && detailStep === 1 ?
-          <ScrollView>
+          <ScrollView showsVerticalScrollIndicator={false} style={{height:'40%'}}>
             <InterestCategory>언어</InterestCategory>
             <MarginVertical top={15}/>
             <InterestBody>
@@ -215,9 +247,104 @@ const Test = () => {
                   </InterestEl>
                 )
               })}
-              <InterestCategory></InterestCategory>
             </InterestBody>
-
+            <MarginVertical top={40}/>
+            <InterestCategory>독서</InterestCategory>
+            <MarginVertical top={15}/>
+            <InterestBody>
+              {DataForRead.map((el,index) => {
+                return(
+                  <InterestEl
+                    key={index}
+                    onPress={() => 
+                      setLikeOption(prev => 
+                        prev.includes(el) ? prev.filter(item => item !== el) : [...prev, el]
+                      )
+                    }
+                    style={{backgroundColor:likeOption.includes(el) ? colors.indigoBlue70:"rgba(255,255,255,.2)"}}>
+                    <InterestText>{el}</InterestText>
+                  </InterestEl>
+                )
+              })}
+            </InterestBody>
+            <MarginVertical top={40}/>
+            <InterestCategory>운동</InterestCategory>
+            <MarginVertical top={15}/>
+            <InterestBody>
+              {DataForExercies.map((el,index) => {
+                return(
+                  <InterestEl
+                    key={index}
+                    onPress={() => 
+                      setLikeOption(prev => 
+                        prev.includes(el) ? prev.filter(item => item !== el) : [...prev, el]
+                      )
+                    }
+                    style={{backgroundColor:likeOption.includes(el) ? colors.indigoBlue70:"rgba(255,255,255,.2)"}}>
+                    <InterestText>{el}</InterestText>
+                  </InterestEl>
+                )
+              })}
+            </InterestBody>
+            <MarginVertical top={40}/>
+            <InterestCategory>자기계발</InterestCategory>
+            <MarginVertical top={15}/>
+            <InterestBody>
+              {DataForDevelop.map((el,index) => {
+                return(
+                  <InterestEl
+                    key={index}
+                    onPress={() => 
+                      setLikeOption(prev => 
+                        prev.includes(el) ? prev.filter(item => item !== el) : [...prev, el]
+                      )
+                    }
+                    style={{backgroundColor:likeOption.includes(el) ? colors.indigoBlue70:"rgba(255,255,255,.2)"}}>
+                    <InterestText>{el}</InterestText>
+                  </InterestEl>
+                )
+              })}
+            </InterestBody>
+            <MarginVertical top={40}/>
+            <InterestCategory>취미</InterestCategory>
+            <MarginVertical top={15}/>
+            <InterestBody>
+              {DataForHabit.map((el,index) => {
+                return(
+                  <InterestEl
+                    key={index}
+                    onPress={() => 
+                      setLikeOption(prev => 
+                        prev.includes(el) ? prev.filter(item => item !== el) : [...prev, el]
+                      )
+                    }
+                    style={{backgroundColor:likeOption.includes(el) ? colors.indigoBlue70:"rgba(255,255,255,.2)"}}>
+                    <InterestText>{el}</InterestText>
+                  </InterestEl>
+                )
+              })}
+            </InterestBody>
+            <MarginVertical top={40}/>
+            <InterestCategory>기타</InterestCategory>
+            <MarginVertical top={15}/>
+            <InterestBody>
+              {DataForEtc.map((el,index) => {
+                return(
+                  <InterestEl
+                    key={index}
+                    onPress={() => 
+                      setLikeOption(prev => 
+                        prev.includes(el) ? prev.filter(item => item !== el) : [...prev, el]
+                      )
+                    }
+                    style={{backgroundColor:likeOption.includes(el) ? colors.indigoBlue70:"rgba(255,255,255,.2)"}}>
+                    <InterestText>{el}</InterestText>
+                  </InterestEl>
+                )
+              })}
+            
+            </InterestBody>
+            <MarginVertical top={200}/>
           </ScrollView>
           : step===4 && detailStep === 2 ?
           <View style={{display:'flex', gap:10}}>
@@ -226,9 +353,10 @@ const Test = () => {
               value={step4Value}
               onChange={(e) => setStep4Value(e.nativeEvent.text)}
               placeholderTextColor="#fff"
+              style={{color:step4Value.length > 30 ? "#FF4848" : colors.fontMain}}
             />
             <View style={{width:294, height:1, backgroundColor:"#fff"}}></View>
-            <Text style={{color:"#fff", fontWeight:500, fontSize:14}}>{`${step4Value.length}/20`}</Text>
+            <Text style={{color:step4Value.length > 30 ? "#FF4848" : "#fff", fontWeight:500, fontSize:14}}>{`${step4Value.length}/30`}</Text>
           </View>
           :
           <></>
@@ -346,8 +474,7 @@ const InterestBody = styled.View`
 `
 
 const InterestEl = styled.TouchableOpacity`
-  width:64px;
-  height:36px;
+  padding: 10px;
   backgroundColor:rgba(255,255,255,.2);
   borderRadius:24px;
   justifyContent:center;

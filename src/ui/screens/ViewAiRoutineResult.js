@@ -59,9 +59,6 @@ const ViewAiRoutineResult = ({route}) => {
     <SafeAreaView>
       <ViewAiRoutineResultBody>
         <ViewAiRoutineResultHeader>
-          <View style={{position:'absolute', left:0}}>
-          <BackArrowButton/>
-          </View>
           <Text style={{fontWeight:600, fontSize:18, color:colors.darkGray}}>생성된 루틴</Text>
         </ViewAiRoutineResultHeader>
         <MarginVertical top={44}/>
@@ -72,9 +69,10 @@ const ViewAiRoutineResult = ({route}) => {
           <ViewAiRoutineResultText>적금 연결하기</ViewAiRoutineResultText>
         </TouchableOpacity>
         <MarginVertical top={40}/>
-        <TouchableOpacity onPress={() => setIsRoutineRepeatModalVisible(true)}>
+        {/* <TouchableOpacity onPress={() => setIsRoutineRepeatModalVisible(true)}> */}
+        <View>
           <WeekCalandar selectedDate={selectedDate} setSelectedDate={setSelectedDate} isDuplication={true} version={"day"}/>
-        </TouchableOpacity>
+        </View>
         <MarginVertical top={47}/>
         <View style={{width:310}}>
           <TodoCountText>{`총 ${aiRoutineInfo.todos.length}개의 할 일`}</TodoCountText>

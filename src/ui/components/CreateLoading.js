@@ -8,11 +8,15 @@ import snowflak_icon from '../../../assets/snowflak_icon.png';
 import { colors } from '../styles/colors';
 import Steps from './Step';
 import MarginVertical from './MarginVertical';
+import { useUserInfoStore } from '../../store/user';
+import { size } from '../styles/size';
 
 const width=Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
 
 const CreateLoading = ({categoryText, marginTop}) => {
+  const {userInfo, setUserInfo} = useUserInfoStore();
+
   return (
     <SafeAreaView>
       <CreateLoadingBody>
@@ -22,7 +26,7 @@ const CreateLoading = ({categoryText, marginTop}) => {
         <LoadingSnowFlackIcon source={snowflak_icon}/>
         <PercentageText>14%</PercentageText>
         <LoadingTitle>{`${categoryText}\n만드는중`}</LoadingTitle>
-        <LoadingText>{"조금만 기다리면\n지윤 님만의 맞춤 루틴 완성!"}</LoadingText>
+        <LoadingText>{`조금만 기다리면\n${userInfo.displayName} 님만의 맞춤 루틴 완성!`}</LoadingText>
       </CreateLoadingBody>
       <CreateLoadingBg source={create_loading_bg}/>
     </SafeAreaView>
@@ -35,11 +39,12 @@ const CreateLoadingBody = styled.View`
   display:flex;
   justify-content:center;
   align-items:center;
+  width:${size.width}px;
 `
 
 const CreateLoadingBg = styled.Image`
   position:absolute;
-  top:-50;
+  top:0;
   width:${width}px;
   height:${height}px;
   z-index:-1;
