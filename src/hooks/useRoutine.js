@@ -139,6 +139,7 @@ export const useRoutine = () => {
       navigation.goBack()
     } catch (error) {
       console.log(error)
+      console.log(id)
     }
   }
 

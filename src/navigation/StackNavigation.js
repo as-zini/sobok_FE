@@ -36,6 +36,7 @@ import ViewSaveTime from '../ui/screens/ViewSaveTime';
 import AddSaveTime from '../ui/screens/AddSaveTime';
 import axios from 'axios';
 import DetailSnowCard from '../ui/screens/DetailSnowCard';
+import TicketPurchase from '../ui/screens/TicketPurchase';
 
 
 
@@ -112,6 +113,7 @@ const StackNavigation = () => {
       <Stack.Screen name="ViewSaveTime" component={ViewSaveTime}/>
       <Stack.Screen name="AddSaveTime" component={AddSaveTime}/>
       <Stack.Screen name="DetailSnowCard" component={DetailSnowCard}/>
+      <Stack.Screen name="TicketPurchase" component={TicketPurchase}/>
     </Stack.Navigator>
   )
 }

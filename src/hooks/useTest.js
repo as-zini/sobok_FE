@@ -30,8 +30,14 @@ export const useTest = () => {
       })
       console.log(response.data)
       setAiRoutineInfo(response.data)
-      navigation.navigate("ViewAiRoutine",{
-        aiRoutineInfo:response.data
+      
+      navigation.reset({
+        routes:[{
+          name:'ViewAiRoutine',
+          params:{
+            aiRoutineInfo:response.data
+          }
+        }]
       })
     } catch (error) {
       console.log(error)

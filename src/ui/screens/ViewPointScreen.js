@@ -25,6 +25,7 @@ import dayjs from 'dayjs';
 import { useUserInfoStore } from '../../store/user';
 import { usePoint } from '../../hooks/usePoint';
 import { useGetInfo } from '../../hooks/useGetInfo';
+import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const ViewPointScreen = () => {
   const navigation = useNavigation();
@@ -85,7 +86,9 @@ const ViewPointScreen = () => {
 
   const BlurChild = () => {
     return(
+      
       <View style={{paddingHorizontal:30, paddingVertical:40}}>
+        <ScrollView>
         <View style={{display:'flex', flexDirection:'row', gap:4}}>
           <SettingPeriodText>{`${selectedRange.startDate} - ${selectedRange.endDate}`}</SettingPeriodText>
           <DropDownArrowButton size={16} handleArrowButton={() => setIsCalandarModalVisible(true)}/>
@@ -101,14 +104,18 @@ const ViewPointScreen = () => {
           </View>
           )
         })}
-        
-      </View>
+        </ScrollView>
+        </View>
+      
+      
     )
   }
+
+  const insets = useSafeAreaInsets();
   
   return (
-    <SafeAreaView>
-      <ScrollView>
+    <SafeAreaProvider style={{paddingTop:insets.top}}>
+      <ScrollView showsVerticalScrollIndicator={false}>
       <ViewInstallmentSavingBody>
         <MarginVertical top={20}/>
         <ViewInstallmentSavingHeader>
@@ -130,9 +137,9 @@ const ViewPointScreen = () => {
           <MarginVertical top={5}/>
           <View style={{display:'flex', flexDirection:'row', alignItems:'center', width:310}}>
             <TotalSavingTitle>{`${userInfo.point}P`}</TotalSavingTitle>
-            {userInfo.isPremium ? <></>
-            :<SmallButton text={"사용하기"} width={100} height={40} bgColor={colors.indigoBlue50} handleButton={() => setIsSubscribeModalVisible(true)} fontColor={"#fff"}/>
-            }
+            
+            <SmallButton text={"사용하기"} width={100} height={40} bgColor={colors.indigoBlue50} fontColor={"#fff"} handleButton={() => navigation.navigate('TicketPurchase')}/>
+            
           </View>
         </TotalSavingArea>
         <MarginVertical top={56}/>
@@ -151,7 +158,7 @@ const ViewPointScreen = () => {
       <PurchaseModal isPurchaseModalVisible={isPurchaseModalVisible} setIsPurchaseModalVisible={setIsPurchaseModalVisible} version={"Purchase"}/>
       <SubscribeModal isSubscribeModalVisible={isSubscribeModalVisible} setIsSubscribeModalVisible={setIsSubscribeModalVisible} setIsPurchaseModalVisible={setIsPurchaseModalVisible} userPremium={userPremium}/>
       <ViewInstallmentSavingBg source={installment_saving_bg}/>
-    </SafeAreaView>
+    </SafeAreaProvider>
   )
 }
 

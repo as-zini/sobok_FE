@@ -7,12 +7,14 @@ import test_start_bg from '../../../assets/test_start_bg.png';
 import test_start_icon from '../../../assets/save_icon.png';
 import { colors } from '../styles/colors';
 import { useNavigation } from '@react-navigation/native';
+import { useUserInfoStore } from '../../store/user';
 
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
 
 const TestStartScreen = () => {
   const navigation = useNavigation();
+  const {userInfo, setUserInfo} = useUserInfoStore();
 
   return (
     <SafeAreaView>
@@ -25,7 +27,7 @@ const TestStartScreen = () => {
           맞춤 검사{"\n"}시작하기
         </TestStartTitle>
         <TestStartText>
-          지윤 님에게 딱 맞는{"\n"}AI추천 루틴을 만들기 위해{"\n"}다양한 질문을 드릴게요!
+          {`${userInfo.displayName} 님에게 딱 맞는\nAI추천 루틴을 만들기 위해\n다양한 질문을 드릴게요!`}
         </TestStartText>
         <View style={{position:'absolute', bottom:-400}}>
           <Button text={"맞춤 검사 시작하기"} handleButton={() => {navigation.navigate('Test')}}/>
