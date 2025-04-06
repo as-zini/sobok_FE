@@ -39,18 +39,11 @@ const SavingAlerteModal = ({isPauseModalVisible, setIsPauseModalVisible, }) => {
           text2={"기존 루틴 연결하기"} 
           handleLeftButton={() => {
             setIsPauseModalVisible(false);
-            navigation.reset({
-              routes:[{
-                name:'StartAddAsset',
-                params:{
-                  version:"Routine"
-                }
-              }]
-            })
+            navigation.navigate('StartAddAsset',{version:"Routine"})
           }}
           handleRightButton={() => {
             setIsPauseModalVisible(false);
-            
+            navigation.navigate('ConnectRoutine')
           }}
         />
         <MarginVertical top={36}/>

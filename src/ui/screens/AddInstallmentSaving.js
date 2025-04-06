@@ -23,6 +23,7 @@ import search_icon from '../../../assets/search_icon.png';
 import AssetEl from '../components/AssetEl';
 import { useRoutine } from '../../hooks/useRoutine';
 import { minToHour } from '../../util';
+import ConnectRoutine from '../components/ConnectRoutine';
 
 const AddFreeRoutine = () => {
   const [step, setStep] = useState(1);
@@ -54,7 +55,7 @@ const AddFreeRoutine = () => {
   }, [newSavingData])
   
   useEffect(() => {
-    getRoutineByList(setRoutineInfo, setIsComplete);
+    
   },[])
 
   return (
@@ -105,59 +106,7 @@ const AddFreeRoutine = () => {
               <MarginVertical top={180}/>
             </View>
             : step === 3 ?
-            <>
-              <MarginVertical top={12}/>
-              <RoutineCategoryText style={{lineHeight:24}}>루틴으로 얻은 시간이{"\n"}자동으로 적금에 쌓여요!</RoutineCategoryText>
-              <MarginVertical top={44}/>
-              <AnswerInputArea>
-                <AnswerInput
-                  placeholder="루틴을 검색해보세요"
-                  placeholderTextColor="rgba(255,255,255,.8)"
-                />
-                <Image source={search_icon} style={{width:16, height:16, position:'absolute', right:15}}/>
-              </AnswerInputArea>
-              <BorderLine/>
-              <MarginVertical top={55}/>
-              <ScrollView>
-                <View>
-                  <Text style={{fontSize:18, fontWeight:600, color:"#fff"}}>{`총 ${routineInfo.filter((el) => el.accountTitle.length === 0).length}개의 루틴`}</Text>
-                  <MarginVertical top={40}/>
-                </View>
-                {routineInfo.filter((el) => el.accountTitle.length === 0).map((el,index) => {
-                  return(
-                    <TouchableOpacity key={index} onPress={() => {
-                      setPickedRoutines(prev => [...prev, el])
-                      }}>
-                      <AssetEl item={[el.title,"",minToHour(el.duration),""]} index={index} isLink={false} category={"Save"} isTouchable={false}/>
-                      <MarginVertical top={50}/>
-                    </TouchableOpacity>
-                  )
-                })}
-                {pickedRoutines.length > 0 ?
-                  <View>
-                    <BorderLine/>
-                    <MarginVertical top={30}/>
-                    <Text style={{fontSize:18, fontWeight:600, color:"#fff"}}>선택된 루틴</Text>
-                    <MarginVertical top={40}/>
-                  </View>
-                  :
-                  <></>
-                }
-                {pickedRoutines.map((el,index) => {
-                  return(
-                    <TouchableOpacity key={index} onPress={() => setPickedRoutines(pickedRoutines.filter((j) => el !== j))}>
-                      <AssetEl item={[el.title,"",minToHour(el.duration),""]} index={index} isLink={false} category={"Save"} isTouchable={false}/>
-                      <MarginVertical top={50}/>
-                    </TouchableOpacity>
-                  )
-                })}
-              </ScrollView>
-              <MarginVertical top={70}/>
-              <TouchableOpacity style={{width:294, display:'flex', justifyContent:'center', alignItems:'center'}} onPress={() => setStep(prev => prev + 1)}>
-                <Text style={{fontWeight:500, fontSize:14, color:colors.gray70}}>나중에 설정하기</Text>
-              </TouchableOpacity>
-              <MarginVertical top={10}/>
-            </>
+            <ConnectRoutine pickedRoutines={pickedRoutines} setPickedRoutines={setPickedRoutines}/>
             :
             <View style={{display:'flex', justifyContent:'center', alignItems:'center', width:294}}>
               <MarginVertical top={70}/>

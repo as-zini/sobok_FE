@@ -143,6 +143,30 @@ export const useRoutine = () => {
     }
   }
 
+  const handleAddAiRoutine = async(newRoutineData) => {
+    try {
+      const token = await AsyncStorage.getItem("access_token")
+
+      const response = await baseUrl.post("/routine/create/ai",{
+        accountId:newRoutineData.id,
+        title: newRoutineData.title,
+        startTime: newRoutineData.startTime,
+        endTime: newRoutineData.endTime,
+        days: newRoutineData.days,
+        todos:newRoutineData.todos
+      },{
+        headers:{
+          Authorization:`Bearer ${token}`
+        }
+      })
+      console.log(response.data);
+    } catch (error) {
+      console.log(error)
+      console.log(newRoutineData)
+      console.log(newRoutineData.todos)
+    }
+  }
+
   return {
     getRoutineByList,
     getRoutineByCalandar,
@@ -150,6 +174,7 @@ export const useRoutine = () => {
     handleRoutineSuspend,
     handleAddRoutine,
     getRoutineCount,
-    handleRoutineDelete
+    handleRoutineDelete,
+    handleAddAiRoutine
   }
 }
