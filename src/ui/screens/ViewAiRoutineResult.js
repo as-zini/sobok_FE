@@ -34,7 +34,7 @@ const ViewAiRoutineResult = ({route}) => {
     // console.log(aiRoutineInfo.todos.reduce((sum,el) => sum + Number(el.duration),0))
     console.log("route",aiRoutineInfo)
     console.log("picked",pickedSaving)
-  }, [])
+  }, [pickedSaving])
 
 
   const handleAddButton = () => {
@@ -66,7 +66,7 @@ const ViewAiRoutineResult = ({route}) => {
         <ViewAiRoutineResultTitle>{`${aiRoutineInfo.title}\n${minToHour(aiRoutineInfo.todos.reduce((sum, el) => sum + Number(el.duration), 0))}`}</ViewAiRoutineResultTitle>
         <TouchableOpacity style={{display:'flex', flexDirection:'row', gap:4}} onPress={() => setIsAssetLinkModalVisible(true)}>
           <LinkIcon size={16}/>
-          <ViewAiRoutineResultText>적금 연결하기</ViewAiRoutineResultText>
+          <ViewAiRoutineResultText>{pickedSaving.length === 0 ? `적금 연결하기` : pickedSaving[0].title}</ViewAiRoutineResultText>
         </TouchableOpacity>
         <MarginVertical top={40}/>
         {/* <TouchableOpacity onPress={() => setIsRoutineRepeatModalVisible(true)}> */}
