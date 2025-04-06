@@ -29,7 +29,7 @@ const AiRoutineCompleteScreen = ({route}) => {
   return (
     <>
     {!isComplete
-      ? <CreateLoading categoryText={"AI 루틴"}/>
+      ? <CreateLoading categoryText={"AI 루틴"} isComplete={isComplete}/>
       :
       <SafeAreaView>
         <AiRoutineCompleteBody>
