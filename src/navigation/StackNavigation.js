@@ -37,6 +37,7 @@ import AddSaveTime from '../ui/screens/AddSaveTime';
 import axios from 'axios';
 import DetailSnowCard from '../ui/screens/DetailSnowCard';
 import TicketPurchase from '../ui/screens/TicketPurchase';
+import ConnectRoutineInSaving from '../ui/screens/ConnectRoutineInSaving';
 
 
 
@@ -114,6 +115,7 @@ const StackNavigation = () => {
       <Stack.Screen name="AddSaveTime" component={AddSaveTime}/>
       <Stack.Screen name="DetailSnowCard" component={DetailSnowCard}/>
       <Stack.Screen name="TicketPurchase" component={TicketPurchase}/>
+      <Stack.Screen name="ConnectRoutine" component={ConnectRoutineInSaving}/>
     </Stack.Navigator>
   )
 }

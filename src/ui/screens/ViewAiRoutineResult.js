@@ -28,7 +28,7 @@ const ViewAiRoutineResult = ({route}) => {
   const [selectedDate, setSelectedDate] = useState([]);
   const [invalidSavingList, setInvalidSavingList] = useState([]);
   const [pickedSaving, setPickedSaving] = useState([]);
-  const {handleAddRoutine} = useRoutine();
+  const {handleAddAiRoutine} = useRoutine();
 
   useEffect(() => {
     // console.log(aiRoutineInfo.todos.reduce((sum,el) => sum + Number(el.duration),0))
@@ -38,7 +38,7 @@ const ViewAiRoutineResult = ({route}) => {
 
 
   const handleAddButton = () => {
-    handleAddRoutine({
+    handleAddAiRoutine({
       id:pickedSaving[0].id,
       title:aiRoutineInfo.title,
       startTime:aiRoutineInfo.todos[0].start_time,
@@ -48,9 +48,9 @@ const ViewAiRoutineResult = ({route}) => {
         title: el.title,
         startTime: el.start_time,
         endTime: el.end_time,
-        linkApp: "유튜브"  // 기본값 설정
+        linkApp: ""  // 기본값 설정
       }))
-    }, true);
+    });
     navigation.navigate("AiRoutineComplete",{isComplete:true})
   }
   
