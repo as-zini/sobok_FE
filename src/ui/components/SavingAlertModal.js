@@ -15,7 +15,7 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { useRoutine } from '../../hooks/useRoutine';
 import { useNavigation } from '@react-navigation/native';
 
-const SavingAlerteModal = ({isPauseModalVisible, setIsPauseModalVisible, }) => {
+const SavingAlerteModal = ({isPauseModalVisible, setIsPauseModalVisible, id}) => {
   const navigation = useNavigation();
 
   return (
@@ -43,7 +43,7 @@ const SavingAlerteModal = ({isPauseModalVisible, setIsPauseModalVisible, }) => {
           }}
           handleRightButton={() => {
             setIsPauseModalVisible(false);
-            navigation.navigate('ConnectRoutine')
+            navigation.navigate('ConnectRoutine',{id:id})
           }}
         />
         <MarginVertical top={36}/>

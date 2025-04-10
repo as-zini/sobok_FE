@@ -33,6 +33,7 @@ const DetailRoutineScreen = ({route}) => {
   const {handleRoutineDelete} = useRoutine();
   const [routineDetailInfo, setRoutineDetailInfo] = useState({});
   const [isComplete, setIsComplete] = useState(false);
+  const [isCompleteModalVisible, setIsCompleteModalVisible] = useState(false);
 
   const getRoutineDetail = async(id, setRoutineDetailInfo, setIsComplete) => {
     try {
@@ -147,6 +148,7 @@ const DetailRoutineScreen = ({route}) => {
         
         <BlurComponent child={BlurChild}/>
         <RoutinePauseModal isPauseModalVisible={isPauseModalVisible} setIsPauseModalVisible={setIsPauseModalVisible} version={"Routine"} id={id} setRoutineDetailInfo={setRoutineDetailInfo} setIsComplete={setIsComplete} isPause={routineDetailInfo.isSuspended}/>
+        <RoutinePauseModal isPauseModalVisible={isCompleteModalVisible} setIsPauseModalVisible={setIsCompleteModalVisible} version={"Complete"} id={id} setRoutineDetailInfo={setRoutineDetailInfo} setIsComplete={setIsComplete} isPause={routineDetailInfo.isSuspended}/>
       </DetailInstallmentSavingBody>
       
       </ScrollView>
@@ -155,7 +157,7 @@ const DetailRoutineScreen = ({route}) => {
       
     </SafeAreaView>
     <RoutineCompleteBar>
-      <RoutineCompleteBg />
+      <RoutineCompleteBg onPress={() => setIsCompleteModalVisible(true)}/>
       <CompleteIcon source={snow_flake_icon_white}/>
       <CompleteBarText>완료하기</CompleteBarText>
   </RoutineCompleteBar>
