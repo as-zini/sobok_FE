@@ -8,7 +8,7 @@ export const useSignup = () => {
 
   const handleSignup = async(values, setStep) => {
     try {
-      const response = await baseUrl.post("https://sobok-app.com/user/create", {
+      const response = await baseUrl.post("/user/create", {
           "username" : values.username,
           "password" : values.password,
           "name" : values.name,
@@ -26,8 +26,8 @@ export const useSignup = () => {
 
   const checkAvailability = async(value, type) => {
     try {
-      const response = await baseUrl.get(type !== "display-name" ? `https://sobok-app.com/user/is-duplicated/${type}?${type}=${value}` : 
-      `https://sobok-app.com/user/is-duplicated/${type}?displayName=${value}`)
+      const response = await baseUrl.get(type !== "display-name" ? `/user/is-duplicated/${type}?${type}=${value}` : 
+      `/user/is-duplicated/${type}?displayName=${value}`)
       // console.log(response.data)
       return response.data
     } catch (error) {

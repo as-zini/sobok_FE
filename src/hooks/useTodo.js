@@ -13,7 +13,7 @@ export const useTodo = () => {
   const getTodayTodo = async(setTodayTodo,setIsReady) => {
     try {
       const token = await AsyncStorage.getItem("access_token")
-      const response = await axios.get("https://sobok-app.com/todo/today",{
+      const response = await baseUrl.get("/todo/today",{
         headers:{
           Authorization:`Bearer ${token}`
         }

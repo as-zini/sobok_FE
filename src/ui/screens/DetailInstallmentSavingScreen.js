@@ -25,11 +25,13 @@ import dayjs from 'dayjs';
 import { useInstallmentSaving } from '../../hooks/useInstallmentSaving';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import SavingAlerteModal from '../components/SavingAlertModal';
+import Ionicons from '@expo/vector-icons/Ionicons';
+
 
 const DetailInstallmentSavingScreen = ({route}) => {
   const [isCalandarModalVisible, setIsCalandarModalVisible] = useState(false);
   const {id} = route.params;
-  const {getSavingLog, getSavingDetail} = useInstallmentSaving();
+  const {getSavingLog, getSavingDetail, handleDeleteSaving} = useInstallmentSaving();
   const [savingInfo, setSavingInfo] = useState([]);
   const navigation = useNavigation();
   const [selectedRange, setSelectedRange] = useState({startDate:dayjs().startOf('month').format("YYYY-MM-DD"), endDate:dayjs().endOf('month').format("YYYY-MM-DD")});
@@ -100,12 +102,16 @@ const DetailInstallmentSavingScreen = ({route}) => {
       <View>
       <ScrollView>
       <DetailInstallmentSavingBody>
-        <MarginVertical top={20}/>
         <DetailInstallmentSavingHeader>
-          <View style={{position:'absolute', left:20}}>
+          <View >
             <BackArrowButton/>
           </View>
           <Text style={{fontWeight:600, fontSize:18, color:colors.fontSub}}>적금</Text>
+          <TouchableOpacity>
+            <TouchableOpacity onPress={() => handleDeleteSaving(id)}>
+              <Ionicons name="trash-outline" size={24} color={colors.fontMain80} />
+            </TouchableOpacity>
+          </TouchableOpacity>
         </DetailInstallmentSavingHeader>
         <MarginVertical top={47}/>
         <SavingIntroArea>
@@ -178,9 +184,11 @@ const DetailInstallmentSavingBg = styled.Image`
 const DetailInstallmentSavingHeader = styled.View`
   display:flex;
   flex-direction:row;
-  justify-content:center;
+  justify-content:space-between;
   align-items:center;
   width:${size.width};
+  padding: 0 30px;
+  height:50px;
 `
 
 const SavingIntroArea = styled.View`
