@@ -58,7 +58,7 @@ const DetailInstallmentSavingScreen = ({route}) => {
 
   const BlurChild = () => {
     return(
-      <ScrollView>
+      <>
       <View style={{paddingHorizontal:30, paddingVertical:40}}>
         <View style={{display:'flex', flexDirection:'row', gap:4}}>
           <SettingPeriodText>{`${selectedRange.startDate?.slice(5,7)}월 ${selectedRange.startDate?.slice(8,10)}일 - ${selectedRange.endDate?.slice(5,7)}월 ${selectedRange.endDate?.slice(8,10)}일`}</SettingPeriodText>
@@ -90,8 +90,7 @@ const DetailInstallmentSavingScreen = ({route}) => {
           )
         })}
        </View>
-      <MarginVertical top={500}/>
-      </ScrollView>
+      </>
     )
   }
 
@@ -100,7 +99,7 @@ const DetailInstallmentSavingScreen = ({route}) => {
   return (
     <SafeAreaProvider style={{paddingTop:insets.top}}>
       <View>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
       <DetailInstallmentSavingBody>
         <DetailInstallmentSavingHeader>
           <View >
@@ -157,8 +156,10 @@ const DetailInstallmentSavingScreen = ({route}) => {
         setSelectedRange={setSelectedRange} 
         id={id}
         setSavingLog={setSavingLog}/>
-      </ScrollView>
+      
       <SavingAlerteModal isPauseModalVisible={isAlertModal} setIsPauseModalVisible={setIsAlertModal} id={id}/>
+      
+      </ScrollView>
       </View>
       <DetailInstallmentSavingBg source={installment_saving_bg}/>
     </SafeAreaProvider>
@@ -171,7 +172,6 @@ const DetailInstallmentSavingBody = styled.View`
   display:flex;
   align-items:center;
   width:${size.width}px;
-  height:1000px;
 `
 
 const DetailInstallmentSavingBg = styled.Image`
