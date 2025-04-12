@@ -123,8 +123,7 @@ const ViewPointScreen = () => {
       </ViewInstallmentSavingBody>
       </ScrollView>
       <CalandarModal isCalandarModalVisible={isCalandarModalVisible} setIsCalandarModalVisible={setIsCalandarModalVisible} selectedRange={selectedRange} setSelectedRange={setSelectedRange} version={"Point"} setPointLog={setPointLog}/>
-      <PurchaseModal isPurchaseModalVisible={isPurchaseModalVisible} setIsPurchaseModalVisible={setIsPurchaseModalVisible} version={"Purchase"}/>
-      <SubscribeModal isSubscribeModalVisible={isSubscribeModalVisible} setIsSubscribeModalVisible={setIsSubscribeModalVisible} setIsPurchaseModalVisible={setIsPurchaseModalVisible} userPremium={userPremium}/>
+      
       <ViewInstallmentSavingBg source={installment_saving_bg}/>
     </SafeAreaProvider>
   )
