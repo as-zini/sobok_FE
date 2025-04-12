@@ -9,7 +9,7 @@ import search_icon from '../../../assets/search_icon.png';
 import { minToHour } from '../../util'
 
 
-const ConnectRoutine = ({pickedRoutines, setPickedRoutines}) => {
+const ConnectRoutine = ({pickedRoutines, setPickedRoutines, setStep}) => {
   const {getRoutineByList} = useRoutine();
   const [routineInfo, setRoutineInfo] = useState([])
   const [isComplete, setIsComplete] = useState(false);
@@ -41,7 +41,7 @@ const ConnectRoutine = ({pickedRoutines, setPickedRoutines}) => {
               </AnswerInputArea>
               <BorderLine/>
               <MarginVertical top={55}/>
-              <ScrollView showsVerticalScrollIndicator={false}>
+              <View showsVerticalScrollIndicator={false}>
                 <View>
                   <Text style={{fontSize:18, fontWeight:600, color:"#fff"}}>{`총 ${searchValue.length === 0 ? routineInfo.filter((el) => el.accountTitle.length === 0).length : routineInfo.filter((el) => el.title.includes(searchValue)).length}개의 루틴`}</Text>
                   <MarginVertical top={40}/>
@@ -89,7 +89,7 @@ const ConnectRoutine = ({pickedRoutines, setPickedRoutines}) => {
                     </TouchableOpacity>
                   )
                 })}
-              </ScrollView>
+              </View>
               <TouchableOpacity style={{width:294, display:'flex', justifyContent:'center', alignItems:'center'}} onPress={() => setStep(prev => prev + 1)}>
                 <Text style={{fontWeight:500, fontSize:14, color:colors.gray70}}>나중에 설정하기</Text>
               </TouchableOpacity>
@@ -106,8 +106,7 @@ const Body = styled.View`
   display:flex;
   justify-content:center;
   align-items:center;
-  padding:0 30px;
-  height:83%;
+  flex:1;
 `
 const Header = styled.View`
   width:100%;

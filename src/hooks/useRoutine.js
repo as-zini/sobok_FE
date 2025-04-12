@@ -131,8 +131,7 @@ export const useRoutine = () => {
     try {
       const token = await AsyncStorage.getItem("access_token")
 
-      const response = await baseUrl.delete(`/routine/delete`,{
-        params: { routineId:id }, // 쿼리 파라미터
+      const response = await baseUrl.delete(`/routine/delete?routineId=${id}`,{ // 쿼리 파라미터
         headers: { "Authorization": `Bearer ${token}`}
       })
       console.log(response.data)

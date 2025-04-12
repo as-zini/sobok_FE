@@ -31,7 +31,7 @@ const AddFreeRoutine = () => {
   const questionText = ["적금의 이름을\n지어주세요!","새로 만들 적금을\n소개해주세요!","적금에 루틴을\n연결시켜 볼까요?","얼마동안, 얼마만큼의\n시간을 모을까요?" ]
   const navigation = useNavigation();
   const data = [["영어 강의 1강", "스픽", "1H 30M", "06:00 - 07:00"], ["영어 단어 10개 암기", "말해보카", "1H 00M", "07:30 - -8:30"]]
-  const [newSavingData, setNewSavingData] = useState({title:"",target:"", isPublic:true, time:0, duration:0});
+  const [newSavingData, setNewSavingData] = useState({title:"",target:"", isPublic:true, time:0, duration:0, routineIds:[]});
   const [routineInfo, setRoutineInfo] = useState([]);
   const [isComplete, setIsComplete] = useState(false);
   const [pickedRoutines, setPickedRoutines] = useState([]);
@@ -43,10 +43,15 @@ const AddFreeRoutine = () => {
   const handleNextStep = () => {
     if(step<4){
       setStep(prev => prev+1)
-    } else {
+    } 
+    else {
       navigation.navigate("CompleteAddSaving",{
-        newSavingData:newSavingData
+        newSavingData:newSavingData,
+        routineTitle:`${pickedRoutines[0].title}외 ${pickedRoutines.length-1}개 루틴`
       })
+    }
+    if(step===3){
+      setNewSavingData(prev => ({...prev, routineIds:pickedRoutines.map((el) => el.id)}))
     }
   }
 
@@ -55,12 +60,12 @@ const AddFreeRoutine = () => {
   }, [newSavingData])
   
   useEffect(() => {
-    
-  },[])
+    console.log(pickedRoutines)
+  },[pickedRoutines])
 
   return (
     <SafeAreaView>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{flexGrow:1}}>
         <AddFreeRoutineBody>
           <AddFreeRoutineHeader>
             <BackArrowButton/>
@@ -71,7 +76,7 @@ const AddFreeRoutine = () => {
             <StepNumber step={step}/>
             <MarginVertical top={20}/>
             <RoutineCategoryText>{categoryText[step-1]}</RoutineCategoryText>
-            <RoutineQuestionText>{questionText[step-1]}</RoutineQuestionText>
+            {step===3 ? <></>:<RoutineQuestionText>{questionText[step-1]}</RoutineQuestionText>}
             
             {step===1 ?
               <>
@@ -106,8 +111,11 @@ const AddFreeRoutine = () => {
               <MarginVertical top={180}/>
             </View>
             : step === 3 ?
-            <ConnectRoutine pickedRoutines={pickedRoutines} setPickedRoutines={setPickedRoutines}/>
+            <View style={{ flex: 1, width: '100%' }}>
+            <ConnectRoutine pickedRoutines={pickedRoutines} setPickedRoutines={setPickedRoutines} setStep={setStep}/>
+            </View>
             :
+            
             <View style={{display:'flex', justifyContent:'center', alignItems:'center', width:294}}>
               <MarginVertical top={70}/>
               
@@ -124,11 +132,13 @@ const AddFreeRoutine = () => {
               <MarginVertical top={56}/>
               <Text style={{fontSize:14, fontWeight:500, color:colors.darkGray, textAlign:'center'}}>{`멋져요!\n${newSavingData.duration}개월 뒤에 이자와 함께 찾아올게요!`}</Text>
               <MarginVertical top={8}/>
-            </View>} 
+            </View>}
+            
           </InputArea>
-          <Button text={"다음 단계로"} handleButton={handleNextStep}/>
+          <Button text={"다음 단계로"} handleButton={handleNextStep} unChecked={step===1&&newSavingData.title.length === 0 ? true: step===2 && newSavingData.target.length === 0 ? true:false}/>
+          
         </AddFreeRoutineBody>
-      </ScrollView>
+        </ScrollView>
       <AddFreeRoutineBg source={add_free_routine_bg}/>
     </SafeAreaView>
   )
@@ -142,6 +152,7 @@ const AddFreeRoutineBody = styled.View`
   display:flex;
   justify-content:center;
   align-items:center;
+ 
 `
 
 const AddFreeRoutineBg = styled.Image`

@@ -14,15 +14,17 @@ import add_saving_bg from '../../../assets/add_saving_bg.png';
 import Button from '../components/Button';
 import start_button from '../../../assets/mild_cloud_icon.png';
 import AiRoutineAlertModal from '../components/AiRoutineAlertModal';
+import { useUserInfoStore } from '../../store/user';
 
 const StartAddAsset = ({route}) => {
   const navigation = useNavigation();
   const [isMakeRoutine, setIsMakeRoutine] = useState(false);
   const {version} = route.params;
   const [isAlertModalVisible, setIsAlertModalVisible] = useState(false)
+  const {userInfo} = useUserInfoStore();
 
   const assetTitle = ["적금\n추가하기","AI 루틴 추가하기", "자율루틴\n추가하기"];
-  const assetText = ["지윤 님의 시간을 소복이\n쌓을 수 있도록 도와드릴게요!", "AI가 당신의 맞춤 루틴을 만들어드립니다!\n다양한 질문에 답변만 하면\n고민 없이 루틴 완성!", "나만의 루틴을\n직접 만들 수 있어요!"]
+  const assetText = [`${userInfo.displayName} 님의 시간을 소복이\n쌓을 수 있도록 도와드릴게요!`, "AI가 당신의 맞춤 루틴을 만들어드립니다!\n다양한 질문에 답변만 하면\n고민 없이 루틴 완성!", "나만의 루틴을\n직접 만들 수 있어요!"]
   
   const handleMakeAiRoutine = () => {
     setIsMakeRoutine(true);

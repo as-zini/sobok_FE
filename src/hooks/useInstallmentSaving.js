@@ -62,7 +62,8 @@ export const useInstallmentSaving = () => {
           target : newSavingData.target,
           isPublic : newSavingData.isPublic,
           time : newSavingData.time,
-          duration : newSavingData.duration
+          duration : newSavingData.duration,
+          routineIds : newSavingData.routineIds
       },{
         headers:{
           Authorization:`Bearer ${token}`

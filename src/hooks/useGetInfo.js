@@ -8,16 +8,16 @@ export const useGetInfo = () => {
   
 
   const getUserInfo = async() => {
-
+    const token = await AsyncStorage.getItem("access_token")
     try {
-      const token = await AsyncStorage.getItem("access_token")
+      
       // 
       console.log(token)
       const response = await baseUrl.get("/user/info", {
         headers: {
           Authorization:`Bearer ${token}`,
          
-        },
+        }
       });
       console.log("응답:", response.data);
       setUserInfo(response.data)
@@ -25,11 +25,13 @@ export const useGetInfo = () => {
     } catch (error) {
       if (error.response) {
         console.log("서버 응답 에러:", error.response.status, error.response.data);
+        console.log(token);
       } else if (error.request) {
         console.log("요청은 갔는데 응답이 없음:", error.request);
       } else {
         console.log("기타 에러:", error.message);
       }
+      
     }
   }
 
