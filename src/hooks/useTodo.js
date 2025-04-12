@@ -143,6 +143,24 @@ export const useTodo = () => {
     }
   }
 
+  const checkDuplicatedTodo = async(time, setIsDuplicated) => {
+    try {
+      const token = await AsyncStorage.getItem("access_token")
+      const response = await baseUrl.get(`/todo/overlap?startTime=${time.startTime}&endTime=${time}`,{
+        headers:{
+          Authorization:`Bearer ${token}`
+        }
+      }
+      )
+      console.log(response.data)
+      if(!response.data.isOverlaped)setIsDuplicated(true)
+      else{setIsDuplicated(false)}
+    } catch (error) {
+      console.log(error)
+      
+    }
+  }
+
   return {
     getTodayTodo,
     getNotCompletedTodo,
@@ -150,6 +168,7 @@ export const useTodo = () => {
     getNowTodo,
     getTodaySaveTime,
     startTodo,
-    handleTodoEdit
+    handleTodoEdit,
+    checkDuplicatedTodo
   }
 }

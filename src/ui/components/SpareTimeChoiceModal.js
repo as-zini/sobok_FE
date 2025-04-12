@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Dimensions, SafeAreaView, Text, View } from 'react-native';
 import Modal from 'react-native-modal';
 import styled from 'styled-components';
@@ -9,8 +9,20 @@ import MarginVertical from './MarginVertical';
 import Button from './Button';
 import { useNavigation } from '@react-navigation/native';
 import { getTimeDifference } from '../../util';
+import { useTodo } from '../../hooks/useTodo';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+
 
 const SpareTimeChoiceModal = ({isChoiceModalVisible, setIsChoiceModalVisible, setTime, time, setTimeList}) => {
+
+  const [isDuplicated, setIsDuplicated] = useState(false);
+  const {checkDuplicatedTodo} = useTodo();
+
+
+  useEffect(() => {
+    checkDuplicatedTodo(time, setIsDuplicated)
+  },[time])
+
 
   const handleSpareTimeModal = () => {
     setTimeList(prev => ([...prev, time]))
@@ -36,6 +48,14 @@ const SpareTimeChoiceModal = ({isChoiceModalVisible, setIsChoiceModalVisible, se
         <SpareTimeModalBody>
           <SpareTimeModalTitle>자투리 시간 선택하기</SpareTimeModalTitle>
           <SpareTimeModalText>{"자투리 시간이 생기는\n시각을 알려주세요"}</SpareTimeModalText>
+          <MarginVertical top={20}/>
+          {isDuplicated ?
+          <View style={{flexDirection:'row', alignItems:'center', gap:5}}>
+            <MaterialIcons name="info" size={24} color="#FF4848"/>
+            <Text style={{color:"#FF4848", fontWeight:500, fontSize:14}}>선택한 시간에 이미 할 일이 있습니다</Text>
+          </View>  
+          :<></>    
+          }
           <TotalTimeArea>
             <Text style={{fontSize:18, fontWeight:600, color:colors.fontMain90}}>총 시간</Text>
             <Text style={{fontWeight:600, fontSize:26, color:colors.fontMain90}}>{`${getTimeDifference(time.startTime, time.endTime)}`}</Text>
@@ -45,7 +65,7 @@ const SpareTimeChoiceModal = ({isChoiceModalVisible, setIsChoiceModalVisible, se
           <MarginVertical top={48}/>
           <TimeSliderBar text={"까지"}  version={"End"} setOutValue={setTime} type={"time"}/>
           <MarginVertical top={55}/>
-          <Button text={"다음 단계로"} handleButton={handleSpareTimeModal}/>
+          <Button text={"다음 단계로"} handleButton={handleSpareTimeModal} unChecked={isDuplicated ? ture : false}/>
         </SpareTimeModalBody>
 
       </Modal>
