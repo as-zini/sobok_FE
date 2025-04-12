@@ -22,7 +22,7 @@ import { minToHour } from '../../util';
 const CompleteAddSaving = ({route}) => {
   const [isCreateComplete, setIsCreateComplete] = useState(true);
   const navigation = useNavigation();
-  const {newSavingData} = route.params;
+  const {newSavingData, routineTitle} = route.params;
   const {handleAddSaving} = useInstallmentSaving();
   const {userInfo} = useUserInfoStore();
   const interest = newSavingData.time < 600 ? .3 : newSavingData.time < 1200 ? .4 : newSavingData.time < 2400 ? .5 : .7
@@ -72,7 +72,7 @@ const CompleteAddSaving = ({route}) => {
                   <SavingInfoText style={{color:colors.fontMain70, textAlign:'start'}}>{`일주일에\n${minToHour(Math.floor(newSavingData.time/4))}씩, ${newSavingData.duration}개월 동안`}</SavingInfoText>
                   <View style={{display:'flex', flexDirection:'row', gap:5}}>
                     <LinkIcon size={16}/>
-                    <SavingInfoText style={{color:colors.fontMain70, textAlign:'start'}}>아침에는 영어 공부 루틴</SavingInfoText>
+                    <SavingInfoText style={{color:colors.fontMain70, textAlign:'start'}}>{routineTitle}</SavingInfoText>
                   </View>
                   <SavingInfoText style={{color:colors.fontMain70, textAlign:'start'}}>으로 모아볼게요!</SavingInfoText>
                 </View>
