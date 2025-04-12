@@ -2,13 +2,14 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios'
 import { useUserInfoStore, useUserTokenStore } from '../store/user';
+import baseUrl from '../api/baseURL';
 
 export const useLogin = () => {
   const navigation = useNavigation();
 
   const handleLogin = async(id, password, setIsLoginFail, isFirst) => {
     try {
-      const response = await axios.post("https://sobok-app.com/user/login/jwt",{
+      const response = await baseUrl.post("https://sobok-app.com/user/login/jwt",{
         username:id,
         password:password,
       })

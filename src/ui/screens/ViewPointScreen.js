@@ -41,23 +41,6 @@ const ViewPointScreen = () => {
   const {getUserInfo} = useGetInfo();
 
 
-  // const Data = [
-  //   pointLog.length > 0 ?
-  //   {
-  //     title:["10월 2일"],
-  //     data:[["자유 출금", "09:00", "-3500P", "5,824P"]]
-  //   },{
-  //     title:["9월 30일"],
-  //     data:[["적립", "09:00", "+1200P", "9,324P"]]
-  //   },{
-  //     title:["8월 14일"],
-  //     data:[["적립", "09:00", "+500P", "8124P"]]
-  //   } :
-  //   {
-
-  //   }
-  // ]
-
   useEffect(() => {
     console.log(isPurchaseModalVisible);
     console.log(isSubscribeModalVisible);
@@ -66,29 +49,12 @@ const ViewPointScreen = () => {
     getPointLog(selectedRange.startDate, selectedRange.endDate, setPointLog)
   }, [isPurchaseModalVisible, isSubscribeModalVisible])
 
-  const ListHeader = ({title}) => {
-    return(
-      <>
-        <Text style={{color:"#707172", fontWeight:500, fontSize:14}}>{title}</Text>
-        
-      </>
-    )
-  }
-
-  const LenderItem = ({item, index}) => {
-    return(
-      <>
-        <AssetEl item={item} index={index} isLink={false}/>
-        <MarginVertical top={40}/>
-      </>
-    )
-  }
 
   const BlurChild = () => {
     return(
       
       <View style={{paddingHorizontal:30, paddingVertical:40}}>
-        <ScrollView>
+        <ScrollView style={{minHeight:200}}>
         <View style={{display:'flex', flexDirection:'row', gap:4}}>
           <SettingPeriodText>{`${selectedRange.startDate} - ${selectedRange.endDate}`}</SettingPeriodText>
           <DropDownArrowButton size={16} handleArrowButton={() => setIsCalandarModalVisible(true)}/>
@@ -138,7 +104,9 @@ const ViewPointScreen = () => {
           <View style={{display:'flex', flexDirection:'row', alignItems:'center', width:310}}>
             <TotalSavingTitle>{`${userInfo.point}P`}</TotalSavingTitle>
             
-            <SmallButton text={"사용하기"} width={100} height={40} bgColor={colors.indigoBlue50} fontColor={"#fff"} handleButton={() => navigation.navigate('TicketPurchase')}/>
+            <SmallButton text={"사용하기"} width={100} height={40} bgColor={colors.indigoBlue50} fontColor={"#fff"} handleButton={() => navigation.navigate('TicketPurchase',{
+              userPremium:userPremium
+            })}/>
             
           </View>
         </TotalSavingArea>

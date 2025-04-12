@@ -24,7 +24,7 @@ export const useInstallmentSaving = () => {
   const getSavingLog = async(id, startDate, endDate, setSavingLog) => {
     try {
       const token = await AsyncStorage.getItem("access_token")
-      const response = await axios.get(`https://sobok-app.com/account/log?accountId=${id}&startDate=${startDate}&endDate=${endDate}`,{
+      const response = await baseUrl.get(`https://sobok-app.com/account/log?accountId=${id}&startDate=${startDate}&endDate=${endDate}`,{
         headers:{
           Authorization:`Bearer ${token}`
         }
@@ -40,7 +40,7 @@ export const useInstallmentSaving = () => {
   const getSavingCount = async(setSavingCount) => {
     try {
       const token = await AsyncStorage.getItem("access_token")
-      const response = await axios.get("https://sobok-app.com/account/list/ongoing",{
+      const response = await baseUrl.get("https://sobok-app.com/account/list/ongoing",{
         headers:{
           Authorization:`Bearer ${token}`
         }

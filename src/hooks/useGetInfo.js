@@ -36,7 +36,7 @@ export const useGetInfo = () => {
   const getContinuitySuccess = async(setAchieve) => {
     try {
       const token = await AsyncStorage.getItem("access_token")
-      const response = await axios.get("https://sobok-app.com/user/achieve",{
+      const response = await baseUrl.get("https://sobok-app.com/user/achieve",{
         headers:{
           Authorization:`Bearer ${token}`
         }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { use, useEffect } from 'react'
 import Modal from 'react-native-modal';
 
 import subscribe_bg from '../../../assets/subscribe_bg.png';
@@ -7,16 +7,27 @@ import ticket_check_icon from '../../../assets/ticket_check_icon.png';
 import styled from 'styled-components';
 import { size } from '../styles/size';
 import { colors } from '../styles/colors';
-import { Image, SafeAreaView, Text, View } from 'react-native';
+import { Image, SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
 import dayjs from 'dayjs';
 import { useUserInfoStore } from '../../store/user';
 import MarginVertical from '../components/MarginVertical';
 import Button from '../components/Button';
 import ProgressBar from '../components/ProgressBar';
 import BackArrowButton from '../components/BackArrowButton';
+import { useNavigation } from '@react-navigation/native';
 
-const TicketPurchase = ({isSubscribeModalVisible, setIsSubscribeModalVisible, setIsPurchaseModalVisible, userPremium}) => {
+const TicketPurchase = ({route}) => {
   const{userInfo} = useUserInfoStore();
+  const {userPremium} = route.params;
+  const navigation = useNavigation();
+  
+  useEffect(() => {
+    console.log(route.params)
+  }, [])
+  
+  
+
+
  
   return (
     <SafeAreaView>
@@ -28,9 +39,10 @@ const TicketPurchase = ({isSubscribeModalVisible, setIsSubscribeModalVisible, se
           <Text style={{fontWeight:600, fontSize:18, color:colors.darkGray}}>구독권 구매하기</Text>
         </SubscribeHeader>
         <MarginVertical top={60}/>
-        <View style={{width:140, height:35, backgroundColor:"rgba(106, 143, 246, 0.5)", borderRadius:17, justifyContent:'center', alignItems:'center'}}>
+        <TouchableOpacity style={{width:140, height:35, backgroundColor:"rgba(106, 143, 246, 0.5)", borderRadius:17, justifyContent:'center', alignItems:'center'}}
+          onPress={() => navigation.navigate("PointInfo")}>
           <Text style={{fontWeight:500, fontSize:14, color:"#fff"}}>'프리미엄 구독권'이란?</Text>
-        </View>
+        </TouchableOpacity>
         <MarginVertical top={44}/>
         <TicketImageArea>
           <Image source={ticket_img} style={{zIndex:2}}/>
