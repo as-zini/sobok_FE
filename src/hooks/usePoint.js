@@ -1,11 +1,12 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import axios from "axios"
+import baseUrl from "../api/baseURL"
 
 export const usePoint = () => {
   const getUserPremium = async(setUserPremium) => {
     try {
       const token = await AsyncStorage.getItem("access_token")
-      const response = await axios.get("https://sobok-app.com/user/premium",{
+      const response = await baseUrl.get("/user/premium",{
         headers:{
           Authorization:`Bearer ${token}`
         }
@@ -17,25 +18,26 @@ export const usePoint = () => {
     }
   }
 
-  const getSubscribe = async(setIsComplete) => {
+  const getSubscribe = async(setIsComplete, setIsInsufficiency) => {
     try {
       const token = await AsyncStorage.getItem("access_token")
-      const response = await axios.put("https://sobok-app.com/user/premium",{},{
+      const response = await baseUrl.put("/user/premium",{},{
         headers:{
-          Authorization:`Bearer ${token}`
+          Authorization:`Bearer ${token}`,
         }
       })
       console.log(response.data)
       setIsComplete(true)
     } catch (error) {
-      console.log(error.data)
+      console.log(error.response.data.message)
+      if(error.response.data.message === "구독권 등록 실패: 포인트가 부족합니다.")setIsInsufficiency(true)
     }
   }
 
   const getPointLog = async(startDate, endDate, setPointLog) => {
     try {
       const token = await AsyncStorage.getItem("access_token")
-      const response = await axios.get(`https://sobok-app.com/user/point/log?startDate=${startDate}&endDate=${endDate}`,{
+      const response = await baseUrl.get(`/user/point/log?startDate=${startDate}&endDate=${endDate}`,{
         headers:{
           Authorization:`Bearer ${token}`
         }

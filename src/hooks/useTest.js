@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native"
 import axios from "axios"
+import baseUrl from "../api/baseURL";
 
 export const useTest = () => {
   const navigation = useNavigation();
@@ -8,7 +9,7 @@ export const useTest = () => {
   const handleSubmitTest = async(spareTpo, spareTime, preference1, preference2, preference3, likeOption, extraRequest, setIsCreateComplete, setAiRoutineInfo) => {
     try {
       const token = await AsyncStorage.getItem("access_token")
-      const response = await axios.post("https://sobok-app.com/survey/generate",{
+      const response = await baseUrl.post("https://sobok-app.com/survey/generate",{
         spareTpo:spareTpo,
         spareTime:spareTime,
         preference1:preference1,

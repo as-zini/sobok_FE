@@ -24,7 +24,7 @@ export const useInstallmentSaving = () => {
   const getSavingLog = async(id, startDate, endDate, setSavingLog) => {
     try {
       const token = await AsyncStorage.getItem("access_token")
-      const response = await axios.get(`https://sobok-app.com/account/log?accountId=${id}&startDate=${startDate}&endDate=${endDate}`,{
+      const response = await baseUrl.get(`https://sobok-app.com/account/log?accountId=${id}&startDate=${startDate}&endDate=${endDate}`,{
         headers:{
           Authorization:`Bearer ${token}`
         }
@@ -40,7 +40,7 @@ export const useInstallmentSaving = () => {
   const getSavingCount = async(setSavingCount) => {
     try {
       const token = await AsyncStorage.getItem("access_token")
-      const response = await axios.get("https://sobok-app.com/account/list/ongoing",{
+      const response = await baseUrl.get("https://sobok-app.com/account/list/ongoing",{
         headers:{
           Authorization:`Bearer ${token}`
         }
@@ -91,7 +91,7 @@ export const useInstallmentSaving = () => {
   const getSavingDetail = async(id,setSavingInfo) => {
     try {
       const token = await AsyncStorage.getItem("access_token")
-      const response = await axios.get(`https://sobok-app.com/account/details?accountId=${id}`,{
+      const response = await baseUrl.get(`https://sobok-app.com/account/details?accountId=${id}`,{
         headers:{
           Authorization:`Bearer ${token}`
         }
@@ -104,13 +104,31 @@ export const useInstallmentSaving = () => {
     }
   }
 
+  const handleConnectAsset = async(id, routines) => {
+    try {
+      const token = await AsyncStorage.getItem("access_token")
+      const response = await baseUrl.put(`/routine/account?accountId=${id}`,{
+        routineId:routines
+      },{
+        headers:{
+          Authorization:`Bearer ${token}`
+        }
+      })
+      console.log(response.data)
+    } catch (error) {
+      console.log(error)
+      console.log(id, routines)
+    }
+  }
+
   return {
     getSavingList,
     getSavingLog,
     getSavingCount,
     handleAddSaving,
     getInvalidSavingList,
-    getSavingDetail
+    getSavingDetail,
+    handleConnectAsset
   }
 }
 

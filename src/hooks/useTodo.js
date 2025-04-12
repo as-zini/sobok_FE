@@ -122,12 +122,34 @@ export const useTodo = () => {
   //   }
   // }
 
+  const handleTodoEdit = async() => {
+    try {
+      const token = await AsyncStorage.getItem("access_token")
+      const response = await baseUrl.put("/todo/update",{
+        "id": 61,
+        "title": "updatedTodo",
+        "category": "english",
+        "startTime": "01:00",
+        "endTime": "01:30",
+        "linkApp": "exampleApp1"
+      },{
+        headers:{
+          Authorization:`Bearer ${token}`
+        }
+      })
+      console.log(response)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return {
     getTodayTodo,
     getNotCompletedTodo,
     completeTodo,
     getNowTodo,
     getTodaySaveTime,
-    startTodo
+    startTodo,
+    handleTodoEdit
   }
 }

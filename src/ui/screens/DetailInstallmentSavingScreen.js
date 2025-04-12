@@ -152,7 +152,7 @@ const DetailInstallmentSavingScreen = ({route}) => {
         id={id}
         setSavingLog={setSavingLog}/>
       </ScrollView>
-      <SavingAlerteModal isPauseModalVisible={isAlertModal} setIsPauseModalVisible={setIsAlertModal}/>
+      <SavingAlerteModal isPauseModalVisible={isAlertModal} setIsPauseModalVisible={setIsAlertModal} id={id}/>
       </View>
       <DetailInstallmentSavingBg source={installment_saving_bg}/>
     </SafeAreaProvider>

@@ -17,6 +17,7 @@ import { usePoint } from '../../hooks/usePoint';
 
 const PurchaseModal = ({isPurchaseModalVisible, setIsPurchaseModalVisible, version}) => {
   const [isComplete, setIsComplete] = useState(false);
+  const [isInsufficiency, setIsInsufficiency] = useState(false);
   const {getSubscribe} = usePoint();
 
   useEffect(() => {
@@ -45,9 +46,9 @@ const PurchaseModal = ({isPurchaseModalVisible, setIsPurchaseModalVisible, versi
         {version === "Purchase"
         ?
         <>
-        <RoutinePauseModalTitle>{!isComplete ? "프리미엄 구독권을\n구매할까요?" : `${dayjs().format("M월")} 구독권\n구매 완료!`}</RoutinePauseModalTitle>
+        <RoutinePauseModalTitle>{isComplete ?`${dayjs().format("M월")} 구독권\n구매 완료!` : isInsufficiency ? "포인트가 부족해요":"프리미엄 구독권을\n구매할까요?" }</RoutinePauseModalTitle>
         <MarginVertical top={30}/>
-        <RoutinePauseModalText>{!isComplete ? "구독권 상세 페이지의 주의사항을\n꼭 읽어보고 구매해주세요!" : "이번 달도 소복과 함께\n시간을 모아봐요!"}</RoutinePauseModalText>
+        <RoutinePauseModalText>{isComplete ? "이번 달도 소복과 함께\n시간을 모아봐요!" : isInsufficiency ? "자투리 시간을 알차게 보내고\n포인트를 조금 더 모아봐요!":"구독권 상세 페이지의 주의사항을\n꼭 읽어보고 구매해주세요!"}</RoutinePauseModalText>
         <MarginVertical top={isComplete ? 72 : 50}/>
         </>
         :
@@ -62,7 +63,11 @@ const PurchaseModal = ({isPurchaseModalVisible, setIsPurchaseModalVisible, versi
         :
         <>
         <DoubleButton text1={"아니오"} text2={"예"} handleLeftButton={() => setIsPurchaseModalVisible(false)} handleRightButton={() => {
-          version === "Purchase" ? getSubscribe(setIsComplete) : setIsComplete(true)
+          if(version === "Purchase"){
+            if(!isInsufficiency){getSubscribe(setIsComplete, setIsInsufficiency)}
+            else{setIsPurchaseModalVisible(false)}
+          }
+          else{setIsComplete(true)}
         }}/>
         <MarginVertical top={36}/>
         </>

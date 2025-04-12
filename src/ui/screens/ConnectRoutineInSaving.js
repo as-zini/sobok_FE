@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView, View } from 'react-native'
 import ConnectRoutine from '../components/ConnectRoutine'
 import styled from 'styled-components';
@@ -8,10 +8,23 @@ import bg from '../../../assets/test_bg.png';
 import MarginVertical from '../components/MarginVertical';
 import Button from '../components/Button';
 import { useNavigation } from '@react-navigation/native';
+import { useInstallmentSaving } from '../../hooks/useInstallmentSaving';
 
-const ConnectRoutineInSaving = () => {
+const ConnectRoutineInSaving = ({route}) => {
   const [pickedRoutines, setPickedRoutines] = useState([])
   const navigation = useNavigation();
+  const {id} = route.params;
+  const {handleConnectAsset} = useInstallmentSaving();
+
+  useEffect(() => {
+    console.log(pickedRoutines)
+  }, [pickedRoutines])
+
+  const handleButton = () => {
+    handleConnectAsset(id, pickedRoutines.map((el) => el.id));
+    navigation.goBack()
+  }
+  
 
   return (
     <SafeAreaView>
@@ -22,7 +35,7 @@ const ConnectRoutineInSaving = () => {
         <MarginVertical top={40}/>
         <ConnectRoutine pickedRoutines={pickedRoutines} setPickedRoutines={setPickedRoutines}/>
         <View style={{position:'absolute', bottom:100}}>
-          <Button text={"연결하기"} handleButton={() => navigation.goBack()}/>
+          <Button text={"연결하기"} handleButton={handleButton}/>
         </View>
       </Body>
       <Bg source={bg}/>
