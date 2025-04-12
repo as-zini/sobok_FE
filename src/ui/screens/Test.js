@@ -34,6 +34,7 @@ import selected_step2_2 from '../../../assets/selected_step2_2.png';
 import selected_step3_1 from '../../../assets/selected_step3_1.png';
 import selected_step3_2 from '../../../assets/selected_step3_2.png';
 import { useUserInfoStore } from '../../store/user'
+import { useTodo } from '../../hooks/useTodo'
 
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
@@ -99,6 +100,8 @@ const Test = () => {
   useEffect(() => {
    console.log(step, detailStep, timeList)
   }, [step, detailStep])
+
+  
   
   const DataForLang = [
       "회화", "문법","단어", "듣기", "영어", "중국어", "일본어"
