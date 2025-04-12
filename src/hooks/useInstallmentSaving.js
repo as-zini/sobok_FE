@@ -1,9 +1,11 @@
 import axios from "axios"
 import baseUrl from "../api/baseURL";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
 
 
 export const useInstallmentSaving = () => {
+  const navigation = useNavigation();
 
   const getSavingList = async(setOnGoingAccountList, version) => {
     try {
@@ -24,7 +26,7 @@ export const useInstallmentSaving = () => {
   const getSavingLog = async(id, startDate, endDate, setSavingLog) => {
     try {
       const token = await AsyncStorage.getItem("access_token")
-      const response = await baseUrl.get(`https://sobok-app.com/account/log?accountId=${id}&startDate=${startDate}&endDate=${endDate}`,{
+      const response = await baseUrl.get(`/account/log?accountId=${id}&startDate=${startDate}&endDate=${endDate}`,{
         headers:{
           Authorization:`Bearer ${token}`
         }
@@ -40,7 +42,7 @@ export const useInstallmentSaving = () => {
   const getSavingCount = async(setSavingCount) => {
     try {
       const token = await AsyncStorage.getItem("access_token")
-      const response = await baseUrl.get("https://sobok-app.com/account/list/ongoing",{
+      const response = await baseUrl.get("/account/list/ongoing",{
         headers:{
           Authorization:`Bearer ${token}`
         }
@@ -91,7 +93,7 @@ export const useInstallmentSaving = () => {
   const getSavingDetail = async(id,setSavingInfo) => {
     try {
       const token = await AsyncStorage.getItem("access_token")
-      const response = await baseUrl.get(`https://sobok-app.com/account/details?accountId=${id}`,{
+      const response = await baseUrl.get(`/account/details?accountId=${id}`,{
         headers:{
           Authorization:`Bearer ${token}`
         }
@@ -121,6 +123,21 @@ export const useInstallmentSaving = () => {
     }
   }
 
+  const handleDeleteSaving = async(id) => {
+    try {
+      const token = await AsyncStorage.getItem("access_token")
+      const response = await baseUrl.delete(`/account/delete?accountId=${id}`,{
+        headers:{
+          Authorization:`Bearer ${token}`
+        }
+      })
+      console.log(response.data)
+      navigation.goBack()
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return {
     getSavingList,
     getSavingLog,
@@ -128,7 +145,8 @@ export const useInstallmentSaving = () => {
     handleAddSaving,
     getInvalidSavingList,
     getSavingDetail,
-    handleConnectAsset
+    handleConnectAsset,
+    handleDeleteSaving
   }
 }
 

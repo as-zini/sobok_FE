@@ -9,7 +9,7 @@ export const useTest = () => {
   const handleSubmitTest = async(spareTpo, spareTime, preference1, preference2, preference3, likeOption, extraRequest, setIsCreateComplete, setAiRoutineInfo) => {
     try {
       const token = await AsyncStorage.getItem("access_token")
-      const response = await baseUrl.post("https://sobok-app.com/survey/generate",{
+      const response = await baseUrl.post("/survey/generate",{
         spareTpo:spareTpo,
         spareTime:spareTime,
         preference1:preference1,

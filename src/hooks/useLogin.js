@@ -9,7 +9,7 @@ export const useLogin = () => {
 
   const handleLogin = async(id, password, setIsLoginFail, isFirst) => {
     try {
-      const response = await baseUrl.post("https://sobok-app.com/user/login/jwt",{
+      const response = await baseUrl.post("/user/login/jwt",{
         username:id,
         password:password,
       })

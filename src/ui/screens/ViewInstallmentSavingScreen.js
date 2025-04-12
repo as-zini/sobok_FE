@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Image, SafeAreaView, ScrollView, SectionList, Text, View } from 'react-native'
 import styled from 'styled-components'
 
@@ -10,7 +10,7 @@ import BackArrowButton from '../components/BackArrowButton';
 import { colors } from '../styles/colors';
 import MarginVertical from '../components/MarginVertical';
 
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import AssetEl from '../components/AssetEl';
 import { useInstallmentSaving } from '../../hooks/useInstallmentSaving';
 import { minToHour } from '../../util';
@@ -57,11 +57,13 @@ const ViewInstallmentSavingScreen = () => {
     )
   }
 
-  useEffect(() => {
-    getSavingList(setOnGoingAccountList, "onGoing");
-    getSavingList(setExpiredAccountList, "expired");
-    getSavingList(setEndedAccountList, 'ended')
-  }, [])
+  useFocusEffect(
+    useCallback(() => {
+      getSavingList(setOnGoingAccountList, "onGoing");
+      getSavingList(setExpiredAccountList, "expired");
+      getSavingList(setEndedAccountList, 'ended')
+    }, []),
+  )
   
   
   return (
