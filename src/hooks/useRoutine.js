@@ -166,6 +166,26 @@ export const useRoutine = () => {
     }
   }
 
+  const handleEditRoutine = async(editedRoutineInfo,id) => {
+    try {
+      const token = await AsyncStorage.getItem("access_token")
+      const response = await baseUrl.put(`/routine/update?routineId=${id}`,{
+          "accountId": editedRoutineInfo.accountId,
+          "title": editedRoutineInfo.title,
+          "days": editedRoutineInfo.days,
+          "todos": editedRoutineInfo.todos
+      },{
+        headers:{
+          Authorization:`Bearer ${token}`
+        }
+      })
+      console.log(response.data)
+      navigation.navigate("ViewRoutine")
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return {
     getRoutineByList,
     getRoutineByCalandar,
@@ -174,6 +194,7 @@ export const useRoutine = () => {
     handleAddRoutine,
     getRoutineCount,
     handleRoutineDelete,
-    handleAddAiRoutine
+    handleAddAiRoutine,
+    handleEditRoutine
   }
 }

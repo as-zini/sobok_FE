@@ -24,27 +24,30 @@ const ViewAiRoutineResult = ({route}) => {
   const [isRoutineRepeatModalVisible, setIsRoutineRepeatModalVisible] = useState(false);
   const [isAssetLinkModalVisible, setIsAssetLinkModalVisible] = useState(false);
   const navigation = useNavigation();
-  const {aiRoutineInfo} = route.params;
-  const [selectedDate, setSelectedDate] = useState([]);
+  const {routineInfo, version} = route.params;
+  const [selectedDate, setSelectedDate] = useState(version === "free" ? routineInfo.days:[]);
   const [invalidSavingList, setInvalidSavingList] = useState([]);
-  const [pickedSaving, setPickedSaving] = useState([]);
+  const [pickedSaving, setPickedSaving] = useState(version === "free" ? [{title:routineInfo.accountTitle}]:[]);
   const {handleAddAiRoutine} = useRoutine();
+  const [editRoutineTitle, setEditRoutineTitle] = useState("")
+  const {handleEditRoutine} = useRoutine();
 
   useEffect(() => {
     // console.log(aiRoutineInfo.todos.reduce((sum,el) => sum + Number(el.duration),0))
-    console.log("route",aiRoutineInfo)
+    console.log("route",routineInfo)
     console.log("picked",pickedSaving)
   }, [pickedSaving])
 
 
   const handleAddButton = () => {
+    if(version !== "free"){
     handleAddAiRoutine({
       id:pickedSaving[0].id,
-      title:aiRoutineInfo.title,
-      startTime:aiRoutineInfo.todos[0].start_time,
-      endTime:aiRoutineInfo.todos[aiRoutineInfo.todos.length-1].end_time,
+      title:routineInfo.title,
+      startTime:routineInfo.todos[0].start_time,
+      endTime:routineInfo.todos[routineInfo.todos.length-1].end_time,
       days:selectedDate,
-      todos:aiRoutineInfo.todos.map((el) => ({
+      todos:routineInfo.todos.map((el) => ({
         title: el.title,
         startTime: el.start_time,
         endTime: el.end_time,
@@ -52,6 +55,19 @@ const ViewAiRoutineResult = ({route}) => {
       }))
     });
     navigation.navigate("AiRoutineComplete",{isComplete:true})
+    }else{
+      handleEditRoutine({
+        accountId:pickedSaving[0].id,
+        title:editRoutineTitle.length === 0 ? routineInfo.title : editRoutineTitle,
+        days:selectedDate,
+        todos:routineInfo.todos.map((el) => ({
+          title:el.title,
+          startTime:el.startTime,
+          endTime:el.endTime,
+          linkApp:el.linkApp
+        }))
+      },routineInfo.id)
+    }
   }
   
 
@@ -59,11 +75,17 @@ const ViewAiRoutineResult = ({route}) => {
     <SafeAreaView>
       <ViewAiRoutineResultBody>
         <ViewAiRoutineResultHeader>
-          <Text style={{fontWeight:600, fontSize:18, color:colors.darkGray}}>생성된 루틴</Text>
+          <Text style={{fontWeight:600, fontSize:18, color:colors.darkGray}}>{version === "free" ? "루틴 수정하기":"생성된 루틴"}</Text>
         </ViewAiRoutineResultHeader>
         <MarginVertical top={44}/>
         <Image source={ai_routine_icon} style={{width:42, height:27}}/>
-        <ViewAiRoutineResultTitle>{`${aiRoutineInfo.title}\n${minToHour(aiRoutineInfo.todos.reduce((sum, el) => sum + Number(el.duration), 0))}`}</ViewAiRoutineResultTitle>
+        <MarginVertical top={10}/>
+        {version !== "free" ? <ViewAiRoutineResultTitle>{`${routineInfo.title}`}</ViewAiRoutineResultTitle>
+        :<RoutineTitleInput placeholder={`${routineInfo.title}`} placeholderTextColor={colors.fontMain}
+          value={editRoutineTitle} onChange={(e) => setEditRoutineTitle(e.nativeEvent.text)}
+        />}
+        <ViewAiRoutineResultTitle>{`${minToHour(routineInfo.todos.reduce((sum, el) => sum + Number(el.duration), 0))}`}</ViewAiRoutineResultTitle>
+        <MarginVertical top={16}/>
         <TouchableOpacity style={{display:'flex', flexDirection:'row', gap:4}} onPress={() => setIsAssetLinkModalVisible(true)}>
           <LinkIcon size={16}/>
           <ViewAiRoutineResultText>{pickedSaving.length === 0 ? `적금 연결하기` : pickedSaving[0].title}</ViewAiRoutineResultText>
@@ -75,14 +97,14 @@ const ViewAiRoutineResult = ({route}) => {
         </View>
         <MarginVertical top={47}/>
         <View style={{width:310}}>
-          <TodoCountText>{`총 ${aiRoutineInfo.todos.length}개의 할 일`}</TodoCountText>
+          <TodoCountText>{`총 ${routineInfo.todos.length}개의 할 일`}</TodoCountText>
         </View>
         <ScrollView style={{height:'40%'}} showsVerticalScrollIndicator={false}>
           <MarginVertical top={40}/>
-          {aiRoutineInfo.todos.map((el,index) => {
+          {routineInfo.todos.map((el,index) => {
             return(
               <View key={index}>
-                <TodoEl data={[el.title,"", `${minToHour(el.duration)}`, `${el.start_time} - ${el.end_time}`]} index={index} isTouchable={false}/>
+                <TodoEl data={[el.title,"", `${minToHour(el.duration)}`, version === "free" ? `${el.startTime.slice(0,6)} - ${el.endTime.slice(0,6)}`:`${el.start_time} - ${el.end_time}`]} index={index} isTouchable={false}/>
                 <MarginVertical top={40}/>
               </View>
             )
@@ -90,7 +112,7 @@ const ViewAiRoutineResult = ({route}) => {
         </ScrollView>
 
         <View>
-          <Button text={"루틴 완성하기"} handleButton={handleAddButton}/>
+          <Button text={version === "free" ? "루틴 수정하기":"루틴 완성하기"} handleButton={handleAddButton}/>
         </View>
       </ViewAiRoutineResultBody>
       <RoutineRepeatModal isRoutineRepeatModalVisible={isRoutineRepeatModalVisible} setIsRoutineRepeatModalVisible={setIsRoutineRepeatModalVisible}/>
@@ -138,9 +160,6 @@ const ViewAiRoutineResultTitle = styled.Text`
   font-weight:600;
   color:${colors.fontMain};
   text-align:center;
-  line-height:34px;
-  margin-bottom:12px;
-  margin-top:16px;
 `
 
 const ViewAiRoutineResultText = styled.Text`
@@ -153,5 +172,12 @@ const TodoCountText = styled.Text`
   font-size:22px;
   font-weight:600;
   color:#707172;
+`
+
+const RoutineTitleInput = styled.TextInput`
+  font-size:26px;
+  font-weight:600;
+  color:${colors.fontMain};
+  text-align:center;
 `
 

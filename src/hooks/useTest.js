@@ -36,7 +36,8 @@ export const useTest = () => {
         routes:[{
           name:'ViewAiRoutine',
           params:{
-            aiRoutineInfo:response.data
+            routineInfo:response.data,
+            version:"ai"
           }
         }]
       })
