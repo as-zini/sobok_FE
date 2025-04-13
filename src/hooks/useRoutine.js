@@ -84,12 +84,12 @@ export const useRoutine = () => {
       const token = await AsyncStorage.getItem("access_token")
 
       const response = await baseUrl.post("/routine/create",{
-        accountId:newRoutineData.id,
+        accountId:newRoutineData.accountId,
         title: newRoutineData.title,
         startTime: newRoutineData.startTime,
         endTime: newRoutineData.endTime,
         days: newRoutineData.days,
-        todos:isAiRoutine ? newRoutineData.todos : todoData
+        todos:todoData
       },{
         headers:{
           Authorization:`Bearer ${token}`

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Image, SafeAreaView, ScrollView, Text, View } from 'react-native'
+import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import styled from 'styled-components'
 
 import add_free_routine_bg from '../../../assets/test_bg.png';
@@ -13,7 +13,7 @@ import Button from '../components/Button';
 import MarginVertical from '../components/MarginVertical';
 import WeekCalandar from '../components/WeekCalandar';
 import TimeSliderBar from '../components/TimeSliderBar';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import SimpleTodoEl from '../components/SimpleTodoEl';
 import mild_routine_icon from '../../../assets/mild_routine_icon.png';
 import LinkIcon from '../components/LinkIcon';
@@ -21,6 +21,7 @@ import TodoEl from '../components/TodoEl';
 import { useTodoStore } from '../../store/todo';
 import { getTimeDifference } from '../../util';
 import { useRoutine } from '../../hooks/useRoutine';
+import AssetLinkModal from '../components/AssetLinkModal';
 
 const AddFreeRoutine = () => {
   const [step, setStep] = useState(1);
@@ -28,19 +29,27 @@ const AddFreeRoutine = () => {
   const questionText = ["루틴의 이름을\n지어주세요!","루틴을 언제\n반복할까요?","무엇을 해볼까요?","마지막으로\n루틴을 점검해보아요!" ]
   const navigation = useNavigation();
   const data = [["영어 강의 1강", "스픽", "1H 30M", "06:00 - 07:00"], ["영어 단어 10개 암기", "말해보카", "1H 00M", "07:30 - 8:30"]]
-  const [newRoutineData, setNewRoutineData] = useState({title:""});
   const [selectedDate, setSelectedDate] = useState([]);
+  const [routineTitle, setRoutineTitle] = useState("");
   const DateForKo = ['일 ', '월 ', '화 ', '수 ', '목 ', '금 ', '토 '];
   const DateForEng = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
   const {todoData} = useTodoStore();
   const {handleAddRoutine} = useRoutine();
+  const [isAssetLinkModalVisible, setIsAssetLinkModalVisible] = useState(false);
+  const [invalidSavingList, setInvalidSavingList] = useState([]);
+  const [pickedSaving, setPickedSaving] = useState([])
   
   
   const handleNextStep = () => {
     if(step<4){
       setStep(prev => prev+1)
     } else {
-      handleAddRoutine(newRoutineData)
+      handleAddRoutine({
+        accountId:pickedSaving[0].id,
+        title:routineTitle,
+        days:selectedDate,
+        todos:todoData
+      })
     }
   }
 
@@ -50,43 +59,30 @@ const AddFreeRoutine = () => {
     }
   }
 
-
-
-  useEffect(() => {
-    console.log(newRoutineData)
-    setNewRoutineData(prev => ({...prev, days:selectedDate?.sort((a,b) => a-b).map((el) => DateForEng[el])}))
-    
-    
-  }, [selectedDate])
-  
-
-  const StepOwnContents = () => {
-    return(
-      <></>
-    )
-    }
-
-  const StepTwoContents = () => {
-    return(
-      <View style={{width:'100%', justifyContent:'center', alignItems:'center'}}>
-        <MarginVertical top={60}/>
-        <View style={{display:'flex', justifyContent:'center', alignItems:'center', width:294}}>
-          <RoutineQuestionText style={{textAlign:'center'}}>월, 수, 금{'\n'}6:00 - 7:30</RoutineQuestionText>
-        </View>
-        <MarginVertical top={40}/>
-        <WeekCalandar selectedDate={selectedDate} setSelectedDate={setSelectedDate} isDuplication={true}/>
-        <MarginVertical top={63}/>
-        <TimeSliderBar text={"에 시작해서"}/>
-        <MarginVertical top={63}/>
-        <TimeSliderBar text={"까지 끝내요"}/>
-        <MarginVertical top={97}/>
-      </View>
-    )
+  const EngDayToKor = (day) => {
+    if(day === "SUN")return '일'
+    if(day === "MON")return '월'
+    if(day==="TUE")return '화'
+    if(day==="WED")return '수'
+    if(day==="THU")return '목'
+    if(day==="FRI")return '금'
+    if(day==="SAT")return '토'
   }
+
+
+  useFocusEffect(
+    useCallback(() => {
+      console.log("todo",todoData)
+    // getToken()
+    }, [todoData]),
+  )
+
 
   const StepThreeContents = () => {
     return(
-      <View >
+      
+      <View style={{height:400}}>
+        <ScrollView showsVerticalScrollIndicator={false}>
         <MarginVertical top={12}/>
         <RoutineCategoryText style={{lineHeight:24}}>루틴에 들어갈{"\n"}할 일을 추가해보세요!</RoutineCategoryText>
         <MarginVertical top={44}/>
@@ -101,8 +97,10 @@ const AddFreeRoutine = () => {
         <SpareTimeAddButton onPress={() => navigation.navigate("AddTodo")}>
               <SpareTimeButtonText>+</SpareTimeButtonText>
             </SpareTimeAddButton>
-        <MarginVertical top={142}/>
+        <MarginVertical top={30}/>
+        </ScrollView>
       </View>
+      
     )
   }
 
@@ -115,14 +113,15 @@ const AddFreeRoutine = () => {
         <View style={{display:'flex', justifyContent:'center', alignItems:'center', width:294}}>
           <Image source={mild_routine_icon} style={{width:42, height:27}}/>
           <MarginVertical top={16}/>
-          <RoutineQuestionText style={{textAlign:'center'}}>{`${newRoutineData.title}\n${getTimeDifference(newRoutineData.startTime, newRoutineData.endTime)}`}</RoutineQuestionText>
+          <RoutineQuestionText style={{textAlign:'center'}}>{`${routineTitle}`}</RoutineQuestionText>
           <MarginVertical top={12}/>
-          <View style={{display:'flex', flexDirection:'row', gap:4, justifyContent:'center', alignItems:'center'}}>
+          <TouchableOpacity style={{display:'flex', flexDirection:'row', gap:4, justifyContent:'center', alignItems:'center'}}
+            onPress={() => setIsAssetLinkModalVisible(true)}>
             <LinkIcon size={16}/>
-            <RoutineCategoryText style={{lineHeight:24}}>영어 적금</RoutineCategoryText>
-          </View>
+            <RoutineCategoryText style={{lineHeight:24}}>{pickedSaving[0]?.title}</RoutineCategoryText>
+          </TouchableOpacity>
           <MarginVertical top={36}/>
-          <WeekCalandar selectedDate={selectedDate} setSelectedDate={setSelectedDate} isDuplication={true}/>
+          <WeekCalandar selectedDate={selectedDate} setSelectedDate={setSelectedDate} isDuplication={true} version={"day"}/>
           <MarginVertical top={44}/>
           <View style={{width:294, display:'flex', alignItems:'flex-start'}}>
             <Text style={{fontWeight:600, fontSize:22, color:colors.gray70}}>{`총 ${todoData.length}개의 할 일`}</Text>  
@@ -138,6 +137,7 @@ const AddFreeRoutine = () => {
           })}
         </View>
         <MarginVertical top={50}/>
+        
       </>
     )
   }
@@ -146,9 +146,9 @@ const AddFreeRoutine = () => {
 
   return (
     <SafeAreaView>
-      <ScrollView
-      >
-        <AddFreeRoutineBody>
+      {step===4 ?
+      <ScrollView showsVerticalScrollIndicator={false}>
+<AddFreeRoutineBody>
           <AddFreeRoutineHeader>
             <BackArrowButton/>
           </AddFreeRoutineHeader>
@@ -167,10 +167,10 @@ const AddFreeRoutine = () => {
               <AnswerInput
                 placeholder="이름을 입력해주세요"
                 placeholderTextColor="rgba(255,255,255,.8)"
-                value={newRoutineData.title}
-                onChange={(e) => {setNewRoutineData({...newRoutineData, title:e.nativeEvent.text})}}
+                value={routineTitle}
+                onChange={(e) => {setRoutineTitle(e.nativeEvent.text)}}
               />
-              <Image source={check_icon_indigo} style={{width:30, height:30, position:'absolute', right:0}}/>
+              {/* <Image source={check_icon_indigo} style={{width:30, height:30, position:'absolute', right:0}}/> */}
             </AnswerInputArea>
             <BorderLine/>
             <MarginVertical top={296}/>
@@ -178,22 +178,74 @@ const AddFreeRoutine = () => {
             : step === 2 ?
             <View style={{width:'100%', justifyContent:'center', alignItems:'center'}}>
               <MarginVertical top={60}/>
-              <View style={{display:'flex', justifyContent:'center', alignItems:'center', width:294}}>
-                <RoutineQuestionText style={{textAlign:'center'}}>{`${selectedDate.sort((a,b) => a-b).map((el) => DateForKo[el])}\n${newRoutineData.startTime} - ${newRoutineData.endTime}`}</RoutineQuestionText>
+              <View style={{display:'flex', justifyContent:'center', alignItems:'center', width:294, height:80}}>
+                <RoutineQuestionText style={{textAlign:'center'}}>{selectedDate.length > 0 ? `${selectedDate.map((day) => EngDayToKor(day) )}`:`루틴을 반복할 요일을\n선택해주세요`}</RoutineQuestionText>
               </View>
               <MarginVertical top={40}/>
-              <WeekCalandar selectedDate={selectedDate} setSelectedDate={setSelectedDate} isDuplication={true}/>
-              <MarginVertical top={63}/>
-              <TimeSliderBar text={"에 시작해서"} setOutValue={setNewRoutineData} version={"start"} type={"time"}/>
-              <MarginVertical top={63}/>
-              <TimeSliderBar text={"까지 끝내요"} setOutValue={setNewRoutineData} version={"end"} type={"time"}/>
-              <MarginVertical top={97}/>
+              <WeekCalandar selectedDate={selectedDate} setSelectedDate={setSelectedDate} isDuplication={true} version={"day"}/>
+              <MarginVertical top={150}/>
             </View>
       : step === 3 ? <StepThreeContents/> : <StepFourContents/>} 
           </InputArea>
-          <Button text={"다음 단계로"} handleButton={handleNextStep}/>
+          
+            <Button text={"다음 단계로"} handleButton={handleNextStep}
+              unChecked={step===1&&newRoutineData.title.length === 0 ? true : step===2 && selectedDate.length === 0 ? true : step===3 && todoData.length === 0 ? true : false}/>
+              <AssetLinkModal
+                isAssetLinkModalVisible={isAssetLinkModalVisible}
+                setIsAssetLinkModalVisible={setIsAssetLinkModalVisible}
+                invalidSavingList={invalidSavingList} 
+                setInvalidSavingList={setInvalidSavingList}
+                setPickedSaving={setPickedSaving}
+              />
         </AddFreeRoutineBody>
-      </ScrollView>
+      </ScrollView>:
+      <AddFreeRoutineBody>
+      <AddFreeRoutineHeader>
+        <BackArrowButton/>
+      </AddFreeRoutineHeader>
+      <Steps step={step}/>
+      <MarginVertical top={60}/>
+      <InputArea>
+        <StepNumber step={step}/>
+        <MarginVertical top={20}/>
+        <RoutineCategoryText>{categoryText[step-1]}</RoutineCategoryText>
+        <RoutineQuestionText>{questionText[step-1]}</RoutineQuestionText>
+        
+        {step===1 ?
+        <>
+        <MarginVertical top={40}/>
+        <AnswerInputArea>
+          <AnswerInput
+            placeholder="이름을 입력해주세요"
+            placeholderTextColor="rgba(255,255,255,.8)"
+            value={routineTitle}
+            onChange={(e) => {setRoutineTitle(e.nativeEvent.text)}}
+          />
+          {/* <Image source={check_icon_indigo} style={{width:30, height:30, position:'absolute', right:0}}/> */}
+        </AnswerInputArea>
+        <BorderLine/>
+        <MarginVertical top={296}/>
+      </>
+        : step === 2 ?
+        <View style={{width:'100%', justifyContent:'center', alignItems:'center'}}>
+          <MarginVertical top={60}/>
+          <View style={{display:'flex', justifyContent:'center', alignItems:'center', width:294, height:80}}>
+            <RoutineQuestionText style={{textAlign:'center'}}>{selectedDate.length > 0 ? `${selectedDate.map((day) => EngDayToKor(day) )}`:`루틴을 반복할 요일을\n선택해주세요`}</RoutineQuestionText>
+          </View>
+          <MarginVertical top={40}/>
+          <WeekCalandar selectedDate={selectedDate} setSelectedDate={setSelectedDate} isDuplication={true} version={"day"}/>
+          <MarginVertical top={150}/>
+        </View>
+  : step === 3 ? <StepThreeContents/> : <StepFourContents/>} 
+      </InputArea>
+      
+        <Button text={"다음 단계로"} handleButton={handleNextStep}
+          unChecked={step===1&&routineTitle.length === 0 ? true : step===2 && selectedDate.length === 0 ? true : step===3 && todoData.length === 0 ? true : false}/>
+      
+    </AddFreeRoutineBody>
+      }
+        
+      
       <AddFreeRoutineBg source={add_free_routine_bg}/>
     </SafeAreaView>
   )
