@@ -13,27 +13,36 @@ import TimeSliderBar from '../components/TimeSliderBar';
 import LinkIcon from '../components/LinkIcon';
 import DropDownArrowButton from '../components/DropDownArrowButton';
 import Button from '../components/Button';
-import { minToHour } from '../../util';
+import { getTimeDifference, minToHour } from '../../util';
 import CategoryEl from '../components/CategoryEl';
 import { useMyPage } from '../../hooks/useMyPage';
 import { useNavigation } from '@react-navigation/native';
+import { useTodo } from '../../hooks/useTodo';
 
 const DetailTodo = ({route}) => {
   const {todoInfo, index, routineTitle} = route.params;
-  const [time, setTime] = useState({});
+  const [time, setTime] = useState({startTime:todoInfo.startTime.slice(0,6), endTime:todoInfo.endTime.slice(0,6)});
   const categoryText = ["영어","제2외국어","독서","운동","취미","자기계발","기타"]
-  const [selected,setSelected] = useState("")
+  const [selectedCategory,setSelectedCategory] = useState(todoInfo.category)
   const {getUserLinkedApp} = useMyPage();
   const [myLinkedApp, setMyLinkedApp] = useState(['하이하이','하이하이'])
   const [selectedApp, setSelectedApp] = useState(todoInfo.linkApp)
   const [showDropDown, setShowDropDown] = useState(false)
   const navigation = useNavigation();
+  const [todoTitle, setTodoTitle] = useState(todoInfo.title)
+  const {handleTodoEdit, handleDeleteTodo} = useTodo()
 
   useEffect(() => {
     console.log(todoInfo)
     console.log(index)
     getUserLinkedApp(setMyLinkedApp)
+    
   }, [])
+
+  useEffect(() => {
+    console.log(time)
+    console.log(selectedCategory)
+  },[time, selectedCategory])
 
   const DropDownContents = ({list}) => {
 
@@ -49,6 +58,17 @@ const DetailTodo = ({route}) => {
         })}
       </View>
     )
+  }
+
+  const handleSaveButton = () => {
+    handleTodoEdit({
+      id:todoInfo.id,
+      title:todoTitle,
+      category:selectedCategory,
+      startTime:time.startTime,
+      endTime:time.endTime,
+      linkApp:selectedApp
+    })
   }
   
 
@@ -67,17 +87,17 @@ const DetailTodo = ({route}) => {
           <MarginVertical top={25}/>
           <DetailTodoText>{`할 일 ${index+1}`}</DetailTodoText>
           <MarginVertical top={12}/>
-          <DetailTodoTitle>{`${todoInfo.title}`}</DetailTodoTitle>
+          <DetailTodoTitle value={todoTitle} onChange={(e) => setTodoTitle(e.nativeEvent.text)} placeholder={`할 일의 이름 입력`}/>
         </TodoIntroArea>
         <MarginVertical top={65}/>
         <TotalTimeArea>
           <TotalTimeText>총 시간</TotalTimeText>
-          <TotalTimeText style={{fontSize:26}}>{`${minToHour(todoInfo.duration)}`}</TotalTimeText>
+          <TotalTimeText style={{fontSize:26}}>{`${getTimeDifference(time.startTime,time.endTime)}`}</TotalTimeText>
         </TotalTimeArea>
         <MarginVertical top={32}/>
-        <TimeSliderBar text={"에 시작해서"} version={"Start"} setOutValue={setTime} type={"time"}/>
+        <TimeSliderBar text={"에 시작해서"} version={"start"} setOutValue={setTime} type={"time"} timeInit={todoInfo.startTime}/>
         <MarginVertical top={65}/>
-        <TimeSliderBar text={"까지 끝내요"} version={"End"} setOutValue={setTime} type={"time"}/>
+        <TimeSliderBar text={"까지 끝내요"} version={"end"} setOutValue={setTime} type={"time"} timeInit={todoInfo.endTime}/>
         <MarginVertical top={80}/>
         <View style={{width:300}}>
           <Text style={{fontWeight:600, fontSize:18, textAlign:'left', color:colors.fontMain70}}>카테고리</Text>
@@ -87,7 +107,7 @@ const DetailTodo = ({route}) => {
           {categoryText.map((el,index) => {
             return(
               <View key={index}>
-              <CategoryEl text={el} selected={selected} setSelected={setSelected}/>
+              <CategoryEl text={el} selected={selectedCategory} setSelected={setSelectedCategory}/>
               </View>
             )
           })}
@@ -109,9 +129,9 @@ const DetailTodo = ({route}) => {
           }
         </LinkedAppArea>
         <MarginVertical top={80}/>
-        <Button text={"저장하기"} handleButton={() => navigation.goBack()}/>
+        <Button text={"저장하기"} handleButton={handleSaveButton}/>
         <MarginVertical top={24}/>
-        <TrashButton>
+        <TrashButton onPress={() => handleDeleteTodo(todoInfo.id)}>
           <TrashButtonImage source={trash_icon}/>
         </TrashButton>
       </DetailTodoBody>
@@ -172,10 +192,11 @@ const DetailTodoText = styled.Text`
   color:${colors.fontMain70};
 `
 
-const DetailTodoTitle = styled.Text`
+const DetailTodoTitle = styled.TextInput`
   font-weight:600;
   font-size:34px;
   color:${colors.fontMain};
+  height:40px;
 `
 
 const TotalTimeArea = styled.View`
