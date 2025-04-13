@@ -38,22 +38,27 @@ const RoutinePauseModal = ({isPauseModalVisible, setIsPauseModalVisible, version
         <Image source={isReturn ? check_icon_indigo:snowflake_icon} style={{width:isReturn ? 44 : 16, height: isReturn ? 44 : 16}}/>
         <MarginVertical top={15}/>
 
-        {isPause ? 
+        {version==="Complete" ? 
+        <RoutinePauseModalTitle>{"루틴을\n완료할까요?"}</RoutinePauseModalTitle>
+        : isPause ?
         <RoutinePauseModalTitle>{!isReturn ? "루틴을 다시\n시작할까요?" : "루틴이 다시\n시작되었어요!"}</RoutinePauseModalTitle>
-        : version==="Complete" ? <RoutinePauseModalTitle>{"루틴을\n완료할까요?"}</RoutinePauseModalTitle>:
+        : 
         <RoutinePauseModalTitle>{isReturn ? "루틴을 보관함에 넣어두었어요!" : "루틴을 보관함에 넣어둘까요?"}</RoutinePauseModalTitle>
         }
         <MarginVertical top={30}/>
-        {isPause ?
+        {version === "Complete" ?
+        <RoutinePauseModalText>{`${userInfo.displayName} 님의 일상을 책임졌던 루틴!\n드디어 결실을 맺은 걸까요?`}</RoutinePauseModalText>
+        : isPause ? 
         <RoutinePauseModalText>{isReturn ? "루틴 페이지에서\n잠시 미뤄둘 수 있어요!" : "돌아오셨군요!\n다시 열심히 해봐요!"}</RoutinePauseModalText>
-        : version === "Complete" ? <RoutinePauseModalText>{`${userInfo.displayName} 님의 일상을 책임졌던 루틴!\n드디어 결실을 맺은 걸까요?`}</RoutinePauseModalText>
         :<RoutinePauseModalText>{isReturn ? "루틴 페이지에서 언제든\n다시 시작할 수 있어요!" : "잠시 미뤄두었다가\n언제든 다시 시작할 수 있어요!"}</RoutinePauseModalText>
         }
         <MarginVertical top={isReturn? 72 : 50}/>
         {isReturn ? <></>
         :
         <>
-        <DoubleButton text1={"아니오"} text2={"예"} handleRightButton={() => handleRoutineSuspend(id, setIsReturn)}/>
+        <DoubleButton text1={"아니오"} text2={"예"}
+          handleRightButton={() => version==="Complete" ? handleRoutineComplete(id) : handleRoutineSuspend(id, setIsReturn)}
+          handleLeftButton={() => setIsPauseModalVisible(false)}/>
         <MarginVertical top={36}/>
         </>
         
