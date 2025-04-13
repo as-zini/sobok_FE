@@ -96,7 +96,6 @@ const StackNavigation = () => {
       <Stack.Screen name="DetailTodo" component={DetailTodo}/>
       <Stack.Screen name="ViewPoint" component={ViewPointScreen}/>
       <Stack.Screen name="StartAddAsset" component={StartAddAsset}/>
-      <Stack.Screen name="AiRoutineResult" component={ViewAiRoutineResult}/>
       <Stack.Screen name="AddFreeRoutine" component={AddFreeRoutine}/>
       <Stack.Screen name="AddTodo" component={AddTodo}/>
       <Stack.Screen name="CompleteAddRoutine" component={CompleteAddFreeRoutine}/>

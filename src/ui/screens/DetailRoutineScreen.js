@@ -25,6 +25,7 @@ import TodoEl from '../components/TodoEl';
 import axios from 'axios';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import baseUrl from '../../api/baseURL';
+import { useNavigation } from '@react-navigation/native';
 
 const DetailRoutineScreen = ({route}) => {
   const [isPauseModalVisible, setIsPauseModalVisible] = useState(false);
@@ -34,10 +35,11 @@ const DetailRoutineScreen = ({route}) => {
   const [routineDetailInfo, setRoutineDetailInfo] = useState({});
   const [isComplete, setIsComplete] = useState(false);
   const [isCompleteModalVisible, setIsCompleteModalVisible] = useState(false);
+  const navigation = useNavigation();
 
   const getRoutineDetail = async(id, setRoutineDetailInfo, setIsComplete) => {
     try {
-      const response = await axios.get(`https://sobok-app.com/routine/detail?routineId=${id}`)
+      const response = await baseUrl.get(`/routine/detail?routineId=${id}`)
       console.log("detail",response.data)
       setRoutineDetailInfo(response.data)
       setIsComplete(true)
@@ -142,7 +144,13 @@ const DetailRoutineScreen = ({route}) => {
           </View>
         </SavingIntroArea>
         <MarginVertical top={40}/>
-        <DoubleButton text1={"루틴 수정하기"} text2={routineDetailInfo.isSuspended ? "루틴 재개하기":"루틴 보류하기"} handleRightButton={() => setIsPauseModalVisible(true)}/>
+        <DoubleButton text1={"루틴 수정하기"} text2={routineDetailInfo.isSuspended ? "루틴 재개하기":"루틴 보류하기"}
+          handleRightButton={() => setIsPauseModalVisible(true)}
+          handleLeftButton={() => navigation.navigate("ViewAiRoutine",{
+            routineInfo:routineDetailInfo,
+            version:"free"
+          })}  
+        />
         
         <MarginVertical top={40}/>
         
