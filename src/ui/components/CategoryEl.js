@@ -29,6 +29,7 @@ const CategoryElBody = styled.TouchableOpacity`
   align-items:center;
   gap:5px;
   padding:0 20px;
+  
 `
 
 const CategoryIcon = styled.View`
