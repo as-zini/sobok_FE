@@ -5,10 +5,12 @@ import baseUrl from "../api/baseURL";
 import { useNowTodoStore } from "../store/todo";
 import { openApp } from "../ui/components/Linking";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
 dayjs.extend(isSameOrBefore)
 
 export const useTodo = () => {
   const {nowTodo, setNowTodo} = useNowTodoStore();
+  const navigation = useNavigation();
 
   const getTodayTodo = async(setTodayTodo,setIsReady) => {
     try {
@@ -122,24 +124,26 @@ export const useTodo = () => {
   //   }
   // }
 
-  const handleTodoEdit = async() => {
+  const handleTodoEdit = async(editedTodoInfo) => {
     try {
       const token = await AsyncStorage.getItem("access_token")
       const response = await baseUrl.put("/todo/update",{
-        "id": 61,
-        "title": "updatedTodo",
-        "category": "english",
-        "startTime": "01:00",
-        "endTime": "01:30",
-        "linkApp": "exampleApp1"
+        "id": editedTodoInfo.id,
+        "title": editedTodoInfo.title,
+        "category": editedTodoInfo.category,
+        "startTime": editedTodoInfo.startTime,
+        "endTime": editedTodoInfo.endTime,
+        "linkApp": editedTodoInfo.linkApp
       },{
         headers:{
           Authorization:`Bearer ${token}`
         }
       })
       console.log(response)
+      navigation.goBack()
     } catch (error) {
       console.log(error)
+      console.log(editedTodoInfo)
     }
   }
 
@@ -161,6 +165,21 @@ export const useTodo = () => {
     }
   }
 
+  const handleDeleteTodo = async(id) => {
+    try {
+      const token = await AsyncStorage.getItem("access_token")
+      const response = await baseUrl.delete(`/todo/delete?todoId=${id}`,{
+        headers:{
+          Authorization:`Bearer ${token}`
+        }
+      })
+      console.log(response.data)
+      navigation.goBack()
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return {
     getTodayTodo,
     getNotCompletedTodo,
@@ -169,6 +188,7 @@ export const useTodo = () => {
     getTodaySaveTime,
     startTodo,
     handleTodoEdit,
-    checkDuplicatedTodo
+    checkDuplicatedTodo,
+    handleDeleteTodo
   }
 }
