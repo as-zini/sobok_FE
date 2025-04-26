@@ -40,9 +40,12 @@ export const useTodo = () => {
         }
       })
       console.log("notCompletedTodo",response.data)
-      setNotCompletedTodo(response.data)
+      if(response.data.message.length === 0){
+        setNotCompletedTodo(response.data)
+      }
       setIsReady(true)
     } catch (error) {
+      console.log("getNotCompletedTodo")
       console.log(error)
     }
   }
@@ -58,12 +61,12 @@ export const useTodo = () => {
       })
       console.log(response.data);
       setLogId(response.data.todoLogId)
-      
-        openApp("산타")
+      openApp(linkApp)
+      console.log(linkApp)
       
     } catch (error) {
       console.log(error)
-      console.log(linkApp)
+      console.log(id)
     }
   }
 
@@ -92,8 +95,9 @@ export const useTodo = () => {
         }
       })
       console.log("getNow",response.data);
-      setNowTodo(response.data.message === '오늘의 할 일이 없습니다.' ? false : response.data)
+      setNowTodo(response.data.message === '오늘의 할 일이 없습니다.' ? false : [response.data])
     } catch (error) {
+      console.log("getNowTodo")
       console.log(error)
     }
   }
@@ -110,6 +114,7 @@ export const useTodo = () => {
       console.log(response.data);
       setSaveTime(response.data.totalTime)
     } catch (error) {
+      console.log("getTodaySaveTime")
       console.log(error)
     }
   }

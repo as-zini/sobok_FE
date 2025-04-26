@@ -55,7 +55,7 @@ const WeekCalandar = ({selectedDate, setSelectedDate, isDuplication, version, ac
                   if(selectedDate.includes(el)){
                     let result = selectedDate.filter((j) => el !== j)
                     setSelectedDate(result);
-                    console.log(result)
+                    
                   }else{
                     setSelectedDate(prev => [...prev, el])
                   }
