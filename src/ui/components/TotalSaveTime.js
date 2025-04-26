@@ -23,7 +23,7 @@ const TotalSaveTime = ({time}) => {
   const {nowTodo} = useNowTodoStore();
   const {getRoutineDetail} = useRoutine();
   const [routineDetailInfo, setRoutineDetailInfo] = useState({});
-  const [isComplete, setIsComplete] = useState(false);
+  const [isComplete, setIsComplete] = useState(true);
   const Data = [
     {
       title:"09:00 - 10:25",
@@ -54,7 +54,7 @@ const TotalSaveTime = ({time}) => {
   useEffect(() => {
     getRoutineDetail(nowTodo.routineId, setRoutineDetailInfo, setIsComplete)
 
-  }, [isComplete])
+  }, [])
 
   useEffect(() => {
     console.log("info", routineDetailInfo)
@@ -106,7 +106,7 @@ const TotalSaveTime = ({time}) => {
         <MarginVertical top={40}/>
         <View style={{width:"100%", justifyContent:'center', alignItems:'center'}}>
         <RestOfTime>
-          <RestOfTimeText>{`${minToHour(routineDetailInfo.todos.filter((el) => nowTodo.title === el.title)[0].duration - convertToMinutes(time))} 남았어요!`}</RestOfTimeText>
+          <RestOfTimeText>{`${minToHour(routineDetailInfo.todos?.filter((el) => nowTodo.title === el.title)[0].duration - convertToMinutes(time))} 남았어요!`}</RestOfTimeText>
         </RestOfTime>
         </View>
         <MarginVertical top={36}/>
@@ -182,6 +182,7 @@ const TotalSaveTimeBg = styled.Image`
   top:0;
   width:${size.width}px;
   z-index:-1;
+  height:${size.height}px;
 `
 
 const TotalSaveTimeText = styled.Text`

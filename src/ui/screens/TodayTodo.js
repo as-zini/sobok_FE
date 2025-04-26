@@ -29,54 +29,14 @@ const TodayTodo = () => {
   const [todayRoutine, setTodayRoutine] = useState([]);
   const {getRoutineByCalandar} = useRoutine();
   const {nowTodo} = useNowTodoStore();
-  const [isReady, setIsReady] = useState(false);
+  //일단 true로 바꿔놓음, getNotCompletedTodo api 오류 해결되면 다시 바꿀것!
+  const [isReady, setIsReady] = useState(true);
   const [saveTime, setSaveTime] = useState(0);
-  
 
-  
-  const Data = [
-    {
-      title:["아침에는 영어 공부", "영어 적금", "1H 25M", "09:00 - 10:25"],
-      data:[["영어 강의 1강", "스픽", "1H 00M", "6:00 - 7:00"],["영어 강의 1강", "스픽", "1H 00M", "6:00 - 7:00"]]
-    },{
-      title:["저녁에는 독서", "독서 적금", "1H 25M", "09:00 - 10:25"],
-      data:[["영어 강의 2강", "스픽", "1H 30M", "7:00 - 8:30"]]
-    }
-  ]
 
-//   function findNextTodo(data) {
-//     const now = new Date();
-//     const currentTime = now.toTimeString().split(" ")[0]; // 현재 시간 HH:mm:ss 형식으로 가져오기
-
-//     let nextTodo = null;
-//     let minTimeDiff = Infinity;
-
-//     data.forEach(routine => {
-//         routine.todos.forEach(todo => {
-//             const todoStartTime = todo.startTime;
-
-//             // 현재 시간보다 큰 (미래의) startTime만 비교
-//             if (todoStartTime > currentTime) {
-//                 const timeDiff = getTimeDifference(currentTime, todoStartTime);
-
-//                 if (timeDiff < minTimeDiff) {
-//                     minTimeDiff = timeDiff;
-//                     nextTodo = todo;
-//                 }
-//             }
-//         });
-//     });
-//     console.log("now!!",nextTodo)
-//     setNowTodo(nextTodo)
-// }
-
-// // 시간 차이를 초 단위로 계산하는 함수
-// function getTimeDifference(current, target) {
-//     const [ch, cm, cs] = current.split(":").map(Number);
-//     const [th, tm, ts] = target.split(":").map(Number);
-
-//     return (th * 3600 + tm * 60 + ts) - (ch * 3600 + cm * 60 + cs);
-// }
+  useEffect(() => {
+    console.log("now!!!",nowTodo)
+  },[]) 
 
   useEffect(() => {
     
@@ -122,7 +82,7 @@ const TodayTodo = () => {
 
   const BlurChild = () => {
     return(
-      <View style={{paddingHorizontal:30, paddingVertical:40}}>
+      <View style={{paddingHorizontal:30, paddingVertical:40, minHeight:"100%"}}>
         <View style={{display:'flex', flexDirection:'row', gap:4}}>
           <Text style={{fontSize:18, fontWeight:600, color:colors.gray70}}>{`총 ${notCompletedTodoCount}개의 할 일`}</Text>
         </View>
@@ -209,7 +169,7 @@ const TodayTodo = () => {
         <StartButton onPress={() => setIsStart(true)}>
           <Image source={button_icon} style={{width:48, height:34}}/>
           <MarginVertical top={12}/>
-          <StartButtonText>{isReady ? `${nowTodo?.title} 시작하기` : ""}</StartButtonText>
+          <StartButtonText>{nowTodo.length > 0 ? `${nowTodo[0].title} 시작하기` : ""}</StartButtonText>
         </StartButton>
       </TodayTodoBody>
       <TodayTodoBg source={today_todo_bg}/>
@@ -279,6 +239,40 @@ const StartButtonText = styled.Text`
   color:${colors.fontMain};
 
 `
+
+//function findNextTodo(data) {
+  //     const now = new Date();
+  //     const currentTime = now.toTimeString().split(" ")[0]; // 현재 시간 HH:mm:ss 형식으로 가져오기
+  
+  //     let nextTodo = null;
+  //     let minTimeDiff = Infinity;
+  
+  //     data.forEach(routine => {
+  //         routine.todos.forEach(todo => {
+  //             const todoStartTime = todo.startTime;
+  
+  //             // 현재 시간보다 큰 (미래의) startTime만 비교
+  //             if (todoStartTime > currentTime) {
+  //                 const timeDiff = getTimeDifference(currentTime, todoStartTime);
+  
+  //                 if (timeDiff < minTimeDiff) {
+  //                     minTimeDiff = timeDiff;
+  //                     nextTodo = todo;
+  //                 }
+  //             }
+  //         });
+  //     });
+  //     console.log("now!!",nextTodo)
+  //     setNowTodo(nextTodo)
+  // }
+  
+  // // 시간 차이를 초 단위로 계산하는 함수
+  // function getTimeDifference(current, target) {
+  //     const [ch, cm, cs] = current.split(":").map(Number);
+  //     const [th, tm, ts] = target.split(":").map(Number);
+  
+  //     return (th * 3600 + tm * 60 + ts) - (ch * 3600 + cm * 60 + cs);
+  // }
 
 
 

@@ -99,6 +99,8 @@ const Home = () => {
     }, [spareTimeTotal])
   const isLoading = Object.keys(nowTodo).length > 1 ? true : false;
 
+  
+
 
   return (
     <>
@@ -126,11 +128,11 @@ const Home = () => {
             <View style={{flexGrow:1}}>
             {/* {isLoading ? 
             <> */}
-            {nowTodo ?
+            {nowTodo.length > 0 ?
             <>
-              <TodoTime>{`${nowTodo ? nowTodo.startTime?.slice(0,5) : ""} - ${isLoading ? nowTodo.endTime?.slice(0,5) : ""}`}</TodoTime>
+              <TodoTime>{`${nowTodo.length > 0 ? nowTodo[0].startTime?.slice(0,5) : ""} - ${nowTodo.length > 0 ? nowTodo[0].endTime?.slice(0,5) : ""}`}</TodoTime>
               <MarginVertical top={5}/>
-              <TodoText>{nowTodo.length > 0 ? `${nowTodo.title} 외 ${getTimesAfter(nowTodo.startTime, todayTodo)}개` : ""}</TodoText>
+              <TodoText>{nowTodo.length > 0 ? `${nowTodo[0].title} 외 ${getTimesAfter(nowTodo[0].startTime, todayTodo)}개` : ""}</TodoText>
               <MarginVertical top={10}/>
             </>
             :
@@ -139,10 +141,10 @@ const Home = () => {
             <MarginVertical top={9}/>
             </>
             }  
-            <View style={{flexDirection:'row', justifyContent:'center',alignItems:'center'}}>
-            <TodoDuringTime style={{fontSize:nowTodo ? 48 : 34, flexGrow:1}}>{isLoading ? `${getTimeDifference(nowTodo.startTime, nowTodo.endTime)}` : "오늘은\n할 일이 없어요!"}</TodoDuringTime>
+            <View style={{flexDirection:'row', justifyContent:'center',alignItems:'center', paddingRight:30}}>
+            <TodoDuringTime style={{fontSize:nowTodo[0] ? 48 : 34, flexGrow:1}}>{nowTodo.length > 0 ? `${getTimeDifference(nowTodo[0].startTime, nowTodo[0].endTime)}` : "오늘은\n할 일이 없어요!"}</TodoDuringTime>
             <TouchableOpacity onPress={() => navigation.navigate("TodayTodo")} style={{justifyContent:'center', alignItems:'center'}}>
-              <Image source={nowTodo ? go_todo_icon : smile_icon} style={{width:nowTodo ? 64 : 88, height:nowTodo?50:80}}/>
+              <Image source={nowTodo.length > 0 ? go_todo_icon : smile_icon} style={{width:60, height:60, objectFit:'contain' }}/>
             </TouchableOpacity>
             </View>
             </View>

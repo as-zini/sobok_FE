@@ -60,6 +60,7 @@ export const useRoutine = () => {
       setIsComplete(true)
     } catch (error) {
       console.log("detail",error)
+      console.log(id)
     }
   }
 

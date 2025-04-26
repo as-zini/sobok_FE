@@ -59,6 +59,7 @@ export default CompleteTimer
 
 const CompleteTimerBody = styled.View`
  width:${size.width}px;
+ height:${size.height}px;
  display:flex;
  justify-content:center;
  align-items:center;
