@@ -59,6 +59,7 @@ const AssetLinkModal = ({isAssetLinkModalVisible, setIsAssetLinkModalVisible, in
           <Text style={{color:"#fff", fontSize:18, fontWeight:600}}>{version === "Routine" && searchValue.length === 0 ? `총 ${routineList.length}개의 루틴`: version === "Routine" && searchValue.length > 0 ? `총 ${routineList.filter((el) => el.title.includes(searchValue)).length}개의 루틴`
             : version !== "Routine" && searchValue.length > 0 ? `총 ${invalidSavingList.filter((el) => el.title.includes(searchValue)).length}개의 적금` : `총 ${invalidSavingList.length}개의 적금`}</Text>
         </View>
+        <MarginVertical top={20}/>
         <SavingListBody showsVerticalScrollIndicator={false}>
         
 
@@ -77,7 +78,7 @@ const AssetLinkModal = ({isAssetLinkModalVisible, setIsAssetLinkModalVisible, in
               </View>
             )
           })
-          :invalidSavingList.length > 0 && searchValue.length === 0 ?
+          :invalidSavingLis?.length > 0 && searchValue.length === 0 ?
           invalidSavingList.map((el,index) => {
             return(
               <TouchableOpacity key={index} onPress={() => {setPickedSaving([el]);setIsAssetLinkModalVisible(false)}}>
@@ -121,8 +122,9 @@ const AssetLinkModal = ({isAssetLinkModalVisible, setIsAssetLinkModalVisible, in
         <View>
           <Button text={"확인"} handleButton={handleCompleteButton}/>
         </View>
+        <AssetLinkModalBg source={asset_link_modal_bg}/>
       </AssetLinkModalBody>
-      <AssetLinkModalBg source={asset_link_modal_bg}/>
+      
     </Modal>
   )
 }
@@ -134,14 +136,17 @@ const AssetLinkModalBody = styled.View`
   position:absolute;
   left:-20px;
   display:flex;
-  bottom:20px;
+  bottom:-20px;
   align-items:center;
+  border-radius:20px;
+  height:550px;
+  padding:30px 0;
+  overflow:hidden;
 `
 
 const AssetLinkModalBg = styled.Image`
   width:${size.width}px;
   position:absolute;
-  left:-20px;
   bottom:-130px;
   z-index:-1;
 `

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components';
 import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 
@@ -12,7 +12,7 @@ import SnowFlakeIcon from '../components/SnowFlakeIcon';
 import NavigateArrowButton from '../components/NavigateArrowButton';
 import Calandar from '../components/Calandar';
 import MarginVertical from '../components/MarginVertical';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import dayjs from 'dayjs';
 import { useStatistic } from '../../hooks/useStatistic';
 import AssetEl from '../components/AssetEl';
@@ -21,6 +21,8 @@ import WeekCalandar from '../components/WeekCalandar';
 import AssetAddModal from '../components/AssetAddModal';
 import AssetLinkModal from '../components/AssetLinkModal';
 import { minToHour } from '../../util';
+import { useGetInfo } from '../../hooks/useGetInfo';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 const Statistic = () => {
   const [mode, setMode] = useState("월별");
@@ -40,30 +42,43 @@ const Statistic = () => {
   const [dateInfo, setDateInfo] = useState({});
   const [dateInfoByRoutine, setDateInfoByRoutine] = useState({});
   const [achieveList,setAchieveList] = useState([]);
+  const [selectedMonth, setSelectedMonth] = useState(dayjs())
+  const {getContinuitySuccess} = useGetInfo();
+  const [achieve, setAchieve] = useState(0);
 
- 
+  useFocusEffect(
+    useCallback(() => {
+      if(mode === "루틴별"){ 
+        getStatisticInfoByRoutine(pickedRoutine[0]?.id, setDateInfoByRoutine)
+        getStatisticDateByRoutine(pickedRoutine[0]?.id,today.startOf('week').format("YYYY-MM-DD"),today.format("YYYY-MM-DD"), setAchieveList)
+        getStatisticLogByRoutine(`${today.format("YYYY-MM")}-${selectedDate}`,pickedRoutine[0]?.id,setStatisticLog)
+        }else if(mode==="월별"){
+        getStatisticInfo(selectedMonth.startOf('month').format("YYYY-MM-DD"),selectedMonth.get("month")+1 === today.get("month")+1 ? today.format("YYYY-MM-DD") : selectedMonth.endOf('month').format("YYYY-MM-DD"),setDateInfo)
+        getStatisticDate(selectedMonth.startOf('month').format("YYYY-MM-DD"),selectedMonth.get("month")+1 === today.get("month")+1 ? today.format("YYYY-MM-DD") : selectedMonth.endOf('month').format("YYYY-MM-DD"),setAchieveList)
+        getStatisticLog(selectedRange.startDate, setStatisticLog)
+        }else if(mode==="주별"){
+        getStatisticInfo(today.startOf('week').format("YYYY-MM-DD"),today.format("YYYY-MM-DD"),setDateInfo)
+        getStatisticDate(today.startOf('week').format("YYYY-MM-DD"),today.format("YYYY-MM-DD"), setAchieveList)
+        getStatisticLog(`${today.format("YYYY-MM")}-${selectedDate}`, setStatisticLog)
+        }
+    }, [mode, pickedRoutine,selectedDate,selectedRange, selectedMonth]),
+  )
+
   useEffect(() => {
-    if(mode === "루틴별"){ 
-    getStatisticInfoByRoutine(pickedRoutine[0]?.id, setDateInfoByRoutine)
-    getStatisticDateByRoutine(pickedRoutine[0]?.id,today.startOf('week').format("YYYY-MM-DD"),today.format("YYYY-MM-DD"), setAchieveList)
-    getStatisticLogByRoutine(`${today.format("YYYY-MM")}-${selectedDate}`,pickedRoutine[0]?.id,setStatisticLog)
-    }else if(mode==="월별"){
-    getStatisticInfo(today.startOf('month').format("YYYY-MM-DD"),today.format("YYYY-MM-DD"),setDateInfo)
-    getStatisticDate(today.startOf('month').format("YYYY-MM-DD"),"2025-02-25",setAchieveList)
-    getStatisticLog(selectedRange.startDate, setStatisticLog)
-    }else if(mode==="주별"){
-    getStatisticInfo(today.startOf('week').format("YYYY-MM-DD"),today.format("YYYY-MM-DD"),setDateInfo)
-    getStatisticDate(today.startOf('week').format("YYYY-MM-DD"),today.format("YYYY-MM-DD"), setAchieveList)
-    getStatisticLog(`${today.format("YYYY-MM")}-${selectedDate}`, setStatisticLog)
-    }
-
-  }, [mode, pickedRoutine,selectedDate,selectedRange])
-
-  useEffect(() => {
-    console.log(statisticLog[0])
+    console.log(selectedRange)
     
-  }, [statisticLog])
+  }, [selectedRange])
   
+  useEffect(() => {
+    getContinuitySuccess(setAchieve)
+  },[])
+
+  function getWeekOfMonth() {
+    const startOfMonth = today.startOf('month');
+    const startDayOfWeek = startOfMonth.day(); // 0(일) ~ 6(토)
+    const currentDay = today.date(); // 1 ~ 31
+    return Math.ceil((currentDay + startDayOfWeek) / 7);
+  }
   
 
   const DropDown = () => {
@@ -85,7 +100,7 @@ const Statistic = () => {
       <>
       {todo.map((el,index) => {
         return(
-        <View style={{display:'flex', flexDirection:'row', width:300, gap:13}} key={index}>
+        <View style={{display:'flex', flexDirection:'row', width:300, gap:13, justifyContent:'center',alignItems:'center', backgroundColor:'red'}} key={index}>
                 <View style={{width:40, display:'flex', justifyContent:'center', alignItems:'center', gap:5}}>
                   <View style={{width:8, height:8, borderRadius:'50%', backgroundColor:colors.fontMain}}></View>
                   <VerticalBorderLine/>
@@ -113,7 +128,7 @@ const Statistic = () => {
 
   return (
     <SafeAreaView>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <StatisticBody>
           <MarginVertical top={30}/>
           <StatisticHeader>
@@ -131,7 +146,7 @@ const Statistic = () => {
           <MarginVertical top={36}/>
           <ContinuitySuccessArea>
             <SnowFlakeIcon size={16} color={"indigo"}/>
-            <ContinuitySuccessText>8일</ContinuitySuccessText>
+            <ContinuitySuccessText>{`${achieve}일`}</ContinuitySuccessText>
           </ContinuitySuccessArea>
           <MarginVertical top={30}/>
           <Image source={calandar_icon} style={{width:40, height:45}}/>
@@ -140,22 +155,22 @@ const Statistic = () => {
           {mode === "루틴별" ? (
             <View style={{display:'flex', flexDirection:'row', alignItems:'flex-end'}}>
               <StatisticTitle>{pickedRoutine[0]?.title}</StatisticTitle>
-              <TouchableOpacity >
-              <DropDownArrowButton size={40} color={""} handleArrowButton={() => setIsAssetLinkModalVisible(true)}/>
+              <TouchableOpacity onPress={() => setIsAssetLinkModalVisible(true)}>
+                <MaterialIcons name="keyboard-arrow-down" size={40} color={colors.fontMain} />
               </TouchableOpacity>
             </View>
           ) : (
             <View style={{display:'flex', flexDirection:'row', alignItems:'flex-end', gap:7, height:50}}>
-              <StatisticTitle>{`${today.format("M월")}`}</StatisticTitle>
-              <YearText>{`${today.get('year')}년`}</YearText>
+              <StatisticTitle>{`${selectedMonth.format("M월")}`}</StatisticTitle>
+              <YearText>{`${selectedMonth.get('year')}년`}</YearText>
             </View>
           )}
 
-          {mode === "주별" && <StatisticTitle>첫째주</StatisticTitle>}
+          {mode === "주별" && <StatisticTitle>{`${getWeekOfMonth()}주차`}</StatisticTitle>}
           </>
 
           <MarginVertical top={40}/>
-          <DuringText>{`${today.startOf('month').format('MM.DD')} - ${today.format('MM.DD')}`}</DuringText>
+          <DuringText>{mode === "월별" ? `${selectedMonth.startOf('month').format('MM.DD')} - ${selectedMonth.get('month') === today.get('month') ? today.format('MM.DD') : selectedMonth.endOf('month').format("MM.DD")}` : `${today.startOf('week').format('MM.DD')} - ${today.format('MM.DD')}`}</DuringText>
           <TotalTimeText>{mode === "루틴별"&&Object.keys(dateInfoByRoutine).length > 0?minToHour(dateInfoByRoutine.totalDuration): mode!=="루틴별"&&Object.keys(dateInfo).length > 0 ? minToHour(dateInfo.totalDuration) : ""}</TotalTimeText>
           <MarginVertical top={10}/>
           <View style={{display:'flex', flexDirection:'row', alignItems:'flex-end'}}>
@@ -168,7 +183,7 @@ const Statistic = () => {
           </View>
           <MarginVertical top={60}/>
           {mode === "월별" ?
-          <Calandar selectedRange={selectedRange} setSelectedRange={setSelectedRange} version={"statistic"} achieveList={achieveList}/>
+          <Calandar selectedRange={selectedRange} setSelectedRange={setSelectedRange} version={"statistic"} achieveList={achieveList} setSelectedMonth={setSelectedMonth}/>
           :
           <WeekCalandar version={"statistic"} selectedDate={selectedDate} setSelectedDate={setSelectedDate} achieveList={achieveList}/>
           } 
@@ -176,14 +191,16 @@ const Statistic = () => {
           <BorderLine/>
           <MarginVertical top={25}/>
           <LogArea>
-            <LogInfoText>{`${dayjs().format("YYYY.MM.")}${selectedDate}`}</LogInfoText>
+            <LogInfoText>{mode === "월별" ? `${selectedRange.startDate}`:`${dayjs().format("YYYY.MM.")}${selectedDate}`}</LogInfoText>
             <MarginVertical top={10}/>
             <LogInfoText style={{fontSize:20}}>{`${statisticLog.length>0?minToHour(statisticLog.reduce((sum,el) => sum+ el.duration,0)) : 0}`}</LogInfoText>
             <MarginVertical top={30}/>
             {statisticLog.map((el,index) => {
               return(
-                <View key={index}>
-                  <TimeText>{`${dayjs(el.startTime).format("HH:mm")} - ${dayjs(el.endTime).format("HH:mm")}`}</TimeText>
+                <View key={index} style={{alignItems:'center'}}>
+                  <View style={{display:'flex', justifyContent:'flex-start', width:'100%'}}>
+                    <TimeText>{`${dayjs(el.startTime).format("HH:mm")} - ${dayjs(el.endTime).format("HH:mm")}`}</TimeText>
+                  </View>
                   <MarginVertical top={20}/>
                   <AssetEl item={[el.title,el.accountTitle,minToHour(el.duration),""]} index={index} isLink={true} isTouchable={false} indexColor={"black"}/>
                   <MarginVertical top={20}/>
@@ -220,6 +237,8 @@ const StatisticBody = styled.View`
 
 const StatisticBg  = styled.Image`
   position:absolute;
+  width:${size.width}px;
+  height:${size.height}px;
   top:0;
   z-index:-1;
 `
@@ -309,7 +328,7 @@ const GotoReportText = styled.Text`
 `
 
 const BorderLine = styled.View`
-  width:304px;
+  width:${size.width-60}px;
   height:1px;
   background-color:#fff;
 `
