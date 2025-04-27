@@ -9,8 +9,9 @@ import calandar_arrow_left from '../../../assets/calandar_arrow_left.png';
 import calandar_arrow_right from '../../../assets/calandar_arrow_right.png';
 import { colors } from '../styles/colors';
 import MarginVertical from './MarginVertical';
+import { size } from '../styles/size';
 
-const Calandar = ({ type, selectedRange, setSelectedRange, version, achieveList }) => {
+const Calandar = ({ type, selectedRange, setSelectedRange, version, achieveList, setSelectedMonth }) => {
   const [today, setToday] = useState(dayjs());
   const [weeks, setWeeks] = useState([]);
   
@@ -64,6 +65,20 @@ const Calandar = ({ type, selectedRange, setSelectedRange, version, achieveList 
     setWeeks(weeks);
   };
 
+  const handleCalandarArrow = (direction) => {
+    if(direction === "right"){
+      setToday(today.add(1, "month"))
+      if(version==="statistic"){
+        setSelectedMonth(today.add(1,'month'))
+      }
+    }else{
+      setToday(today.subtract(1, "month"))
+      if(version==="statistic"){
+        setSelectedMonth(today.subtract(1,'month'))
+      }
+    }
+  }
+
   useEffect(() => {
     getCalandarData();
   }, [today, selectedRange]);
@@ -72,11 +87,11 @@ const Calandar = ({ type, selectedRange, setSelectedRange, version, achieveList 
     <CalandarBody>
       {version !== 'report' ?
       <SettingMonthArea>
-        <ArrowButton onPress={() => setToday(today.subtract(1, "month"))}>
+        <ArrowButton onPress={() => handleCalandarArrow("left")}>
           <ArrowButtonIcon source={calandar_arrow_left} />
         </ArrowButton>
         <CurrentMonthText>{today.format("MMMM YYYY")}</CurrentMonthText>
-        <ArrowButton onPress={() => setToday(today.add(1, "month"))}>
+        <ArrowButton onPress={() => handleCalandarArrow("right")}>
           <ArrowButtonIcon source={calandar_arrow_right} />
         </ArrowButton>
       </SettingMonthArea>
@@ -173,6 +188,7 @@ const CalandarBody = styled.View`
   display:flex;
   justify-content:center;
   align-items:center;
+  
 `
 
 const SettingMonthArea = styled.View`
@@ -198,13 +214,13 @@ const CurrentMonthText = styled.Text`
 `
 
 const CalandarContentsBody = styled.View`
-  width:310px;
-  height:235px;
+  
   background-color:#fff;
   border-radius:16px;
   display:flex;
   justify-content:center;
   align-items:center;
+  padding:20px 30px;
 `
 
 const DayArea = styled.View`
@@ -242,7 +258,7 @@ const DateEl = styled.TouchableOpacity`
   justify-content:center;
   align-items:center;
   box-sizing:border-box;
-  padding:9px;
+  padding:7px;
 `
 
 const DateText = styled.Text`
