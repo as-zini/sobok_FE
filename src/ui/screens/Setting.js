@@ -11,6 +11,7 @@ import NavigateArrowButton from '../components/NavigateArrowButton';
 import MarginVertical from '../components/MarginVertical';
 import { useNavigation } from '@react-navigation/native';
 import { useUserInfoStore } from '../../store/user';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 const Setting = () => {
   const settingCategory = ["계정 설정", "연동 설정","지원 문의" ,"약관 및 개인정보 처리 동의", "앱 버전"]
@@ -36,7 +37,7 @@ const Setting = () => {
             <UserName>{userInfo.displayName}</UserName>
             <EditButton>
               <EditText>프로필 편집</EditText>
-              <NavigateArrowButton/>
+              <MaterialIcons name="keyboard-arrow-right" size={24} color="#4c4c4c" />
             </EditButton>
           </View>
         </ProfileArea>
@@ -47,7 +48,7 @@ const Setting = () => {
               <View key={index}>
               <SettingEl onPress={() => navigation.navigate(`Setting${goToCategory[index]}`)}>
                 <SettingTitle>{el}</SettingTitle>
-                <NavigateArrowButton/>
+                <MaterialIcons name="keyboard-arrow-right" size={24} color="#4c4c4c" />
               </SettingEl>
               {index===1 ? <BorderLine/> : <></>}
               </View>
@@ -74,6 +75,8 @@ const SettingBg = styled.Image`
   position:absolute;
   top:0;
   z-index:-1;
+  width:${size.width}px;
+  height:${size.height}px;
 `
 
 const SettingHeader = styled.View`

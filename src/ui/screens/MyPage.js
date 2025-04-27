@@ -116,12 +116,12 @@ const MyPage = () => {
               <MarginVertical top={10}/>
               <View style={{flexDirection:'row'}}>
                 <Text style={{flexGrow:1, fontWeight:500,fontSize:18,color:colors.fontMain80}}>{userInfo.isPremium ? `${dayjs().get('month')+1}월\n구독권 사용중` : "프리미엄 구독권\n미사용중"}</Text>
-                <InfoText style={{fontSize:26}}>D-4</InfoText>
+                <InfoText style={{fontSize:26}}>{userInfo.isPremium ? `D-${dayjs().endOf('month').get('date')-dayjs().get('date')}` : `D-${dayjs().endOf('month').get('date')-dayjs().get('date')}`}</InfoText>
               </View>
               <MarginVertical top={10}/>
               <BorderLine style={{width:'100%'}}/>
               <MarginVertical top={7}/>
-              <Text style={{fontWeight:500,fontSize:14,color:colors.darkGray,textAlign:'right'}}>1월 29일까지</Text>
+              <Text style={{fontWeight:500,fontSize:14,color:colors.darkGray,textAlign:'right'}}>{dayjs().endOf('month').format("M월 DD일까지")}</Text>
             </View>
           </View>
         </MyInfoArea>

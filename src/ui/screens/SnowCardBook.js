@@ -35,6 +35,7 @@ import fairy from '../../../assets/fairy_graphic.png';
 import sun from '../../../assets/sun_graphic.png';
 import present from '../../../assets/present_graphic.png';
 import { useNavigation } from '@react-navigation/native';
+import { useUserInfoStore } from '../../store/user';
 
 
 const SnowCardBook = () => {
@@ -49,6 +50,7 @@ const SnowCardBook = () => {
   const {getSnowCardList} = useReport();
   const [myCardData, setMyCardData] = useState([])
   const navigation = useNavigation();
+  const {userInfo} = useUserInfoStore();
 
   useEffect(() => {
     getSnowCardList(setCardData, setMyCardData)
@@ -60,7 +62,7 @@ const SnowCardBook = () => {
 
   return (
     <SafeAreaView>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
       <SnowCardBookBody>
         <BackArrowButton/>
         <MarginVertical top={50}/>
@@ -68,7 +70,7 @@ const SnowCardBook = () => {
         <MarginVertical top={20}/>
         <SnowCardBookTitle>눈카드 도감</SnowCardBookTitle>
         <MarginVertical top={10}/>
-        <SnowCardBookText>{"지윤 님이 모은 눈카드입니다!\n아주 멋있는걸요?"}</SnowCardBookText>
+        <SnowCardBookText>{`${userInfo.displayName} 님이 모은 눈카드입니다!\n아주 멋있는걸요?`}</SnowCardBookText>
         <MarginVertical top={56}/>
         <SnowCardBookText style={{color:colors.fontMain60}}>{`총 ${cardData.length}개의 눈카드`}</SnowCardBookText>
         <MarginVertical top={20}/>

@@ -10,7 +10,6 @@ import { colors } from '../styles/colors';
 import MarginVertical from '../components/MarginVertical';
 import speack_icon from '../../../assets/speak_icon.png';
 import milli_icon from '../../../assets/milli_icon.png';
-import NavigateArrowButton from '../components/NavigateArrowButton';
 import Button from '../components/Button';
 import SnowFlakeIcon from '../components/SnowFlakeIcon';
 import TodoEl from '../components/TodoEl';
@@ -20,6 +19,7 @@ import * as Linking from 'expo-linking'
 import check_icon_black from '../../../assets/check_icon_black.png';
 import { useMyPage } from '../../hooks/useMyPage';
 import Fontisto from '@expo/vector-icons/Fontisto';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 const SettingLinkedApp = () => {
   const navigation = useNavigation();
@@ -92,11 +92,11 @@ const SettingLinkedApp = () => {
         <MarginVertical top={16}/>
         <SettingLinkedAppTitle>{isAppList ? "무슨 앱을\n연결할까요?" : showTodoList ? "어떤 할 일과\n연결할까요?" : "연동 앱"}</SettingLinkedAppTitle>
         <MarginVertical top={16}/>
-        <SettingLinkedAppText>{isAppList ? "연동하고 싶은 앱을 선택해주세요!" : showTodoList ? "스픽을 할 일과 연결하면\n자동으로 이동해요!":"할 일을 자동으로 시작할 수 있도록\n앱을 연동시킬 수 있어요!"}</SettingLinkedAppText>
+        <SettingLinkedAppText>{isAppList ? "연동하고 싶은 앱을 선택해주세요!" : showTodoList ? `${selectedApp}을 할 일과 연결하면\n자동으로 이동해요!`:"할 일을 자동으로 시작할 수 있도록\n앱을 연동시킬 수 있어요!"}</SettingLinkedAppText>
         <MarginVertical top={showTodoList ? 10:56}/>
         <SettingLinkedAppCount>{isAppList ? `총 ${linkedAppTitle.length}개의 앱` : showTodoList ? null : `총 ${myLinkedAppList?.length}개의 연동 앱`}</SettingLinkedAppCount>
         <MarginVertical top={13}/>
-        <ScrollView style={{height:330}}>
+        <ScrollView style={{height:330}} showsVerticalScrollIndicator={false}>
           <SettingLinkedAppContentsArea>
             {isAppList ? 
             appListTitle.map((el,index) => {
@@ -121,10 +121,12 @@ const SettingLinkedApp = () => {
             :
             myLinkedAppList?.map((el, index) => {
               return(
-                <LinkedAppEl key={index}>
+                <LinkedAppEl key={index} onPress={() => {setSelectedApp(el);setShowTodoList(true)}}>
                   <LinkedAppImg source={isAppList ? appListImg[index] : linkedAppImg[index]}/>
                   <LinkedAppTitle>{el}</LinkedAppTitle>
-                  <NavigateArrowButton handleArrowButton={() => {setSelectedApp(el);setShowTodoList(true)}}/>
+                  <TouchableOpacity onPress={() => {setSelectedApp(el);setShowTodoList(true)}}>
+                    <MaterialIcons name="keyboard-arrow-right" size={24} color="#4c4c4c" />
+                  </TouchableOpacity>
                 </LinkedAppEl>
               )
             })}
@@ -146,7 +148,7 @@ const SettingLinkedAppBody = styled.View`
   width:${size.width}px;
   display:flex;
   justify-content:center;
-  padding:0 30px;
+  padding:0 40px;
 `
 
 const SettingLinkedAppBg = styled.Image`
