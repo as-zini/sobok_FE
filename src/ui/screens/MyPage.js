@@ -111,7 +111,7 @@ const MyPage = () => {
                 </InfoEl>
               )
             })}
-            <View style={{width:295,height:140,borderRadius:16,backgroundColor:"#fff",paddingVertical:22,paddingHorizontal:28}}>
+            <View style={{width:"100%",height:140,borderRadius:16,backgroundColor:"#fff",paddingVertical:22,paddingHorizontal:28}}>
               <Image source={ticket} style={{width:40,height:21}}/>
               <MarginVertical top={10}/>
               <View style={{flexDirection:'row'}}>
@@ -166,6 +166,8 @@ const MyPageBg = styled.Image`
   position:absolute;
   top:0;
   z-index:-1;
+  width:${size.width}px;
+  height:${size.height}px;
 `
 
 const MyPageHeader = styled.View`
