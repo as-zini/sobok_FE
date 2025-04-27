@@ -45,6 +45,7 @@ const Statistic = () => {
   const [selectedMonth, setSelectedMonth] = useState(dayjs())
   const {getContinuitySuccess} = useGetInfo();
   const [achieve, setAchieve] = useState(0);
+  const [isNextMonth, setIsNextMonth] = useState(true);
 
   useFocusEffect(
     useCallback(() => {
@@ -64,10 +65,6 @@ const Statistic = () => {
     }, [mode, pickedRoutine,selectedDate,selectedRange, selectedMonth]),
   )
 
-  useEffect(() => {
-    console.log(selectedRange)
-    
-  }, [selectedRange])
   
   useEffect(() => {
     getContinuitySuccess(setAchieve)
@@ -161,8 +158,8 @@ const Statistic = () => {
             </View>
           ) : (
             <View style={{display:'flex', flexDirection:'row', alignItems:'flex-end', gap:7, height:50}}>
-              <StatisticTitle>{`${selectedMonth.format("M월")}`}</StatisticTitle>
-              <YearText>{`${selectedMonth.get('year')}년`}</YearText>
+              <StatisticTitle>{mode === "월별" ? `${selectedMonth.format("M월")}` : `${today.format("M월")}`}</StatisticTitle>
+              <YearText>{mode === "월별" ? `${selectedMonth.get('year')}년` : `${today.get('year')}년`}</YearText>
             </View>
           )}
 
@@ -185,13 +182,13 @@ const Statistic = () => {
           {mode === "월별" ?
           <Calandar selectedRange={selectedRange} setSelectedRange={setSelectedRange} version={"statistic"} achieveList={achieveList} setSelectedMonth={setSelectedMonth}/>
           :
-          <WeekCalandar version={"statistic"} selectedDate={selectedDate} setSelectedDate={setSelectedDate} achieveList={achieveList}/>
+          <WeekCalandar version={"statistic"} selectedDate={selectedDate} setSelectedDate={setSelectedDate} achieveList={achieveList} setIsNextMonth={setIsNextMonth}/>
           } 
           <MarginVertical top={40}/>
           <BorderLine/>
           <MarginVertical top={25}/>
           <LogArea>
-            <LogInfoText>{mode === "월별" ? `${selectedRange.startDate}`:`${dayjs().format("YYYY.MM.")}${selectedDate}`}</LogInfoText>
+            <LogInfoText>{mode === "월별" ? `${selectedRange.startDate ? selectedRange.startDate : today.format("YYYY-MM-DD")}`:`${isNextMonth && String(selectedDate).length === 1  ? dayjs().add(1,'month').format("YYYY-MM-") : dayjs().format("YYYY-MM-")}${selectedDate}`}</LogInfoText>
             <MarginVertical top={10}/>
             <LogInfoText style={{fontSize:20}}>{`${statisticLog.length>0?minToHour(statisticLog.reduce((sum,el) => sum+ el.duration,0)) : 0}`}</LogInfoText>
             <MarginVertical top={30}/>
