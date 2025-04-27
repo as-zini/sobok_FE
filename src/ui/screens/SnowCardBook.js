@@ -52,8 +52,10 @@ const SnowCardBook = () => {
 
   useEffect(() => {
     getSnowCardList(setCardData, setMyCardData)
-    
+    console.log("my",myCardData, cardData)
+
   }, [])
+
   
 
   return (
@@ -73,7 +75,7 @@ const SnowCardBook = () => {
         <CardContents>
           {allCardData.map((el, index) => {
             return(
-            <SnowCardEl key={index} onPress={() => {navigation.navigate('DetailSnowCard',{type:el.type, date:"2024.05.14"})}}>
+            <SnowCardEl key={index} onPress={() => {navigation.navigate('DetailSnowCard',{type:el.type, date:cardData.filter((card) => card.snowCard === el.type)[0].yearMonth})}}>
               <SnowCardBookText style={{color:!myCardData.includes(el.type) ? '#fff' : colors.fontMain70, zIndex:!myCardData.includes(el.type) ? 9 : 1}}>{`${el.title}\n눈 조각`}</SnowCardBookText>
                 <SnowCardImg
                   source={cardImgList[index]}
@@ -109,6 +111,8 @@ const SnowCardBookBg = styled.Image`
   position:absolute;
   top:0;
   z-index:-1;
+  width:${size.width}px;
+  height:${size.height}px;
 `
 
 const SnowCardBookTitle = styled.Text`
