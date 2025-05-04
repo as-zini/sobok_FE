@@ -71,10 +71,10 @@ const DetailRoutineScreen = ({route}) => {
     )
   }
 
-  const LenderItem = ({item, index, todoInfo, routineTitle}) => {
+  const LenderItem = ({item, index, todoInfo, routineTitle, days}) => {
     return(
       <>
-        <TodoEl data={item} index={index} todoInfo={todoInfo} routineTitle={routineTitle} isTouchable={true}/>
+        <TodoEl data={item} index={index} todoInfo={todoInfo} routineTitle={routineTitle} isTouchable={true} days={days}/>
         <MarginVertical top={40}/>
       </>
     )
@@ -92,7 +92,7 @@ const DetailRoutineScreen = ({route}) => {
             keyExtractor={(item, index) => item + index}
             scrollEnabled={false}
             renderItem={({item, index, todoInfo}) => (
-              <LenderItem item={item} index={index} todoInfo={routineDetailInfo.todos[index]} routineTitle={routineDetailInfo.title}></LenderItem>
+              <LenderItem item={item} index={index} todoInfo={routineDetailInfo.todos[index]} routineTitle={routineDetailInfo.title} days={routineDetailInfo.days}></LenderItem>
             )}
             renderSectionHeader={({section: {title}}) => (
               <ListHeader title={title}/>

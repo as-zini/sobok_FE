@@ -18,25 +18,27 @@ import CategoryEl from '../components/CategoryEl';
 import { useMyPage } from '../../hooks/useMyPage';
 import { useNavigation } from '@react-navigation/native';
 import { useTodo } from '../../hooks/useTodo';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 const DetailTodo = ({route}) => {
-  const {todoInfo, index, routineTitle} = route.params;
+  const {todoInfo, index, routineTitle,days} = route.params;
   const [time, setTime] = useState({startTime:todoInfo.startTime.slice(0,6), endTime:todoInfo.endTime.slice(0,6)});
   const categoryText = ["영어","제2외국어","독서","운동","취미","자기계발","기타"]
   const [selectedCategory,setSelectedCategory] = useState(todoInfo.category)
   const {getUserLinkedApp} = useMyPage();
-  const [myLinkedApp, setMyLinkedApp] = useState(['하이하이','하이하이'])
+  const [myLinkedApp, setMyLinkedApp] = useState([])
   const [selectedApp, setSelectedApp] = useState(todoInfo.linkApp)
   const [showDropDown, setShowDropDown] = useState(false)
   const navigation = useNavigation();
   const [todoTitle, setTodoTitle] = useState(todoInfo.title)
-  const {handleTodoEdit, handleDeleteTodo} = useTodo()
+  const {handleTodoEdit, handleDeleteTodo, checkDuplicatedTodo} = useTodo()
+  const [isDuplicated, setIsDuplicated] = useState(false);
 
   useEffect(() => {
     console.log(todoInfo)
     console.log(index)
     getUserLinkedApp(setMyLinkedApp)
-    
+    console.log("days",days)
   }, [])
 
   useEffect(() => {
@@ -44,11 +46,16 @@ const DetailTodo = ({route}) => {
     console.log(selectedCategory)
   },[time, selectedCategory])
 
+  useEffect(() => {
+    checkDuplicatedTodo(time, setIsDuplicated, days)
+  },[time])
+
   const DropDownContents = ({list}) => {
 
 
     return(
-      <View style={{width:295, borderRadius:8, backgroundColor:"#fff", paddingHorizontal:30, paddingVertical:10}}>
+      <View style={{width:295, borderRadius:8, backgroundColor:"#fff", paddingHorizontal:30, paddingVertical:10, height:170}}>
+        <ScrollView showsVerticalScrollIndicator={false}>
         {list.map((el,index) => {
           return(
           <TouchableOpacity key={index} style={{width:'100%', paddingVertical:10, alignItems:'flex-start'}} onPress={() => {setSelectedApp(el);setShowDropDown(false)}}>
@@ -56,6 +63,7 @@ const DetailTodo = ({route}) => {
           </TouchableOpacity>
           )
         })}
+        </ScrollView>
       </View>
     )
   }
@@ -64,7 +72,7 @@ const DetailTodo = ({route}) => {
     handleTodoEdit({
       id:todoInfo.id,
       title:todoTitle,
-      category:selectedCategory,
+      category:selectedCategory === "영어" ? "english" : selectedCategory === "제2외국어" ? "second-language" : selectedCategory === "독서" ? "reading" : selectedCategory === "운동" ? "exercise" : selectedCategory === "취미" ? 'hobby' : selectedCategory === "자기계발" ? 'self-improvement' : "other",
       startTime:time.startTime,
       endTime:time.endTime,
       linkApp:selectedApp
@@ -74,7 +82,7 @@ const DetailTodo = ({route}) => {
 
   return (
     <SafeAreaView>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
       <DetailTodoBody>
         <DetailTodoHeader>
           <View style={{position:'absolute', left:20}}>
@@ -93,6 +101,14 @@ const DetailTodo = ({route}) => {
         <TotalTimeArea>
           <TotalTimeText>총 시간</TotalTimeText>
           <TotalTimeText style={{fontSize:26}}>{`${getTimeDifference(time.startTime,time.endTime)}`}</TotalTimeText>
+          {isDuplicated ?
+          <View style={{flexDirection:'row', alignItems:'center',gap:5}}>
+            <MaterialCommunityIcons name="alert-circle" size={24} color="#FF4848" />
+            <Text style={{fontSize:14, color:"#FF4848", fontWeight:500}}>선택한 시간에 이미 할 일이 있습니다</Text>
+          </View>
+          :
+          <></>
+          }
         </TotalTimeArea>
         <MarginVertical top={32}/>
         <TimeSliderBar text={"에 시작해서"} version={"start"} setOutValue={setTime} type={"time"} timeInit={todoInfo.startTime}/>
@@ -129,7 +145,7 @@ const DetailTodo = ({route}) => {
           }
         </LinkedAppArea>
         <MarginVertical top={80}/>
-        <Button text={"저장하기"} handleButton={handleSaveButton}/>
+        <Button text={"저장하기"} handleButton={handleSaveButton} unChecked={isDuplicated || !selectedCategory}/>
         <MarginVertical top={24}/>
         <TrashButton onPress={() => handleDeleteTodo(todoInfo.id)}>
           <TrashButtonImage source={trash_icon}/>
