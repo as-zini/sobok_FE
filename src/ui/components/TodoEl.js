@@ -6,12 +6,12 @@ import LinkIcon from './LinkIcon'
 import MarginVertical from './MarginVertical'
 import { useNavigation } from '@react-navigation/native'
 
-const TodoEl = ({data, index, todoInfo, routineTitle, isTouchable}) => {
+const TodoEl = ({data, index, todoInfo, routineTitle, isTouchable, days}) => {
   const navigation = useNavigation();
 
   return(
     isTouchable ? 
-    <TodoElBody onPress={() => navigation.navigate("DetailTodo", {todoInfo:todoInfo, index:index, routineTitle:routineTitle})}>
+    <TodoElBody onPress={() => navigation.navigate("DetailTodo", {todoInfo:todoInfo, index:index, routineTitle:routineTitle, days:days})}>
     <TodoIndex>
       <TodoIndexText>{index+1}</TodoIndexText>
     </TodoIndex>
