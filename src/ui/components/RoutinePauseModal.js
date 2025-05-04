@@ -32,6 +32,7 @@ const RoutinePauseModal = ({isPauseModalVisible, setIsPauseModalVisible, version
       animationOutTiming={1000}
       onBackdropPress={() => setIsPauseModalVisible(false)}
       onModalHide={() => getRoutineDetail(id, setRoutineDetailInfo, setIsComplete)}
+      style={{ margin: 0, justifyContent: 'flex-end' }}
     >
       <RoutinePauseModalBody height={isReturn ? 310 : 400}>
         <MarginVertical top={isReturn ? 52 : 0}/>
@@ -63,8 +64,9 @@ const RoutinePauseModal = ({isPauseModalVisible, setIsPauseModalVisible, version
         </>
         
         }
+        <RoutinePauseModalBg source={routine_pause_bg} bottom={isReturn ? -80 : -20}/>
       </RoutinePauseModalBody>
-      <RoutinePauseModalBg source={routine_pause_bg} bottom={isReturn ? -80 : -20}/>
+      
     </Modal>
   )
 }
@@ -74,20 +76,25 @@ export default RoutinePauseModal
 
 const RoutinePauseModalBody = styled.View`
   width:${size.width}px;
-  height:${(props) => props.width}px;
+  height:${(props) => props.height}px;
   display:flex;
   justify-content:center;
   align-items:center;
   position:absolute;
   bottom:0;
-  left:-20;
+  border-radius:20px;
+  overflow:hidden;
+  background-color:red;
+  
 `
 
 const RoutinePauseModalBg = styled.Image`
   position:absolute;
-  bottom:${(props) => props.bottom}px;
-  left:-20;
+  
   z-index:-1;
+  width:${size.width}px;
+  height:100%;
+  top:0
   
 `
 
