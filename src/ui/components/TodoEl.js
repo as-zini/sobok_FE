@@ -57,14 +57,14 @@ export default TodoEl
 
 
 const TodoElBody = styled.TouchableOpacity`
-  width:300px;
+  width:100%;
   height:64px;
   display:flex;
   gap:8px;
 `
 
 const TodoElBodyNotTouchable = styled.TouchableOpacity`
-  width:300px;
+  width:100%;
   height:64px;
   display:flex;
   gap:8px;
@@ -114,7 +114,7 @@ const TodoTime = styled.Text`
 
 const SetTodoGap = styled.View`
   display:flex;
-  width:300px;
+  width:100%;
   flex-direction:row;
   align-items:center;
 `
