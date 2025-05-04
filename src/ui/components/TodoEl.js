@@ -23,6 +23,7 @@ const TodoEl = ({data, index, todoInfo, routineTitle, isTouchable}) => {
     </SetTodoGap>
     <SetTodoGap>
       <View style={{display:'flex', flexDirection:'row', flexGrow:1}}>
+        
         <LinkIcon size={14}/>
         <LinkedAppText>{data[1]}</LinkedAppText>
       </View>
