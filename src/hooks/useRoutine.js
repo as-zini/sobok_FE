@@ -25,15 +25,15 @@ export const useRoutine = () => {
     }
   }
 
-  const getRoutineByCalandar = async(selectedDate, setTodayRoutineList) => {
+  const getRoutineByCalandar = async(selectedDate, setTodayRoutineList, isNextMonth) => {
     const year = dayjs().get("year");
-    const month = dayjs().format("MM");
+    const month = String(selectedDate).length === 1 && isNextMonth === true ? dayjs().add(1,'month').format("MM") : dayjs().format("MM");
     
     
     try {
       const token = await AsyncStorage.getItem("access_token")
 
-      const response = await baseUrl.get(`/routine/by-date?dateString=${year}-${month}-${selectedDate}`,{
+      const response = await baseUrl.get(`/routine/by-date?dateString=${year}-${month}-${String(selectedDate).length === 1 ? '0'+String(selectedDate) : selectedDate}`,{
         headers:{
           Authorization:`Bearer ${token}`
         }
@@ -43,6 +43,8 @@ export const useRoutine = () => {
       response.data.message ? setTodayRoutineList([]) : setTodayRoutineList(response.data)
     } catch (error) {
       console.log("cal",error)
+      console.log("token",token)
+      console.log("selected",`${year}-${month}-${String(selectedDate).length === 1 ? '0'+ String(selectedDate) : selectedDate}`)
     }
   }
 

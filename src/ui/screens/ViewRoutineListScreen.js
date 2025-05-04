@@ -25,6 +25,7 @@ const ViewRoutineListScreen = () => {
   const [isComplete, setIsComplete] = useState(false);
   const [selectedDate, setSelectedDate] = useState(dayjs().get("date"));
   const [todayRoutineList, setTodayRoutineList] = useState([])
+  const [isNextMonth, setIsNextMonth] = useState(false);
   
   let totalTime = 0;
   for(let i = 0; i<routineInfo.length;i++){
@@ -34,7 +35,7 @@ const ViewRoutineListScreen = () => {
   useFocusEffect(
     useCallback(() => {
       getRoutineByList(setRoutineInfo, setIsComplete)
-      getRoutineByCalandar(selectedDate, setTodayRoutineList)
+      getRoutineByCalandar(selectedDate, setTodayRoutineList, isNextMonth)
     }, [isComplete, isList, selectedDate]),
   )
   
@@ -117,7 +118,7 @@ const ViewRoutineListScreen = () => {
         <>
           <Text style={{fontWeight:600, fontSize:18, color:colors.darkGray}}>{WeekOfToday}</Text>
           <MarginVertical top={33}/>
-          <WeekCalandar selectedDate={selectedDate} setSelectedDate={setSelectedDate}/>
+          <WeekCalandar selectedDate={selectedDate} setSelectedDate={setSelectedDate} setIsNextMonth={setIsNextMonth} version={"date"}/>
           <MarginVertical top={58}/>
           <View style={{display:'flex', alignItems:'flex-start', width:310}}>
             <SectionTitle>{`총 ${todayRoutineList.length}개의 루틴`}</SectionTitle>
@@ -171,12 +172,17 @@ export default ViewRoutineListScreen
 const ViewRoutineListBody = styled.View`
   display:flex;
   align-items:center;
+  
+  
 `
 
 const ViewRoutineListBg = styled.Image`
   position:absolute;
   top:0;
+  width:${size.width}px;
+  height:${size.height}px;
   z-index:-1;
+  
 `
 
 const ViewRoutineListHeader = styled.View`

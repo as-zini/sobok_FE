@@ -239,7 +239,10 @@ const WeekCalandar = ({ selectedDate, setSelectedDate, isDuplication, version, a
     }
 
     setWeekDates(dateList);
-    setIsNextMonth(hasNextMonth);
+    if(version !== "day"){
+      setIsNextMonth(hasNextMonth);
+
+    }
   }
 
   useEffect(() => {

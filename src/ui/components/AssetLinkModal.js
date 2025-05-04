@@ -78,7 +78,7 @@ const AssetLinkModal = ({isAssetLinkModalVisible, setIsAssetLinkModalVisible, in
               </View>
             )
           })
-          :invalidSavingLis?.length > 0 && searchValue.length === 0 ?
+          :invalidSavingList?.length > 0 && searchValue.length === 0 ?
           invalidSavingList.map((el,index) => {
             return(
               <TouchableOpacity key={index} onPress={() => {setPickedSaving([el]);setIsAssetLinkModalVisible(false)}}>
