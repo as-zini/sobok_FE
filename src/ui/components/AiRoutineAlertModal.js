@@ -52,8 +52,9 @@ const AiRoutineAlertModal = ({isPauseModalVisible, setIsPauseModalVisible}) => {
           handleLeftButton={() => {setIsPauseModalVisible(false);navigation.navigate('Tabs')}}
           handleRightButton={() => {setIsPauseModalVisible(false);navigation.navigate('TestStart')}}/>
         <MarginVertical top={30}/>
+        <RoutinePauseModalBg source={ai_routine_alert_bg} bottom={isReturn ? -80 : -20}/>
       </RoutinePauseModalBody>
-      <RoutinePauseModalBg source={ai_routine_alert_bg} bottom={isReturn ? -80 : -20}/>
+      
     </Modal>
   )
 }
@@ -68,14 +69,16 @@ const RoutinePauseModalBody = styled.View`
   align-items:center;
   position:absolute;
   bottom:0;
+  
   left:-20;
 `
 
 const RoutinePauseModalBg = styled.Image`
   position:absolute;
   bottom:${(props) => props.bottom}px;
-  left:-20;
+  width:100%;
   z-index:-1;
+  border-radius:20px;
   
 `
 

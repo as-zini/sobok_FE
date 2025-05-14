@@ -5,6 +5,7 @@ import { colors } from '../styles/colors'
 import LinkIcon from './LinkIcon'
 import MarginVertical from './MarginVertical'
 import { useNavigation } from '@react-navigation/native'
+import { size } from '../styles/size'
 
 const TodoEl = ({data, index, todoInfo, routineTitle, isTouchable, days}) => {
   const navigation = useNavigation();
@@ -57,14 +58,14 @@ export default TodoEl
 
 
 const TodoElBody = styled.TouchableOpacity`
-  width:100%;
+  width:${(size.width-60)*.9}px;
   height:64px;
   display:flex;
   gap:8px;
 `
 
 const TodoElBodyNotTouchable = styled.TouchableOpacity`
-  width:100%;
+  width:${(size.width-60)*.9}px;
   height:64px;
   display:flex;
   gap:8px;

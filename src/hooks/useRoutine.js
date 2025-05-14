@@ -162,6 +162,7 @@ export const useRoutine = () => {
         }
       })
       console.log(response.data);
+      navigation.navigate("AiRoutineComplete",{isComplete:true})
     } catch (error) {
       console.log(error)
       console.log(newRoutineData)
@@ -189,6 +190,23 @@ export const useRoutine = () => {
     }
   }
 
+  const handleCompleteRoutine = async(id, setIsPauseModalVisible) => {
+    try {
+      const token = await AsyncStorage.getItem("access_token")
+      const response = await baseUrl.post(`/routine/complete?routineId=${id}`,{
+        headers:{
+          Authorization:`Bearer ${token}`
+        }
+      })
+      console.log(response.data)
+      navigation.navigate("ViewRoutine")
+    } catch (error) {
+      console.log(error)
+      console.log(id)
+      
+    }
+  }
+
   return {
     getRoutineByList,
     getRoutineByCalandar,
@@ -198,6 +216,7 @@ export const useRoutine = () => {
     getRoutineCount,
     handleRoutineDelete,
     handleAddAiRoutine,
-    handleEditRoutine
+    handleEditRoutine,
+    handleCompleteRoutine
   }
 }
