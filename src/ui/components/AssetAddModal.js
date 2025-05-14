@@ -55,13 +55,13 @@ const AssetAddModal = ({isAssetAddModalVisible, setIsAssetAddModalVisible}) => {
                   </View>
                   {index === 0 ? 
                   <View style={{display:'flex', flexDirection:'row', marginTop:42}}>
-                    <AssetText style={{flexGrow:1, fontSize:16}}>{assetText[index]}</AssetText>
+                    <AssetText style={{flexGrow:1, fontSize:15}}>{assetText[index]}</AssetText>
                     <AssetIcon source={assetIcon[index]} style={{width:index===0? 56 : index===1 ? 40: 34, height:index===0?40:index===1 ? 25 : 35}}/>
                   </View>
                   :
                   <>
                   <AssetText style={{flexGrow:1, marginTop:12}}>{assetText[index]}</AssetText>
-                  <View style={{display:'flex', alignItems:'flex-end'}}>
+                  <View style={{display:'flex', alignItems:'flex-end', position:'absolute', right:10, bottom:20}}>
                     <AssetIcon source={assetIcon[index]} style={{width:index===0? 56 : index===1 ? 40: 34, height:index===0?40:index===1 ? 25 : 35}}/>
                   </View>
                   </>
@@ -70,8 +70,9 @@ const AssetAddModal = ({isAssetAddModalVisible, setIsAssetAddModalVisible}) => {
               )
             })}
           </AssetAddArea>
+          <AssetAddModalBg source={asset_add_bg}/> 
         </AssetAddModalBody>
-        <AssetAddModalBg source={asset_add_bg}/> 
+        
 
       </Modal>
 
@@ -92,13 +93,16 @@ const AssetAddModalBody = styled.View`
   display:flex;
   justify-content:center;
   align-items:center;
+  overflow:hidden;
+  
 `
 
 const AssetAddModalBg = styled.Image`
   position:absolute;
-  bottom:-40px;
-  right:-20px;
   z-index:-1;
+  width:100%;
+  height:100%;
+  resize-mode:cover;
 `
 
 const AssetAddModalIcon = styled.Image`
@@ -143,7 +147,7 @@ const AssetCategory = styled.Text`
 const AssetText = styled.Text`
   color:${colors.gray77};
   font-weight:600;
-  font-size:14px;
+  font-size:13px;
   line-height:22px;
 `
 

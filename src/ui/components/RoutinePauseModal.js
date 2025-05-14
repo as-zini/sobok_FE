@@ -17,7 +17,7 @@ import { useUserInfoStore } from '../../store/user';
 const RoutinePauseModal = ({isPauseModalVisible, setIsPauseModalVisible, version, id, setRoutineDetailInfo, setIsComplete, isPause}) => {
   const [isReturn, setIsReturn] = useState(false);
   const {handleRoutineSuspend} = useRoutine();
-  const {getRoutineDetail} = useRoutine();
+  const {getRoutineDetail, handleCompleteRoutine} = useRoutine();
   const {userInfo} = useUserInfoStore();
   
 
@@ -58,7 +58,7 @@ const RoutinePauseModal = ({isPauseModalVisible, setIsPauseModalVisible, version
         :
         <>
         <DoubleButton text1={"아니오"} text2={"예"}
-          handleRightButton={() => version==="Complete" ? handleRoutineComplete(id) : handleRoutineSuspend(id, setIsReturn)}
+          handleRightButton={() => version==="Complete" ? handleCompleteRoutine(id, setIsPauseModalVisible) : handleRoutineSuspend(id, setIsReturn)}
           handleLeftButton={() => setIsPauseModalVisible(false)}/>
         <MarginVertical top={36}/>
         </>

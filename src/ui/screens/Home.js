@@ -132,7 +132,7 @@ const Home = () => {
             <>
               <TodoTime>{`${nowTodo.length > 0 ? nowTodo[0].startTime?.slice(0,5) : ""} - ${nowTodo.length > 0 ? nowTodo[0].endTime?.slice(0,5) : ""}`}</TodoTime>
               <MarginVertical top={5}/>
-              <TodoText>{nowTodo.length > 0 ? `${nowTodo[0].title} 외 ${getTimesAfter(nowTodo[0].startTime, todayTodo)}개` : ""}</TodoText>
+              {/* <TodoText>{nowTodo.length > 0 ? `${nowTodo[0].title} 외 ${getTimesAfter(nowTodo[0]?.startTime, todayTodo)}개` : ""}</TodoText> */}
               <MarginVertical top={10}/>
             </>
             :

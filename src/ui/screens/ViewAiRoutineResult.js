@@ -54,7 +54,7 @@ const ViewAiRoutineResult = ({route}) => {
         linkApp: ""  // 기본값 설정
       }))
     });
-    navigation.navigate("AiRoutineComplete",{isComplete:true})
+    
     }else{
       handleEditRoutine({
         accountId:pickedSaving[0].id,

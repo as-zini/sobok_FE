@@ -35,6 +35,7 @@ import selected_step3_1 from '../../../assets/selected_step3_1.png';
 import selected_step3_2 from '../../../assets/selected_step3_2.png';
 import { useUserInfoStore } from '../../store/user'
 import { useTodo } from '../../hooks/useTodo'
+import { size } from '../styles/size'
 
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
@@ -172,28 +173,28 @@ const Test = () => {
               <TestCheckText style={{color:isClicked === 1 ? "#fff" : colors.gray77}}>출퇴근 시간{"\n(대중교통)"}</TestCheckText>
               {isClicked !== 1 ?
               <TestCheckIcon source={bus_icon} style={{width:76, height:55}}/>:
-              <Image source={clicked_bus_button} style={{zIndex:-1}}/>
+              <Image source={clicked_bus_button} style={{zIndex:-1, width:"100%", height:'100%'}}/>
               }
             </TestCheckEl>
             <TestCheckEl onPress={() => setIsClicked(2)}>
               <TestCheckText style={{color:isClicked === 2 ? "#fff" : colors.gray77}}>출퇴근 시간{"\n(자가용)"}</TestCheckText>
               {isClicked !== 2 ?
               <TestCheckIcon source={car_icon} style={{width:62, height:40}}/>
-              :<Image source={clicked_car_button} style={{zIndex:-1}}/>
+              :<Image source={clicked_car_button} style={{zIndex:-1, width:"100%", height:'100%'}}/>
               } 
             </TestCheckEl>
             <TestCheckEl onPress={() => setIsClicked(3)}>
               <TestCheckText style={{color:isClicked === 3 ? "#fff" : colors.gray77}}>쉬는 시간 및{"\n"}자유 시간</TestCheckText>
               {isClicked !== 3 ?
               <TestCheckIcon source={game_icon} style={{width:61, height:48}}/>
-              :<Image source={clicked_game_button} style={{zIndex:-1}}/>
+              :<Image source={clicked_game_button} style={{zIndex:-1, width:"100%", height:'100%'}}/>
                 }
             </TestCheckEl>
             <TestCheckEl onPress={() => setIsClicked(4)}>
               <TestCheckText style={{color:isClicked === 4 ? "#fff" : colors.gray77}}>대기 시간</TestCheckText>
               {isClicked !== 4 ?
               <TestCheckIcon source={free_time_icon} style={{width:48, height:49}}/>
-              :<Image source={clicked_time_button} style={{zIndex:-1}}/>
+              :<Image source={clicked_time_button} style={{zIndex:-1, width:"100%", height:'100%'}}/>
                 }
             </TestCheckEl>
           
@@ -350,7 +351,7 @@ const Test = () => {
             <MarginVertical top={200}/>
           </ScrollView>
           : step===4 && detailStep === 2 ?
-          <View style={{display:'flex', gap:10}}>
+          <View style={{display:'flex', gap:10, width:"100%"}}>
             <Step4Input
               placeholder={"ex)영어 강의 듣기를 포함시켜줘"}
               value={step4Value}
@@ -358,7 +359,7 @@ const Test = () => {
               placeholderTextColor="#fff"
               style={{color:step4Value.length > 30 ? "#FF4848" : colors.fontMain}}
             />
-            <View style={{width:294, height:1, backgroundColor:"#fff"}}></View>
+            <View style={{width:"90%", height:1, backgroundColor:"#fff"}}></View>
             <Text style={{color:step4Value.length > 30 ? "#FF4848" : "#fff", fontWeight:500, fontSize:14}}>{`${step4Value.length}/30`}</Text>
           </View>
           :
@@ -454,7 +455,7 @@ const TestCheckIcon = styled.Image`
 
 const SpareTimeAddButton = styled.TouchableOpacity`
   background-color:rgba(255,255,255,.4);
-  width:290px;
+  width:90%;
   height:70px;
   z-index:9;
   border-radius:8px;
@@ -501,6 +502,6 @@ const Step4Input = styled.TextInput`
   color:${colors.fontMain};
   font-size:18px;
   font-weight:500;
-  width:294px;
+  width:90%;
 `
 

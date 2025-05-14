@@ -24,7 +24,7 @@ export default SimpleTodoEl
 
 
 const SimpleTodoBody = styled.View`
-  width:294px;
+  width:90%;
   height:70px;
   background-color:#fff;
   padding:17px 20px;
