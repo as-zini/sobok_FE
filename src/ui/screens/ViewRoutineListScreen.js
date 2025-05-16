@@ -34,8 +34,9 @@ const ViewRoutineListScreen = () => {
 
   useFocusEffect(
     useCallback(() => {
-      getRoutineByList(setRoutineInfo, setIsComplete)
-      getRoutineByCalandar(selectedDate, setTodayRoutineList, isNextMonth)
+      if(isList)getRoutineByList(setRoutineInfo, setIsComplete)
+      else getRoutineByCalandar(selectedDate, setTodayRoutineList, isNextMonth)
+      
     }, [isComplete, isList, selectedDate]),
   )
   

@@ -7,6 +7,7 @@ import { useRoutine } from '../../hooks/useRoutine'
 import { colors } from '../styles/colors'
 import search_icon from '../../../assets/search_icon.png';
 import { minToHour } from '../../util'
+import { size } from '../styles/size'
 
 
 const ConnectRoutine = ({pickedRoutines, setPickedRoutines, setStep}) => {
@@ -41,7 +42,7 @@ const ConnectRoutine = ({pickedRoutines, setPickedRoutines, setStep}) => {
               </AnswerInputArea>
               <BorderLine/>
               <MarginVertical top={55}/>
-              <View showsVerticalScrollIndicator={false}>
+              <ScrollView showsVerticalScrollIndicator={false} style={{height:"47%"}}>
                 <View>
                   <Text style={{fontSize:18, fontWeight:600, color:"#fff"}}>{`총 ${searchValue.length === 0 ? routineInfo.filter((el) => el.accountTitle.length === 0).length : routineInfo.filter((el) => el.title.includes(searchValue)).length}개의 루틴`}</Text>
                   <MarginVertical top={40}/>
@@ -89,7 +90,7 @@ const ConnectRoutine = ({pickedRoutines, setPickedRoutines, setStep}) => {
                     </TouchableOpacity>
                   )
                 })}
-              </View>
+              </ScrollView>
               <TouchableOpacity style={{width:294, display:'flex', justifyContent:'center', alignItems:'center'}} onPress={() => setStep(prev => prev + 1)}>
                 <Text style={{fontWeight:500, fontSize:14, color:colors.gray70}}>나중에 설정하기</Text>
               </TouchableOpacity>
@@ -105,8 +106,7 @@ export default ConnectRoutine
 const Body = styled.View`
   display:flex;
   justify-content:center;
-  align-items:center;
-  flex:1;
+  width:100%;
 `
 const Header = styled.View`
   width:100%;
@@ -115,7 +115,8 @@ const Header = styled.View`
 `
 
 const Bg = styled.Image`
-  width:100%;
+  width:${size.width}px;
+  height:${size.height}px;
   position:absolute;
   top:0;
   z-index:-1;

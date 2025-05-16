@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native'
 import LinkIcon from './LinkIcon'
 import { colors } from '../styles/colors'
 import MarginVertical from './MarginVertical'
+import { size } from '../styles/size'
 
 const AssetEl = ({item, index, isLink, category, isInvalid, isTouchable, indexColor, stepColor}) => {
   const navigation = useNavigation();
@@ -83,7 +84,7 @@ const SavingEl = styled.TouchableOpacity`
   justify-content:center;
   align-items:center;
   gap:13px;
-  width:290px;
+  width:${size.width-70}px;
 `
 
 const SavingElNotTouchable = styled.View`
@@ -91,7 +92,7 @@ const SavingElNotTouchable = styled.View`
   flex-direction:row;
   justify-content:center;
   align-items:center;
-  width:290px;
+  width:${size.width-70}px;
 `
 
 const SavingTitle = styled.Text`

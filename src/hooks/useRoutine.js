@@ -187,6 +187,8 @@ export const useRoutine = () => {
       navigation.navigate("ViewRoutine")
     } catch (error) {
       console.log(error)
+      console.log(token)
+      console.log("edit",editedRoutineInfo, id)
     }
   }
 

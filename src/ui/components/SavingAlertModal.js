@@ -64,7 +64,9 @@ const RoutinePauseModalBody = styled.View`
   align-items:center;
   position:absolute;
   bottom:0;
-  left:-20;
+  left:-20px;
+  
+  
 `
 
 const RoutinePauseModalBg = styled.Image`
@@ -72,6 +74,8 @@ const RoutinePauseModalBg = styled.Image`
   bottom:${(props) => props.bottom}px;
   left:-20;
   z-index:-1;
+  width:${size.width}px;
+  border-radius:20px;
   
 `
 

@@ -110,9 +110,7 @@ export const useInstallmentSaving = () => {
   const handleConnectAsset = async(id, routines) => {
     try {
       const token = await AsyncStorage.getItem("access_token")
-      const response = await baseUrl.put(`/routine/account?accountId=${id}`,{
-        routineId:routines
-      },{
+      const response = await baseUrl.put(`/routine/account?accountId=${id}`,routines,{
         headers:{
           Authorization:`Bearer ${token}`
         }

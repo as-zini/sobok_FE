@@ -34,7 +34,7 @@ const ConnectRoutineInSaving = ({route}) => {
         </Header>
         <MarginVertical top={40}/>
         <ConnectRoutine pickedRoutines={pickedRoutines} setPickedRoutines={setPickedRoutines}/>
-        <View style={{position:'absolute', bottom:100}}>
+        <View style={{position:'absolute', bottom:120}}>
           <Button text={"연결하기"} handleButton={handleButton}/>
         </View>
       </Body>
@@ -62,8 +62,10 @@ const Header = styled.View`
 `
 
 const Bg = styled.Image`
-  width:100%;
+  width:${size.width}px;
+  height:${size.height}px;
   position:absolute;
   top:0;
   z-index:-1;
+
 `
