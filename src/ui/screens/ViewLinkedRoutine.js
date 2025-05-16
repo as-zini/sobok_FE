@@ -54,6 +54,8 @@ const ViewLinkedRoutineBody = styled.View`
 
 const ViewLinkedRoutineBg = styled.Image`
   position:absolute;
+  width:${size.width}px;
+  height:${size.height}px;
   top:0;
   z-index:-1;
 `

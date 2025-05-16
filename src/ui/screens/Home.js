@@ -110,7 +110,7 @@ const Home = () => {
       <ScrollView showsVerticalScrollIndicator={false}>
       <HomeBody>
         <MarginVertical top={20}/>
-        <View style={{display:'flex', justifyContent:'flex-start', width:size.width-30}}>
+        <View style={{display:'flex', justifyContent:'flex-start', width:size.width-60}}>
           <ContinuitySuccess/>
         </View>
         <MarginVertical top={25}/>
