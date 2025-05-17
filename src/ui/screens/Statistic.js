@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import styled from 'styled-components';
+import styled from 'styled-components/native';
 import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 
 import statistic_bg from '../../../assets/statistic_bg.png';
@@ -216,12 +216,12 @@ const Statistic = () => {
           setPickedSaving={setPickedRoutine}
           setDateInfoByRoutine={setDateInfoByRoutine}
           />
-        </StatisticBody>
-      </ScrollView>
-      <StatisticBg source={statistic_bg}/>
-    </SafeAreaView>
+         </StatisticBody>
+       </ScrollView>
+       <StatisticBg source={statistic_bg}/>
+     </SafeAreaView>
   )
-}
+ }
 
 export default Statistic
 
