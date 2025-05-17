@@ -39,6 +39,7 @@ import DetailSnowCard from '../ui/screens/DetailSnowCard';
 import TicketPurchase from '../ui/screens/TicketPurchase';
 import ConnectRoutineInSaving from '../ui/screens/ConnectRoutineInSaving';
 import PointInfo from '../ui/screens/PointInfo';
+import SettingAssistance from '../ui/screens/SettingAssistance';
 
 
 
@@ -117,6 +118,7 @@ const StackNavigation = () => {
       <Stack.Screen name="TicketPurchase" component={TicketPurchase}/>
       <Stack.Screen name="ConnectRoutine" component={ConnectRoutineInSaving}/>
       <Stack.Screen name="PointInfo" component={PointInfo}/>
+      <Stack.Screen name="SettingAssistance" component={SettingAssistance}/>
     </Stack.Navigator>
   )
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image, SafeAreaView, Text, View } from 'react-native'
+import { Image, SafeAreaView, Text, TouchableOpacity, View } from 'react-native'
 import styled from 'styled-components'
 import { size } from '../styles/size'
 
@@ -14,8 +14,8 @@ import { useUserInfoStore } from '../../store/user';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 const Setting = () => {
-  const settingCategory = ["계정 설정", "연동 설정","지원 문의" ,"약관 및 개인정보 처리 동의", "앱 버전"]
-  const goToCategory = ["", "LinkedApp", "", "", ""];
+  const settingCategory = ["연동 설정","지원 문의" ,"약관 및 개인정보 처리 동의", "앱 버전"]
+  const goToCategory = ["LinkedApp", "Assistance", "", ""];
   const navigation = useNavigation();
   const {userInfo} = useUserInfoStore();
 
@@ -36,7 +36,7 @@ const Setting = () => {
           <View>
             <UserName>{userInfo.displayName}</UserName>
             <EditButton>
-              <EditText>프로필 편집</EditText>
+              <EditText>계정 설정</EditText>
               <MaterialIcons name="keyboard-arrow-right" size={24} color="#4c4c4c" />
             </EditButton>
           </View>
@@ -50,11 +50,17 @@ const Setting = () => {
                 <SettingTitle>{el}</SettingTitle>
                 <MaterialIcons name="keyboard-arrow-right" size={24} color="#4c4c4c" />
               </SettingEl>
-              {index===1 ? <BorderLine/> : <></>}
+              {index===0 ? <BorderLine/> : <></>}
               </View>
             )
           })}
         </SettingArea>
+        <MarginVertical top={30}/>
+        <LogoutArea>
+          <TouchableOpacity>
+            <LogoutText>로그아웃</LogoutText>
+          </TouchableOpacity>
+        </LogoutArea>
       </SettingBody>
       <SettingBg source={setting_bg}/>
     </SafeAreaView>
@@ -143,10 +149,23 @@ const SettingTitle = styled.Text`
 `
 
 const BorderLine = styled.View`
-  width:300px;
+  width:${size.width-70}px;
   height:.4px;
   background-color:${colors.fontMain};
   margin:10px 0;
+`
+
+const LogoutArea = styled.View`
+  width:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+`
+
+const LogoutText = styled.Text`
+  font-size:14px;
+  color:#707172;
+
 `
 
 
