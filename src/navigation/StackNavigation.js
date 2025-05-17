@@ -40,6 +40,8 @@ import TicketPurchase from '../ui/screens/TicketPurchase';
 import ConnectRoutineInSaving from '../ui/screens/ConnectRoutineInSaving';
 import PointInfo from '../ui/screens/PointInfo';
 import SettingAssistance from '../ui/screens/SettingAssistance';
+import SettingTermList from '../ui/screens/SettingTermList';
+import SettingTerm from '../ui/screens/SettingTerm';
 
 
 
@@ -119,6 +121,8 @@ const StackNavigation = () => {
       <Stack.Screen name="ConnectRoutine" component={ConnectRoutineInSaving}/>
       <Stack.Screen name="PointInfo" component={PointInfo}/>
       <Stack.Screen name="SettingAssistance" component={SettingAssistance}/>
+      <Stack.Screen name="SettingTermList" component={SettingTermList}/>
+      <Stack.Screen name="SettingTerm" component={SettingTerm}/>
     </Stack.Navigator>
   )
 }

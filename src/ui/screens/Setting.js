@@ -15,7 +15,7 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 const Setting = () => {
   const settingCategory = ["연동 설정","지원 문의" ,"약관 및 개인정보 처리 동의", "앱 버전"]
-  const goToCategory = ["LinkedApp", "Assistance", "", ""];
+  const goToCategory = ["LinkedApp", "Assistance", "TermList", ""];
   const navigation = useNavigation();
   const {userInfo} = useUserInfoStore();
 
