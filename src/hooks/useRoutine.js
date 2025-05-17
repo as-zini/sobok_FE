@@ -5,9 +5,10 @@ import { useTodoStore } from "../store/todo";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import baseUrl from "../api/baseURL";
 
+
 export const useRoutine = () => {
   const navigation = useNavigation();
-  const {todoData, setTodoData} = useTodoStore();
+  const {todoData, setTodoData,resetTodoData} = useTodoStore();
 
   const getRoutineByList = async(setRoutineInfo, setIsComplete) => {
     try {
@@ -85,12 +86,9 @@ export const useRoutine = () => {
   const handleAddRoutine = async(newRoutineData, isAiRoutine) => {
     try {
       const token = await AsyncStorage.getItem("access_token")
-
-      const response = await baseUrl.post("/routine/create",{
+      const response = await baseUrl.post("/routine/create/self",{
         accountId:newRoutineData.accountId,
         title: newRoutineData.title,
-        startTime: newRoutineData.startTime,
-        endTime: newRoutineData.endTime,
         days: newRoutineData.days,
         todos:todoData
       },{
@@ -99,7 +97,7 @@ export const useRoutine = () => {
         }
       })
       console.log(isAiRoutine ? "AI" : "", response.data);
-      setTodoData([]);
+      resetTodoData()
       !isAiRoutine?navigation.navigate("CompleteAddRoutine"):null
     } catch (error) {
       console.log(error)

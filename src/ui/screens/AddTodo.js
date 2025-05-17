@@ -19,6 +19,9 @@ import dayjs from 'dayjs';
 import { getTimeDifference } from '../../util';
 import CategoryEl from '../components/CategoryEl';
 import { useMyPage } from '../../hooks/useMyPage';
+import { useTodo } from '../../hooks/useTodo';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+
 
 const AddTodo = ({route, navigation}) => {
   const {todoData, setTodoData} = useTodoStore();
@@ -30,19 +33,30 @@ const AddTodo = ({route, navigation}) => {
   const [selectedApp, setSelectedApp] = useState("")
   const [showDropDown, setShowDropDown] = useState(false)
   const [time, setTime] = useState({startTime:"", endTime:""})
-
+  const {checkDuplicatedTodo} = useTodo();
+  const {days} = route.params
+  const [isDuplicated, setIsDuplicated] = useState(true);
  
   useEffect(() => {
     getUserLinkedApp(setMyLinkedApp)
   },[])
 
   useEffect(() => {
-    console.log(todoData)
+    console.log(todoData, days)
   }, [todoData])
+
+  useEffect(() => {
+    checkDuplicatedTodo(time, setIsDuplicated, days.map((el) => {
+      return el === "MON" ? "MONDAY" : el === "TUE" ? "TUESDAY" : el === "WED" ? "WEDNESDAY" : el === "THU" ? "THURSDAY" : el === "FRI" ? "FRIDAY" : el === "SAT" ? "SATURDAY" : "SUNDAY"
+    }))
+  }, [time])
+  
 
   const DropDownContents = ({list}) => {
     return(
+      
       <View style={{width:295, borderRadius:8, backgroundColor:"#fff", paddingHorizontal:30, paddingVertical:10}}>
+        <ScrollView>
         {list.map((el,index) => {
           return(
           <TouchableOpacity key={index} style={{width:'100%', paddingVertical:10, alignItems:'flex-start', paddingVertical:15}} onPress={() => {setSelectedApp(el);setShowDropDown(false)}}>
@@ -50,8 +64,9 @@ const AddTodo = ({route, navigation}) => {
           </TouchableOpacity>
           )
         })}
-
+        </ScrollView>
       </View>
+      
     )
   }
   
@@ -82,6 +97,12 @@ const AddTodo = ({route, navigation}) => {
         <MarginVertical top={40}/>
         <TotalTimeText style={{fontSize:18}}>총 시간</TotalTimeText>
         <TotalTimeText>{`${getTimeDifference(time.startTime,time.endTime)}`}</TotalTimeText>
+        {!isDuplicated ?
+        <View style={{flexDirection:'row', alignItems:'center',gap:5}}>
+            <MaterialCommunityIcons name="alert-circle" size={24} color="#FF4848" />
+            <Text style={{fontSize:14, color:"#FF4848", fontWeight:500}}>선택한 시간에 이미 할 일이 있습니다</Text>
+          </View>
+        :<></>} 
         <MarginVertical top={32}/>
         <TimeSliderBar text={"에 시작해서"} setOutValue={setTime} version={"start"} type={"time"}/>
         <MarginVertical top={65}/>
@@ -146,6 +167,7 @@ const AddTodoBg = styled.Image`
   position:absolute;
   top:0;
   width:${size.width}px;
+  height:${size.height}px;
   z-index:-1;
 `
 

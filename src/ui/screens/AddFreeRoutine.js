@@ -94,7 +94,7 @@ const AddFreeRoutine = () => {
             </View>
           )
         })}\
-        <SpareTimeAddButton onPress={() => navigation.navigate("AddTodo")}>
+        <SpareTimeAddButton onPress={() => navigation.navigate("AddTodo", {days:selectedDate})}>
               <SpareTimeButtonText>+</SpareTimeButtonText>
             </SpareTimeAddButton>
         <MarginVertical top={30}/>
@@ -266,6 +266,7 @@ const AddFreeRoutineBg = styled.Image`
   top:0;
   width:${size.width}px;
   z-index:-1;
+  height:${size.height}px;
 `
 
 const AddFreeRoutineHeader = styled.View`

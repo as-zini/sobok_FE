@@ -94,6 +94,7 @@ const Statistic = () => {
 
   const TodoLog = ({todo}) => {
     return(
+      todo.length === 0 ? <></>:
       <>
       {todo.map((el,index) => {
         return(
@@ -190,7 +191,7 @@ const Statistic = () => {
           <LogArea>
             <LogInfoText>{mode === "월별" ? `${selectedRange.startDate ? selectedRange.startDate : today.format("YYYY-MM-DD")}`:`${isNextMonth && String(selectedDate).length === 1  ? dayjs().add(1,'month').format("YYYY-MM-") : dayjs().format("YYYY-MM-")}${selectedDate}`}</LogInfoText>
             <MarginVertical top={10}/>
-            <LogInfoText style={{fontSize:20}}>{`${statisticLog.length>0?minToHour(statisticLog.reduce((sum,el) => sum+ el.duration,0)) : 0}`}</LogInfoText>
+            <LogInfoText style={{fontSize:20}}>{`${statisticLog.length>0?minToHour(statisticLog.reduce((sum,el) => sum+ el.duration,0)) : 0} M`}</LogInfoText>
             <MarginVertical top={30}/>
             {statisticLog.map((el,index) => {
               return(
@@ -201,7 +202,6 @@ const Statistic = () => {
                   <MarginVertical top={20}/>
                   <AssetEl item={[el.title,el.accountTitle,minToHour(el.duration),""]} index={index} isLink={true} isTouchable={false} indexColor={"black"}/>
                   <MarginVertical top={20}/>
-==
                   <TodoLog todo={el.todoLogs?.length > 0 ? el.todoLogs : []}/>
                 </View>
               )
