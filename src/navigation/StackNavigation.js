@@ -43,6 +43,8 @@ import SettingAssistance from '../ui/screens/SettingAssistance';
 import SettingTermList from '../ui/screens/SettingTermList';
 import SettingTerm from '../ui/screens/SettingTerm';
 import SettingVersion from '../ui/screens/SettingVersion';
+import SettingAccountList from '../ui/screens/SettingAccountList';
+import SettingAccount from '../ui/screens/SettingAccount';
 
 
 
@@ -125,6 +127,8 @@ const StackNavigation = () => {
       <Stack.Screen name="SettingTermList" component={SettingTermList}/>
       <Stack.Screen name="SettingTerm" component={SettingTerm}/>
       <Stack.Screen name="SettingVersion" component={SettingVersion}/>
+      <Stack.Screen name="SettingAccountList" component={SettingAccountList}/>
+      <Stack.Screen name='SettingAccount' component={SettingAccount}/>
     </Stack.Navigator>
   )
 }

@@ -35,7 +35,7 @@ const Setting = () => {
           </ProfileImageArea>
           <View>
             <UserName>{userInfo.displayName}</UserName>
-            <EditButton>
+            <EditButton onPress={() => navigation.navigate("SettingAccountList")}>
               <EditText>계정 설정</EditText>
               <MaterialIcons name="keyboard-arrow-right" size={24} color="#4c4c4c" />
             </EditButton>
