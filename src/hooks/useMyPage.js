@@ -34,10 +34,26 @@ export const useMyPage = () => {
       console.log(error)
     }
   }
+
+  const getTodosByLinkApp = async(linkApp, setTodoData) => {
+    try {
+      const token = await AsyncStorage.getItem("access_token")
+      const response = await baseUrl.get(`/user/link-app/todos?linkApp=${linkApp}`,{
+        headers:{
+          Authorization:`Bearer ${token}`
+        }
+      })
+      console.log(response.data)
+      setTodoData(response.data.todos)
+    } catch (error) {
+      console.log(error)
+    }
+  }
  
   return {
     getUserLinkedApp,
-    handleSetLinkedApp
+    handleSetLinkedApp,
+    getTodosByLinkApp
   }
 }
 

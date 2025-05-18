@@ -30,10 +30,24 @@ export const useLogin = () => {
       console.log(error)
       setIsLoginFail(true);
     }
+  }
 
+  const handleLogout = async() => {
+    try {
+      const token = await AsyncStorage.getItem("refresh_token")
+      const response = await baseUrl.post("/user/logout",{
+
+      },{
+        Cookie:`refreshToken=${token}`
+      })
+      console.log(response.data)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return {
-    handleLogin
+    handleLogin,
+    handleLogout
   }
 }
