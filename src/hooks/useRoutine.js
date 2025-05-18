@@ -171,11 +171,11 @@ export const useRoutine = () => {
   const handleEditRoutine = async(editedRoutineInfo,id) => {
     try {
       const token = await AsyncStorage.getItem("access_token")
-      const response = await baseUrl.put(`/routine/update?routineId=${id}`,{
+      const response = await baseUrl.put(`/routine/update`,{
           "accountId": editedRoutineInfo.accountId,
+          "id":id,
           "title": editedRoutineInfo.title,
           "days": editedRoutineInfo.days,
-          "todos": editedRoutineInfo.todos
       },{
         headers:{
           Authorization:`Bearer ${token}`

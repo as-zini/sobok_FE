@@ -36,6 +36,7 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useSaveTime } from '../../hooks/useSaveTime';
 import smile_icon from '../../../assets/smile_icon.png';
 import home_button_bg from '../../../assets/home_button_bg.png';
+import baseUrl from '../../api/baseURL';
 dayjs.extend(isSameOrBefore)
 
 const Home = () => {
@@ -99,6 +100,15 @@ const Home = () => {
     }, [spareTimeTotal])
   const isLoading = Object.keys(nowTodo).length > 1 ? true : false;
 
+  const test = async() => {
+    try {
+      const response = await baseUrl.get("/oauth2/authorization/kakao")
+      console.log(response.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   
 
 
@@ -143,7 +153,7 @@ const Home = () => {
             }  
             <View style={{flexDirection:'row', justifyContent:'center',alignItems:'center', paddingRight:30}}>
             <TodoDuringTime style={{fontSize:nowTodo[0] ? 48 : 34, flexGrow:1}}>{nowTodo.length > 0 ? `${getTimeDifference(nowTodo[0].startTime, nowTodo[0].endTime)}` : "오늘은\n할 일이 없어요!"}</TodoDuringTime>
-            <TouchableOpacity onPress={() => navigation.navigate("TodayTodo")} style={{justifyContent:'center', alignItems:'center'}}>
+            <TouchableOpacity onPress={() => test()} style={{justifyContent:'center', alignItems:'center'}}>
               <Image source={nowTodo.length > 0 ? go_todo_icon : smile_icon} style={{width:60, height:60, objectFit:'contain' }}/>
             </TouchableOpacity>
             </View>

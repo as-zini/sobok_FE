@@ -42,6 +42,7 @@ import PointInfo from '../ui/screens/PointInfo';
 import SettingAssistance from '../ui/screens/SettingAssistance';
 import SettingTermList from '../ui/screens/SettingTermList';
 import SettingTerm from '../ui/screens/SettingTerm';
+import SettingVersion from '../ui/screens/SettingVersion';
 
 
 
@@ -123,6 +124,7 @@ const StackNavigation = () => {
       <Stack.Screen name="SettingAssistance" component={SettingAssistance}/>
       <Stack.Screen name="SettingTermList" component={SettingTermList}/>
       <Stack.Screen name="SettingTerm" component={SettingTerm}/>
+      <Stack.Screen name="SettingVersion" component={SettingVersion}/>
     </Stack.Navigator>
   )
 }

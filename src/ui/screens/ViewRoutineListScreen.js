@@ -32,6 +32,11 @@ const ViewRoutineListScreen = () => {
     totalTime += routineInfo[i].duration
   }
 
+  useEffect(() => {
+    console.log("selecte",selectedDate)
+  }, [selectedDate])
+  
+
   useFocusEffect(
     useCallback(() => {
       if(isList)getRoutineByList(setRoutineInfo, setIsComplete)
