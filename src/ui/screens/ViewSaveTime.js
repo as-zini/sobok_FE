@@ -162,6 +162,8 @@ const ViewSaveTimeBg = styled.Image`
   position:absolute;
   top:${props => props.version === 'first' ? -750 : 0}
   z-index:-1;
+  width:${size.width}px;
+  height:${size.height}px;
 `
 
 const ViewSaveTimeHeader = styled.View`
