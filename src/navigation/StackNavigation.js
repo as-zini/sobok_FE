@@ -45,6 +45,7 @@ import SettingTerm from '../ui/screens/SettingTerm';
 import SettingVersion from '../ui/screens/SettingVersion';
 import SettingAccountList from '../ui/screens/SettingAccountList';
 import SettingAccount from '../ui/screens/SettingAccount';
+import Notification from '../ui/screens/Notification';
 
 
 
@@ -129,6 +130,7 @@ const StackNavigation = () => {
       <Stack.Screen name="SettingVersion" component={SettingVersion}/>
       <Stack.Screen name="SettingAccountList" component={SettingAccountList}/>
       <Stack.Screen name='SettingAccount' component={SettingAccount}/>
+      <Stack.Screen name="Notification" component={Notification}/>
     </Stack.Navigator>
   )
 }

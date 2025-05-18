@@ -37,6 +37,7 @@ import { useSaveTime } from '../../hooks/useSaveTime';
 import smile_icon from '../../../assets/smile_icon.png';
 import home_button_bg from '../../../assets/home_button_bg.png';
 import baseUrl from '../../api/baseURL';
+import Ionicons from '@expo/vector-icons/Ionicons';
 dayjs.extend(isSameOrBefore)
 
 const Home = () => {
@@ -120,8 +121,11 @@ const Home = () => {
       <ScrollView showsVerticalScrollIndicator={false}>
       <HomeBody>
         <MarginVertical top={20}/>
-        <View style={{display:'flex', justifyContent:'flex-start', width:size.width-60}}>
+        <View style={{display:'flex', justifyContent:'space-between', width:size.width-60, flexDirection:'row'}}>
           <ContinuitySuccess/>
+          <TouchableOpacity style={{justifyContent:'center', alignItems:'center'}} onPress={() => navigation.navigate("Notification")}>
+            <Ionicons name="notifications" size={32} color="#fff" />
+          </TouchableOpacity>
         </View>
         <MarginVertical top={25}/>
         <View style={{display:'flex', justifyContent:'flex-start', width:328}}>
