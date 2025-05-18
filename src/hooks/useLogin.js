@@ -30,10 +30,30 @@ export const useLogin = () => {
       console.log(error)
       setIsLoginFail(true);
     }
+  }
 
+  const handleLogout = async(setIsReturn) => {
+    try {
+      const token = await AsyncStorage.getItem("refresh_token")
+      const response = await baseUrl.post("/user/logout",{
+
+      },{
+        Cookie:`refreshToken=${token}`
+      })
+      console.log(response.data)
+      setIsReturn(prev => !prev)
+      navigation.reset({
+        routes:[{
+          name:'Start'
+        }]
+      })
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return {
-    handleLogin
+    handleLogin,
+    handleLogout
   }
 }

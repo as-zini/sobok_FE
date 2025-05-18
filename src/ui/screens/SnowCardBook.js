@@ -38,7 +38,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useUserInfoStore } from '../../store/user';
 
 
-const SnowCardBook = () => {
+const SnowCardBook = ({route}) => {
   const [cardData, setCardData] = useState([])
   const allCardData = [{type:'english',title:'알파벳 A의'},{type:'beaker',title:'비커 모양의'},{type:"donut",title:"도넛 모양의"},{type:"reading",title:"두꺼운 책 모양의"},{type:'like',title:'좋아하는 마음의'},
   {type:'quarter',title:'초승달 모양의'},{type:'half',title:'반달 모양의'},{type:'full',title:'보름달 모양의'},{type:'angel',title:'천사 날개의'},{type:'cloud',title:"구름 모양의"},{type:'hexagon',title:'육각형 모양의'},
@@ -64,7 +64,7 @@ const SnowCardBook = () => {
     <SafeAreaView>
       <ScrollView showsVerticalScrollIndicator={false}>
       <SnowCardBookBody>
-        <BackArrowButton/>
+        <BackArrowButton isNotBack={route.params.version === "report"} direction={"Tabs Report"}/>
         <MarginVertical top={50}/>
         <Image source={card_icon} style={{width:48, height:40}}/>
         <MarginVertical top={20}/>

@@ -3,7 +3,9 @@ import { create } from "zustand";
 
 export const useTodoStore = create((set) => ({
   todoData:[],
-  setTodoData:(todoData) => set((state) => ({todoData: [...state.todoData,todoData]}))
+  setTodoData:(todoData) => set((state) => ({todoData: [...state.todoData,todoData]})),
+  resetTodoData: () =>
+    set({ todoData: [] }),
 }))
 
 export const useNowTodoStore = create((set) => ({

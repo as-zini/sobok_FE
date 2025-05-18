@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { colors } from '../styles/colors'
 import { View } from 'react-native'
+import { size } from '../styles/size'
 
 const SimpleTodoEl = ({data, index}) => {
   return (
@@ -24,7 +25,7 @@ export default SimpleTodoEl
 
 
 const SimpleTodoBody = styled.View`
-  width:90%;
+  width:100%;
   height:70px;
   background-color:#fff;
   padding:17px 20px;

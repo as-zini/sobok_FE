@@ -50,6 +50,9 @@ const DetailTodo = ({route}) => {
     checkDuplicatedTodo(time, setIsDuplicated, days)
   },[time])
 
+  
+  
+
   const DropDownContents = ({list}) => {
 
 

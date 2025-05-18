@@ -25,6 +25,7 @@ import dayjs from 'dayjs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { minToHour } from '../../util';
 import { useUserInfoStore } from '../../store/user';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const Report = () => {
   const navigation = useNavigation();
@@ -34,6 +35,7 @@ const Report = () => {
   const {userInfo} = useUserInfoStore();
   const userName = userInfo.displayName;
   const [isReady, setIsReady] = useState(false);
+  const insets = useSafeAreaInsets();
 
   const init = async() => {
     const result = await AsyncStorage.getItem(`reportOn${dayjs().get('month')+1}`)
@@ -43,12 +45,13 @@ const Report = () => {
     setIsReady(true)
   }
 
+  const getReport = async() => {
+    const result = await AsyncStorage.getItem(`reportOn${dayjs().get('month')+1}`)
+    result ? init() : getReportInfo(dayjs().format("YYYY-MM"))
+  }
+
   useEffect(() => {
-    if(dayjs().get('date') === 1){
-      getReportInfo()
-    }else{
-    init()
-    }
+    getReport()
   }, [])
   
 
@@ -73,7 +76,7 @@ const Report = () => {
   }
 
   const ReportContents2 = () => {
-    const data = [
+    const data = ([
       {
         title:"루틴",
         data:reportInfo.routineStatistics?.map((el,index) => [el.title,minToHour(el.duration)])
@@ -81,7 +84,7 @@ const Report = () => {
         title:"적금",
         data:reportInfo.accountStatistics?.map((el,index) => [el.title,minToHour(el.duration)])
       }
-    ]
+    ]) ?? []
 
     const RenderItem = ({item, index}) => {
       return(
@@ -134,7 +137,7 @@ const Report = () => {
 
       </SectionList>
       <MarginVertical top={86}/>      
-      <ReportText>{"이번 달은 눈 녹을\n걱정이 없었어요!대단해요!"}</ReportText>
+      <ReportText>{reportInfo?.reportMessage1}</ReportText>
       <MarginVertical top={10}/>
       <DownIcon>
           <DownIconImg source={down_navigate_icon}/>
@@ -171,7 +174,7 @@ const Report = () => {
         <TimeSliderBar version={"report"}/>
       </View>
       <MarginVertical top={86}/>      
-      <ReportText>{`${userName} 님 덕분에\n아침부터 예쁜 눈을 볼 수 있었어요!`}</ReportText>
+      <ReportText>{reportInfo?.reportMessage3}</ReportText>
       <MarginVertical top={10}/>
       
       <DownIcon>
@@ -267,13 +270,13 @@ const Report = () => {
       <View style={{width:'100%', justifyContent:'center', alignItems:'center'}}>
         <ReportText style={{textAlign:'center'}}>{"가장 많은 눈이\n쌓인 적금은"}</ReportText>
         <MarginVertical top={8}/>
-        <Text style={{fontSize:26, fontWeight:600, color:colors.fontMain90}}>{reportInfo.mostAchievedAccount.title}</Text>
+        <Text style={{fontSize:26, fontWeight:600, color:colors.fontMain90}}>{reportInfo?.mostAchievedAccount?.title}</Text>
         <MarginVertical top={37}/>
         <SnowFlakeIcon size={16} color={"indigo"}/>
         <MarginVertical top={20}/>
         <View style={{width:200, height:200, padding:20}}>
-          <Text style={{color:"#fff", fontSize:22, fontWeight:600, zIndex:2}}>{reportInfo.mostAchievedAccount.title}</Text>
-          <Text style={{color:"#fff", fontSize:22, fontWeight:600, zIndex:2, position:'absolute', bottom:20, right:20}}>{minToHour(reportInfo.mostAchievedAccount.duration)}</Text>
+          <Text style={{color:"#fff", fontSize:22, fontWeight:600, zIndex:2}}>{reportInfo?.mostAchievedAccount?.title}</Text>
+          <Text style={{color:"#fff", fontSize:22, fontWeight:600, zIndex:2, position:'absolute', bottom:20, right:20}}>{minToHour(reportInfo?.mostAchievedAccount?.duration)}</Text>
           <Image source={report_save_bg} style={{position:'absolute', top:0, left:0}}/>
         </View>
         <MarginVertical top={43}/>
@@ -305,7 +308,7 @@ const Report = () => {
     <ReportContentsBody>
       <ReportIcon source={time_icon} style={{width:40, height:48}}/>
       <MarginVertical top={16}/>
-      <Text style={{fontSize:26, fontWeight:600, color:colors.fontMain80, lineHeight:34}}>{`${today.format("M월")}의 지윤 님은`}</Text>
+      <Text style={{fontSize:26, fontWeight:600, color:colors.fontMain80, lineHeight:34}}>{`${today.format("M월")}의 ${userInfo.displayName} 님은`}</Text>
       <MarginVertical top={12}/>
       <View style={{flexDirection:'row'}}>
         <ReportTitle>{"얼마나\n성장했을까요?"}</ReportTitle>
@@ -383,11 +386,11 @@ const Report = () => {
   }
 
   return (
-    <SafeAreaView style={{backgroundColor:'#fff'}}>
-      
-      <ScrollView>
+    <View style={{backgroundColor:'#fff'}}>
+      <ScrollView showsVerticalScrollIndicator={false}>
       {isReady ? 
         <ReportBody>
+          <MarginVertical top={insets.top}/>
           <ReportHeader>
             <View style={{position:'absolute', left:0}}>
               <BackArrowButton/>
@@ -399,7 +402,7 @@ const Report = () => {
           <MarginVertical top={60}/>
           <ReportContents1/>
           <MarginVertical top={365}/>
-          <ReportContents2/>
+          {/* <ReportContents2/> */}
           <ReportContents3/>
           <ReportContents4/>
           <ReportContents5/>
@@ -409,12 +412,13 @@ const Report = () => {
         :
         <></>
         }
-        <ReportBg source={report_bg}/>
+
+        <ReportBg source={report_bg} style={{marginTop:insets.top}}/>
         
 
       </ScrollView>
       
-    </SafeAreaView>
+    </View>
   )
 }
 

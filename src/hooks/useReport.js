@@ -6,10 +6,10 @@ import { useNavigation } from "@react-navigation/native"
 export const useReport = () => {
   const navigation = useNavigation()
 
-  const getReportInfo = async(setReportInfo) => {
+  const getReportInfo = async(yearMonth) => {
     try {
       const token = await AsyncStorage.getItem("access_token")
-      const response = await baseUrl.get("/report",{
+      const response = await baseUrl.get(`/report?yearMonth=${yearMonth}`,{
         headers:{
           Authorization:`Bearer ${token}`
         }

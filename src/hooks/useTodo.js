@@ -162,11 +162,13 @@ export const useTodo = () => {
       }
       )
       console.log(response.data)
+      console.log(`${time.startTime}&endTime=${time.endTime}&days=${dayList.join(",")}`)
       if(!response.data.isOverlaped)setIsDuplicated(true)
       else{setIsDuplicated(false)}
     } catch (error) {
       console.log(error)
-      console.log(`${time.startTime}&endTime=${time}&days=${dayList.join(",")}`)
+      console.log(time.startTime, time.endTime)
+      console.log(`${time.startTime}&endTime=${time.endTime}&days=${dayList.join(",")}`)
       
     }
   }

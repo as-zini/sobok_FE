@@ -27,16 +27,31 @@ const ViewAiRoutineResult = ({route}) => {
   const {routineInfo, version} = route.params;
   const [selectedDate, setSelectedDate] = useState(version === "free" ? routineInfo.days:[]);
   const [invalidSavingList, setInvalidSavingList] = useState([]);
-  const [pickedSaving, setPickedSaving] = useState(version === "free" ? [{title:routineInfo.accountTitle}]:[]);
+  const [pickedSaving, setPickedSaving] = useState(version === "free" ? [{title:routineInfo.account}]:[]);
   const {handleAddAiRoutine} = useRoutine();
   const [editRoutineTitle, setEditRoutineTitle] = useState("")
   const {handleEditRoutine} = useRoutine();
 
   useEffect(() => {
     // console.log(aiRoutineInfo.todos.reduce((sum,el) => sum + Number(el.duration),0))
-    console.log("route",routineInfo)
-    console.log("picked",pickedSaving)
-  }, [pickedSaving])
+    console.log(selectedDate)
+  }, [selectedDate])
+
+  useEffect(() => {
+    console.log({
+      accountId:pickedSaving[0].id,
+      title:editRoutineTitle.length === 0 ? routineInfo.title : editRoutineTitle,
+      days:selectedDate,
+      todos:routineInfo.todos.map((el) => ({
+        title:el.title,
+        startTime:el.startTime,
+        endTime:el.endTime,
+        linkApp:el.linkApp,
+      }))
+    })
+  }, [selectedDate])
+  
+
 
 
   const handleAddButton = () => {
@@ -60,12 +75,6 @@ const ViewAiRoutineResult = ({route}) => {
         accountId:pickedSaving[0].id,
         title:editRoutineTitle.length === 0 ? routineInfo.title : editRoutineTitle,
         days:selectedDate,
-        todos:routineInfo.todos.map((el) => ({
-          title:el.title,
-          startTime:el.startTime,
-          endTime:el.endTime,
-          linkApp:el.linkApp
-        }))
       },routineInfo.id)
     }
   }

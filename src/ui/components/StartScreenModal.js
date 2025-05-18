@@ -26,8 +26,8 @@ const StartScreenModal = ({isSignupModalVisible, setIsSignupModalVisible}) => {
         onBackdropPress={() => setIsSignupModalVisible(false)}
       >
         <ModalBody>
-          <ModalBg source={signup_modal_bg} />
-        </ModalBody>
+          
+        
         <ModalContentsArea>
           
           <SignUpIcon source={signup_icon}/>
@@ -52,6 +52,8 @@ const StartScreenModal = ({isSignupModalVisible, setIsSignupModalVisible}) => {
           </GoToLoginButton>
           
         </ModalContentsArea>
+        <ModalBg source={signup_modal_bg} />
+        </ModalBody>
         
       </Modal>
     </SafeAreaView>
@@ -66,7 +68,6 @@ const ModalBody = styled.View`
   height:530px;
   border-radius:24px;
   background-color:rgba(255,255,255,.7);
-  
   position:absolute;
   bottom:-30px;
   left:-20px;
@@ -76,13 +77,14 @@ const ModalBody = styled.View`
 const ModalBg = styled.Image`
   width:100%;
   height:100%;
-  
+  z-index:-1;
+  position:absolute;
+  border-radius:20px;
 `
 
 const SignUpIcon = styled.Image`
   width:56px;
   height:43px;
-  margin-top:120px;
   margin-bottom:30px;
 `
 
@@ -91,7 +93,6 @@ const ModalContentsArea = styled.View`
   justify-content:center;
   align-items:center;
   height:100%;
-  margin-top:130px;
 `
 const SignupTitle = styled.Text`
   color:#fff;

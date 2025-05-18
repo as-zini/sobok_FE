@@ -39,6 +39,12 @@ import DetailSnowCard from '../ui/screens/DetailSnowCard';
 import TicketPurchase from '../ui/screens/TicketPurchase';
 import ConnectRoutineInSaving from '../ui/screens/ConnectRoutineInSaving';
 import PointInfo from '../ui/screens/PointInfo';
+import SettingAssistance from '../ui/screens/SettingAssistance';
+import SettingTermList from '../ui/screens/SettingTermList';
+import SettingTerm from '../ui/screens/SettingTerm';
+import SettingVersion from '../ui/screens/SettingVersion';
+import SettingAccountList from '../ui/screens/SettingAccountList';
+import SettingAccount from '../ui/screens/SettingAccount';
 
 
 
@@ -117,6 +123,12 @@ const StackNavigation = () => {
       <Stack.Screen name="TicketPurchase" component={TicketPurchase}/>
       <Stack.Screen name="ConnectRoutine" component={ConnectRoutineInSaving}/>
       <Stack.Screen name="PointInfo" component={PointInfo}/>
+      <Stack.Screen name="SettingAssistance" component={SettingAssistance}/>
+      <Stack.Screen name="SettingTermList" component={SettingTermList}/>
+      <Stack.Screen name="SettingTerm" component={SettingTerm}/>
+      <Stack.Screen name="SettingVersion" component={SettingVersion}/>
+      <Stack.Screen name="SettingAccountList" component={SettingAccountList}/>
+      <Stack.Screen name='SettingAccount' component={SettingAccount}/>
     </Stack.Navigator>
   )
 }

@@ -10,16 +10,18 @@ import mild_complete_routine_icon from '../../../assets/mild_complete_routine_ic
 import Button from '../components/Button';
 import complete_add_routine_bg from '../../../assets/airoutine_complete_bg.png';
 import { useNavigation } from '@react-navigation/native';
+import { useUserInfoStore } from '../../store/user';
 
 const CompleteAddFreeRoutine = () => {
   const navigation = useNavigation();
+  const {userInfo} = useUserInfoStore();
 
   return (
     <SafeAreaView>
         <AiRoutineCompleteBody>
           <AiRoutineCompleteIcon source={mild_complete_routine_icon}/>
           <MarginVertical top={40}/>
-          <AiRoutingCompleteTitle>지윤 님만의{"\n"}자율루틴 만들기 완성!</AiRoutingCompleteTitle>
+          <AiRoutingCompleteTitle>{`${userInfo.displayName} 님만의\n자율루틴 만들기 완성!`} </AiRoutingCompleteTitle>
           <MarginVertical top={18}/>
           <AiRoutineCompleteText>자율루틴과 함께라면{"\n"}자투리 시간 100%{"\n"}모을 수 있어요!</AiRoutineCompleteText>
           <View style={{position:'absolute', bottom:100}}>

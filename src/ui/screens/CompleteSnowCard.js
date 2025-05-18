@@ -10,6 +10,7 @@ import MarginVertical from '../components/MarginVertical';
 import Button from '../components/Button';
 import { useNavigation } from '@react-navigation/native';
 import dayjs from 'dayjs';
+import { size } from '../styles/size';
 
 const CompleteSnowCard = ({route}) => {
   const cardInfo = [{type:'english',title:'알파벳 A의', text:'어딘가 모르게\nA를 닮은 눈 조각\n영어를 열심히 하셨군요?'},{type:'beaker',title:'비커 모양의',text:"실험실의 눈 조각!\n새로운 일을 시도하신\n지윤 님에게 드립니다!"},{type:"donut",title:"도넛 모양의",text:"돌고 돌아 드디어\n적금을 완성하셨군요!\n도넛의 처음과 끝이 만났네요!"},
@@ -53,7 +54,7 @@ const CompleteSnowCard = ({route}) => {
         <MarginVertical top={15}/>
         <SnowCardText>{card.text}</SnowCardText>
         <MarginVertical top={55}/>
-        <Button text={"카드 저장하기"} handleButton={() => navigation.navigate('SnowCardBook')} />
+        <Button text={"카드 저장하기"} handleButton={() => navigation.navigate('SnowCardBook', {version:"report"})} />
       </CompleteSnowCardBody>
       :<></>}
       <CompleteSnowCardBg source={complete_snow_card_bg}/>
@@ -74,6 +75,8 @@ const CompleteSnowCardBg = styled.Image`
   position:absolute;
   top:0;
   z-index:-1;
+  width:${size.width}px;
+  height:${size.height}px;
 `
 
 const CompleteSnowCardHeader = styled.View`

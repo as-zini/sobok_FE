@@ -9,6 +9,7 @@ import BottomTabNavigation from './src/navigation/BottomTabNavigation';
 import NavigationService from './src/ui/components/NavigationService';
 import * as SplashScreen from 'expo-splash-screen'
 import { useEffect } from 'react';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 export default function App() {
   
@@ -22,14 +23,14 @@ export default function App() {
   
 
   return (
-  
+    <SafeAreaProvider>
       <NavigationContainer ref={(navigatorRef) => {
         NavigationService.setTopLevelNavigator(navigatorRef)
       }}>
         <StackNavigation/>
         
       </NavigationContainer>
-      
+    </SafeAreaProvider>
   );
 }
 

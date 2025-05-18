@@ -20,6 +20,7 @@ import check_icon_black from '../../../assets/check_icon_black.png';
 import { useMyPage } from '../../hooks/useMyPage';
 import Fontisto from '@expo/vector-icons/Fontisto';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { getTimeDifference } from '../../util';
 
 const SettingLinkedApp = () => {
   const navigation = useNavigation();
@@ -29,9 +30,9 @@ const SettingLinkedApp = () => {
   const appListImg = [speack_icon, milli_icon];
   const [isAppList, setIsAppList] = useState(false);
   const [showTodoList, setShowTodoList] = useState(false);
-  const [todoData, setTodoData] = useState([["영어 강의 1강", "스픽", "1H 30M", "06:00 - 07:30"],["영어 단어 10개 암기", "말해보카","1H 00M", "08:00 - 09:00"]])
+  const [todoData, setTodoData] = useState([])
   const [selectedApp, setSelectedApp] = useState("");
-  const {getUserLinkedApp, handleSetLinkedApp} = useMyPage()
+  const {getUserLinkedApp, handleSetLinkedApp, getTodosByLinkApp} = useMyPage()
   const [myLinkedAppList, setMyLinkedAppList] = useState([]);
   const [addLinkedAppList, setAddLinkedAppList] = useState([]);
 
@@ -43,18 +44,12 @@ const SettingLinkedApp = () => {
   const LinkedTodoList = () => {
     return(
       <>
-        <View>
-          <SnowFlakeIcon color={"indigo"} size={16}/>
-          <MarginVertical top={11}/>
-          <Text style={{fontSize:22, fontWeight:600, color:colors.fontMain80}}>{selectedApp}</Text>
-          <MarginVertical top={33}/>
-        </View>
-        <View>
-        <ScrollView>
+        <View style={{height:size.height*.47}}>
+        <ScrollView showsVerticalScrollIndicator={false}>
           {todoData.map((el, index) => {
             return(
               <TouchableOpacity key={index}>
-                <TodoEl data={el} index={index}/>
+                <TodoEl data={[el.title,  el.linkApp,getTimeDifference(el.startTime, el.endTime), `${el.startTime?.slice(0,5)} - ${el.endTime?.slice(0,5)}`]} index={index}/>
                 <MarginVertical top={35}/>
               </TouchableOpacity>
             )
@@ -71,6 +66,13 @@ const SettingLinkedApp = () => {
   useEffect(() => {
     console.log([...myLinkedAppList,...addLinkedAppList])
   }, [addLinkedAppList])
+
+  useEffect(() => {
+    if(showTodoList){
+      getTodosByLinkApp(selectedApp, setTodoData)
+    }
+  }, [showTodoList])
+  
   
 
   const handleAddLinkButton = () => {
@@ -82,17 +84,26 @@ const SettingLinkedApp = () => {
     <SafeAreaView>
       <SettingLinkedAppBody>
         <SettingLinkedAppHeader>
-          <View style={{position:'absolute', left:0}}>
-            <BackArrowButton/>
-          </View>
+          <TouchableOpacity style={{position:'absolute', left:0}} onPress={() => {
+            if(!isAppList&&!showTodoList){
+              navigation.goBack()
+            }else if(isAppList){
+              setIsAppList(false)
+            }else if(showTodoList){
+              setShowTodoList(false)
+            }
+          }
+          }>
+            <MaterialIcons name="keyboard-arrow-left" size={24} color="#4c4c4c" />
+          </TouchableOpacity>
           <SettingLinkedAppHeaderText>연동 설정</SettingLinkedAppHeaderText>
         </SettingLinkedAppHeader>
         <MarginVertical top={36}/>
         <Image source={linked_app_icon} style={{width:40, height:40}}/>
         <MarginVertical top={16}/>
-        <SettingLinkedAppTitle>{isAppList ? "무슨 앱을\n연결할까요?" : showTodoList ? "어떤 할 일과\n연결할까요?" : "연동 앱"}</SettingLinkedAppTitle>
+        <SettingLinkedAppTitle>{isAppList ? "무슨 앱을\n연결할까요?" : showTodoList ? selectedApp : "연동 앱"}</SettingLinkedAppTitle>
         <MarginVertical top={16}/>
-        <SettingLinkedAppText>{isAppList ? "연동하고 싶은 앱을 선택해주세요!" : showTodoList ? `${selectedApp}을 할 일과 연결하면\n자동으로 이동해요!`:"할 일을 자동으로 시작할 수 있도록\n앱을 연동시킬 수 있어요!"}</SettingLinkedAppText>
+        <SettingLinkedAppText>{isAppList ? "연동하고 싶은 앱을 선택해주세요!" : showTodoList ? ``:"할 일을 자동으로 시작할 수 있도록\n앱을 연동시킬 수 있어요!"}</SettingLinkedAppText>
         <MarginVertical top={showTodoList ? 10:56}/>
         <SettingLinkedAppCount>{isAppList ? `총 ${linkedAppTitle.length}개의 앱` : showTodoList ? null : `총 ${myLinkedAppList?.length}개의 연동 앱`}</SettingLinkedAppCount>
         <MarginVertical top={13}/>
@@ -133,7 +144,8 @@ const SettingLinkedApp = () => {
           </SettingLinkedAppContentsArea>
 
         </ScrollView>
-        <View><Button text={showTodoList ? "완료하기" : isAppList ? '연동하기' :"연동앱 추가하기"} handleButton={() => {
+        <View style={{position:'absolute', bottom:120, width:size.width, justifyContent:'center', alignItems:'center'}}>
+          <Button text={showTodoList ? "완료하기" : isAppList ? '연동하기' :"연동앱 추가하기"} handleButton={() => {
           showTodoList ? navigation.navigate("Setting") : isAppList ? handleAddLinkButton(): setIsAppList(true)}}/></View>
       </SettingLinkedAppBody>
       <SettingLinkedAppBg source={setting_linked_app_bg}/>
@@ -146,6 +158,7 @@ export default SettingLinkedApp
 
 const SettingLinkedAppBody = styled.View`
   width:${size.width}px;
+  height:${size.height}px;
   display:flex;
   justify-content:center;
   padding:0 40px;

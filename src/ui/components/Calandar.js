@@ -15,8 +15,8 @@ const Calandar = ({ type, selectedRange, setSelectedRange, version, achieveList,
   const [today, setToday] = useState(dayjs());
   const [weeks, setWeeks] = useState([]);
   
-  const someAchieveDate = (version === "statistic" || version==="report")&&achieveList.length>0 ? achieveList.map((el) => el.status === "SOME_ACHIEVED" ? Number(el.date.slice(8,10)) : "") : []
-  const AllAchieveDate = (version === "statistic"||version==="report")&&achieveList.length>0 ? achieveList.map((el) => el.status === "ALL_ACHIEVED" ? Number(el.date.slice(8,10)) : "") : []
+  const someAchieveDate = (version === "statistic" || version==="report")&&achieveList?.length>0 ? achieveList.map((el) => el.status === "SOME_ACHIEVED" ? Number(el.date.slice(8,10)) : "") : []
+  const AllAchieveDate = (version === "statistic"||version==="report")&&achieveList?.length>0 ? achieveList.map((el) => el.status === "ALL_ACHIEVED" ? Number(el.date.slice(8,10)) : "") : []
   
   useEffect(() => {
     console.log("achieve",achieveList)
