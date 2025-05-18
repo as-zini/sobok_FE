@@ -32,7 +32,7 @@ export const useLogin = () => {
     }
   }
 
-  const handleLogout = async() => {
+  const handleLogout = async(setIsReturn) => {
     try {
       const token = await AsyncStorage.getItem("refresh_token")
       const response = await baseUrl.post("/user/logout",{
@@ -41,6 +41,12 @@ export const useLogin = () => {
         Cookie:`refreshToken=${token}`
       })
       console.log(response.data)
+      setIsReturn(prev => !prev)
+      navigation.reset({
+        routes:[{
+          name:'Start'
+        }]
+      })
     } catch (error) {
       console.log(error)
     }

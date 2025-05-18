@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Image, SafeAreaView, Text, TouchableOpacity, View } from 'react-native'
 import styled from 'styled-components'
 import { size } from '../styles/size'
@@ -12,12 +12,14 @@ import MarginVertical from '../components/MarginVertical';
 import { useNavigation } from '@react-navigation/native';
 import { useUserInfoStore } from '../../store/user';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import RoutinePauseModal from '../components/RoutinePauseModal';
 
 const Setting = () => {
   const settingCategory = ["연동 설정","지원 문의" ,"약관 및 개인정보 처리 동의", "앱 버전"]
   const goToCategory = ["LinkedApp", "Assistance", "TermList", "Version"];
   const navigation = useNavigation();
   const {userInfo} = useUserInfoStore();
+  const [isLogoutModalVisible, setIsLogoutModalVisible] = useState(false);
 
   return (
     <SafeAreaView>
@@ -57,10 +59,11 @@ const Setting = () => {
         </SettingArea>
         <MarginVertical top={30}/>
         <LogoutArea>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => setIsLogoutModalVisible(true)}>
             <LogoutText>로그아웃</LogoutText>
           </TouchableOpacity>
         </LogoutArea>
+        <RoutinePauseModal isPauseModalVisible={isLogoutModalVisible} setIsPauseModalVisible={setIsLogoutModalVisible} version={"Logout"}/>
       </SettingBody>
       <SettingBg source={setting_bg}/>
     </SafeAreaView>

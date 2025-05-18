@@ -13,12 +13,14 @@ import MarginVertical from './MarginVertical';
 import check_icon_indigo from '../../../assets/check_icon_indigo.png';
 import { useRoutine } from '../../hooks/useRoutine';
 import { useUserInfoStore } from '../../store/user';
+import { useLogin } from '../../hooks/useLogin';
 
 const RoutinePauseModal = ({isPauseModalVisible, setIsPauseModalVisible, version, id, setRoutineDetailInfo, setIsComplete, isPause}) => {
   const [isReturn, setIsReturn] = useState(false);
   const {handleRoutineSuspend} = useRoutine();
   const {getRoutineDetail, handleCompleteRoutine} = useRoutine();
   const {userInfo} = useUserInfoStore();
+  const {handleLogout} = useLogin();
   
 
   
@@ -41,7 +43,9 @@ const RoutinePauseModal = ({isPauseModalVisible, setIsPauseModalVisible, version
 
         {version==="Complete" ? 
         <RoutinePauseModalTitle>{"루틴을\n완료할까요?"}</RoutinePauseModalTitle>
-        : isPause ?
+        : version === "Logout" ?
+        <RoutinePauseModalTitle>{"로그아웃\n할까요?"}</RoutinePauseModalTitle>
+        :isPause ?
         <RoutinePauseModalTitle>{!isReturn ? "루틴을 다시\n시작할까요?" : "루틴이 다시\n시작되었어요!"}</RoutinePauseModalTitle>
         : 
         <RoutinePauseModalTitle>{isReturn ? "루틴을 보관함에 넣어두었어요!" : "루틴을 보관함에 넣어둘까요?"}</RoutinePauseModalTitle>
@@ -49,7 +53,10 @@ const RoutinePauseModal = ({isPauseModalVisible, setIsPauseModalVisible, version
         <MarginVertical top={30}/>
         {version === "Complete" ?
         <RoutinePauseModalText>{`${userInfo.displayName} 님의 일상을 책임졌던 루틴!\n드디어 결실을 맺은 걸까요?`}</RoutinePauseModalText>
-        : isPause ? 
+        : version === "Logout" ? 
+        <RoutinePauseModalText>{"정말\n로그아웃 할까요?"}</RoutinePauseModalText>
+        :
+        isPause ? 
         <RoutinePauseModalText>{isReturn ? "루틴 페이지에서\n잠시 미뤄둘 수 있어요!" : "돌아오셨군요!\n다시 열심히 해봐요!"}</RoutinePauseModalText>
         :<RoutinePauseModalText>{isReturn ? "루틴 페이지에서 언제든\n다시 시작할 수 있어요!" : "잠시 미뤄두었다가\n언제든 다시 시작할 수 있어요!"}</RoutinePauseModalText>
         }
@@ -58,7 +65,7 @@ const RoutinePauseModal = ({isPauseModalVisible, setIsPauseModalVisible, version
         :
         <>
         <DoubleButton text1={"아니오"} text2={"예"}
-          handleRightButton={() => version==="Complete" ? handleCompleteRoutine(id, setIsPauseModalVisible) : handleRoutineSuspend(id, setIsReturn)}
+          handleRightButton={() => version==="Complete" ? handleCompleteRoutine(id, setIsPauseModalVisible) : version === "Logout" ?  handleLogout(setIsReturn): handleRoutineSuspend(id, setIsReturn)}
           handleLeftButton={() => setIsPauseModalVisible(false)}/>
         <MarginVertical top={36}/>
         </>
