@@ -27,7 +27,7 @@ const ViewAiRoutineResult = ({route}) => {
   const {routineInfo, version} = route.params;
   const [selectedDate, setSelectedDate] = useState(version === "free" ? routineInfo.days:[]);
   const [invalidSavingList, setInvalidSavingList] = useState([]);
-  const [pickedSaving, setPickedSaving] = useState(version === "free" ? [{title:routineInfo.account}]:[]);
+  const [pickedSaving, setPickedSaving] = useState(version === "free" ? [{title:routineInfo.accountTitle}]:[]);
   const {handleAddAiRoutine} = useRoutine();
   const [editRoutineTitle, setEditRoutineTitle] = useState("")
   const {handleEditRoutine} = useRoutine();
