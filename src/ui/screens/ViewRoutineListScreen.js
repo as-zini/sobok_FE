@@ -105,7 +105,7 @@ const ViewRoutineListScreen = () => {
         <MarginVertical top={12}/>
         <ViewRoutineListHeader>
           <View style={{position:'absolute', left:20}}>
-            <BackArrowButton/>
+            <BackArrowButton isNotBack={true} direction={"Tabs"} isReset={true}/>
           </View>
           <ChangeViewMethodButton onPress={() => setIsList((prev) => !prev)}>
             <ChangeViewMethodButtonText>{isList ? "리스트" : "캘린더"}</ChangeViewMethodButtonText>
