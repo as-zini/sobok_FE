@@ -23,6 +23,8 @@ import AssetLinkModal from '../components/AssetLinkModal';
 import { minToHour } from '../../util';
 import { useGetInfo } from '../../hooks/useGetInfo';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import NonPremium from '../components/NonPremium';
+import { useUserInfoStore } from '../../store/user';
 
 const Statistic = () => {
   const [mode, setMode] = useState("월별");
@@ -46,6 +48,7 @@ const Statistic = () => {
   const {getContinuitySuccess} = useGetInfo();
   const [achieve, setAchieve] = useState(0);
   const [isNextMonth, setIsNextMonth] = useState(true);
+  const {userInfo} = useUserInfoStore();
 
   useFocusEffect(
     useCallback(() => {
@@ -125,7 +128,10 @@ const Statistic = () => {
 
 
   return (
+    <View style={{width:size.width, height:size.height}}>
+    
     <SafeAreaView>
+    {!userInfo.isPremium ? <View style={{position:'absolute'}}><NonPremium/></View> : <></>}
       <ScrollView showsVerticalScrollIndicator={false}>
         <StatisticBody>
           <MarginVertical top={30}/>
@@ -220,6 +226,7 @@ const Statistic = () => {
        </ScrollView>
        <StatisticBg source={statistic_bg}/>
      </SafeAreaView>
+     </View>
   )
  }
 
