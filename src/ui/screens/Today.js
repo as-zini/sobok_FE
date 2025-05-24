@@ -101,7 +101,7 @@ const Today = () => {
             <MarginVertical top={30}/>
             <SnowFlakeIcon size={16} color={"indigo"}/>
             <MarginVertical top={5}/>
-            <PlanedRoutineText style={{color:colors.fontMain80,fontWeight:600}}>{`총 2개의 루틴`}</PlanedRoutineText>
+            <PlanedRoutineText style={{color:colors.fontMain80,fontWeight:600}}>{`총 ${todayRoutineList?.length}개의 루틴`}</PlanedRoutineText>
             <MarginVertical top={25}/>
             {todayRoutineList.map((el,index) => {
               return(

@@ -45,21 +45,22 @@ const ViewRoutineListScreen = () => {
     }, [isComplete, isList, selectedDate]),
   )
   
-  const ingRoutine = routineInfo.filter((el) => el.isSuspended === false);
-  const suspendedRoutine = routineInfo.filter((el) => el.isSuspended === true);
+  const ingRoutine = routineInfo.filter((el) => el.isSuspended === false && !el.isCompleted);
+  const suspendedRoutine = routineInfo.filter((el) => el.isSuspended === true && !el.isCompleted);
+  const completedRoutine = routineInfo.filter((el) => el.isCompleted === true);
 
   const DataForList = [
     {
-      title:["진행 중인 루틴", ingRoutine.length],
+      title:["진행 중인 루틴", ingRoutine?.length],
       data:ingRoutine.map((el) => [el.title, el.accountTitle, minToHour(el.duration), "", el.id])
     },
     {
-      title:["보류한 루틴", suspendedRoutine.length],
+      title:["보류한 루틴", suspendedRoutine?.length],
       data:suspendedRoutine.map((el) => [el.title, el.accountTitle, minToHour(el.duration),"", el.id])
     },
     {
-      title:["완료한 루틴", 0],
-      data:[]
+      title:["완료한 루틴", completedRoutine?.length],
+      data:completedRoutine.map((el) => [el.title, el.accountTitle, minToHour(el.duration),"", el.id])
     }
   ]
 
