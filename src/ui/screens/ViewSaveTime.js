@@ -25,19 +25,21 @@ const ViewSaveTime = ({route}) => {
   const {version, username} = route.params;
   const {getSpareTimeByDay} = useSaveTime()
   const [spareTimeList, setSpareTimeList] = useState([]);
-  const dayToKo = {SUN:'일요일',MON:'월요일',TUE:'화요일',WED:'수요일',THU:'목요일',FRI:'금요일',SAT:'토요일'}
+  const dayToKo = {SUNDAY:'일요일',MONDAY:'월요일',TUESDAY:'화요일',WEDNESDAY:'수요일',THURSDAY:'목요일',FRIDAY:'금요일',SATURDAY:'토요일'}
   const [durationByDay, setDurationByDay] = useState(0);
 
-  const getFullDay = (day) => {
-    return day === 'MON' ? "MONDAY" : day==="TUE" ? "TUESDAY" : day==="WED" ? "WEDNESDAY" : day==="THU" ? "THURSDAY" : day=="FRI" ? "FRIDAY" : day === "SAT" ? "SATURDAY" : "SUNDAY"
-  }
 
 
   useFocusEffect(
     useCallback(() => {
-      getSpareTimeByDay(getFullDay(selectedDate), setSpareTimeList,setDurationByDay)
+      getSpareTimeByDay(selectedDate, setSpareTimeList,setDurationByDay)
     }, [selectedDate]),
   )
+
+  useEffect(() => {
+    console.log(selectedDate)
+  }, [selectedDate])
+  
 
   const handleSaveButton = () => {
     if(version==='first'){

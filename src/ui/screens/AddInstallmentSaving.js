@@ -159,6 +159,7 @@ const AddFreeRoutineBg = styled.Image`
   position:absolute;
   top:0;
   width:${size.width}px;
+  height:${size.height}px;
   z-index:-1;
 `
 

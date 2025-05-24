@@ -131,7 +131,7 @@ const Statistic = () => {
     <View style={{width:size.width, height:size.height}}>
     
     <SafeAreaView>
-    {!userInfo.isPremium ? <View style={{position:'absolute'}}><NonPremium/></View> : <></>}
+    {/* {!userInfo.isPremium ? <View style={{position:'absolute'}}><NonPremium/></View> : <></>} */}
       <ScrollView showsVerticalScrollIndicator={false}>
         <StatisticBody>
           <MarginVertical top={30}/>
@@ -197,7 +197,7 @@ const Statistic = () => {
           <LogArea>
             <LogInfoText>{mode === "월별" ? `${selectedRange.startDate ? selectedRange.startDate : today.format("YYYY-MM-DD")}`:`${isNextMonth && String(selectedDate).length === 1  ? dayjs().add(1,'month').format("YYYY-MM-") : dayjs().format("YYYY-MM-")}${selectedDate}`}</LogInfoText>
             <MarginVertical top={10}/>
-            <LogInfoText style={{fontSize:20}}>{`${statisticLog.length>0?minToHour(statisticLog.reduce((sum,el) => sum+ el.duration,0)) : 0} M`}</LogInfoText>
+            <LogInfoText style={{fontSize:20}}>{`${statisticLog.length>0?minToHour(statisticLog.reduce((sum,el) => sum+ el.duration,0)) : "0 M"}`}</LogInfoText>
             <MarginVertical top={30}/>
             {statisticLog.map((el,index) => {
               return(
