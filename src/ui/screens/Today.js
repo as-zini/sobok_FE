@@ -18,6 +18,7 @@ import { useRoutine } from '../../hooks/useRoutine';
 import LinkIcon from '../components/LinkIcon';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import TodoEl from '../components/TodoEl';
+import Fontisto from '@expo/vector-icons/Fontisto';
 
 const containerWidth = size.width-50;
 
@@ -34,6 +35,8 @@ const Today = () => {
   const [routineDetail, setRoutineDetail] = useState([])
   const [isComplete, setIsComplete] = useState(false);
 
+  const notCompletedTodoId = notCompletedTodo?.map((el) => el.id)
+
   useFocusEffect(
     useCallback(() => {
       getNowTodo();
@@ -44,7 +47,9 @@ const Today = () => {
 
   useEffect(() => {
     console.log("console",notCompletedTodo)
-  },[notCompletedTodo])
+    console.log("length",notCompletedTodo.length)
+    console.log("today", todayRoutineList);
+  },[isReady])
 
   const getTodoData = (id) => {
     getRoutineDetail(id, setRoutineDetail, setIsComplete)
@@ -109,9 +114,15 @@ const Today = () => {
                   <Text style={{fontSize:14, color:colors.gray70, fontWeight:500}}>{`${el.startTime?.slice(0,5)} - ${el.endTime?.slice(0,5)}`}</Text>
                   <MarginVertical top={25}/>
                   <RoutineEl>
+                    {!notCompletedTodoId.includes(el.id) ?
+                    <NumberView style={{backgroundColor:"rgba(112, 113, 114, 0.8)"}}>
+                      <Fontisto name="check" size={12} color="#fff" />
+                    </NumberView>
+                    :
                     <NumberView>
                       <NumText>{index+1}</NumText>
                     </NumberView>
+                    }
                     <View style={{flexGrow:1}}>
                       <View style={{flexDirection:'row', alignItems:'flex-end', gap:5}}>
                         <PlanedRoutineText style={{color:"#343434",fontWeight:600}}>{el.title}</PlanedRoutineText>
@@ -275,8 +286,8 @@ const ToggleButton = styled.TouchableOpacity`
 const NumberView = styled.View`
   border-radius:50%;
   background-color:${colors.indigoBlue};
-  width:32px;
-  height:32px;
+  width:36px;
+  height:36px;
   display:flex;
   justify-content:center;
   align-items:center;

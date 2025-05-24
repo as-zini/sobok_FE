@@ -30,12 +30,11 @@ const CompleteTimer = ({route}) => {
             <BackArrowButton/>
           </View>
         </CompleteTimerHeader> */}
-        <MarginVertical top={90}/>
         <SnowFlakeIcon color={'black'} size={20}/>
         <MarginVertical top={10}/>
         <CompleteTimerText>눈 다 내렸다!</CompleteTimerText>
         <MarginVertical top={80}/>
-        <TimerCategory>{nowTodo.title}</TimerCategory>
+        <TimerCategory>{nowTodo[0].title}</TimerCategory>
         <MarginVertical top={5}/>
         <TimerTime>{time}</TimerTime>
         <MarginVertical top={35}/>
@@ -70,6 +69,7 @@ const CompleteTimerBg = styled.Image`
   top:0;
   width:${size.width}px;
   z-index:-1;
+  height:${size.height}px;
 `
 
 const CompleteTimerHeader = styled.View`

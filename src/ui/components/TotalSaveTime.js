@@ -16,7 +16,7 @@ import { useNavigation } from '@react-navigation/native';
 import MarginVertical from './MarginVertical';
 import { useNowTodoStore } from '../../store/todo';
 import { useRoutine } from '../../hooks/useRoutine';
-import { minToHour } from '../../util';
+import { getTimeDifference, minToHour } from '../../util';
 
 const TotalSaveTime = ({time}) => {
   const navigation = useNavigation();
@@ -24,15 +24,7 @@ const TotalSaveTime = ({time}) => {
   const {getRoutineDetail} = useRoutine();
   const [routineDetailInfo, setRoutineDetailInfo] = useState({});
   const [isComplete, setIsComplete] = useState(true);
-  const Data = [
-    {
-      title:"09:00 - 10:25",
-      data:[["아침에는 영어 공부", "영어 적금", "1H 25M"]]
-    },{
-      title:"10:00 - 10:25",
-      data:[["아침에는 영어 공부", "영어 적금", "1H 25M"]]
-    }
-  ]
+  
 
   function convertToMinutes(timeStr) {
     const timeRegex = /(\d+)(H|M|S)/g;
@@ -52,7 +44,7 @@ const TotalSaveTime = ({time}) => {
 }
 
   useEffect(() => {
-    getRoutineDetail(nowTodo.routineId, setRoutineDetailInfo, setIsComplete)
+    getRoutineDetail(nowTodo[0].routineId, setRoutineDetailInfo, setIsComplete)
 
   }, [])
 
@@ -106,17 +98,17 @@ const TotalSaveTime = ({time}) => {
         <MarginVertical top={40}/>
         <View style={{width:"100%", justifyContent:'center', alignItems:'center'}}>
         <RestOfTime>
-          <RestOfTimeText>{`${minToHour(routineDetailInfo.todos?.filter((el) => nowTodo.title === el.title)[0].duration - convertToMinutes(time))} 남았어요!`}</RestOfTimeText>
+          <RestOfTimeText>{`${minToHour(routineDetailInfo.todos?.filter((el) => nowTodo[0].title === el.title)[0].duration - convertToMinutes(time))} 남았어요!`}</RestOfTimeText>
         </RestOfTime>
         </View>
         <MarginVertical top={36}/>
-        <ProgressBar version={"SaveTime"} savedTime={convertToMinutes(time)} totalTimeGoal={100}/>
+        <ProgressBar version={"SaveTime"} savedTime={convertToMinutes(time)} totalTimeGoal={routineDetailInfo.todos?.filter((el) => nowTodo[0].title === el.title)[0]?.duration}/>
         <MarginVertical top={56}/>
         <ScrollView showsVerticalScrollIndicator={false}>
           {routineDetailInfo.todos?.map((el, index) => {
             return(
             <View key={index}>
-              <Text style={{fontWeight:500, fontSize:14, color:colors.gray70}}>{`${el.startTime} - ${el.endTime}`}</Text>
+              <Text style={{fontWeight:500, fontSize:14, color:colors.gray70}}>{`${el.startTime?.slice(0,5)} - ${el.endTime?.slice(0,5)}`}</Text>
               <MarginVertical top={24}/>
               <>
                 <View style={{display:'flex', flexDirection:'row'}}>

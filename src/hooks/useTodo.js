@@ -40,7 +40,7 @@ export const useTodo = () => {
         }
       })
       console.log("notCompletedTodo",response.data)
-      if(response.data.message.length === 0){
+      if(!response.data.message){
         setNotCompletedTodo(response.data)
       }
       setIsReady(true)
@@ -61,7 +61,7 @@ export const useTodo = () => {
       })
       console.log(response.data);
       setLogId(response.data.todoLogId)
-      openApp(linkApp)
+      // openApp(linkApp)
       console.log(linkApp)
       
     } catch (error) {

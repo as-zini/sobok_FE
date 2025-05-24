@@ -10,12 +10,12 @@ const BackArrowButton = ({isNotBack, direction, isReset}) => {
   console.log(isNotBack, direction)
 
   return (
-    <BackArrowButtonBody onPress={() => isNotBack ? isReset ?
+    <BackArrowButtonBody onPress={() => isNotBack && isReset ?
       navigation.reset({
         routes:[{
           name:direction
         }]
-      }): navigation.navigate(direction.split(" ")[0],{'screen':direction.split(" ")[1] ? direction.split(" ")[1] : ""}) : navigation.goBack()}>
+      }): isNotBack ? navigation.navigate(direction.split(" ")[0],{'screen':direction.split(" ")[1] ? direction.split(" ")[1] : ""}) : navigation.goBack()}>
       <MaterialIcons name="keyboard-arrow-left" size={24} color="black" />
     </BackArrowButtonBody>
   )
