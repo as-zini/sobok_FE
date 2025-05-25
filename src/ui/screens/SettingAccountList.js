@@ -13,7 +13,7 @@ import { useNavigation } from '@react-navigation/native';
 
 const SettingAccountList = () => {
   const {userInfo, setUserInfo} = useUserInfoStore();
-  const categoryArr = ["아이디·비밀번호", "생년월일","이메일 주소","휴대폰 번호"]
+  const categoryArr = ["비밀번호", "생년월일","이메일 주소","휴대폰 번호"]
   const navigation = useNavigation();
 
   return (
