@@ -57,6 +57,7 @@ export const useSignup = () => {
       setIsVarified(true)
     } catch (error) {
       console.log(error)
+      setIsVarified(false)
     }
   }
 

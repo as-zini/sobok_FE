@@ -400,6 +400,10 @@ const Timer = () => {
   };
 
   useEffect(() => {
+    console.log("time now!",nowTodo)
+  },[])
+
+  useEffect(() => {
     const initTimer = async () => {
       const storedStartTime = await AsyncStorage.getItem("startTime");
       const savedStartTime = storedStartTime ? parseInt(storedStartTime, 10) : Date.now();
@@ -498,15 +502,15 @@ const Timer = () => {
         <MarginVertical top={15} />
         <TimerText>{`지금 ${userInfo.displayName} 님은\n눈 내리는 중!`}</TimerText>
         <MarginVertical top={25} />
-        <TimerCategory>{nowTodo.title}</TimerCategory>
+        <TimerCategory>{nowTodo[0].title}</TimerCategory>
         <TimerTime>{formatTime(elapsedTime)}</TimerTime>
         <MarginVertical top={10} />
         <View style={{ flexDirection: 'row', gap: 5, justifyContent: 'center', alignItems: 'center' }}>
           <LinkIcon size={20} />
-          <LinkedText>{nowTodo.linkApp}</LinkedText>
+          <LinkedText>{nowTodo[0].linkApp}</LinkedText>
         </View>
         <MarginVertical top={40} />
-        <RestOfTimeText>{`${minToHour(convertToMinutes(getTimeDifference(nowTodo.startTime, nowTodo.endTime)) - Math.floor(elapsedTime / 60))}분만 더하면\n적금 채우기 완료!`}</RestOfTimeText>
+        <RestOfTimeText>{`${minToHour(convertToMinutes(getTimeDifference(nowTodo[0].startTime, nowTodo[0].endTime)) - Math.floor(elapsedTime / 60))}분만 더하면\n적금 채우기 완료!`}</RestOfTimeText>
         <MarginVertical top={10} />
         <View style={{width:size.width}}>
           <View style={{flexDirection:'row', width:size.width/2, justifyContent:'space-between', position:'absolute', left:30, alignItems:'center'}}>
@@ -556,7 +560,7 @@ const TimerBody = styled.View`
 
 const TimerBg = styled.Image`
   width: ${size.width}px;
-  height:${size.height}px;
+  height:${size.height+50}px;
   position: absolute;
   top: 0;
   z-index: -1;

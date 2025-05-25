@@ -182,7 +182,11 @@ export const useRoutine = () => {
         }
       })
       console.log(response.data)
-      navigation.navigate("ViewRoutine")
+      navigation.reset({
+        routes:[{
+          name:'ViewRoutine'
+        }]
+      })
     } catch (error) {
       console.log(error)
       console.log(token)

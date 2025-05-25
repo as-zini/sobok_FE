@@ -45,21 +45,22 @@ const ViewRoutineListScreen = () => {
     }, [isComplete, isList, selectedDate]),
   )
   
-  const ingRoutine = routineInfo.filter((el) => el.isSuspended === false);
-  const suspendedRoutine = routineInfo.filter((el) => el.isSuspended === true);
+  const ingRoutine = routineInfo.filter((el) => el.isSuspended === false && !el.isCompleted);
+  const suspendedRoutine = routineInfo.filter((el) => el.isSuspended === true && !el.isCompleted);
+  const completedRoutine = routineInfo.filter((el) => el.isCompleted === true);
 
   const DataForList = [
     {
-      title:["진행 중인 루틴", ingRoutine.length],
+      title:["진행 중인 루틴", ingRoutine?.length],
       data:ingRoutine.map((el) => [el.title, el.accountTitle, minToHour(el.duration), "", el.id])
     },
     {
-      title:["보류한 루틴", suspendedRoutine.length],
+      title:["보류한 루틴", suspendedRoutine?.length],
       data:suspendedRoutine.map((el) => [el.title, el.accountTitle, minToHour(el.duration),"", el.id])
     },
     {
-      title:["완료한 루틴", 0],
-      data:[]
+      title:["완료한 루틴", completedRoutine?.length],
+      data:completedRoutine.map((el) => [el.title, el.accountTitle, minToHour(el.duration),"", el.id])
     }
   ]
 
@@ -104,7 +105,7 @@ const ViewRoutineListScreen = () => {
         <MarginVertical top={12}/>
         <ViewRoutineListHeader>
           <View style={{position:'absolute', left:20}}>
-            <BackArrowButton/>
+            <BackArrowButton isNotBack={true} direction={"Tabs"} isReset={true}/>
           </View>
           <ChangeViewMethodButton onPress={() => setIsList((prev) => !prev)}>
             <ChangeViewMethodButtonText>{isList ? "리스트" : "캘린더"}</ChangeViewMethodButtonText>
@@ -156,7 +157,7 @@ const ViewRoutineListScreen = () => {
           return(
             <View key={index}>
             <View style={{width:'100%'}}>
-              <Text style={{fontSize:14, fontWeight:500, color:"#707172", marginBottom:-10}}>{`${el.startTime} - ${el.endTime}`}</Text>
+              <Text style={{fontSize:14, fontWeight:500, color:"#707172", marginBottom:-10}}>{`${el.startTime?.slice(0,5)} - ${el.endTime?.slice(0,5)}`}</Text>
             </View>
             <MarginVertical top={24}/>
             <AssetEl item={[el.title, el.accountTitle, minToHour(el.duration),"", el.id]} index={index} isLink={true} category={"Routine"} isTouchable={true}/>

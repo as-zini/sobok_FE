@@ -9,11 +9,12 @@ import { useUserInfoStore } from '../../store/user';
 import MarginVertical from '../components/MarginVertical';
 import Button from '../components/Button';
 import { useNavigation } from '@react-navigation/native';
+import bg from "../../../assets/settingAccountBg.jpg"
 
 
 const SettingAccountList = () => {
   const {userInfo, setUserInfo} = useUserInfoStore();
-  const categoryArr = ["아이디·비밀번호", "생년월일","이메일 주소","휴대폰 번호"]
+  const categoryArr = ["비밀번호", "생년월일","이메일 주소","휴대폰 번호"]
   const navigation = useNavigation();
 
   return (
@@ -51,7 +52,7 @@ const SettingAccountList = () => {
           <Button text={"확인"}/>
         </View>
       </Body>
-      <Bg/>
+      <Bg source={bg}/>
     </SafeAreaView>
   )
 }
@@ -72,7 +73,7 @@ const Bg = styled.Image`
   z-index:-1;
   position:absolute;
   top:0;
-  background-color:${colors.indigoBlue50};
+  
 
 `
 

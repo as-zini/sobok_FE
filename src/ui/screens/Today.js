@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { SafeAreaView, View } from 'react-native'
+import { Image, SafeAreaView, ScrollView, Text, View } from 'react-native'
 import styled from 'styled-components'
 import { colors } from '../styles/colors'
 
@@ -13,6 +13,12 @@ import MarginVertical from '../components/MarginVertical';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useTodo } from '../../hooks/useTodo';
 import { minToHour } from '../../util';
+import timeIcon from '../../../assets/time_icon.png';
+import { useRoutine } from '../../hooks/useRoutine';
+import LinkIcon from '../components/LinkIcon';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import TodoEl from '../components/TodoEl';
+import Fontisto from '@expo/vector-icons/Fontisto';
 
 const containerWidth = size.width-50;
 
@@ -23,23 +29,37 @@ const Today = () => {
   const {getNowTodo, getNotCompletedTodo} = useTodo();
   const [notCompletedTodo, setNotCompletedTodo] = useState([]);
   const [isReady, setIsReady] = useState(false);
+  const [todayRoutineList, setTodayRoutineList] = useState([]);
+  const {getRoutineByCalandar, getRoutineDetail} = useRoutine();
+  const [toggleId, setToggleId] = useState(0); 
+  const [routineDetail, setRoutineDetail] = useState([])
+  const [isComplete, setIsComplete] = useState(false);
+
+  const notCompletedTodoId = notCompletedTodo?.map((el) => el.id)
 
   useFocusEffect(
     useCallback(() => {
       getNowTodo();
       getNotCompletedTodo(setNotCompletedTodo, setIsReady);
-
+      getRoutineByCalandar(dayjs().get('date'), setTodayRoutineList)
     }, []),
   )
 
   useEffect(() => {
     console.log("console",notCompletedTodo)
-  },[notCompletedTodo])
+    console.log("length",notCompletedTodo.length)
+    console.log("today", todayRoutineList);
+  },[isReady])
+
+  const getTodoData = (id) => {
+    getRoutineDetail(id, setRoutineDetail, setIsComplete)
+  }
   
 
   return (
     <SafeAreaView>
       <TodayBody>
+        <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{width:containerWidth, display:'flex', alignItems:'flex-end', marginTop:20}}>
           <ContinuitySuccess/>
         </View>
@@ -75,6 +95,82 @@ const Today = () => {
             })}
           </ScaleArea>
         </TodayInfoArea>
+        <MarginVertical top={56}/>
+        <PlanedRoutineText style={{color:"#777",fontWeight:700}}>오늘의 루틴</PlanedRoutineText>
+        <MarginVertical top={13}/>
+        <TodayRoutineArea>
+            <Image source={timeIcon} style={{width:30, height:36, resizeMode:'contain' }}/>
+            <MarginVertical top={10}/>
+            <PlanedRoutineText style={{color:colors.fontMain80,fontWeight:600}}>오늘 모을 시간</PlanedRoutineText>
+            <TodayInfoTitle style={{fontSize:34}}>2H 50M</TodayInfoTitle>
+            <MarginVertical top={30}/>
+            <SnowFlakeIcon size={16} color={"indigo"}/>
+            <MarginVertical top={5}/>
+            <PlanedRoutineText style={{color:colors.fontMain80,fontWeight:600}}>{`총 ${todayRoutineList?.length}개의 루틴`}</PlanedRoutineText>
+            <MarginVertical top={25}/>
+            {todayRoutineList.map((el,index) => {
+              return(
+                <View key={index}>
+                  <Text style={{fontSize:14, color:colors.gray70, fontWeight:500}}>{`${el.startTime?.slice(0,5)} - ${el.endTime?.slice(0,5)}`}</Text>
+                  <MarginVertical top={25}/>
+                  <RoutineEl>
+                    {!notCompletedTodoId.includes(el.id) ?
+                    <NumberView style={{backgroundColor:"rgba(112, 113, 114, 0.8)"}}>
+                      <Fontisto name="check" size={12} color="#fff" />
+                    </NumberView>
+                    :
+                    <NumberView>
+                      <NumText>{index+1}</NumText>
+                    </NumberView>
+                    }
+                    <View style={{flexGrow:1}}>
+                      <View style={{flexDirection:'row', alignItems:'flex-end', gap:5}}>
+                        <PlanedRoutineText style={{color:"#343434",fontWeight:600}}>{el.title}</PlanedRoutineText>
+                        <ToggleButton onPress={() => {
+                          if(toggleId === 0){
+                            getTodoData(el.id);
+                            setToggleId(el.id)
+                          }else{
+                            setToggleId(0)
+                          }
+                          
+                        }}>
+                          <MaterialIcons name="keyboard-arrow-down" size={24} color="#AEAEB2" />
+                        </ToggleButton>
+                      </View>
+                      <MarginVertical top={7}/>
+                      <View style={{flexDirection:'row', alignItems:'center', gap:5}}>
+                        <LinkIcon size={16}/>
+                        <Text style={{fontSize:14, color:colors.gray70, fontWeight:500}}>{el.accountTitle}</Text>
+                      </View>
+                    </View>
+                    <PlanedRoutineText style={{color:colors.indigoBlue,fontWeight:600}}>{`${minToHour(el.duration)}`}</PlanedRoutineText>
+                  </RoutineEl>
+                  
+                  {
+                    toggleId === el.id  ?
+                    <View>
+                    <MarginVertical top={20}/>
+                    {routineDetail?.todos?.map((todo,idx) => {
+                      return(
+                      <TodoEl data={[todo.title, todo.linkApp, minToHour(todo.duration), `${todo.startTime?.slice(0,5)} - ${todo.endTime?.slice(0,5)}`]} key={idx} index={idx}/>
+                    )
+                    })}
+                    <MarginVertical top={10}/>
+                    
+                    </View>
+                    :<></>
+
+                  }
+                  
+                  <MarginVertical top={40}/>
+                </View>
+              )
+            })}
+        </TodayRoutineArea>
+        <MarginVertical top={100}/>
+        
+        </ScrollView>
       </TodayBody>
       <TodayBg source={today_bg}/>
     </SafeAreaView>
@@ -135,6 +231,7 @@ const PlanedRoutineText = styled.Text`
   font-size:18px;
   color:#fff;
   margin-top:8px;
+  z-index:3;
 `
 
 const TodayTotalTime = styled.Text`
@@ -166,3 +263,39 @@ const BoldBorderLine = styled.View`
   height:1px;
   background-color:#fff;
 `
+
+const TodayRoutineArea = styled.View`
+  width:100%;
+  padding:30px 25px;
+  background-color:rgba(255,255,255,.6);
+  border-radius:16px;
+  
+`
+
+const RoutineEl = styled.View`
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+  gap:15px;
+`
+
+const ToggleButton = styled.TouchableOpacity`
+
+`
+
+const NumberView = styled.View`
+  border-radius:50%;
+  background-color:${colors.indigoBlue};
+  width:36px;
+  height:36px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+`
+
+const NumText = styled.Text`
+  color:#fff;
+  font-weight:600;
+  font-size:20px;
+`
+

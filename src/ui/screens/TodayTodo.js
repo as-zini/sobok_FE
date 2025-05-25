@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components';
 import { Image, SafeAreaView, ScrollView, SectionList, Text, View } from 'react-native'
 
@@ -15,7 +15,7 @@ import TodoEl from '../components/TodoEl';
 import LinkIcon from '../components/LinkIcon';
 import button_icon from '../../../assets/save_icon.png';
 import StartCountDown from '../components/StartCountDown';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useTodo } from '../../hooks/useTodo';
 import { minToHour } from '../../util';
 import { useRoutine } from '../../hooks/useRoutine';
@@ -38,13 +38,14 @@ const TodayTodo = () => {
     console.log("now!!!",nowTodo)
   },[]) 
 
-  useEffect(() => {
+  useFocusEffect(
+    useCallback(() => {
     
     getNotCompletedTodo(setNotCompletedTodo, setIsReady);
     getRoutineByCalandar(dayjs().format("DD") ,setTodayRoutine);
     getTodaySaveTime(setSaveTime);
-
-  }, [])
+    },[])
+  )
 
   // useEffect(() => {
   //   findNextTodo(notCompletedTodo);

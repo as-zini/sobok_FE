@@ -60,13 +60,13 @@ const AddFreeRoutine = () => {
   }
 
   const EngDayToKor = (day) => {
-    if(day === "SUN")return '일'
-    if(day === "MON")return '월'
-    if(day==="TUE")return '화'
-    if(day==="WED")return '수'
-    if(day==="THU")return '목'
-    if(day==="FRI")return '금'
-    if(day==="SAT")return '토'
+    if(day === "SUNDAY")return '일'
+    if(day === "MONDAY")return '월'
+    if(day==="TUESDAY")return '화'
+    if(day==="WEDNESDAY")return '수'
+    if(day==="THURSDAY")return '목'
+    if(day==="FRIDAY")return '금'
+    if(day==="SATURDAY")return '토'
   }
 
 
