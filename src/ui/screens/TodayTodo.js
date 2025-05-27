@@ -22,6 +22,9 @@ import { useRoutine } from '../../hooks/useRoutine';
 import dayjs from 'dayjs';
 import { useNowTodoStore } from '../../store/todo';
 
+var isBetween = require("dayjs/plugin/isBetween");
+dayjs.extend(isBetween);
+
 const TodayTodo = () => {
   const [isStart, setIsStart] = useState(false);
   const {getNotCompletedTodo, getTodaySaveTime} = useTodo();
@@ -32,11 +35,16 @@ const TodayTodo = () => {
   //일단 true로 바꿔놓음, getNotCompletedTodo api 오류 해결되면 다시 바꿀것!
   const [isReady, setIsReady] = useState(true);
   const [saveTime, setSaveTime] = useState(0);
+  const today = dayjs().format('YYYY-MM-DD');
 
 
   useEffect(() => {
     console.log("now!!!",nowTodo)
+    const t2 = dayjs(`${today}T${nowTodo[0].startTime}`);
+    console.log(isWithin5Minutes(t2))
   },[]) 
+
+  
 
   useFocusEffect(
     useCallback(() => {
@@ -55,6 +63,15 @@ const TodayTodo = () => {
   const notCompletedTodoCount = notCompletedTodo.reduce((sum, el) => sum + el.todos.length, 0);
   const LeftTime = notCompletedTodo.reduce((sum,el) => sum + el.duration, 0);
   const TotalTime = todayRoutine.reduce((sum,el) => sum + el.duration, 0);
+
+  function isWithin5Minutes(targetTime) {
+    const now = dayjs();
+    const start = now.subtract(5, 'minute');
+    const end   = now.add(5, 'minute');
+    // isBetween(하한, 상한, 단위, 경계포함 여부)
+    // '[]'면 양쪽 포함, '()'면 양쪽 미포함
+    return targetTime.isBetween(start, end, null, '[]');
+  }
   
 
 
@@ -167,10 +184,14 @@ const TodayTodo = () => {
         <View style={{marginLeft:-30}}>
           <BlurComponent child={BlurChild}/>
         </View>
-        <StartButton onPress={() => setIsStart(true)}>
+        <StartButton onPress={() => {
+            const t2 = dayjs(`${today}T${nowTodo[0].startTime}`);
+            if(!nowTodo[0].message && isWithin5Minutes(t2)){
+              setIsStart(true)
+            }}}>
           <Image source={button_icon} style={{width:48, height:34}}/>
           <MarginVertical top={12}/>
-          <StartButtonText>{nowTodo.length > 0 ? `${nowTodo[0].title} 시작하기` : ""}</StartButtonText>
+          <StartButtonText>{nowTodo[0].message ? "오늘 남은 할 일이 없어요!" : nowTodo.length > 0 ? `${nowTodo[0].title} 시작하기` : ""}</StartButtonText>
         </StartButton>
       </TodayTodoBody>
       <TodayTodoBg source={today_todo_bg}/>
