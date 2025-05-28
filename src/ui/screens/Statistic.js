@@ -131,7 +131,7 @@ const Statistic = () => {
     <View style={{width:size.width, height:size.height}}>
     
     <SafeAreaView>
-    {/* {!userInfo.isPremium ? <View style={{position:'absolute'}}><NonPremium/></View> : <></>} */}
+    {!userInfo.isPremium ? <View style={{position:'absolute'}}><NonPremium/></View> : <></>}
       <ScrollView showsVerticalScrollIndicator={false}>
         <StatisticBody>
           <MarginVertical top={30}/>
