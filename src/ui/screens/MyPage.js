@@ -129,7 +129,7 @@ const MyPage = () => {
         <SnowCardArea >
           <View style={{flexDirection:'row',width:'95%'}}>
             <Text style={{fontWeight:600,fontSize:22,color:colors.darkGray,flexGrow:1}}>{`눈카드 ${cardData.length}개`}</Text>
-            <TouchableOpacity onPress={() => navigation.navigate('SnowCardBook')}>
+            <TouchableOpacity onPress={() => navigation.navigate('SnowCardBook', {version:""})}>
               <MaterialIcons name="keyboard-arrow-right" size={24} color={colors.fontMains} />
             </TouchableOpacity>
           </View>
@@ -197,7 +197,7 @@ const ProfileArea = styled.View`
 const ProfileImageArea = styled.View`
   width:56px;
   height:56px;
-  border-radius:50%;
+  border-radius:28px;
   background-color:#fff;
   display:flex;
   justify-content:center;

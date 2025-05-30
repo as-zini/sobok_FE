@@ -10,6 +10,9 @@ import NavigationService from './src/ui/components/NavigationService';
 import * as SplashScreen from 'expo-splash-screen'
 import { useEffect } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+// index.js 또는 App.js 맨 위에
+import 'react-native-gesture-handler';
+
 
 export default function App() {
   

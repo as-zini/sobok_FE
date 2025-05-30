@@ -40,7 +40,7 @@ const Notification = () => {
                     idx >= 1?
                     <NotiEl>
                       <View >
-                      <View style={{backgroundColor:colors.fontMain, borderRadius:'50%', width:30, height:30, justifyContent:'center', alignItems:'center'}}>
+                      <View style={{backgroundColor:colors.fontMain, borderRadius:15, width:30, height:30, justifyContent:'center', alignItems:'center'}}>
                         <SnowFlakeIcon size={14} color={'white'}/>
                       </View>
                       <NewSign/>
@@ -115,7 +115,7 @@ const NotiEl = styled.View`
 const NewSign = styled.View`
   width:7px;
   height:7px;
-  border-radius:50%;
+  border-radius:3px;
   background-color:${colors.fontMain};
   position:absolute;
   right:-5px;

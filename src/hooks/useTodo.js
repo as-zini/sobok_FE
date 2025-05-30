@@ -12,7 +12,7 @@ export const useTodo = () => {
   const {nowTodo, setNowTodo} = useNowTodoStore();
   const navigation = useNavigation();
 
-  const getTodayTodo = async(setTodayTodo,setIsReady) => {
+  const getTodayTodo = async(setTodayTodo) => {
     try {
       const token = await AsyncStorage.getItem("access_token")
       const response = await baseUrl.get("/todo/today",{
@@ -22,7 +22,7 @@ export const useTodo = () => {
       })
       console.log(response.data)
       setTodayTodo(response.data)
-      setIsReady(true)
+      
 
 
     } catch (error) {
@@ -85,7 +85,7 @@ export const useTodo = () => {
     }
   }
 
-  const getNowTodo = async() => {
+  const getNowTodo = async(setIsReady, version) => {
     try {
       const token = await AsyncStorage.getItem("access_token")
 
@@ -96,6 +96,9 @@ export const useTodo = () => {
       })
       console.log("getNow",response.data);
       setNowTodo(response.data.message === '오늘의 할 일이 없습니다.' ? false : [response.data])
+      if(version === "home"){
+        setIsReady(true)
+      }
     } catch (error) {
       console.log("getNowTodo")
       console.log(error)

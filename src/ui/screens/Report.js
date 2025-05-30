@@ -238,7 +238,7 @@ const Report = () => {
       <SnowFlakeIcon color={"indigo"} size={16}/>
       <MarginVertical top={10}/>
      {/* !!!!!!!!! */}
-      <ReportText>{"10일 넘게 눈이 온 적은\n처음이에요!"}</ReportText>
+      <ReportText>{}</ReportText>
       {/* !!!!!!!!! */}
       <MarginVertical top={40}/>
       <View style={{flexDirection:'row', width:'100%', flexWrap:'wrap', gap:20}}>

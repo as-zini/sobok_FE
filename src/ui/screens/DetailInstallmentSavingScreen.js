@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { SafeAreaProvider, SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import styled from 'styled-components';
 
@@ -37,22 +37,28 @@ const DetailInstallmentSavingScreen = ({route}) => {
   const [selectedRange, setSelectedRange] = useState({startDate:dayjs().startOf('month').format("YYYY-MM-DD"), endDate:dayjs().endOf('month').format("YYYY-MM-DD")});
   const [savingLog, setSavingLog] = useState([]);
   const [isAlertModal, setIsAlertModal] = useState(false);
+  const [isReady, setIsReady] = useState(false);
+  const hasAlertShown = useRef(false);
 
 
   
 
   useEffect(() => {
-    getSavingDetail(id, setSavingInfo);
-    getSavingLog(id, selectedRange.startDate, selectedRange.endDate, setSavingLog)
-    
-    
-  }, [selectedRange])
+    getSavingDetail(id, setSavingInfo,setIsReady);
+  }, [id]);
 
+  // B. selectedRange가 바뀔 때만 로그 불러오기
   useEffect(() => {
-    if(!savingInfo.is_valid)setIsAlertModal(true)
-    
-    
-  }, [savingInfo])
+    getSavingLog(id, selectedRange.startDate, selectedRange.endDate, setSavingLog);
+  }, [id, selectedRange]);
+
+  // C. savingInfo가 준비되고 is_valid가 false인 경우에만 모달 띄우기
+  useEffect(() => {
+    if (savingInfo && savingInfo.is_valid === false && !hasAlertShown.current) {
+      setIsAlertModal(true);
+      hasAlertShown.current = true;
+    }
+  }, [savingInfo]);
   // const startedAt = dayjs(new Date(Number(savingInfo.created_at.slice(0,4)),Number(savingInfo.created_at.slice(5,7))-1,Number(savingInfo.created_at.slice(8,10))+1))
   const startedAt = dayjs(`${savingInfo.created_at} 00:00`)
 
@@ -98,6 +104,7 @@ const DetailInstallmentSavingScreen = ({route}) => {
   
   return (
     <SafeAreaProvider style={{paddingTop:insets.top}}>
+      {isReady ?
       <View>
       <ScrollView showsVerticalScrollIndicator={false}>
       <DetailInstallmentSavingBody>
@@ -138,7 +145,7 @@ const DetailInstallmentSavingScreen = ({route}) => {
         <ShortAlertArea text={`${savingInfo.duration-(dayjs().get('month')-startedAt.get('month'))}개월 남았어요!`} width={114} height={30}/>
         {/* 기간바 */}
         <MarginVertical top={36}/>
-        <ProgressBar startedAt={startedAt} duration={savingInfo.duration} version={"Time"}/>
+        <ProgressBar startedAt={startedAt} duration={savingInfo.duration ? savingInfo.duration : 0} version={"Time"}/>
         <MarginVertical top={48}/>
         <DoubleButton
           text1={"연결 루틴 보기"}
@@ -160,7 +167,9 @@ const DetailInstallmentSavingScreen = ({route}) => {
       <SavingAlerteModal isPauseModalVisible={isAlertModal} setIsPauseModalVisible={setIsAlertModal} id={id}/>
       
       </ScrollView>
+      
       </View>
+      :<></>}
       <DetailInstallmentSavingBg source={installment_saving_bg}/>
     </SafeAreaProvider>
   )

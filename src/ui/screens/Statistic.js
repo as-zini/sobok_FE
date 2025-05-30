@@ -101,7 +101,7 @@ const Statistic = () => {
       <>
       {todo.map((el,index) => {
         return(
-        <View style={{display:'flex', flexDirection:'row', width:300, gap:13, justifyContent:'center',alignItems:'center', backgroundColor:'red'}} key={index}>
+        <View style={{display:'flex', flexDirection:'row', width:300, gap:13, justifyContent:'center',alignItems:'center'}} key={index}>
                 <View style={{width:40, display:'flex', justifyContent:'center', alignItems:'center', gap:5}}>
                   <View style={{width:8, height:8, borderRadius:'50%', backgroundColor:colors.fontMain}}></View>
                   <VerticalBorderLine/>
@@ -131,7 +131,16 @@ const Statistic = () => {
     <View style={{width:size.width, height:size.height}}>
     
     <SafeAreaView>
-    {!userInfo.isPremium ? <View style={{position:'absolute'}}><NonPremium/></View> : <></>}
+    {!userInfo.isPremium ? <View style={{
+        position: 'absolute',
+        top: 0, left: 0, right: 0, bottom: 0,  // 화면 전체
+        backgroundColor: 'rgba(0,0,0,0.5)',   // 반투명 검정
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 99,                           // 최상위 보장
+      }}
+                   // overlay 영역 전체에서 터치 차단
+    ><NonPremium/></View> : <></>}
       <ScrollView showsVerticalScrollIndicator={false}>
         <StatisticBody>
           <MarginVertical top={30}/>

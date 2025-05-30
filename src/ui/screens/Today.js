@@ -42,6 +42,7 @@ const Today = () => {
       getNowTodo();
       getNotCompletedTodo(setNotCompletedTodo, setIsReady);
       getRoutineByCalandar(dayjs().get('date'), setTodayRoutineList)
+      setToggleId(0)
     }, []),
   )
 
@@ -153,7 +154,10 @@ const Today = () => {
                     <MarginVertical top={20}/>
                     {routineDetail?.todos?.map((todo,idx) => {
                       return(
-                      <TodoEl data={[todo.title, todo.linkApp, minToHour(todo.duration), `${todo.startTime?.slice(0,5)} - ${todo.endTime?.slice(0,5)}`]} key={idx} index={idx}/>
+                        <View key={idx}>
+                      <TodoEl data={[todo.title, todo.linkApp, minToHour(todo.duration), `${todo.startTime?.slice(0,5)} - ${todo.endTime?.slice(0,5)}`]} index={idx}/>
+                      <MarginVertical top={10}/>
+                      </View>
                     )
                     })}
                     <MarginVertical top={10}/>
@@ -284,7 +288,7 @@ const ToggleButton = styled.TouchableOpacity`
 `
 
 const NumberView = styled.View`
-  border-radius:50%;
+  border-radius: 18px; 
   background-color:${colors.indigoBlue};
   width:36px;
   height:36px;

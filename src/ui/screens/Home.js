@@ -86,14 +86,14 @@ const Home = () => {
   
   useFocusEffect(
     useCallback(() => {
-    getUserInfo()
+    getUserInfo(setIsReady, "home")
     getRoutineCount(setRoutineCount);
     getSavingCount(setSavingCount);
     getTodayTodo(setTodayTodo,setIsReady);
     getNowTodo()
     getTotalSpareTime(setSpareTimeTotal)
     // getToken()
-    }, []),
+    }, [isReady]),
   )
 
   useEffect(() => {
@@ -101,7 +101,10 @@ const Home = () => {
     }, [spareTimeTotal])
   const isLoading = Object.keys(nowTodo).length > 1 ? true : false;
 
-  
+    useEffect(() => {
+      console.log("now!!!!",nowTodo)
+    }, [nowTodo])
+    
 
   
 
@@ -110,7 +113,7 @@ const Home = () => {
     <>
     
     <SafeAreaView>
-      {isReady?
+      {!isReady ? <></>:
       <ScrollView showsVerticalScrollIndicator={false}>
       <HomeBody>
         <MarginVertical top={20}/>
@@ -135,11 +138,11 @@ const Home = () => {
             <View style={{flexGrow:1}}>
             {/* {isLoading ? 
             <> */}
-            {nowTodo.length > 0 ?
+            {!nowTodo[0]?.message && nowTodo.length>0 ?
             <>
-              <TodoTime>{`${nowTodo.length > 0 ? nowTodo[0].startTime?.slice(0,5) : ""} - ${nowTodo.length > 0 ? nowTodo[0].endTime?.slice(0,5) : ""}`}</TodoTime>
+              <TodoTime>{`${nowTodo[0]?.startTime?.slice(0,5)} - ${nowTodo[0]?.endTime?.slice(0,5)}`}</TodoTime>
               <MarginVertical top={5}/>
-              {/* <TodoText>{nowTodo.length > 0 ? `${nowTodo[0].title} 외 ${getTimesAfter(nowTodo[0]?.startTime, todayTodo)}개` : ""}</TodoText> */}
+              <TodoText>{`${nowTodo[0]?.title} 외 ${getTimesAfter(nowTodo[0]?.startTime, todayTodo)}개`}</TodoText>
               <MarginVertical top={10}/>
             </>
             :
@@ -149,10 +152,13 @@ const Home = () => {
             </>
             }  
             <View style={{flexDirection:'row', justifyContent:'center',alignItems:'center', paddingRight:30}}>
-            <TodoDuringTime style={{fontSize:nowTodo[0] ? 48 : 34, flexGrow:1}}>{nowTodo.length > 0 ? `${getTimeDifference(nowTodo[0].startTime, nowTodo[0].endTime)}` : "오늘은\n할 일이 없어요!"}</TodoDuringTime>
+            <TodoDuringTime style={{fontSize:!nowTodo[0]?.message && nowTodo.length>0? 48 : 34, flexGrow:1}}>{!nowTodo[0]?.message && nowTodo.length>0 ? `${getTimeDifference(nowTodo[0].startTime, nowTodo[0].endTime)}` : "오늘은\n할 일이 없어요!"}</TodoDuringTime>
+            {!nowTodo[0]?.message && nowTodo.length>0 ? 
             <TouchableOpacity onPress={() => navigation.navigate("TodayTodo")} style={{justifyContent:'center', alignItems:'center'}}>
-              <Image source={nowTodo.length > 0 ? go_todo_icon : smile_icon} style={{width:60, height:60, objectFit:'contain' }}/>
+              <Image source={go_todo_icon} style={{width:60, height:60, objectFit:'contain' }}/>
             </TouchableOpacity>
+            :<Image source={smile_icon} style={{width:60, height:60, objectFit:'contain' }}/>
+            }
             </View>
             </View>
             
@@ -226,9 +232,7 @@ const Home = () => {
         <AssetAddModal isAssetAddModalVisible={isAssetAddModalVisible} setIsAssetAddModalVisible={setIsAssetAddModalVisible}/>
       </HomeBody>
       </ScrollView>
-       :
-       <></>
-       }
+      }
       <HomeBg source={home_bg}/>
     </SafeAreaView>
    

@@ -14,6 +14,8 @@ const ContinuitySuccess = () => {
 
   useEffect(() => {
     getContinuitySuccess(setAchieve);
+    console.log("!!!!!!!!")
+    console.log(achieve)
   }, [])
   
 
@@ -45,7 +47,7 @@ const ContinuitySuccessBody = styled.View`
 const ContinuitySuccessBg = styled.Image`
   position:absolute;
   top:0;
-  z-index:0;
+  z-index:-1;
 `
 
 const ContinuitySuccessIcon = styled.Image`
@@ -58,6 +60,6 @@ const ContinuitySuccessText = styled.Text`
   font-weight:500;
   font-size:16px;
   color:#fff;
-  z-index:1;
+  z-index:6;
 
 `
