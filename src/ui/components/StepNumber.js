@@ -23,7 +23,7 @@ const StepNumberBody = styled.View`
   display:flex;
   justify-content:center;
   align-items:center;
-  border-radius:50%;
+  border-radius:20px;
 `
 
 const StepNumberText = styled.Text`

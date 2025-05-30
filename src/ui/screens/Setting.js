@@ -106,7 +106,7 @@ const ProfileArea = styled.View`
 
 const ProfileImageArea = styled.View`
   background-color:#fff;
-  border-radius:50%;
+  border-radius:28px;
   width:56px;
   height:56px;
   display:flex;

@@ -7,7 +7,7 @@ export const useGetInfo = () => {
   const {userInfo, setUserInfo} = useUserInfoStore();
   
 
-  const getUserInfo = async() => {
+  const getUserInfo = async(setIsReady, version) => {
     const token = await AsyncStorage.getItem("access_token")
     try {
       
@@ -21,6 +21,7 @@ export const useGetInfo = () => {
       });
       console.log("응답:", response.data);
       setUserInfo(response.data)
+      if(version === "home")setIsReady(true)
       console.log(token)
     } catch (error) {
       if (error.response) {

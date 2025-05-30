@@ -75,7 +75,7 @@ const TodoIndex = styled.View`
   width:18px;
   height:18px;
   background-color:${colors.fontMain};
-  border-radius:50%;
+  border-radius:9px;
   display:flex;
   justify-content:center;
   align-items:center;

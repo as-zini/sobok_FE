@@ -91,7 +91,7 @@ export const useInstallmentSaving = () => {
     }
   }
 
-  const getSavingDetail = async(id,setSavingInfo) => {
+  const getSavingDetail = async(id,setSavingInfo, setIsReady) => {
     try {
       const token = await AsyncStorage.getItem("access_token")
       const response = await baseUrl.get(`/account/details?accountId=${id}`,{
@@ -101,7 +101,7 @@ export const useInstallmentSaving = () => {
       })
       console.log(response.data);
       setSavingInfo(response.data)
-      
+      setIsReady(true)
     } catch (error) {
       console.log(error)
     }

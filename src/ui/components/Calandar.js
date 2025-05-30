@@ -83,6 +83,11 @@ const Calandar = ({ type, selectedRange, setSelectedRange, version, achieveList,
     getCalandarData();
   }, [today, selectedRange]);
 
+  useEffect(() => {
+    console.log(selectedRange)
+  }, [selectedRange])
+  
+
   return (
     <CalandarBody>
       {version !== 'report' ?
@@ -129,12 +134,12 @@ const Calandar = ({ type, selectedRange, setSelectedRange, version, achieveList,
                         : dayjs(today).date(date).isSame(dayjs(selectedRange.startDate), 'day') ||
                           (selectedRange.endDate && dayjs(today).date(date).isSame(dayjs(selectedRange.endDate), 'day'))
                         ? colors.fontMain
-                        : "",
+                        : "transparent",
                     borderRadius: 
                       dayjs(today).date(date).isSame(dayjs(selectedRange.startDate), 'day') ||
                       (selectedRange.endDate && dayjs(today).date(date).isSame(dayjs(selectedRange.endDate), 'day'))
-                        ? "50%" 
-                        : ""
+                        ? 25 
+                        : 0
                   }}
                 >
                   {someAchieveDate.includes(date) ? <SomeAchievedState/> : AllAchieveDate.includes(date) ? <AllAchieveState/> : <></>}
@@ -142,7 +147,7 @@ const Calandar = ({ type, selectedRange, setSelectedRange, version, achieveList,
                     color: dayjs(today).date(date).isSame(dayjs(selectedRange.startDate), 'day') ||
                           (selectedRange.endDate && dayjs(today).date(date).isSame(dayjs(selectedRange.endDate), 'day'))
                       ? "#fff" 
-                      : ""
+                      : colors.fontMain
                   }}>
                     {date || ""}
                   </DateText>
@@ -188,7 +193,7 @@ const CalandarBody = styled.View`
   display:flex;
   justify-content:center;
   align-items:center;
-  
+  z-index:1;
 `
 
 const SettingMonthArea = styled.View`
@@ -271,7 +276,7 @@ const DateText = styled.Text`
 const SomeAchievedState = styled.View`
   width:4px;
   height:4px;
-  border-radius:50%;
+  border-radius:2px;
   background-color:rgba(176, 195, 255, 0.9);
   position:absolute;
   top:3px;
@@ -280,7 +285,7 @@ const SomeAchievedState = styled.View`
 const AllAchivedState = styled.View`
 width:4px;
 height:4px;
-border-radius:50%;
+border-radius:2px;
 background-color:rgba(0, 60, 255, 1);
 position:absolute;
   top:3px;

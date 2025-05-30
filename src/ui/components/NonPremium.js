@@ -16,11 +16,11 @@ const NonPremium = () => {
   return (
     <Body>
       <Bg source={bg}/>
-      <View style={{flexDirection:'row', gap:7, alignItems:'center', position:'absolute', top:70}}>
+      <View style={{flexDirection:'row', gap:7, alignItems:'center', position:'absolute', top:70, zIndex:9}}>
       <MaterialCommunityIcons name="alert-circle" size={18} color="#fff" />
       <Text style={{fontSize:13}}>구독 시 볼 수 있는 통계 샘플 이미지입니다.</Text>
       </View>
-      <View style={{justifyContent:'center', alignItems:'center', width:"100%", position:'absolute', bottom:120}}>
+      <View style={{justifyContent:'center', alignItems:'center', width:"100%", position:'absolute', bottom:120, zIndex:9}}>
         <MaterialIcons name="lock-outline" size={24} color="#fff" />
         <MarginVertical top={8}/>
         <Text>{`구독권을 구매하고
@@ -45,7 +45,7 @@ const Body = styled.View`
   display:flex;
   justify-content:center;
   align-items:center;
-  z-index:5;
+  z-index:9;
   padding:50px 30px;
   
   
@@ -55,6 +55,7 @@ const Bg = styled.Image`
   position:absolute;
   top:0;
   width:${size.width}px;
+  z-index:9;
   
 `
 
@@ -63,6 +64,7 @@ const Text = styled.Text`
   font-weight:500;
   color:#fff;
   text-align:center;
+  z-index:9;
 `
 
 const Button = styled.TouchableOpacity`
@@ -73,5 +75,6 @@ const Button = styled.TouchableOpacity`
   display:flex;
   justify-content:center;
   align-items:center;
+  z-index:100;
 `
 

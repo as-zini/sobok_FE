@@ -19,7 +19,7 @@ import { useSaveTime } from '../../hooks/useSaveTime'
 import { minToHour } from '../../util'
 
 const ViewSaveTime = ({route}) => {
-  const [selectedDate, setSelectedDate] = useState(dayjs().format('ddd').toUpperCase())
+  const [selectedDate, setSelectedDate] = useState(dayjs().format('dddd').toUpperCase())
   const navigation = useNavigation();
   const timeData = [["06:00","출근 시간","06:00 - 7:40","1H 20M"],["06:00","출근 시간","06:00 - 7:40","1H 20M"],["06:00","출근 시간","06:00 - 7:40","1H 20M"]]
   const {version, username} = route.params;

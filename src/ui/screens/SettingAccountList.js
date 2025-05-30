@@ -99,9 +99,9 @@ const ProfileArea = styled.View`
 const ProfileImg = styled.Image`
   width:90px;
   height:90px;
-  border-radius:50%;
+  border-radius: 45px;
   background-color:#fff;
-  padding:10px;
+  padding:20px;
 `
 
 const ProfileName = styled.Text`

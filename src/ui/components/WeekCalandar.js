@@ -195,14 +195,14 @@ const SelectedCircle = styled.View`
   width: 35px;
   height: 35px;
   background-color: ${colors.fontMain};
-  border-radius: 50%;
+  border-radius: 17px;
   position: absolute;
 `;
 
 const SomeAchievedState = styled.View`
   width: 4px;
   height: 4px;
-  border-radius: 50%;
+  border-radius: 2px;
   background-color: rgba(176, 195, 255, 0.9);
   position: absolute;
   top: 0px;
@@ -211,7 +211,7 @@ const SomeAchievedState = styled.View`
 const AllAchivedState = styled.View`
   width: 4px;
   height: 4px;
-  border-radius: 50%;
+  border-radius: 2px;
   background-color: rgba(0, 60, 255, 1);
   position: absolute;
   top: 0px;
