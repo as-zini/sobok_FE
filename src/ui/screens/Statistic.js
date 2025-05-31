@@ -52,15 +52,15 @@ const Statistic = () => {
 
   useFocusEffect(
     useCallback(() => {
-      if(mode === "루틴별"){ 
+      if(mode === "루틴별" && userInfo.isPremium){ 
         getStatisticInfoByRoutine(pickedRoutine[0]?.id, setDateInfoByRoutine)
         getStatisticDateByRoutine(pickedRoutine[0]?.id,today.startOf('week').format("YYYY-MM-DD"),today.format("YYYY-MM-DD"), setAchieveList)
         getStatisticLogByRoutine(`${today.format("YYYY-MM")}-${selectedDate}`,pickedRoutine[0]?.id,setStatisticLog)
-        }else if(mode==="월별"){
+        }else if(mode==="월별" && userInfo.isPremium){
         getStatisticInfo(selectedMonth.startOf('month').format("YYYY-MM-DD"),selectedMonth.get("month")+1 === today.get("month")+1 ? today.format("YYYY-MM-DD") : selectedMonth.endOf('month').format("YYYY-MM-DD"),setDateInfo)
         getStatisticDate(selectedMonth.startOf('month').format("YYYY-MM-DD"),selectedMonth.get("month")+1 === today.get("month")+1 ? today.format("YYYY-MM-DD") : selectedMonth.endOf('month').format("YYYY-MM-DD"),setAchieveList)
         getStatisticLog(selectedRange.startDate, setStatisticLog)
-        }else if(mode==="주별"){
+        }else if(mode==="주별" && userInfo.isPremium){
         getStatisticInfo(today.startOf('week').format("YYYY-MM-DD"),today.format("YYYY-MM-DD"),setDateInfo)
         getStatisticDate(today.startOf('week').format("YYYY-MM-DD"),today.format("YYYY-MM-DD"), setAchieveList)
         getStatisticLog(`${today.format("YYYY-MM")}-${selectedDate}`, setStatisticLog)

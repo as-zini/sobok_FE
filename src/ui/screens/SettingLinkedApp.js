@@ -297,7 +297,7 @@ const LinkedAppEl = styled.TouchableOpacity`
 `
 
 const LinkedAppImg = styled.Image`
-  border-radius:50%;
+  border-radius:20px;
   width:40px;
   height:40px;
 `

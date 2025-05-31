@@ -4,7 +4,7 @@
     "slug": "sobok",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/appstore.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
@@ -15,7 +15,9 @@
     "ios": {
       "googleServicesFile": "./GoogleService-Info.plist",
       "supportsTablet": true,
-      "bundleIdentifier": "com.aszini.sobok"
+      "bundleIdentifier": "com.aszini.sobok",
+      "icon": "./assets/appstore.png",
+      "buildNumber":"2"
     },
     "android": {
       "package": "com.aszini.sobok"
