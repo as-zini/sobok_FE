@@ -1,225 +1,253 @@
-import React, { useEffect, useState } from 'react'
-import { Image, Pressable, SafeAreaView, ScrollView, SectionList, Text, View } from 'react-native'
-import styled from 'styled-components'
+import React, { useEffect, useState } from 'react';
+import { View, Text, Image, ScrollView } from 'react-native';
+import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
+import styled from '@emotion/native';
+import dayjs from 'dayjs';
 
 import installment_saving_bg from '../../../assets/installment_saving_bg.png';
 import link_icon from '../../../assets/link_icon.png';
-import installment_icon from '../../../assets/save_icon.png';
-import { size } from '../styles/size';
-import BackArrowButton from '../components/BackArrowButton';
-import { colors } from '../styles/colors';
-import MarginVertical from '../components/MarginVertical';
 import point_icon from '../../../assets/point_icon.png';
-
-import { useNavigation } from '@react-navigation/native';
+import { size } from '../styles/size';
+import { colors } from '../styles/colors';
+import BackArrowButton from '../components/BackArrowButton';
+import MarginVertical from '../components/MarginVertical';
 import AssetEl from '../components/AssetEl';
 import SmallButton from '../components/SmallButton';
 import ProgressBar from '../components/ProgressBar';
 import BlurComponent from '../components/BlurComponent';
 import DropDownArrowButton from '../components/DropDownArrowButton';
 import CalandarModal from '../components/CalandarModal';
-import SubscribeModal from '../components/SubscribeModal';
-import RoutinePauseModal from '../components/RoutinePauseModal';
-import PurchaseModal from '../components/PurchaseModal';
-import dayjs from 'dayjs';
 import { useUserInfoStore } from '../../store/user';
 import { usePoint } from '../../hooks/usePoint';
 import { useGetInfo } from '../../hooks/useGetInfo';
-import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
 
 const ViewPointScreen = () => {
+  const insets = useSafeAreaInsets();
   const navigation = useNavigation();
 
   const [isCalandarModalVisible, setIsCalandarModalVisible] = useState(false);
-  const [isSubscribeModalVisible, setIsSubscribeModalVisible] = useState(false);
-  const [isPurchaseModalVisible, setIsPurchaseModalVisible] = useState(false);
-  const [selectedRange, setSelectedRange] = useState({startDate:dayjs().startOf('month').format("YYYY-MM-DD"), endDate:dayjs().endOf('month').format("YYYY-MM-DD")});
-  const {userInfo} = useUserInfoStore();
-  const {getUserPremium, getPointLog} = usePoint();
+  const [selectedRange, setSelectedRange] = useState({
+    startDate: dayjs().startOf('month').format('YYYY-MM-DD'),
+    endDate: dayjs().endOf('month').format('YYYY-MM-DD'),
+  });
+
+  const { userInfo } = useUserInfoStore();
+  const { getUserPremium, getPointLog } = usePoint();
+  const { getUserInfo } = useGetInfo();
+
   const [userPremium, setUserPremium] = useState(0);
   const [pointLog, setPointLog] = useState([]);
-  const {getUserInfo} = useGetInfo();
-
 
   useEffect(() => {
-    console.log(isPurchaseModalVisible);
-    console.log(isSubscribeModalVisible);
     getUserPremium(setUserPremium);
-    getUserInfo()
-    getPointLog(selectedRange.startDate, selectedRange.endDate, setPointLog)
-  }, [isPurchaseModalVisible, isSubscribeModalVisible])
+    getUserInfo();
+    getPointLog(selectedRange.startDate, selectedRange.endDate, setPointLog);
+  }, [isCalandarModalVisible]);
 
-
-  const BlurChild = () => {
-    return(
-      
-      <View style={{paddingHorizontal:30, paddingVertical:40}}>
-        <ScrollView style={{minHeight:200}}>
-        <View style={{display:'flex', flexDirection:'row', gap:4}}>
-          <SettingPeriodText>{`${selectedRange.startDate} - ${selectedRange.endDate}`}</SettingPeriodText>
-          <DropDownArrowButton size={16} handleArrowButton={() => setIsCalandarModalVisible(true)}/>
+  const BlurChild = () => (
+    <View style={{ paddingHorizontal: 30, paddingVertical: 40 }}>
+      <ScrollView style={{ minHeight: 200 }}>
+        <View style={{ flexDirection: 'row', gap: 4 }}>
+          <SettingPeriodText>
+            {`${selectedRange.startDate} - ${selectedRange.endDate}`}
+          </SettingPeriodText>
+          <DropDownArrowButton
+            size={16}
+            handleArrowButton={() => setIsCalandarModalVisible(true)}
+          />
         </View>
-        <MarginVertical top={32}/>
-        {pointLog.map((el, index) => {
-          return(
+        <MarginVertical top={32} />
+        {pointLog.map((el, index) => (
           <View key={index}>
-            <Text style={{color:"#707172", fontWeight:500, fontSize:14}}>{dayjs(el.createdAt).format("M월 D일")}</Text>
-            <MarginVertical top={20}/>
-            <AssetEl item={[`${el.category}`, `${dayjs(el.createdAt).format("hh:mm")}`, `${el.point}P`, `${el.balance}P`]} index={index} isLink={false}/>
-            <MarginVertical top={40}/>
+            <Text
+              style={{
+                color: '#707172',
+                fontWeight: '500',
+                fontSize: 14,
+              }}
+            >
+              {dayjs(el.createdAt).format('M월 D일')}
+            </Text>
+            <MarginVertical top={20} />
+            <AssetEl
+              item={[
+                `${el.category}`,
+                `${dayjs(el.createdAt).format('hh:mm')}`,
+                `${el.point}P`,
+                `${el.balance}P`,
+              ]}
+              index={index}
+              isLink={false}
+            />
+            <MarginVertical top={40} />
           </View>
-          )
-        })}
-        </ScrollView>
-        </View>
-      
-      
-    )
-  }
-
-  const insets = useSafeAreaInsets();
-  
-  return (
-    <SafeAreaProvider style={{paddingTop:insets.top}}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-      <ViewInstallmentSavingBody>
-        <MarginVertical top={20}/>
-        <ViewInstallmentSavingHeader>
-          <View style={{position:'absolute', left:20}}>
-            <BackArrowButton/>
-          </View>
-          <Text style={{fontWeight:600, fontSize:18, color:colors.fontSub}}>포인트</Text>
-        </ViewInstallmentSavingHeader>
-        <MarginVertical top={47}/>
-        {userInfo.isPremium ?
-        <ViewSubscribing>
-          <SubscribingText>{`${dayjs().format("M월")} 구독권 사용중`}</SubscribingText>
-        </ViewSubscribing>
-        : <></>  }
-        <TotalSavingArea>
-          <Image source={point_icon} style={{width:48, height:46}}/>
-          <MarginVertical top={18}/>
-          <TotalPointText>{`${userInfo.displayName} 님의 총 포인트는`}</TotalPointText>
-          <MarginVertical top={5}/>
-          <View style={{display:'flex', flexDirection:'row', alignItems:'center', width:310}}>
-            <TotalSavingTitle>{`${userInfo.point}P`}</TotalSavingTitle>
-            
-            <SmallButton text={"사용하기"} width={100} height={40} bgColor={colors.indigoBlue50} fontColor={"#fff"} handleButton={() => navigation.navigate('TicketPurchase',{
-              userPremium:userPremium
-            })}/>
-            
-          </View>
-        </TotalSavingArea>
-        <MarginVertical top={56}/>
-        <ProgressBarArea>
-          {userPremium < userInfo.point ? <ProgressText>{`${userPremium}P 를 모두 모았어요!\n${dayjs().add(1, 'M').format("M월")} 구독권을 구매할 수 있겠군요!`}</ProgressText>
-          :<ProgressText>{`${userPremium-userInfo.point}P 만 모으면\n${dayjs().add(1, 'M').format("M월")} 구독권을 구매할 수 있어요!`}</ProgressText>
-          }
-          <MarginVertical top={20}/>
-          <ProgressBar version={"Point"} userPoint={userInfo.point} totalPoints={userPremium}/>
-        </ProgressBarArea>
-        <MarginVertical top={72}/>
-        <BlurComponent child={BlurChild}/>
-      </ViewInstallmentSavingBody>
+        ))}
       </ScrollView>
-      <CalandarModal isCalandarModalVisible={isCalandarModalVisible} setIsCalandarModalVisible={setIsCalandarModalVisible} selectedRange={selectedRange} setSelectedRange={setSelectedRange} version={"Point"} setPointLog={setPointLog}/>
-      
-      <ViewInstallmentSavingBg source={installment_saving_bg}/>
+    </View>
+  );
+
+  return (
+    <SafeAreaProvider style={{ paddingTop: insets.top }}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <Container>
+          <MarginVertical top={20} />
+          <Header>
+            <View style={{ position: 'absolute', left: 20 }}>
+              <BackArrowButton />
+            </View>
+            <Title>포인트</Title>
+          </Header>
+          <MarginVertical top={47} />
+          {userInfo.isPremium && (
+            <Subscribing>
+              <SubscribingText>
+                {`${dayjs().format('M월')} 구독권 사용중`}
+              </SubscribingText>
+            </Subscribing>
+          )}
+          <TotalArea>
+            <Image
+              source={point_icon}
+              style={{ width: 48, height: 46 }}
+            />
+            <MarginVertical top={18} />
+            <TotalPointText>
+              {`${userInfo.displayName} 님의 총 포인트는`}
+            </TotalPointText>
+            <MarginVertical top={5} />
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                width: 310,
+              }}
+            >
+              <TotalSavingTitle>
+                {`${userInfo.point}P`}
+              </TotalSavingTitle>
+              <SmallButton
+                text="사용하기"
+                width={100}
+                height={40}
+                bgColor={colors.indigoBlue50}
+                fontColor="#fff"
+                handleButton={() =>
+                  navigation.navigate('TicketPurchase', {
+                    userPremium,
+                  })
+                }
+              />
+            </View>
+          </TotalArea>
+          <MarginVertical top={56} />
+          <ProgressArea>
+            <ProgressText>
+              {userPremium <= userInfo.point
+                ? `${userPremium}P 를 모두 모았어요!\n${dayjs()
+                    .add(1, 'M')
+                    .format('M월')} 구독권을 구매할 수 있겠군요!`
+                : `${userPremium - userInfo.point}P 만 모으면\n${dayjs()
+                    .add(1, 'M')
+                    .format('M월')} 구독권을 구매할 수 있어요!`}
+            </ProgressText>
+            <MarginVertical top={20} />
+            <ProgressBar
+              version="Point"
+              userPoint={userInfo.point}
+              totalPoints={userPremium}
+            />
+          </ProgressArea>
+          <MarginVertical top={72} />
+          <BlurComponent child={BlurChild} />
+        </Container>
+      </ScrollView>
+      <CalandarModal
+        isCalandarModalVisible={isCalandarModalVisible}
+        setIsCalandarModalVisible={setIsCalandarModalVisible}
+        selectedRange={selectedRange}
+        setSelectedRange={setSelectedRange}
+        version="Point"
+        setPointLog={setPointLog}
+      />
+      <Background source={installment_saving_bg} />
     </SafeAreaProvider>
-  )
-}
+  );
+};
 
-export default ViewPointScreen
+export default ViewPointScreen;
 
+const Container = styled.View`
+  width: ${size.width}px;
+  justify-content: center;
+  align-items: center;
+`;
 
-const ViewInstallmentSavingBody = styled.View`
-  width:${size.width}px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-`
+const Header = styled.View`
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: ${() => `${size.width}px`};
+`;
 
-const ViewInstallmentSavingHeader = styled.View`
-  display:flex;
-  flex-direction:row;
-  justify-content:center;
-  align-items:center;
-  width:${size.width};
-`
+const Title = styled.Text`
+  font-weight: 600;
+  font-size: 18px;
+  color: ${colors.fontSub};
+`;
 
-const ViewInstallmentSavingBg = styled.Image`
-  width:${size.width}px;
-  position:absolute;
-  top:0;
-  z-index:-1;
-`
-
-const TotalSavingArea = styled.View`
-  width:310px;
-`
-
-const TotalPointText = styled.Text`
-  font-size:18px;
-  font-weight:500;
-  color:${colors.fontMain90};
-`
-
-const TotalSavingTitle = styled.Text`
-  font-size:50px;
-  font-weight:600;
-  color:${colors.fontMain};
-  flex-grow:1;
-`
-
-const SectionEl = styled.View`
-  display:flex;
-  flex-direction:row;
-  gap:4px;
-  margin-bottom:35px;
-`
-
-const SectionTitle = styled.Text`
-  font-size:16px;
-  font-weight:600;
-  color:#707172;
-`
-
-const SectionCountText = styled.Text`
-  font-size:16px;
-  font-weight:600;
-  color:${colors.indigoBlue};
-`
-
-const ProgressBarArea = styled.View`
-
-`
-
-const ProgressText = styled.Text`
-  font-size:18px;
-  font-weight:500;
-  color:${colors.fontMain70};
-  line-height:24px;
-  margin-bottom:8px;
-`
-
-const SettingPeriodText = styled.Text`
-  color:#4A5660;
-  font-weight:600;
-  font-size:16px;
-`
-
-const ViewSubscribing = styled.View`
-  width:114px;
-  height:30px;
-  border-radius:15px;
-  background-color:${colors.indigoBlue50};
-  display:flex;
-  justify-content:center;
-  align-items:center;
-`
+const Subscribing = styled.View`
+  width: 114px;
+  height: 30px;
+  border-radius: 15px;
+  background-color: ${colors.indigoBlue50};
+  justify-content: center;
+  align-items: center;
+`;
 
 const SubscribingText = styled.Text`
-  font-weight:500;
-  font-size:14px;
-  color:#fff;
-`
+  font-weight: 500;
+  font-size: 14px;
+  color: #fff;
+`;
+
+const TotalArea = styled.View`
+  width: 310px;
+`;
+
+const TotalPointText = styled.Text`
+  font-size: 18px;
+  font-weight: 500;
+  color: ${colors.fontMain90};
+`;
+
+const TotalSavingTitle = styled.Text`
+  font-size: 50px;
+  font-weight: 600;
+  color: ${colors.fontMain};
+  flex: 1;
+`;
+
+const ProgressArea = styled.View``;
+
+const ProgressText = styled.Text`
+  font-size: 18px;
+  font-weight: 500;
+  color: ${colors.fontMain70};
+  line-height: 24px;
+  margin-bottom: 8px;
+`;
+
+const SettingPeriodText = styled.Text`
+  color: #4A5660;
+  font-weight: 600;
+  font-size: 16px;
+`;
+
+const Background = styled.Image`
+  position: absolute;
+  top: 0;
+  width:  ${() => `${size.width}px`};
+  height:  ${() => `${size.height}px`};
+  z-index: -1;
+`;

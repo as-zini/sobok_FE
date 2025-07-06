@@ -1,27 +1,27 @@
-import { BlurView } from 'expo-blur'
-import React from 'react'
-import { View } from 'react-native'
-import { size } from '../styles/size'
-import styled from 'styled-components'
+import React from 'react';
+import { View } from 'react-native';
+import { BlurView } from '@react-native-community/blur';
+import styled from '@emotion/native';
+import { size } from '../styles/size';
 
-const BlurComponent = ({child}) => {
-  return (
-    <BlurComponentBody>
-        <BlurView
-          style={{flexGrow:1, width:"100%"}} // BlurView를 탭바 전체 크기로 확장
-          intensity={100} // 블러 강도
-          tint="light" // light, dark, default
-        >
-          {child()}
-        </BlurView>
-    </BlurComponentBody>
-  )
-}
+const BlurComponent = ({ child }) => (
+  <Container>
+    <BlurView
+      style={{ flexGrow: 1, width: '100%' }}
+      blurType="light"
+      blurAmount={10}
+    >
+      {child()}
+    </BlurView>
+  </Container>
+);
 
-export default BlurComponent
+export default BlurComponent;
 
-const BlurComponentBody = styled.View`
-  width:${size.width}px;
-  border-radius:16px;
-  border:.5px solid rgba(204, 204, 204, 1);
-`
+const Container = styled.View`
+  width: ${() => `${size.width}px`};
+  border-radius: 16px;
+  border-width: 0.5px;
+  border-color: rgba(204, 204, 204, 1);
+  overflow: hidden;
+`;

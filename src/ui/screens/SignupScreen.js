@@ -1,6 +1,17 @@
-import React, { useEffect, useState } from 'react'
-import { Dimensions, Image, Keyboard, KeyboardAvoidingView, Platform, SafeAreaView, ScrollView, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
-import styled from 'styled-components';
+import React, { useEffect, useState } from 'react';
+import {
+  Dimensions,
+  Image,
+  Keyboard,
+  Platform,
+  SafeAreaView,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View
+} from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import styled from '@emotion/native';
 
 import signup_bg from '../../../assets/signup_bg.png';
 import BackArrowButton from '../components/BackArrowButton';
@@ -16,430 +27,360 @@ import check_icon from '../../../assets/check_icon_indigo.png';
 import { useSignup } from '../../hooks/useSignup';
 import { useLogin } from '../../hooks/useLogin';
 import MarginVertical from '../components/MarginVertical';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
 
 const SignupScreen = () => {
   const [step, setStep] = useState(1);
-  const [unChecked, setUnChecked] = useState(true);
   const [idChecked, setIdChecked] = useState(true);
   const [emailChecked, setEmailChecked] = useState(false);
   const [nicknameChecked, setNicknameChecked] = useState(false);
-  const [phoneChecked, setPhoneChecked] = useState("");
+  const [phoneChecked, setPhoneChecked] = useState('');
   const [isVarified, setIsVarified] = useState(false);
-  const [varifyCode, setVarifyCode] = useState("");
-  const {handleLogin} = useLogin()
+  const [varifyCode, setVarifyCode] = useState('');
+  const { handleLogin } = useLogin();
   const [values, setValues] = useState({
-    username:"",
-    displayName:"",
-    name:"",
-    password:"",
-    password2:"",
-    email: "",
-    phoneNumber:"",
-    birth:""
-  })
+    username: '',
+    displayName: '',
+    name: '',
+    password: '',
+    password2: '',
+    email: '',
+    phoneNumber: '',
+    birth: ''
+  });
   const navigation = useNavigation();
-  const {handleSignup, checkAvailability, handleSmsSend, handleSmsVarify} = useSignup();
+  const { handleSignup, checkAvailability, handleSmsSend, handleSmsVarify } = useSignup();
+
   const handleButton = () => {
-    if(step<4){
-      setStep((prev) => prev+1);
-      setUnChecked(true)
-    } else if(step===4){
+    if (step < 4) {
+      setStep(prev => prev + 1);
+    } else if (step === 4) {
       handleSignup(values, setStep);
-      // setStep(prev => prev+1)
-      
-    }else{
-      handleLogin(values.username, values.password, "", true)
-      navigation.navigate("ViewSaveTime", {version:'first', username:values.displayName});
+    } else {
+      handleLogin(values.username, values.password, '', true);
+      navigation.navigate('ViewSaveTime', { version: 'first', username: values.displayName });
     }
-  }
-  const contentsText = ["성함을 \n알려주세요", "소복에서는 \n어떻게 불러드릴까요?", "아이디와 \n비밀번호를 설정할게요!", `${values.displayName} 님에 대해 \n더 알려주세요!`,""]
-  const placeholderText = ["이름을 입력해주세요", "닉네임을 입력해주세요", ["아이디를 입력하세요(5-15자)", "비밀번호를 입력하세요 (8~16글자)", "비밀번호를 한 번 더 입력해주세요"],["이메일을 입력해주세요", "전화번호를 입력해주세요", "인증번호를 입력해주세요", "ex)20000101"],""]
-  const categoryText = ["","", ["아이디", "비밀번호"], ["이메일", "전화번호", "생년월일"]]
-  const categoryState = ["name", "displayName", ["userName", "password", "password2"], ["email", "phoneNumber", "birth"]]
-  const currentValue = values[categoryState[step-1]];
+  };
 
-  // 하나라도 입력되었으면 버튼 활성화
-  const isActive = step === 1 || step === 2 ? currentValue.trim() !== "" :
-                  step === 3 ? values.username.trim() !=="" && values.password.trim() !=="" && values.password2.trim() !=="" : values.email.trim() !=="" && values.phoneNumber.trim() !== "" && values.birth.trim() !== ""
-  const isSame = values.password !== values.password2 || values.password.length < 7 || values.password.length >17
-  const step3Check = !isActive || isSame
-  const checkList = [!isActive || nicknameChecked, !isActive || isSame || idChecked, !isActive || emailChecked || !isVarified];
+  const contentsText = [
+    '성함을 \n알려주세요',
+    '소복에서는 \n어떻게 불러드릴까요?',
+    '아이디와 \n비밀번호를 설정할게요!',
+    `${values.displayName} 님에 대해 \n더 알려주세요!`,
+    ''
+  ];
 
-  const handleIdCheck = async() => {
-    const response = await checkAvailability(values.username, "username");
-    console.log(response);
-    console.log(response.isDuplicated && (values.username.length <=4 || values.username.length >=16))
-    setIdChecked(response.isDuplicated || (values.username.length <=4 || values.username.length >=16));
-  }
+  const placeholderText = [
+    '이름을 입력해주세요',
+    '닉네임을 입력해주세요',
+    [
+      '아이디를 입력하세요(5-15자)',
+      '비밀번호를 입력하세요 (8~16글자)',
+      '비밀번호를 한 번 더 입력해주세요'
+    ],
+    [
+      '이메일을 입력해주세요',
+      '전화번호를 입력해주세요',
+      '인증번호를 입력해주세요',
+      'ex)20000101'
+    ],
+    ''
+  ];
 
-  const handleNichnameCheck = async() => {
-    const response = await checkAvailability(values.displayName, "display-name");
-    console.log(response);
-    setNicknameChecked(response.isDuplicated);
-  }
+  const categoryText = ['', '', ['아이디', '비밀번호'], ['이메일', '전화번호', '생년월일']];
 
-  const handleEmailCheck = async() => {
-    const response = await checkAvailability(values.email, 'email');
-    console.log(response);
-    setEmailChecked(response.isDuplicated);
-  }
+  const isActive =
+    step === 1 || step === 2
+      ? (step === 1 ? values.name : values.displayName).trim() !== ''
+      : step === 3
+      ? values.username.trim() !== '' && values.password.trim() !== '' && values.password2.trim() !== ''
+      : values.email.trim() !== '' && values.phoneNumber.trim() !== '' && values.birth.trim() !== '';
 
-
-
-  
-
-  
-  useEffect(() => {
-    // console.log(isActive)
-    step===2 ? 
-    handleNichnameCheck()
-    :step === 3?
-    handleIdCheck()
-    :
-    handleEmailCheck();
-
-    console.log(idChecked);
-    console.log(values);
-    console.log(checkList);
-  }, [values])
+  const isSame = values.password !== values.password2 || values.password.length < 7 || values.password.length > 17;
+  const checkList = [
+    !isActive || nicknameChecked,
+    !isActive || isSame || idChecked,
+    !isActive || emailChecked || !isVarified
+  ];
 
   useEffect(() => {
-    handleSmsVarify(values.phoneNumber, varifyCode, setIsVarified)
-  },[varifyCode])
+    if (step === 2) {
+      checkAvailability(values.displayName, 'display-name').then(res => setNicknameChecked(res.isDuplicated));
+    } else if (step === 3) {
+      checkAvailability(values.username, 'username').then(res => setIdChecked(res.isDuplicated));
+    } else if (step === 4) {
+      checkAvailability(values.email, 'email').then(res => setEmailChecked(res.isDuplicated));
+    }
+  }, [values]);
+
+  useEffect(() => {
+    handleSmsVarify(values.phoneNumber, varifyCode, setIsVarified);
+  }, [varifyCode]);
 
   return (
-    <>
     <SafeAreaView>
-      <SignupContentsBody>
-       
-        <SignupHeader>
-          <BackArrowButton/>
-        </SignupHeader>
-        <Steps step={step}/>
-        <SignupInputArea>
-        {step !== 5 ?
-        <StepNumber step={step} marginBottom={20}/>
-        :
-        <></>
-        }
-        
-        {step === 1 || step===2 ? 
-        <>
-        <SignupContentsText>{contentsText[step-1]}</SignupContentsText>
-        <View style={{display:'flex', flexDirection:'row', justifyContent:'center', alignItems:'center', width:294}}>
-          <SignupInput 
-            placeholder={placeholderText[step-1]}
-            placeholderTextColor="#fff"
-            value={step === 1? values.name : values.displayName}
-            onChange={(e) => {
-              console.log(e.nativeEvent.text);
-              step === 1 ? setValues({...values,  "name" : e.nativeEvent.text}) : setValues({...values, "displayName": e.nativeEvent.text})
-            }}
-          ></SignupInput>
-          {step === 2 && !nicknameChecked && values.displayName.length !== 0?<Image source={check_icon} style={{width:32, height:32, position:'absolute', right:0}}/> : <></>}
-        </View>
-        <BorderLine />
-        </>
-        : step === 3 ?
-        <>
-        {/* <SignupContentsText>{contentsText[step-1]}</SignupContentsText>
-        <SignupCategoryText style={{marginTop:0}}>{categoryText[step-1][0]}</SignupCategoryText>
-        <View style={{display:'flex', flexDirection:'row', justifyContent:'center', alignItems:'center', width:294}}>
-          <SignupInput
-            placeholder={placeholderText[step-1][0]}
-            placeholderTextColor="#fff"
-            value={values.username}
-            onChange={(e) => {
-              setValues({...values, 'username':e.nativeEvent.text});
-            }}
-          />
-          {idChecked ? <></> : <Image source={check_icon} style={{width:32, height:32, position:'absolute', right:0}}/>}
-        </View>
-        <BorderLine/>
-        <View >
-          <SignupCategoryText>{categoryText[step-1][1]}</SignupCategoryText>
-          <SignupInput
-            placeholder={placeholderText[step-1][1]}
-            placeholderTextColor="#fff"
-            value={values.password}  
-            onChange={(e) => {setValues({...values, 'password':e.nativeEvent.text})}}
-            secureTextEntry={true}
-          />
-          <BorderLine/>
-          <View style={{display:'flex', flexDirection:'row', justifyContent:'center', alignItems:'center', width:294}}>
-            <SignupInput
-              placeholder={placeholderText[step-1][2]}
-              placeholderTextColor="#fff"
-              value={values.password2}
-              onChange={(e) => {setValues({...values, 'password2':e.nativeEvent.text})}}
-              secureTextEntry={true}
-            />
-            {isSame ? <></>
-            :<Image source={check_icon} style={{width:32, height:32, position:'absolute', right:0}}/>
-            }
-          </View>
-          <BorderLine/>
-        </View> */}
-        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <KeyboardAwareScrollView
-        extraScrollHeight={0}
-        enableOnAndroid={true}
-        showsVerticalScrollIndicator={false}
-        keyboardShouldPersistTaps="handled"  // 키보드 바깥 터치 시 닫히게 설정
-        contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 20 }}  // 스크롤 안에서 여백 설정
-      >
-        {/* 첫 번째 인풋박스 */}
-        <SignupContentsText>{contentsText[step - 1]}</SignupContentsText>
-        <SignupCategoryText style={{ marginTop: 0 }}>
-          {categoryText[step - 1][0]}
-        </SignupCategoryText>
-        <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', width: 294 }}>
-          <SignupInput
-            placeholder={placeholderText[step - 1][0]}
-            placeholderTextColor="#fff"
-            value={values.username}
-            onChange={(e) => {
-              setValues({ ...values, 'username': e.nativeEvent.text });
-            }}
-          />
-          {idChecked ? null : (
-            <Image source={check_icon} style={{ width: 32, height: 32, position: 'absolute', right: 0 }} />
-          )}
-        </View>
-        <BorderLine />
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <ContentsBody>
+          <Header>
+            <BackArrowButton />
+          </Header>
+          <Steps step={step} />
+          <InputArea>
+            {step !== 5 && <StepNumber step={step} marginBottom={20} />}
 
-        {/* 두 번째 인풋박스 */}
-        <View>
-          <SignupCategoryText>{categoryText[step - 1][1]}</SignupCategoryText>
-          <SignupInput
-            placeholder={placeholderText[step - 1][1]}
-            placeholderTextColor="#fff"
-            value={values.password}
-            onChange={(e) => { setValues({ ...values, 'password': e.nativeEvent.text }) }}
-            secureTextEntry={true}
-          />
-          <BorderLine />
-
-          {/* 세 번째 인풋박스 */}
-          <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', width: 294 }}>
-            <SignupInput
-              placeholder={placeholderText[step - 1][2]}
-              placeholderTextColor="#fff"
-              value={values.password2}
-              onChange={(e) => { setValues({ ...values, 'password2': e.nativeEvent.text }) }}
-              secureTextEntry={true}
-            />
-            {isSame ? null : (
-              <Image source={check_icon} style={{ width: 32, height: 32, position: 'absolute', right: 0 }} />
+            {step === 1 || step === 2 ? (
+              <>
+                <ContentText>{contentsText[step - 1]}</ContentText>
+                <Row>
+                  <TextInput
+                    placeholder={placeholderText[step - 1]}
+                    placeholderTextColor="#fff"
+                    value={step === 1 ? values.name : values.displayName}
+                    onChange={e =>
+                      step === 1
+                        ? setValues({ ...values, name: e.nativeEvent.text })
+                        : setValues({ ...values, displayName: e.nativeEvent.text })
+                    }
+                  />
+                  {step === 2 && !nicknameChecked && values.displayName.length > 0 && (
+                    <CheckIcon source={check_icon} />
+                  )}
+                </Row>
+                <Line />
+              </>
+            ) : step === 3 ? (
+              <KeyboardAwareScrollView
+                keyboardShouldPersistTaps="handled"
+                enableOnAndroid
+                contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 20 }}
+              >
+                <ContentText>{contentsText[2]}</ContentText>
+                <CategoryText>{categoryText[2][0]}</CategoryText>
+                <Row>
+                  <TextInput
+                    placeholder={placeholderText[2][0]}
+                    placeholderTextColor="#fff"
+                    value={values.username}
+                    onChange={e => setValues({ ...values, username: e.nativeEvent.text })}
+                  />
+                  {!idChecked && <CheckIcon source={check_icon} />}
+                </Row>
+                <Line />
+                <CategoryText>{categoryText[2][1]}</CategoryText>
+                <TextInput
+                  placeholder={placeholderText[2][1]}
+                  placeholderTextColor="#fff"
+                  secureTextEntry
+                  value={values.password}
+                  onChange={e => setValues({ ...values, password: e.nativeEvent.text })}
+                />
+                <Line />
+                <Row>
+                  <TextInput
+                    placeholder={placeholderText[2][2]}
+                    placeholderTextColor="#fff"
+                    secureTextEntry
+                    value={values.password2}
+                    onChange={e => setValues({ ...values, password2: e.nativeEvent.text })}
+                  />
+                  {!isSame && <CheckIcon source={check_icon} />}
+                </Row>
+                <Line />
+              </KeyboardAwareScrollView>
+            ) : step === 4 ? (
+              <KeyboardAwareScrollView
+                keyboardShouldPersistTaps="handled"
+                enableOnAndroid
+                contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 20 }}
+              >
+                <ContentText>{contentsText[3]}</ContentText>
+                <CategoryText>{categoryText[3][0]}</CategoryText>
+                <Row>
+                  <TextInput
+                    placeholder={placeholderText[3][0]}
+                    placeholderTextColor="#fff"
+                    value={values.email}
+                    onChange={e => setValues({ ...values, email: e.nativeEvent.text })}
+                  />
+                  {!emailChecked && <CheckIcon source={check_icon} />}
+                </Row>
+                <Line />
+                <CategoryText>{categoryText[3][1]}</CategoryText>
+                <Row>
+                  <TextInput
+                    placeholder={placeholderText[3][1]}
+                    placeholderTextColor="#fff"
+                    keyboardType="phone-pad"
+                    value={values.phoneNumber}
+                    onChange={e => setValues({ ...values, phoneNumber: e.nativeEvent.text })}
+                  />
+                  <PhoneButton onPress={() => handleSmsSend(values.phoneNumber, setPhoneChecked)}>
+                    <PhoneIcon source={phone_number_auth_icon} />
+                  </PhoneButton>
+                </Row>
+                <Line />
+                <MarginVertical top={10} />
+                {phoneChecked === '' ? null : !phoneChecked && (
+                  <ErrorText>이미 가입된 전화번호입니다</ErrorText>
+                )}
+                <TextInput
+                  placeholder={placeholderText[3][2]}
+                  placeholderTextColor="#fff"
+                  keyboardType="numeric"
+                  value={varifyCode}
+                  onChange={e => setVarifyCode(e.nativeEvent.text)}
+                />
+                {!isVarified && <CheckIcon source={check_icon} style={{ bottom: 5 }} />}
+                <Line />
+                <CategoryText>{placeholderText[3][3]}</CategoryText>
+                <TextInput
+                  placeholder={placeholderText[3][3]}
+                  placeholderTextColor="#fff"
+                  keyboardType="numeric"
+                  value={values.birth}
+                  onChange={e => setValues({ ...values, birth: e.nativeEvent.text })}
+                />
+                <Line />
+              </KeyboardAwareScrollView>
+            ) : (
+              <Complete body>
+                <CompleteTitle>{`${values.displayName} 님\n환영합니다!`}</CompleteTitle>
+                <CompleteIcon source={clock_graphic} />
+                <CompleteText>{`제 ${values.displayName}님에게 딱 맞는\n자투리 시간 활용을 해볼까요?`}</CompleteText>
+              </Complete>
             )}
-          </View>
-          <BorderLine />
-        </View>
-      </KeyboardAwareScrollView>
-    </TouchableWithoutFeedback>
-        </>
-        : step === 4 ?
-        
-    <KeyboardAwareScrollView
-      style={{ height: 400 }}
-      extraScrollHeight={5}    // 키보드가 뜰 때 추가로 스크롤되는 높이
-      enableOnAndroid={true}    // 안드로이드에서도 동작하게 설정
-      showsVerticalScrollIndicator={false}
-    >
-      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <View style={{ paddingBottom: 20 }}>
-          <SignupContentsText style={{ marginBottom: 20 }}>
-            {contentsText[step - 1]}
-          </SignupContentsText>
-
-          <SignupCategoryText style={{ marginTop: 10 }}>
-            {categoryText[step - 1][0]}
-          </SignupCategoryText>
-          <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', width: 294 }}>
-            <SignupInput
-              placeholder={placeholderText[step - 1][0]}
-              value={values.email}
-              onChange={(e) => { setValues({ ...values, "email": e.nativeEvent.text }) }}
-            />
-            {emailChecked ? null : (
-              <Image source={check_icon} style={{ width: 32, height: 32, position: 'absolute', right: 0 }} />
-            )}
-          </View>
-          <BorderLine />
-
-          <SignupCategoryText>{categoryText[step - 1][1]}</SignupCategoryText>
-          <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-            <SignupInput
-              placeholder={placeholderText[step - 1][1]}
-              value={values.phoneNumber}
-              onChange={(e) => { setValues({ ...values, "phoneNumber": e.nativeEvent.text }) }}
-              style={{ width: 250, marginRight: 40 }}
-              keyboardType="phone-pad"
-            />
-            <PhoneAuthButton onPress={() => handleSmsSend(values.phoneNumber, setPhoneChecked)}>
-              <PhoneAuthIcon source={phone_number_auth_icon} />
-            </PhoneAuthButton>
-          </View>
-          <BorderLine />
-
-          <MarginVertical top={10} />
-          {phoneChecked ? null : phoneChecked.length === 0 ? null : (
-            <Text style={{ color: colors.fontMain, fontWeight: '500', fontSize: 16 }}>
-              이미 가입된 전화번호입니다
-            </Text>
-          )}
-
-          <View>
-            <SignupInput
-              placeholder={placeholderText[step - 1][2]}
-              value={varifyCode}
-              onChange={(e) => setVarifyCode(e.nativeEvent.text)}
-              keyboardType="numeric"
-            />
-            {isVarified ? (
-              <Image source={check_icon} style={{ width: 32, height: 32, position: 'absolute', right: 0, bottom: 5 }} />
-            ) : null}
-          </View>
-          <BorderLine />
-
-          <SignupCategoryText>{categoryText[step - 1][2]}</SignupCategoryText>
-          <SignupInput
-            placeholder={placeholderText[step - 1][3]}
-            placeholderTextColor="#fff"
-            value={values.birth}
-            onChange={(e) => { setValues({ ...values, "birth": e.nativeEvent.text }); }}
-            keyboardType="numeric"
-          />
-          <BorderLine />
-        </View>
+          </InputArea>
+          <ButtonWrapper>
+            <Button text="다음 단계로" handleButton={handleButton} unChecked={step===2 ? checkList[0] : step===3 ? checkList[1] : step === 4 ? checkList[2] : !isActive} />
+          </ButtonWrapper>
+          <Background source={signup_bg} />
+        </ContentsBody>
       </TouchableWithoutFeedback>
-    </KeyboardAwareScrollView>
-        :
-        <SignupCompleteBody>
-          <SignupCompleteTitle>{`${values.displayName} 님\n환영합니다!`}</SignupCompleteTitle>
-          <SignupCompleteIcon source={clock_graphic}/>
-          <SignupCompleteText>{`제 ${values.displayName}님에게 딱 맞는{"\n"}자투리 시간 활용을 해볼까요?`}</SignupCompleteText>
-        </SignupCompleteBody>
-          }
-          
-        </SignupInputArea>
-        <View style={{position:'absolute', bottom:100}}>
-          <Button text={"다음 단계로"} handleButton={handleButton} unChecked={step===2 ? checkList[0] : step===3 ? checkList[1] : step === 4 ? checkList[2] : !isActive}/>
-        </View>
-        <SignupBg source={signup_bg} />
-      </SignupContentsBody>
     </SafeAreaView>
-    
-    </>
-  )
-}
+  );
+};
 
 export default SignupScreen;
 
-const SignupContentsBody = styled.View`
-  width:${width}px;
-  height:${height}px;
-  display:flex;
-  
-  align-items:center;
-`
+// Styled Components
+const ContentsBody = styled.View(() => ({
+  width,
+  height,
+  alignItems: 'center'
+}));
 
-const SignupBg = styled.Image`
-  width:${width};
-  height:${height};
-  z-index:-1;
-  position:absolute;
-`
+const Background = styled.Image(() => ({
+  width,
+  height,
+  position: 'absolute',
+  zIndex: -1
+}));
 
-const SignupHeader = styled.View`
-  width:${size.width-50}px;
-  height:50px;
-  display:flex;
-  justify-content:center;
-  
-`
+const Header = styled.View(() => ({
+  width: size.width - 50,
+  height: 50,
+  justifyContent: 'center'
+}));
 
-const SignupContentsText = styled.Text`
-  font-size:24px;
-  font-weight:600;
-  color:${colors.fontMain};
-  margin-bottom:40px;
-`
+const InputArea = styled.View`
+  position: absolute;
+  top: 130px;
+  align-items: flex-start;
+`;
 
-const SignupCategoryText = styled.Text`
-  margin-bottom:20px;
-  font-size:16px;
-  font-weight:500;
-  color:#fff;
-  margin-top:40px;
-`
+const ContentText = styled.Text`
+  font-size: 24px;
+  font-weight: 600;
+  color: ${colors.fontMain};
+  margin-bottom: 40px;
+`;
 
-const SignupInputArea = styled.View`
-  display:flex;
-  align-items:flex-start;
-  position:absolute;
-  top:130px;
-`
+const CategoryText = styled.Text`
+  font-size: 16px;
+  font-weight: 500;
+  color: #fff;
+  margin-bottom: 20px;
+  margin-top: 40px;
+`;
 
-const SignupInput = styled.TextInput`
-  width:290px;
-  height:50px;
-  z-index:9;
-  color:${colors.fontMain};
-  font-size:16px;
-  font-weight:500;
-`
+const TextInput = styled.TextInput`
+  width: 290px;
+  height: 50px;
+  color: ${colors.fontMain};
+  font-size: 16px;
+  font-weight: 500;
+`;
 
-const BorderLine = styled.View`
-  background-color:#fff;
-  width:290px;
-  height:.5;
-`
+const Row = styled.View`
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 294px;
+`;
 
-const PhoneAuthButton = styled.TouchableOpacity`
-  z-index:2;
-  margin-left:-55px;
-  width:50px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:30px;
-  z-index:2;
-`
+const Line = styled.View`
+  background-color: #fff;
+  width: 290px;
+  height: 0.5px;
+  margin-bottom: 20px;
+`;
 
-const PhoneAuthIcon = styled.Image`
-  width:32px;
-  height:24px;
-`
+const CheckIcon = styled.Image`
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  right: 0;
+`;
 
-const SignupCompleteBody = styled.View`
-  display:flex;
-  gap:36px;
-  margin-top:60px;
-`
+const PhoneButton = styled.TouchableOpacity`
+  margin-left: -55px;
+  width: 50px;
+  height: 30px;
+  justify-content: center;
+  align-items: center;
+`;
 
-const SignupCompleteTitle = styled.Text`
-  font-weight:600;
-  font-size:32px;
-  color:${colors.fontMain};
-  text-align:center;
-`
+const PhoneIcon = styled.Image`
+  width: 32px;
+  height: 24px;
+`;
 
-const SignupCompleteIcon = styled.Image`
-  width:210px;
-  height:185px;
-`
+const ErrorText = styled.Text`
+  color: ${colors.fontMain};
+  font-weight: 500;
+  font-size: 16px;
+  margin-bottom: 20px;
+`;
 
-const SignupCompleteText = styled.Text`
-  text-align:center;
-  font-size:20px;
-  font-weight:500;
-  color:${colors.fontMain80};
-`
+const ButtonWrapper = styled.View`
+  position: absolute;
+  bottom: 100px;
+`;
 
+const Complete = styled.View`
+  align-items: center;
+  margin-top: 60px;
+`;
 
+const CompleteTitle = styled.Text`
+  font-size: 32px;
+  font-weight: 600;
+  color: ${colors.fontMain};
+  text-align: center;
+  margin-bottom: 36px;
+`;
 
+const CompleteIcon = styled.Image`
+  width: 210px;
+  height: 185px;
+  margin-bottom: 36px;
+`;
+
+const CompleteText = styled.Text`
+  font-size: 20px;
+  font-weight: 500;
+  color: ${colors.fontMain80};
+  text-align: center;
+`;

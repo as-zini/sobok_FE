@@ -1,11 +1,11 @@
 import React from 'react'
 import { SafeAreaView, View } from 'react-native'
-import styled from 'styled-components'
+import styled from '@emotion/native'
 import { size } from '../styles/size'
 import { colors } from '../styles/colors'
 import BackArrowButton from '../components/BackArrowButton'
 import bg from '../../../assets/setting_bg.png';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MarginVertical from '../components/MarginVertical'
 import { useNavigation } from '@react-navigation/native'
 
@@ -44,14 +44,14 @@ export default SettingTermList
 
 
 const Body = styled.View`
-  width:${size.width}px;
-  height:${size.height}px;
+  width:${() => `${size.width}px`};
+  height:${() => `${size.height}px`};
   padding:0 30px;
 `
 
 const Bg = styled.Image`
-  width:${size.width}px;
-  height:${size.height}px;
+  width:${() => `${size.width}px`};
+  height:${() => `${size.height}px`};
   z-index:-1;
   position:absolute;
   top:0;
@@ -77,6 +77,8 @@ const RightArrowIcon = styled.TouchableOpacity`
   display:flex;
   justify-content:center;
   align-items:center;
+  width:50px;
+  height:50px;
 `
 
 const CategoryEl = styled.View`

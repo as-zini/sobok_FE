@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Dimensions, FlatList, Image, SafeAreaView, ScrollView, SectionList, Text, TouchableOpacity, View } from 'react-native'
-import styled from 'styled-components'
+import styled from '@emotion/native'
 
 import test_bg from '../../../assets/test_bg.png'
 import BackArrowButton from '../components/BackArrowButton'
@@ -200,7 +200,7 @@ const Test = () => {
           
           </>
           : step === 2 ?
-          <>
+          <View style={{width:"100%", gap:10}}>
             {timeList.map((el,index) => {
               return(
                 <SimpleTodoEl key={index} index={index+1} data={[`${el.startTime} - ${el.endTime}`,"",`${getTimeDifference(el.startTime, el.endTime)}`]}/>
@@ -210,11 +210,11 @@ const Test = () => {
               <SpareTimeButtonText>+</SpareTimeButtonText>
             </SpareTimeAddButton>
             <ChoiceModal isChoiceModalVisible={isChoiceModalVisible} setIsChoiceModalVisible={setIsChoiceModalVisible} setTime={setTime} time={time} setTimeList={setTimeList}/>
-          </>
+          </View>
           : step === 3 ?
           <>
             <TestCheckEl onPress={() => {setStep3Data({...step3Data, [`step${detailStep}`]:step3Value1[detailStep-1]}); setStep3Clicked(1)}}>
-              <TestCheckText style={{color:step3Clicked === 1 ? "#fff" : "#777"}}> {detailStep === 1 ? "여러가지를\n다양하게" : detailStep===2 ? "느슨하고\n여유로운" : "오래 오래\n집중하기"}</TestCheckText>
+              <TestCheckText style={{color:step3Clicked === 1 ? "#fff" : "#777"}}>{detailStep === 1 ? "여러가지를\n다양하게" : detailStep===2 ? "느슨하고\n여유로운" : "오래 오래\n집중하기"}</TestCheckText>
               {step3Clicked === 1 ?
               <Image style={{width:'100%', height:'100%',zIndex:-1}} source={detailStep === 1 ? selected_step1_1: detailStep===2 ? selected_step2_1 : selected_step3_1}/>
               :<TestCheckIcon source={detailStep === 1 ? diversity_icon : detailStep===2 ? circle_graphic : trapezoid_graphic} style={{width:60, height:60}}/>
@@ -243,7 +243,7 @@ const Test = () => {
                     key={index}
                     onPress={() => 
                       setLikeOption(prev => 
-                        prev.includes(el) ? prev.filter(item => item !== el) : [...prev, el]
+                        prev.includes(el) ? prev.filter(item => item !== el) : prev.length <= 5 ? [...prev, el] : prev
                       )
                     }
                     style={{backgroundColor:likeOption.includes(el) ? colors.indigoBlue70:"rgba(255,255,255,.2)"}}>
@@ -262,7 +262,7 @@ const Test = () => {
                     key={index}
                     onPress={() => 
                       setLikeOption(prev => 
-                        prev.includes(el) ? prev.filter(item => item !== el) : [...prev, el]
+                        prev.includes(el) ? prev.filter(item => item !== el) : prev.length <= 5 ? [...prev, el] : prev
                       )
                     }
                     style={{backgroundColor:likeOption.includes(el) ? colors.indigoBlue70:"rgba(255,255,255,.2)"}}>
@@ -281,7 +281,7 @@ const Test = () => {
                     key={index}
                     onPress={() => 
                       setLikeOption(prev => 
-                        prev.includes(el) ? prev.filter(item => item !== el) : [...prev, el]
+                        prev.includes(el) ? prev.filter(item => item !== el) : prev.length <= 5 ? [...prev, el] : prev
                       )
                     }
                     style={{backgroundColor:likeOption.includes(el) ? colors.indigoBlue70:"rgba(255,255,255,.2)"}}>
@@ -300,7 +300,7 @@ const Test = () => {
                     key={index}
                     onPress={() => 
                       setLikeOption(prev => 
-                        prev.includes(el) ? prev.filter(item => item !== el) : [...prev, el]
+                        prev.includes(el) ? prev.filter(item => item !== el) : prev.length <= 5 ? [...prev, el] : prev
                       )
                     }
                     style={{backgroundColor:likeOption.includes(el) ? colors.indigoBlue70:"rgba(255,255,255,.2)"}}>
@@ -319,7 +319,7 @@ const Test = () => {
                     key={index}
                     onPress={() => 
                       setLikeOption(prev => 
-                        prev.includes(el) ? prev.filter(item => item !== el) : [...prev, el]
+                        prev.includes(el) ? prev.filter(item => item !== el) : prev.length <= 5 ? [...prev, el] : prev
                       )
                     }
                     style={{backgroundColor:likeOption.includes(el) ? colors.indigoBlue70:"rgba(255,255,255,.2)"}}>
@@ -338,7 +338,7 @@ const Test = () => {
                     key={index}
                     onPress={() => 
                       setLikeOption(prev => 
-                        prev.includes(el) ? prev.filter(item => item !== el) : [...prev, el]
+                        prev.includes(el) ? prev.filter(item => item !== el) : prev.length <= 5 ? [...prev, el] : prev
                       )
                     }
                     style={{backgroundColor:likeOption.includes(el) ? colors.indigoBlue70:"rgba(255,255,255,.2)"}}>
@@ -368,11 +368,11 @@ const Test = () => {
           
         </TestCheckArea>
         </TestContentsArea>
-        <View style={{position:'absolute', bottom:100}}>
+        <View style={{position:'absolute', bottom:120}}>
           <Button text={"다음 단계로"} unChecked={unChecked} handleButton={handleTestButton}/>
         </View>  
       </TestBody>
-      <TestBg source={test_bg}/>
+      <TestBg source={require("../../../assets/test_bg.png")}/>
     </SafeAreaView>
   )
 }
@@ -383,16 +383,16 @@ export default Test
 const TestBody = styled.View`
   display:flex;
   align-items:center;
-  width:${width}px;
-  height:${height}px;
+  width:${() => `${size.width}px`};
+  height:${() => `${size.height}px`};
   padding:0 30px;
 `
 
 const TestBg = styled.Image`
   position:absolute;
   top:0;
-  width:${width}px;
-  height:${height}px;
+  width:${() => `${size.width}px`};
+  height:${() => `${size.height}px`};
   z-index:-1;
 `
 
@@ -425,15 +425,15 @@ const TestQuestionText = styled.Text`
 const TestCheckArea = styled.View`
   display:flex;
   flex-direction:row;
-  width:${width*.9};
+  width:100%;
   flexWrap:wrap;
   gap:16px;
 `
 
 const TestCheckEl = styled.TouchableOpacity`
-  width:${width*.75/2}px;
+  width:${() => `${width*.75/2}px`};
   background-color:#fff;
-  height:${width*.75/2}px;
+  height:${() => `${width*.75/2}px`};
   border-radius:15px;
 `
 
@@ -455,7 +455,7 @@ const TestCheckIcon = styled.Image`
 
 const SpareTimeAddButton = styled.TouchableOpacity`
   background-color:rgba(255,255,255,.4);
-  width:90%;
+  width:100%;
   height:70px;
   z-index:9;
   border-radius:8px;

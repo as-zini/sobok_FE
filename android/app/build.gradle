@@ -2,13 +2,20 @@ apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
 
+<<<<<<< HEAD
+=======
 def projectRoot = rootDir.getAbsoluteFile().getParentFile().getAbsolutePath()
 
+>>>>>>> 0b4ed1f5d2f49f3649e479bca7e0c9023e93c99b
 /**
  * This is the configuration block to customize your React Native Android app.
  * By default you don't need to apply any configuration, just uncomment the lines you need.
  */
 react {
+<<<<<<< HEAD
+    /* Folders */
+    //   The root of your project, i.e. where "package.json" lives. Default is '../..'
+=======
     entryFile = file(["node", "-e", "require('expo/scripts/resolveAppEntry')", projectRoot, "android", "absolute"].execute(null, rootDir).text.trim())
     reactNativeDir = new File(["node", "--print", "require.resolve('react-native/package.json')"].execute(null, rootDir).text.trim()).getParentFile().getAbsoluteFile()
     hermesCommand = new File(["node", "--print", "require.resolve('react-native/package.json')"].execute(null, rootDir).text.trim()).getParentFile().getAbsolutePath() + "/sdks/hermesc/%OS-BIN%/hermesc"
@@ -21,11 +28,17 @@ react {
 
     /* Folders */
      //   The root of your project, i.e. where "package.json" lives. Default is '../..'
+>>>>>>> 0b4ed1f5d2f49f3649e479bca7e0c9023e93c99b
     // root = file("../../")
     //   The folder where the react-native NPM package is. Default is ../../node_modules/react-native
     // reactNativeDir = file("../../node_modules/react-native")
     //   The folder where the react-native Codegen package is. Default is ../../node_modules/@react-native/codegen
     // codegenDir = file("../../node_modules/@react-native/codegen")
+<<<<<<< HEAD
+    //   The cli.js file which is the React Native CLI entrypoint. Default is ../../node_modules/react-native/cli.js
+    // cliFile = file("../../node_modules/react-native/cli.js")
+=======
+>>>>>>> 0b4ed1f5d2f49f3649e479bca7e0c9023e93c99b
 
     /* Variants */
     //   The list of variants to that are debuggable. For those we're going to
@@ -36,7 +49,13 @@ react {
     /* Bundling */
     //   A list containing the node command and its flags. Default is just 'node'.
     // nodeExecutableAndArgs = ["node"]
+<<<<<<< HEAD
+    //
+    //   The command to run when bundling. By default is 'bundle'
+    // bundleCommand = "ram-bundle"
+=======
 
+>>>>>>> 0b4ed1f5d2f49f3649e479bca7e0c9023e93c99b
     //
     //   The path to the CLI configuration file. Default is empty.
     // bundleConfig = file(../rn-cli.config.js)
@@ -65,34 +84,57 @@ react {
 /**
  * Set this to true to Run Proguard on Release builds to minify the Java bytecode.
  */
+<<<<<<< HEAD
+def enableProguardInReleaseBuilds = false
+=======
 def enableProguardInReleaseBuilds = (findProperty('android.enableProguardInReleaseBuilds') ?: false).toBoolean()
+>>>>>>> 0b4ed1f5d2f49f3649e479bca7e0c9023e93c99b
 
 /**
  * The preferred build flavor of JavaScriptCore (JSC)
  *
  * For example, to use the international variant, you can use:
+<<<<<<< HEAD
+ * `def jscFlavor = io.github.react-native-community:jsc-android-intl:2026004.+`
+=======
  * `def jscFlavor = 'org.webkit:android-jsc-intl:+'`
+>>>>>>> 0b4ed1f5d2f49f3649e479bca7e0c9023e93c99b
  *
  * The international variant includes ICU i18n library and necessary data
  * allowing to use e.g. `Date.toLocaleString` and `String.localeCompare` that
  * give correct results when using with locales other than en-US. Note that
  * this variant is about 6MiB larger per architecture than default.
  */
+<<<<<<< HEAD
+def jscFlavor = 'io.github.react-native-community:jsc-android:2026004.+'
+
+android {
+    ndkVersion rootProject.ext.ndkVersion
+=======
 def jscFlavor = 'org.webkit:android-jsc:+'
 
 android {
     ndkVersion rootProject.ext.ndkVersion
 
+>>>>>>> 0b4ed1f5d2f49f3649e479bca7e0c9023e93c99b
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
     namespace "com.sobok"
     defaultConfig {
+<<<<<<< HEAD
+        applicationId "com.sobok"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+=======
         applicationId 'com.aszini.sobok'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0.0"
+>>>>>>> 0b4ed1f5d2f49f3649e479bca7e0c9023e93c99b
     }
     signingConfigs {
         debug {
@@ -110,6 +152,10 @@ android {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
             signingConfig signingConfigs.debug
+<<<<<<< HEAD
+            minifyEnabled enableProguardInReleaseBuilds
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+=======
             shrinkResources (findProperty('android.enableShrinkResourcesInReleaseBuilds')?.toBoolean() ?: false)
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
@@ -142,6 +188,7 @@ android {
         // Ex: android.packagingOptions.pickFirsts += '**/SCCS/**'
         options.each {
             android.packagingOptions[prop] += it
+>>>>>>> 0b4ed1f5d2f49f3649e479bca7e0c9023e93c99b
         }
     }
 }
@@ -150,6 +197,8 @@ dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
 
+<<<<<<< HEAD
+=======
     def isGifEnabled = (findProperty('expo.gif.enabled') ?: "") == "true";
     def isWebpEnabled = (findProperty('expo.webp.enabled') ?: "") == "true";
     def isWebpAnimatedEnabled = (findProperty('expo.webp.animated') ?: "") == "true";
@@ -168,6 +217,7 @@ dependencies {
         }
     }
 
+>>>>>>> 0b4ed1f5d2f49f3649e479bca7e0c9023e93c99b
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
     } else {

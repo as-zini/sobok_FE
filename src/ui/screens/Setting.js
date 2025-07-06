@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Image, SafeAreaView, Text, TouchableOpacity, View } from 'react-native'
-import styled from 'styled-components'
+import styled from '@emotion/native'
 import { size } from '../styles/size'
 
 import setting_bg from '../../../assets/setting_bg.png';
@@ -11,7 +11,7 @@ import NavigateArrowButton from '../components/NavigateArrowButton';
 import MarginVertical from '../components/MarginVertical';
 import { useNavigation } from '@react-navigation/native';
 import { useUserInfoStore } from '../../store/user';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import RoutinePauseModal from '../components/RoutinePauseModal';
 
 const Setting = () => {
@@ -48,9 +48,11 @@ const Setting = () => {
           {settingCategory.map((el, index) => {
             return(
               <View key={index}>
-              <SettingEl onPress={() => navigation.navigate(`Setting${goToCategory[index]}`)}>
+              <SettingEl>
                 <SettingTitle>{el}</SettingTitle>
-                <MaterialIcons name="keyboard-arrow-right" size={24} color="#4c4c4c" />
+                <TouchableOpacity onPress={() => navigation.navigate(`Setting${goToCategory[index]}`)} style={{width:60,height:70,display:'flex',justifyContent:'center',alignItems:'center'}}>
+                  <MaterialIcons name="keyboard-arrow-right" size={24} color="#4c4c4c" />
+                </TouchableOpacity>
               </SettingEl>
               {index===0 ? <BorderLine/> : <></>}
               </View>
@@ -74,7 +76,7 @@ export default Setting
 
 
 const SettingBody = styled.View`
-  width:${size.width}px;
+  width:${() => `${size.width}px`};
   padding:0 35px;
   justify-content:center;
   
@@ -84,8 +86,8 @@ const SettingBg = styled.Image`
   position:absolute;
   top:0;
   z-index:-1;
-  width:${size.width}px;
-  height:${size.height}px;
+  width:${() => `${size.width}px`};
+  height:${() => `${size.height}px`};
 `
 
 const SettingHeader = styled.View`
@@ -137,11 +139,11 @@ const SettingArea = styled.View`
 
 `
 
-const SettingEl = styled.TouchableOpacity`
+const SettingEl = styled.View`
   width:100%;
   display:flex;
   flex-direction:row;
-  padding:15px 0;
+  align-items:center;
 `
 
 const SettingTitle = styled.Text`
@@ -152,7 +154,7 @@ const SettingTitle = styled.Text`
 `
 
 const BorderLine = styled.View`
-  width:${size.width-70}px;
+  width:${() => `${size.width-70}px`};
   height:.4px;
   background-color:${colors.fontMain};
   margin:10px 0;

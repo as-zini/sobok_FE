@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import styled from 'styled-components';
+import styled from '@emotion/native';
 import { Image, SafeAreaView, ScrollView, SectionList, Text, View } from 'react-native'
 
 import today_todo_bg from '../../../assets/add_todo_bg.png';
@@ -118,7 +118,7 @@ const TodayTodo = () => {
           >
         </SectionList> */}
         
-        <ScrollView style={{maxHeight:300}} showsVerticalScrollIndicator={false}>
+        <ScrollView style={{maxHeight:250}} showsVerticalScrollIndicator={false}>
           {notCompletedTodo.map((el,index) => {
             return(
               <View key={index}>
@@ -205,20 +205,22 @@ export default TodayTodo
 
 
 const TodayTodoBody = styled.View`
-  width:${size.width-60}px;
+  width:${() => `${size.width}px`};
   display:flex;
-  height:${size.height}px;
+  height:${() => `${size.height}px`};
+  padding: 0 30px;
 `
 
 const TodayTodoBg = styled.Image`
-  width:${size.width}px;
+  width:${() => `${size.width}px`};
+  height:${() => `${size.height}px`};
   position:absolute;
   top:0;
   z-index:-1;
 `
 
 const TodayTodoHeader = styled.View`
-  width:${size.width-60}px;
+  width:100%;
   height:50px;
   display:flex;
   justify-content:center;
@@ -244,7 +246,7 @@ const DetailTodayTime = styled.Text`
 `
 
 const StartButton = styled.TouchableOpacity`
-  width:${size.width}px;
+  width:${() => `${size.width}px`};
   background-color:rgba(255,255,255,.8);
   height:130px;
   border-radius:12px;
@@ -252,8 +254,8 @@ const StartButton = styled.TouchableOpacity`
   justify-content:center;
   align-items:center;
   position:absolute;
-  bottom:50;
-  left:-30px;
+  bottom:60px;
+  left:0;
 `
 
 const StartButtonText = styled.Text`

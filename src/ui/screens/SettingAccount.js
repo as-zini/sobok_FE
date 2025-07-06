@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Image, SafeAreaView, Text, View } from 'react-native'
-import styled from 'styled-components'
+import styled from '@emotion/native'
 import { size } from '../styles/size'
 import bg from '../../../assets/home_bg.png';
 import BackArrowButton from '../components/BackArrowButton';
@@ -8,7 +8,7 @@ import icon from '../../../assets/login_icon.png';
 import { colors } from '../styles/colors';
 import MarginVertical from '../components/MarginVertical';
 import { useUserInfoStore } from '../../store/user';
-import Fontisto from '@expo/vector-icons/Fontisto';
+import Fontisto from 'react-native-vector-icons/Fontisto';
 import Button from '../components/Button';
 import { useMyPage } from '../../hooks/useMyPage';
 import { useGetInfo } from '../../hooks/useGetInfo';
@@ -148,7 +148,8 @@ const SettingAccount = ({route}) => {
           <MarginVertical top={10}/>
           <InputArea>
             <Input
-              
+              placeholder={"인증번호를 입력해주세요"}
+              placeholderTextColor={colors.fontMain70}
               value={varifyCode}
               onChange={(e) => setVarifyCode(e.nativeEvent.text)}
               keyboardType="numeric"
@@ -176,15 +177,15 @@ const SettingAccount = ({route}) => {
 export default SettingAccount
 
 const Body = styled.View`
-  width:${size.width}px;
-  height:${size.height}px;
+  width:${() => `${size.width}px`};
+  height:${() => `${size.height}px`};
   padding:0 30px;
   display:flex;
 `
 
 const Bg = styled.Image`
-  width:${size.width}px;
-  height:${size.height}px;
+  width:${() => `${size.width}px`};
+  height:${() => `${size.height}px`};
   z-index:-1;
   position:absolute;
   top:0;
@@ -226,7 +227,7 @@ const CategoryText = styled.Text`
 `
 
 const BorderLine = styled.View`
-  width:${size.width-60}px;
+  width:${() => `${size.width-60}px`};
   height:1px;
   background-color:lightgray;
 `

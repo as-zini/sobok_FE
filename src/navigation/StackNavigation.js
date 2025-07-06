@@ -1,13 +1,13 @@
 import { createStackNavigator } from '@react-navigation/stack'
 import React, { useEffect, useState } from 'react'
-import StartScreen from '../ui/screens/StartScreen';
+import StartScreen from '../ui/screens/StartScreen.js'
 import LoginScreen from '../ui/screens/LoginScreen';
 import SignupScreen from '../ui/screens/SignupScreen';
 import TestStartScreen from '../ui/screens/TestStartScreen';
 import Test from '../ui/screens/Test';
 import AiRoutineCompleteScreen from '../ui/screens/AiRoutineCompleteScreen';
-import Home from '../ui/screens/Home';
 import BottomTabNavigation from './BottomTabNavigation';
+import baseUrl from '../api/baseURL.js';
 import ViewInstallmentSavingScreen from '../ui/screens/ViewInstallmentSavingScreen';
 import DetailInstallmentSavingScreen from '../ui/screens/DetailInstallmentSavingScreen';
 import ViewRoutineListScreen from '../ui/screens/ViewRoutineListScreen';
@@ -34,7 +34,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import ViewLinkedRoutine from '../ui/screens/ViewLinkedRoutine';
 import ViewSaveTime from '../ui/screens/ViewSaveTime';
 import AddSaveTime from '../ui/screens/AddSaveTime';
-import axios from 'axios';
 import DetailSnowCard from '../ui/screens/DetailSnowCard';
 import TicketPurchase from '../ui/screens/TicketPurchase';
 import ConnectRoutineInSaving from '../ui/screens/ConnectRoutineInSaving';
@@ -61,7 +60,7 @@ const StackNavigation = () => {
   const isValidUser = async() => {
     try {
       const refreshToken = await AsyncStorage.getItem('refresh_token')
-      const response = await axios.post('https://sobok-app.com/user/refresh-token', {}, {
+      const response = await baseUrl.post('/user/refresh-token', {}, {
                         headers: {
                             'Authorization': `Bearer ${refreshToken}`,
                             'Content-Type': 'application/json',
@@ -90,12 +89,13 @@ const StackNavigation = () => {
       initialRouteName={version}  
     >
       <Stack.Screen name='Start' component={StartScreen} />
-      <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Signup" component={SignupScreen}/>
+      <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="Tabs" component={BottomTabNavigation}/>
       <Stack.Screen name="TestStart" component={TestStartScreen}/>
       <Stack.Screen name="Test" component={Test}/>
       <Stack.Screen name="AiRoutineComplete" component={AiRoutineCompleteScreen} />
-      <Stack.Screen name="Tabs" component={BottomTabNavigation}/>
+      
       <Stack.Screen name="ViewSave" component={ViewInstallmentSavingScreen} />
       <Stack.Screen name="DetailSave" component={DetailInstallmentSavingScreen}/>
       <Stack.Screen name="ViewRoutine" component={ViewRoutineListScreen} />

@@ -31,3 +31,7 @@ export function getTimeDifference(startTime, endTime) {
   // "XH YM" 형식으로 반환
   return hours !== 0 ? `${hours}H ${minutes}M` : `${minutes}M`;
 }
+<<<<<<< HEAD
+ 
+=======
+>>>>>>> 0b4ed1f5d2f49f3649e479bca7e0c9023e93c99b

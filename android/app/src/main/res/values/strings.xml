@@ -1,5 +1,10 @@
 <resources>
+<<<<<<< HEAD
+    <string name="app_name">sobok</string>
+</resources>
+=======
   <string name="app_name">sobok</string>
   <string name="expo_splash_screen_resize_mode" translatable="false">contain</string>
   <string name="expo_splash_screen_status_bar_translucent" translatable="false">false</string>
 </resources>
+>>>>>>> 0b4ed1f5d2f49f3649e479bca7e0c9023e93c99b

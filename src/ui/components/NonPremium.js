@@ -1,80 +1,101 @@
-import React from 'react'
-import bg from '../../../assets/nonPremiumUserBg.png'
-import { size } from '../styles/size'
-import styled from 'styled-components/native'
-import { Image, View } from 'react-native'
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import React from 'react';
+import { Image, View, Text } from 'react-native';
+import styled from '@emotion/native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import bg from '../../../assets/nonPremiumUserBg.png';
 import crown_icon from '../../../assets/crown_icon.png';
-import { colors } from '../styles/colors'
-import MarginVertical from './MarginVertical'
-import { useNavigation } from '@react-navigation/native'
+import { size } from '../styles/size';
+import { colors } from '../styles/colors';
+import MarginVertical from './MarginVertical';
+import { useNavigation } from '@react-navigation/native';
 
 const NonPremium = () => {
   const navigation = useNavigation();
-  
+
   return (
     <Body>
-      <Bg source={bg}/>
-      <View style={{flexDirection:'row', gap:7, alignItems:'center', position:'absolute', top:70, zIndex:9}}>
-      <MaterialCommunityIcons name="alert-circle" size={18} color="#fff" />
-      <Text style={{fontSize:13}}>구독 시 볼 수 있는 통계 샘플 이미지입니다.</Text>
-      </View>
-      <View style={{justifyContent:'center', alignItems:'center', width:"100%", position:'absolute', bottom:120, zIndex:9}}>
+      <Bg source={bg} resizeMode="cover" />
+
+      {/* 상단 경고 배너 */}
+      <TopBanner style={{ position: 'absolute', top: 70, zIndex: 9 }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <MaterialCommunityIcons name="alert-circle" size={18} color="#fff" />
+          <View style={{ width: 7 }} />
+          <MarginVertical top={0} />
+          <BannerText style={{ fontSize: 13 }}>
+            구독 시 볼 수 있는 통계 샘플 이미지입니다.
+          </BannerText>
+        </View>
+      </TopBanner>
+
+      {/* 중앙 컨텐츠 */}
+      <CenterArea style={{ position: 'absolute', bottom: 120, zIndex: 9 }}>
         <MaterialIcons name="lock-outline" size={24} color="#fff" />
-        <MarginVertical top={8}/>
-        <Text>{`구독권을 구매하고
-  쌓인 시간을 확인해보세요!`}</Text>
-        <MarginVertical top={20}/>
-        <Image source={crown_icon}/>
-        <MarginVertical top={8}/>
-        <Button onPress={() => navigation.navigate("ViewPoint")}>
-          <Text style={{color:colors.indigoBlue}}>프리미엄 구독권 구매하기</Text>
-        </Button>
-      </View>
+        <MarginVertical top={8} />
+        <BannerText style={{ fontSize: 18, textAlign: 'center' }}>
+          {`구독권을 구매하고\n쌓인 시간을 확인해보세요!`}
+        </BannerText>
+        <MarginVertical top={20} />
+        <Image source={crown_icon} />
+        <MarginVertical top={8} />
+        <ActionButton onPress={() => navigation.navigate('ViewPoint')}>
+          <ButtonText style={{ color: colors.indigoBlue }}>
+            프리미엄 구독권 구매하기
+          </ButtonText>
+        </ActionButton>
+      </CenterArea>
     </Body>
-  )
-}
+  );
+};
 
-export default NonPremium
+export default NonPremium;
 
+const Body = styled.View({
+  width: size.width,
+  height: size.height,
+  justifyContent: 'center',
+  alignItems: 'center',
+  paddingTop: 50,
+  paddingHorizontal: 30,
+});
 
-const Body = styled.View`
-  width:${size.width}px;
-  height:${size.height}px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  z-index:9;
-  padding:50px 30px;
-  
-  
-`
+const Bg = styled.Image({
+  position: 'absolute',
+  top: 0,
+  width: size.width,
+  height: size.height,
+  backgroundColor: 'rgba(0,0,0,0.5)',
+  zIndex: 9,
+});
 
-const Bg = styled.Image`
-  position:absolute;
-  top:0;
-  width:${size.width}px;
-  z-index:9;
-  
-`
+const TopBanner = styled.View({
+  width: size.width - 60, // 원래 패딩 감안
+});
 
-const Text = styled.Text`
-  font-size:18px;
-  font-weight:500;
-  color:#fff;
-  text-align:center;
-  z-index:9;
-`
+const BannerText = styled.Text({
+  color: '#fff',
+  fontWeight: '500',
+  zIndex: 9,
+});
 
-const Button = styled.TouchableOpacity`
-  width:100%;
-  height:56px;
-  background-color:#fff;
-  border-radius:10px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  z-index:100;
-`
+const CenterArea = styled.View({
+  justifyContent: 'center',
+  alignItems: 'center',
+  width: size.width,
+});
 
+const ActionButton = styled.TouchableOpacity({
+  width: '100%',
+  height: 56,
+  backgroundColor: '#fff',
+  borderRadius: 10,
+  justifyContent: 'center',
+  alignItems: 'center',
+  zIndex: 100,
+});
+
+const ButtonText = styled.Text({
+  fontSize: 18,
+  fontWeight: '500',
+});

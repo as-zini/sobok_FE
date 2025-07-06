@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+=======
 
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 // import { useNavigation } from '@react-navigation/native';
@@ -94,13 +96,18 @@
 
 // export default baseUrl;
 
+>>>>>>> 0b4ed1f5d2f49f3649e479bca7e0c9023e93c99b
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import NavigationService from '../ui/components/NavigationService';
 
 const baseUrl = axios.create({
   baseURL: 'https://sobok-app.com',
+<<<<<<< HEAD
+  timeout: 7000,
+=======
   timeout: 5000,
+>>>>>>> 0b4ed1f5d2f49f3649e479bca7e0c9023e93c99b
   headers: { 'Content-Type': 'application/json' },
   withCredentials: true,
 });

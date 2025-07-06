@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import styled from 'styled-components/native';
+import styled from '@emotion/native';
 import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 
 import statistic_bg from '../../../assets/statistic_bg.png';
@@ -22,7 +22,7 @@ import AssetAddModal from '../components/AssetAddModal';
 import AssetLinkModal from '../components/AssetLinkModal';
 import { minToHour } from '../../util';
 import { useGetInfo } from '../../hooks/useGetInfo';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import NonPremium from '../components/NonPremium';
 import { useUserInfoStore } from '../../store/user';
 
@@ -133,13 +133,16 @@ const Statistic = () => {
     <SafeAreaView>
     {!userInfo.isPremium ? <View style={{
         position: 'absolute',
-        top: 0, left: 0, right: 0, bottom: 0,  // 화면 전체
-        backgroundColor: 'rgba(0,0,0,0.5)',   // 반투명 검정
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
         justifyContent: 'center',
         alignItems: 'center',
-        zIndex: 99,                           // 최상위 보장
+        height: size.height-40,
+        
+        zIndex: 97,
       }}
-                   // overlay 영역 전체에서 터치 차단
     ><NonPremium/></View> : <></>}
       <ScrollView showsVerticalScrollIndicator={false}>
         <StatisticBody>
@@ -243,15 +246,15 @@ export default Statistic
 
 
 const StatisticBody = styled.View`
-  width:${size.width}px;
+  width:${() => `${size.width}px`};
   display:flex;
   padding:0 30px;
 `
 
 const StatisticBg  = styled.Image`
   position:absolute;
-  width:${size.width}px;
-  height:${size.height}px;
+  width:${() => `${size.width}px`};
+  height:${() => `${size.height}px`};
   top:0;
   z-index:-1;
 `
@@ -341,7 +344,7 @@ const GotoReportText = styled.Text`
 `
 
 const BorderLine = styled.View`
-  width:${size.width-60}px;
+  width:${() => `${size.width-60}px`};
   height:1px;
   background-color:#fff;
 `

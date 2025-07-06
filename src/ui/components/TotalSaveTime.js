@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
+import styled from '@emotion/native'
 
 import total_save_time_bg from '../../../assets/total_save_time_bg.png';
 import { size } from '../styles/size';
@@ -163,7 +163,7 @@ export default TotalSaveTime
 
 
 const TotalSaveTimeBody = styled.View`
-  width:${size.width-80}px;
+  width:${() => `${size.width-80}px`};
   display:flex;
   justify-content:center;
  
@@ -172,9 +172,9 @@ const TotalSaveTimeBody = styled.View`
 const TotalSaveTimeBg = styled.Image`
   position:absolute;
   top:0;
-  width:${size.width}px;
+  width:${() => `${size.width}px`};
   z-index:-1;
-  height:${size.height}px;
+  height:${() => `${size.height}px`};
 `
 
 const TotalSaveTimeText = styled.Text`

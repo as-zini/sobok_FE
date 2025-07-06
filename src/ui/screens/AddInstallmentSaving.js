@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Image, SafeAreaView, ScrollView, SectionList, Text, TouchableOpacity, View } from 'react-native'
-import styled from 'styled-components'
+import styled from '@emotion/native';
 
 import add_free_routine_bg from '../../../assets/test_bg.png';
 import { size } from '../styles/size';
@@ -47,7 +47,7 @@ const AddFreeRoutine = () => {
     else {
       navigation.navigate("CompleteAddSaving",{
         newSavingData:newSavingData,
-        routineTitle:`${pickedRoutines[0].title}외 ${pickedRoutines.length-1}개 루틴`
+        routineTitle:pickedRoutines.length > 0 ? `${pickedRoutines[0].title}외 ${pickedRoutines.length-1}개 루틴` : ""
       })
     }
     if(step===3){
@@ -65,12 +65,15 @@ const AddFreeRoutine = () => {
 
   return (
     <SafeAreaView>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{flexGrow:1}}>
-        <AddFreeRoutineBody>
+      
+      {step !== 4 ?
+      <AddFreeRoutineBody>
           <AddFreeRoutineHeader>
             <BackArrowButton/>
           </AddFreeRoutineHeader>
-          <Steps step={step}/>
+          <View style={{width:'100%', display:'flex', justifyContent:'center', alignItems:'center'}}>
+            <Steps step={step}/>
+          </View>
           <MarginVertical top={60}/>
           <InputArea>
             <StepNumber step={step}/>
@@ -111,12 +114,13 @@ const AddFreeRoutine = () => {
               <MarginVertical top={180}/>
             </View>
             : step === 3 ?
-            <View style={{ flex: 1, width: '100%' }}>
-            <ConnectRoutine pickedRoutines={pickedRoutines} setPickedRoutines={setPickedRoutines} setStep={setStep}/>
+            <View style={{width: '100%' }}>
+              <ConnectRoutine pickedRoutines={pickedRoutines} setPickedRoutines={setPickedRoutines} setStep={setStep}/>
+              <MarginVertical top={40}/>
             </View>
             :
-            
-            <View style={{display:'flex', justifyContent:'center', alignItems:'center', width:294}}>
+            <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={{display:'flex', justifyContent:'center', alignItems:'center', width:'100%'}}>
               <MarginVertical top={70}/>
               
                 <Text style={{fontSize:18, fontWeight:600, color:colors.fontMain80, marginBottom:5}}>{`${newSavingData.duration}개월 뒤에`}</Text>
@@ -132,13 +136,75 @@ const AddFreeRoutine = () => {
               <MarginVertical top={56}/>
               <Text style={{fontSize:14, fontWeight:500, color:colors.darkGray, textAlign:'center'}}>{`멋져요!\n${newSavingData.duration}개월 뒤에 이자와 함께 찾아올게요!`}</Text>
               <MarginVertical top={8}/>
-            </View>}
+            </View>
+            </ScrollView>}
             
           </InputArea>
-          <Button text={"다음 단계로"} handleButton={handleNextStep} unChecked={step===1&&newSavingData.title.length === 0 ? true: step===2 && newSavingData.target.length === 0 ? true:false}/>
+          {step !== 4 ?
+          <View style={{position:'absolute', bottom:150, justifyContent:'center', alignItems:'center'}}>
+            <Button text={"다음 단계로"} handleButton={handleNextStep} unChecked={step===1&&newSavingData.title.length === 0 ? true: step===2 && newSavingData.target.length === 0 ? true:false}/>
+          </View>
+          :
+          <View style={{marginTop: step === 3 ? 20 : 'auto', marginBottom: 40}}>
+            <Button text={"다음 단계로"} handleButton={handleNextStep} unChecked={step===1&&newSavingData.title.length === 0 ? true: step===2 && newSavingData.target.length === 0 ? true:false}/>
+          </View>
+          }
           
+        
+        
+        </AddFreeRoutineBody>
+        :
+        <ScrollView showsVerticalScrollIndicator={false}>
+        <AddFreeRoutineBody>
+          <AddFreeRoutineHeader>
+            <BackArrowButton/>
+          </AddFreeRoutineHeader>
+          <View style={{width:'100%', display:'flex', justifyContent:'center', alignItems:'center'}}>
+            <Steps step={step}/>
+          </View>
+          <MarginVertical top={60}/>
+          <InputArea>
+            <StepNumber step={step}/>
+            <MarginVertical top={20}/>
+            <RoutineCategoryText>{categoryText[step-1]}</RoutineCategoryText>
+            {step===3 ? <></>:<RoutineQuestionText>{questionText[step-1]}</RoutineQuestionText>}
+            
+            
+            <View style={{display:'flex', justifyContent:'center', alignItems:'center', width:'100%'}}>
+              <MarginVertical top={70}/>
+              
+                <Text style={{fontSize:18, fontWeight:600, color:colors.fontMain80, marginBottom:5}}>{`${newSavingData.duration}개월 뒤에`}</Text>
+                <Text style={{fontWeight:600, fontSize:26, color:colors.fontMain90}}>{`+${minToHour(newSavingData.time*newSavingData.duration)}`}</Text>
+                <MarginVertical top={20}/>
+                <Text style={{fontSize:18, fontWeight:600, color:colors.fontMain80,marginBottom:5}}>{`월 ${interest*10}%`}</Text>
+                <Text style={{fontWeight:600, fontSize:26, color:colors.indigoBlue}}>{`+${Math.floor(newSavingData.time*interest)}P`}</Text>
+              <MarginVertical top={50}/>
+              <Text style={{fontSize:18, fontWeight:500, color:colors.fontMain80, marginBottom:5}}>한 달에</Text>
+              <TimeSliderBar text={"씩"} setOutValue={setNewSavingData} type={"savingtime"}/>
+              <MarginVertical top={65}/>
+              <TimeSliderBar text={"동안"} setOutValue={setNewSavingData} type={"duration"}/>
+              <MarginVertical top={56}/>
+              <Text style={{fontSize:14, fontWeight:500, color:colors.darkGray, textAlign:'center'}}>{`멋져요!\n${newSavingData.duration}개월 뒤에 이자와 함께 찾아올게요!`}</Text>
+              <MarginVertical top={8}/>
+            </View>
+            
+            
+          </InputArea>
+          {step !== 4 ?
+          <View style={{position:'absolute', bottom:150, justifyContent:'center', alignItems:'center'}}>
+            <Button text={"다음 단계로"} handleButton={handleNextStep} unChecked={step===1&&newSavingData.title.length === 0 ? true: step===2 && newSavingData.target.length === 0 ? true:false}/>
+          </View>
+          :
+          <View style={{marginTop: step === 3 ? 20 : 'auto', marginBottom: 40}}>
+            <Button text={"다음 단계로"} handleButton={handleNextStep} unChecked={step===1&&newSavingData.title.length === 0 ? true: step===2 && newSavingData.target.length === 0 ? true:false}/>
+          </View>
+          }
+          
+        
+        
         </AddFreeRoutineBody>
         </ScrollView>
+      }
       <AddFreeRoutineBg source={add_free_routine_bg}/>
     </SafeAreaView>
   )
@@ -148,33 +214,34 @@ export default AddFreeRoutine
 
 
 const AddFreeRoutineBody = styled.View`
-  width:${size.width}px;
+  width:${() => `${size.width}px`};
   display:flex;
-  justify-content:center;
   align-items:center;
- 
+  min-height:${() => `${size.height}px`}px;
+  padding:0 30px;
+  position:relative;
 `
 
 const AddFreeRoutineBg = styled.Image`
   position:absolute;
   top:0;
-  width:${size.width}px;
-  height:${size.height}px;
+  width:${() => `${size.width}px`};
+  height:${() => `${size.height}px`};
   z-index:-1;
 `
 
 const AddFreeRoutineHeader = styled.View`
-  width:${size.width-50}px;
+  width:${() => `${size.width-50}px`};
   height:50px;
   display:flex;
   justify-content:center;
-
 `
 
 const InputArea = styled.View`
   display:flex;
   align-items:flex-start;
-  width:294px;
+  width:100%;
+  padding:0 10px;
 `
 
 const RoutineCategoryText = styled.Text`
@@ -189,7 +256,6 @@ const RoutineQuestionText = styled.Text`
   font-size:26px;
   color:${colors.fontMain};
   line-height:34px;
-
 `
 
 const AnswerInputArea = styled.View`
@@ -218,7 +284,7 @@ const SpareTimeAddButton = styled.TouchableOpacity`
   width:294;
   height:70px;
   border-radius:8px;
-  display:flex
+  display:flex;
   justify-content:center;
   align-items:center;
 `
@@ -228,5 +294,3 @@ const SpareTimeButtonText = styled.Text`
   font-weight:500;
   font-size:24px;
 `
-
-

@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react'
 import { SafeAreaView, View } from 'react-native'
-import styled from 'styled-components';
+import styled from '@emotion/native';
 import MarginVertical from '../components/MarginVertical';
 import { size } from '../styles/size';
 import { colors } from '../styles/colors';
@@ -36,16 +36,16 @@ const CompleteAddFreeRoutine = () => {
 export default CompleteAddFreeRoutine
 
 const AiRoutineCompleteBody = styled.View`
-  width:${size.width}px;
-  height:${size.height}px;  
+  width:${() => `${size.width}px`};
+  height:${() => `${size.height}px`};  
   display:flex;
   justify-content:center;
   align-items:center;
 `
 
 const AiRoutineCompleteBg = styled.Image`
-  width:${size.width}px;
-  height:${size.height}px;
+  width:${() => `${size.width}px`};
+  height:${() => `${size.height}px`};
   position:absolute;
   top:0;
   z-index:-1;

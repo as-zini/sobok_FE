@@ -1,6 +1,6 @@
 import React from 'react'
 import { Image, SafeAreaView, View } from 'react-native'
-import styled from 'styled-components'
+import styled from '@emotion/native'
 import { size } from '../styles/size'
 import bg from '../../../assets/home_bg.png';
 import BackArrowButton from '../components/BackArrowButton';
@@ -10,8 +10,8 @@ import MarginVertical from '../components/MarginVertical';
 import hakjae from '../../../assets/hakjaeProfile.png';
 import zini from '../../../assets/ziniProfile.png';
 import jiyoon from '../../../assets/jiyoonProfile.png';
-import Zocial from '@expo/vector-icons/Zocial';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
+import Zocial from 'react-native-vector-icons/Zocial';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const SettingAssistance = () => {
   const profileData = [[hakjae,"hjkim4842@gmail.com","010-9557-4842"],[zini, "aszini@naver.com","010-2719-4828"],[jiyoon,"jyurnl0@gmail.com","010-2387-4828"]]
@@ -61,16 +61,16 @@ export default SettingAssistance
 
 
 const Body = styled.View`
-  width:${size.width}px;
-  height:${size.height}px;
+  width:${() => `${size.width}px`};
+  height:${() => `${size.height}px`};
   padding:0 40px;
 `
 
 const Bg = styled.Image`
   position:absolute;
   top:0;
-  width:${size.width}px;
-  height:${size.height}px;
+  width:${() => `${size.width}px`};
+  height:${() => `${size.height}px`};
   z-index:-1;
 `
 

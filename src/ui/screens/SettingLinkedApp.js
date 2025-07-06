@@ -3,7 +3,7 @@ import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'r
 
 import setting_linked_app_bg from '../../../assets/home_bg.png';
 import linked_app_icon from '../../../assets/linked_app_icon.png';
-import styled from 'styled-components';
+import styled from '@emotion/native';
 import { size } from '../styles/size';
 import BackArrowButton from '../components/BackArrowButton';
 import { colors } from '../styles/colors';
@@ -15,11 +15,10 @@ import SnowFlakeIcon from '../components/SnowFlakeIcon';
 import TodoEl from '../components/TodoEl';
 import { useNavigation } from '@react-navigation/native';
 import { openApp } from '../components/Linking';
-import * as Linking from 'expo-linking'
 import check_icon_black from '../../../assets/check_icon_black.png';
 import { useMyPage } from '../../hooks/useMyPage';
-import Fontisto from '@expo/vector-icons/Fontisto';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import Fontisto from 'react-native-vector-icons/Fontisto';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { getTimeDifference } from '../../util';
 import duolingoIcon from '../../../assets/icons/duolingo.png';
 import santaIcon from '../../../assets/icons/santa.png';
@@ -134,8 +133,9 @@ const SettingLinkedApp = () => {
   }
 
   useEffect(() => {
-    console.log([...addLinkedAppList])
-  }, [addLinkedAppList])
+    console.log("add",[...addLinkedAppList])
+    console.log(myLinkedAppList)
+  }, [addLinkedAppList, myLinkedAppList])
 
   useEffect(() => {
     if(showTodoList){
@@ -145,12 +145,13 @@ const SettingLinkedApp = () => {
   
   
 
-  const handleAddLinkButton = () => {
+  const handleAddLinkButton = async () => {
     if(addLinkedAppList.filter((el) => myLinkedAppList.includes(el))?.length === 0){
-      handleSetLinkedApp([...myLinkedAppList,...addLinkedAppList])
-      setIsAppList(false)
+      await handleSetLinkedApp([...myLinkedAppList,...addLinkedAppList]);
+      await getUserLinkedApp(setMyLinkedAppList);  // 데이터 다시 불러오기
+      setAddLinkedAppList([]); // 추가 목록 초기화
+      setIsAppList(false);
     }
-    
   }
 
   return (
@@ -188,10 +189,23 @@ const SettingLinkedApp = () => {
               return(
                 
                 <LinkedAppEl key={index} onPress={() => {
-                  setAddLinkedAppList(prev => addLinkedAppList.includes(el) ? addLinkedAppList.filter((name) => name !== el) : [...prev, el])
+                  if(myLinkedAppList.includes(el)){
+                    setMyLinkedAppList(prev => {
+                      return myLinkedAppList.filter((name) => name !== el)
+                    })
+                  }else{
+                  setAddLinkedAppList(prev => {
+                    if(addLinkedAppList.includes(el)){
+                      return addLinkedAppList.filter((name) => name !== el)
+                    } else{
+                      return [...prev, el]
+                    }
+                  });
+                }
                 }}>
-                
-                  <LinkedAppImg source={appListImg[el]}/>
+                  <View style={{width:40,height:40,display:'flex',justifyContent:'center',alignItems:'center', borderRadius:20, overflow:'hidden'}}>
+                    <LinkedAppImg source={appListImg[el]}/>
+                  </View>
                   <LinkedAppTitle>{el}</LinkedAppTitle>
                   {myLinkedAppList.includes(el) || addLinkedAppList.includes(el)? 
                   <Fontisto name="check" size={12} color={colors.fontMain} />
@@ -209,7 +223,9 @@ const SettingLinkedApp = () => {
             myLinkedAppList?.map((el, index) => {
               return(
                 <LinkedAppEl key={index} onPress={() => {setSelectedApp(el);setShowTodoList(true)}}>
-                  <LinkedAppImg source={appListImg[el]}/>
+                  <View style={{width:40,height:40,display:'flex',justifyContent:'center',alignItems:'center', borderRadius:20, overflow:'hidden'}}>
+                    <LinkedAppImg source={appListImg[el]}/>
+                  </View>
                   <LinkedAppTitle>{el}</LinkedAppTitle>
                   <TouchableOpacity onPress={() => {setSelectedApp(el);setShowTodoList(true)}}>
                     <MaterialIcons name="keyboard-arrow-right" size={24} color="#4c4c4c" />
@@ -234,8 +250,8 @@ export default SettingLinkedApp
 
 
 const SettingLinkedAppBody = styled.View`
-  width:${size.width}px;
-  height:${size.height}px;
+  width:${() => `${size.width}px`};
+  height:${() => `${size.height}px`};
   display:flex;
   justify-content:center;
   padding:0 40px;
@@ -244,7 +260,7 @@ const SettingLinkedAppBody = styled.View`
 const SettingLinkedAppBg = styled.Image`
   position:absolute;
   top:0;
-  width:${size.width}px;
+  width:${() => `${size.width}px`};
   z-index:-1;
 `
 
@@ -298,8 +314,8 @@ const LinkedAppEl = styled.TouchableOpacity`
 
 const LinkedAppImg = styled.Image`
   border-radius:20px;
-  width:40px;
-  height:40px;
+  width:45px;
+  height:45px;
 `
 
 const LinkedAppTitle = styled.Text`

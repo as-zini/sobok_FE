@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native'
-import styled from 'styled-components'
+import styled from '@emotion/native'
 import { colors } from '../styles/colors'
 
 import mypage_bg from '../../../assets/home_bg.png';
@@ -42,7 +42,8 @@ import guitar from '../../../assets/guitar_graphic.png'
 import fairy from '../../../assets/fairy_graphic.png';
 import sun from '../../../assets/sun_graphic.png';
 import present from '../../../assets/present_graphic.png';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Fontisto from 'react-native-vector-icons/Fontisto';
 
 const MyPage = () => {
   const {userInfo} = useUserInfoStore();
@@ -83,7 +84,7 @@ const MyPage = () => {
           </View>
           <ContinuitySuccessText>{`${achieve}일`}</ContinuitySuccessText>
           <SettingButton onPress={() => navigation.navigate("Setting")}>
-            <Image source={setting_icon} style={{width:24, height:24}}/>
+            <Fontisto name="player-settings" size={24} color={colors.fontMain60} />
           </SettingButton>
         </MyPageHeader>
         <ProfileArea>
@@ -125,11 +126,11 @@ const MyPage = () => {
             </View>
           </View>
         </MyInfoArea>
-        <MarginVertical top={72}/>
+        <MarginVertical top={42}/>
         <SnowCardArea >
-          <View style={{flexDirection:'row',width:'95%'}}>
+          <View style={{flexDirection:'row',width:'95%', alignItems:'flex-end'}}>
             <Text style={{fontWeight:600,fontSize:22,color:colors.darkGray,flexGrow:1}}>{`눈카드 ${cardData.length}개`}</Text>
-            <TouchableOpacity onPress={() => navigation.navigate('SnowCardBook', {version:""})}>
+            <TouchableOpacity onPress={() => navigation.navigate('SnowCardBook', {version:""})} style={{width:50,height:50,display:'flex',justifyContent:'flex-end',alignItems:'center'}}>
               <MaterialIcons name="keyboard-arrow-right" size={24} color={colors.fontMains} />
             </TouchableOpacity>
           </View>
@@ -156,7 +157,7 @@ const MyPage = () => {
 export default MyPage
 
 const MyPageBody = styled.View`
-  width:${size.width}px;
+  width:${() => `${size.width}px`};
   padding:0 36px;
   display:flex;
   justify-content:center;
@@ -166,8 +167,8 @@ const MyPageBg = styled.Image`
   position:absolute;
   top:0;
   z-index:-1;
-  width:${size.width}px;
-  height:${size.height}px;
+  width:${() => `${size.width}px`};
+  height:${() => `${size.height}px`};
 `
 
 const MyPageHeader = styled.View`
@@ -186,7 +187,11 @@ const ContinuitySuccessText = styled.Text`
 `
 
 const SettingButton = styled.TouchableOpacity`
-
+  width:50px;
+  height:50px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
 `
 
 

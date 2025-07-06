@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Image, SafeAreaView, ScrollView, View } from 'react-native'
 
 import bg from '../../../assets/installment_saving_bg.png';
-import styled from 'styled-components';
+import styled from '@emotion/native';
 import { size } from '../styles/size';
 import { colors } from '../styles/colors';
 import BackArrowButton from '../components/BackArrowButton';
@@ -48,14 +48,14 @@ export default ViewLinkedRoutine
 
 
 const ViewLinkedRoutineBody = styled.View`
-  width:${size.width}px;
+  width:${() => `${size.width}px`};
   padding:15px 30px;
 `
 
 const ViewLinkedRoutineBg = styled.Image`
   position:absolute;
-  width:${size.width}px;
-  height:${size.height}px;
+  width:${() => `${size.width}px`};
+  height:${() => `${size.height}px`};
   top:0;
   z-index:-1;
 `

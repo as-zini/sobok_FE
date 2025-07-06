@@ -1,84 +1,115 @@
-import React from 'react'
-import { SafeAreaView, Text, View } from 'react-native'
+import React from 'react';
+import { SafeAreaView, View, Text, Image } from 'react-native';
 import Modal from 'react-native-modal';
-import BlurComponent from './BlurComponent';
-import styled from 'styled-components';
+import styled from '@emotion/native';
 import { colors } from '../styles/colors';
 import { size } from '../styles/size';
-
-import calandar_modal_bg from '../../../assets/caladar_modal_bg.png';
-import SmallButton from './SmallButton';
-import Calandar from './Calandar';
 import MarginVertical from './MarginVertical';
+import Calandar from './Calandar';
+import SmallButton from './SmallButton';
 import { useInstallmentSaving } from '../../hooks/useInstallmentSaving';
 import { usePoint } from '../../hooks/usePoint';
+import calandar_modal_bg from '../../../assets/caladar_modal_bg.png';
 
-
-const CalandarModal = ({isCalandarModalVisible, setIsCalandarModalVisible, selectedRange, setSelectedRange, id, setSavingLog, version, setPointLog}) => {
-  const {getSavingLog} = useInstallmentSaving();
-  const {getPointLog} = usePoint();
+const CalandarModal = ({
+  isCalandarModalVisible,
+  setIsCalandarModalVisible,
+  selectedRange,
+  setSelectedRange,
+  id,
+  setSavingLog,
+  version,
+  setPointLog,
+}) => {
+  const { getSavingLog } = useInstallmentSaving();
+  const { getPointLog } = usePoint();
 
   const handleCalandarModal = () => {
     setIsCalandarModalVisible(false);
-    version === "Point" ?
-    getPointLog(selectedRange.startDate, selectedRange.endDate, setPointLog)
-    :
-    getSavingLog(id, selectedRange.startDate, selectedRange.endDate, setSavingLog)
-  }
-
+    if (version === 'Point') {
+      getPointLog(selectedRange.startDate, selectedRange.endDate, setPointLog);
+    } else {
+      getSavingLog(id, selectedRange.startDate, selectedRange.endDate, setSavingLog);
+    }
+  };
 
   return (
     <SafeAreaView>
       <Modal
-        isVisible={isCalandarModalVisible} 
-        animationIn={'slideInUp'}
-        animationInTiming={1000} 
-        animationOut={'slideOutDown'} 
-        animationOutTiming={1000}
+        isVisible={isCalandarModalVisible}
+        animationIn="slideInUp"
+        animationInTiming={800}
+        animationOut="slideOutDown"
+        animationOutTiming={800}
         onBackdropPress={() => setIsCalandarModalVisible(false)}
       >
-      <View style={{width:size.width, height:540, position:'absolute', bottom:-100, left:-19}}>
-        <CalandarModalBody>
-          {/* 캘린더 컴포넌트 */}
-          <MarginVertical top={45}/>
-          <Calandar selectedRange={selectedRange} setSelectedRange={setSelectedRange}/>
-          <MarginVertical top={20}/>
-          <View style={{display:'flex', flexDirection:'row'}}>
-            <View style={{flexGrow:1}}>
-              <SelectedPeriodText>{`${selectedRange.startDate}`} <Text style={{fontSize:14, fontWeight:500, color:colors.fontMain80}}>부터</Text></SelectedPeriodText>
-              <SelectedPeriodText>{`${selectedRange.endDate}`}<Text style={{fontSize:14, fontWeight:500, color:colors.fontMain80}}>까지</Text></SelectedPeriodText>
-            </View>
-            <SmallButton text={"확인"} width={100} height={40} bgColor={colors.indigoBlue50} fontColor={"#fff"} handleButton={() => handleCalandarModal()}/>
-          </View>
-          
-        </CalandarModalBody>
-        <CalandarModalBg source={calandar_modal_bg}/>
-      </View>
+        <ModalContainer>
+          <MarginVertical top={35} />
+          <Calandar selectedRange={selectedRange} setSelectedRange={setSelectedRange} />
+          <MarginVertical top={20} />
+          <Footer>
+            <PeriodText>
+              {selectedRange.startDate
+                ? `${selectedRange.startDate}`
+                : '날짜를 선택해주세요.'}{' '}
+              {selectedRange.startDate && (
+                <Text style={{ fontSize: 14, fontWeight: '500', color: colors.fontMain80 }}>
+                  부터
+                </Text>
+              )}
+            </PeriodText>
+            <PeriodText>
+              {selectedRange.endDate
+                ? `${selectedRange.endDate}`
+                : '날짜를 선택해주세요.'}{' '}
+              {selectedRange.endDate && (
+                <Text style={{ fontSize: 14, fontWeight: '500', color: colors.fontMain80 }}>
+                  까지
+                </Text>
+              )}
+            </PeriodText>
+            <SmallButton
+              text="확인"
+              width={100}
+              height={40}
+              bgColor={colors.indigoBlue50}
+              fontColor="#fff"
+              handleButton={handleCalandarModal}
+            />
+          </Footer>
+        </ModalContainer>
+        <BackgroundImage source={calandar_modal_bg} />
       </Modal>
     </SafeAreaView>
-  )
-}
+  );
+};
 
-export default CalandarModal
+export default CalandarModal;
 
+const ModalContainer = styled.View`
+  width: ${size.width}px;
+  height: 600px;
+  padding-horizontal: 40px;
+`;
 
-const CalandarModalBody = styled.View`
-  width:${size.width}px;
-  height:540px;
-  padding:0 40px;
-`
+const BackgroundImage = styled.Image`
+  position: absolute;
+  width: ${size.width}px;
+  height: 600px;
+  top: 0;
+  border-radius: 20px;
+  z-index: -1;
+`;
 
-const CalandarModalBg = styled.Image`
-  position:absolute;
-  top:0;
-  z-index:-1;
-`
+const Footer = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
 
-const SelectedPeriodText = styled.Text`
-  font-weight:500;
-  font-size:16px;
-  color:${colors.fontMain80};
-  line-height:24px;
-
-`
-
+const PeriodText = styled.Text`
+  font-weight: 500;
+  font-size: 16px;
+  color: ${colors.fontMain80};
+  line-height: 24px;
+  flex: 1;
+`;

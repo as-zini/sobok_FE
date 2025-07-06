@@ -1,40 +1,35 @@
-import { StatusBar } from 'expo-status-bar';
-import { Image, StyleSheet, Text, View } from 'react-native';
-import StartScreen from './src/ui/screens/StartScreen';
-import LoginScreen from './src/ui/screens/LoginScreen';
-import { NavigationContainer } from '@react-navigation/native';
-import StackNavigation from './src/navigation/StackNavigation';
-import ChoiceModal from './src/ui/components/SpareTimeChoiceModal';
-import BottomTabNavigation from './src/navigation/BottomTabNavigation';
-import NavigationService from './src/ui/components/NavigationService';
-import * as SplashScreen from 'expo-splash-screen'
-import { useEffect } from 'react';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-// index.js 또는 App.js 맨 위에
+// App.js
 import 'react-native-gesture-handler';
+import React, { useEffect } from 'react';
+import { StatusBar } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
+import StackNavigation from './src/navigation/StackNavigation';
+import NavigationService from './src/ui/components/NavigationService';
+import SplashScreen from 'react-native-splash-screen';
 
 export default function App() {
-  
-  SplashScreen.preventAutoHideAsync();
-
   useEffect(() => {
-    setTimeout(() => {
-      SplashScreen.hideAsync();
+    // 2초 뒤에 네이티브 SplashScreen 숨기기
+    const timer = setTimeout(() => {
+      SplashScreen.hide();
     }, 2000);
-  }, [])
-  
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <SafeAreaProvider>
-      <NavigationContainer ref={(navigatorRef) => {
-        NavigationService.setTopLevelNavigator(navigatorRef)
-      }}>
-        <StackNavigation/>
-        
+      {/* 기본 StatusBar 설정, 필요시 커스터마이징 */}
+      <StatusBar barStyle="dark-content" />
+
+      <NavigationContainer
+        ref={(navigatorRef) => {
+          NavigationService.setTopLevelNavigator(navigatorRef);
+        }}
+      >
+        <StackNavigation />
       </NavigationContainer>
     </SafeAreaProvider>
   );
 }
-
-

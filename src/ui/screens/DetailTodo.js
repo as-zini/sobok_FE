@@ -1,6 +1,6 @@
 import React, { use, useEffect, useState } from 'react'
 import { SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native'
-import styled from 'styled-components';
+import styled from '@emotion/native';
 
 import todo_bg from '../../../assets/home_bg.png';
 import todo_icon from '../../../assets/todo_icon.png';
@@ -18,7 +18,7 @@ import CategoryEl from '../components/CategoryEl';
 import { useMyPage } from '../../hooks/useMyPage';
 import { useNavigation } from '@react-navigation/native';
 import { useTodo } from '../../hooks/useTodo';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const DetailTodo = ({route}) => {
   const {todoInfo, index, routineTitle,days} = route.params;
@@ -173,8 +173,8 @@ const DetailTodoBody = styled.View`
 const DetailTodoBg = styled.Image`
   position:absolute;
   top:0;
-  width:${size.width}px;
-  height:${size.height}px;
+  width:${() => `${size.width}px`};
+  height:${() => `${size.height}px`};
   z-index:-1;
 `
 
@@ -183,7 +183,7 @@ const DetailTodoHeader = styled.View`
   flex-direction:row;
   justify-content:center;
   align-items:center;
-  width:${size.width}px;
+  width:${() => `${size.width}px`};
   height:56px;
 `
 
@@ -196,7 +196,7 @@ const DetailTodoCategory = styled.Text`
 
 const TodoIntroArea = styled.View`
   display:flex;
-  width:${size.width-60}px;
+  width:${() => `${size.width-60}px`};
 
 `
 
@@ -231,7 +231,7 @@ const TotalTimeText = styled.Text`
 `
 
 const LinkedAppArea = styled.View`
-  width:${size.width - 80}px;
+  width:${() => `${size.width - 80}px`};
   display:flex;
   gap:20px;
 `

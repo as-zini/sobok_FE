@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { View, Animated, StyleSheet, Image, Text } from "react-native";
-import { colors } from "../styles/colors";
+import React, { useEffect, useState } from 'react';
+import { Animated, Image, View, Text } from 'react-native';
+import styled from '@emotion/native';
+import dayjs from 'dayjs';
 
 import snowflake_icon from '../../../assets/snowflak_icon.png';
-import dayjs from "dayjs";
-import MarginVertical from "./MarginVertical";
+import MarginVertical from './MarginVertical';
+import { colors } from '../styles/colors';
 
 // 분 → H M 변환 함수
 const formatTime = (minutes) => {
@@ -20,16 +21,15 @@ const formatTime = (minutes) => {
 };
 
 const ProgressBar = ({ startedAt, duration, version, userPoint, totalPoints, savedTime, totalTimeGoal }) => {
-  const endDate = version === "Time" ? startedAt.add(duration, 'M') : null;
-  
-  const progress = useState(new Animated.Value(0))[0]; // 상태로 관리하지 않고 useState[0] 활용
+  const endDate = version === 'Time' ? dayjs(startedAt).add(duration, 'M') : null;
+  const [progress] = useState(() => new Animated.Value(0));
 
   useEffect(() => {
     const calculateProgress = () => {
       if (version === 'Time') {
         const now = new Date();
-        const totalTime = endDate - startedAt;
-        const timeElapsed = now - startedAt;
+        const totalTime = endDate.toDate() - dayjs(startedAt).toDate();
+        const timeElapsed = now - dayjs(startedAt).toDate();
         return Math.min((timeElapsed / totalTime) * 100, 100);
       } else if (version === 'Point') {
         return Math.min((userPoint / totalPoints) * 100, 100);
@@ -40,7 +40,7 @@ const ProgressBar = ({ startedAt, duration, version, userPoint, totalPoints, sav
     };
 
     const percentage = calculateProgress();
-    progress.setValue(0); // 🔥 프로그레스 초기화
+    progress.setValue(0);
     Animated.timing(progress, {
       toValue: percentage,
       duration: 500,
@@ -55,97 +55,104 @@ const ProgressBar = ({ startedAt, duration, version, userPoint, totalPoints, sav
 
   const progressBarWidth = progress.interpolate({
     inputRange: [0, 100],
-    outputRange: ["0%", "100%"],
+    outputRange: ['0%', '100%'],
   });
 
   return (
     <>
-      <View style={styles.container}>
-        <View style={styles.progressBar}>
-          <Animated.View style={[styles.filledBar, { width: progressBarWidth }]} />
-          <Animated.View style={[styles.icon, { transform: [{ translateX }] }]}>
+      <Container>
+        <ProgressBarContainer>
+          <FilledBar style={{ width: progressBarWidth }} />
+          <IconWrapper style={{ transform: [{ translateX }] }}>
             <Image source={snowflake_icon} style={{ width: 16, height: 16 }} />
-          </Animated.View>
-        </View>
-      </View>
-      <MarginVertical top={10}/>
+          </IconWrapper>
+        </ProgressBarContainer>
+      </Container>
+      <MarginVertical top={10} />
       {version === 'Time' ? (
-        <View style={styles.dateContainer}>
-          <Text style={styles.dateText}>{startedAt.format("YYYY년 M월 D일")}</Text>
-          <Text style={styles.dateText}>{endDate.format("YYYY년 M월 D일")}</Text>
-        </View>
+        <DateContainer>
+          <DateText>{dayjs(startedAt).format('YYYY년 M월 D일')}</DateText>
+          <DateText>{endDate.format('YYYY년 M월 D일')}</DateText>
+        </DateContainer>
       ) : version === 'Point' ? (
-        <View style={styles.pointsContainer}>
-          <Text style={styles.pointsText}>{`${userPoint}P`}</Text>
-          <Text style={styles.pointsText}>{`${totalPoints}P`}</Text>
-        </View>
+        <PointsContainer>
+          <PointsText>{`${userPoint}P`}</PointsText>
+          <PointsText>{`${totalPoints}P`}</PointsText>
+        </PointsContainer>
       ) : (
-        <View style={styles.saveTimeContainer}>
-          <Text style={styles.saveTimeText}>{formatTime(savedTime)}</Text>
-          <Text style={styles.saveTimeText}>{formatTime(totalTimeGoal)}</Text>
-        </View>
+        <SaveTimeContainer>
+          <SaveTimeText>{formatTime(savedTime)}</SaveTimeText>
+          <SaveTimeText>{formatTime(totalTimeGoal)}</SaveTimeText>
+        </SaveTimeContainer>
       )}
     </>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  progressBar: {
-    width: 300,
-    height: 4,
-    backgroundColor: "#e0e0e0",
-    borderRadius: 10,
-    position: "relative",
-  },
-  filledBar: {
-    height: "100%",
-    backgroundColor: colors.indigoBlue,
-    borderRadius: 10,
-  },
-  icon: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    position: "absolute",
-    top: -25,
-  },
-  dateContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: 300,
-    height: 30,
-  },
-  dateText: {
-    color: colors.gray77,
-    fontWeight: "500",
-    fontSize: 14,
-  },
-  pointsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: 300,
-    marginTop: 10,
-  },
-  pointsText: {
-    fontSize: 14,
-    fontWeight: "500",
-    color: colors.fontMain70,
-  },
-  saveTimeContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: 300,
-    marginTop: 10,
-  },
-  saveTimeText: {
-    fontSize: 14,
-    fontWeight: "500",
-    color: colors.fontMain70,
-  }
-});
-
 export default ProgressBar;
+
+const Container = styled.View`
+  justify-content: center;
+  align-items: center;
+`;
+
+const ProgressBarContainer = styled.View`
+  width: 300px;
+  height: 4px;
+  background-color: #e0e0e0;
+  border-radius: 10px;
+  position: relative;
+`;
+
+const FilledBar = styled(Animated.View)`
+  height: 100%;
+  background-color: ${colors.indigoBlue};
+  border-radius: 10px;
+`;
+
+const IconWrapper = styled(Animated.View)`
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  position: absolute;
+  top: -25px;
+`;
+
+const DateContainer = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  width: 300px;
+  height: 30px;
+`;
+
+const DateText = styled.Text`
+  color: ${colors.gray77};
+  font-weight: 500;
+  font-size: 14px;
+`;
+
+const PointsContainer = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  width: 300px;
+  margin-top: 10px;
+`;
+
+const PointsText = styled.Text`
+  font-size: 14px;
+  font-weight: 500;
+  color: ${colors.fontMain70};
+`;
+
+const SaveTimeContainer = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  width: 300px;
+  margin-top: 10px;
+`;
+
+const SaveTimeText = styled.Text`
+  font-size: 14px;
+  font-weight: 500;
+  color: ${colors.fontMain70};
+`;

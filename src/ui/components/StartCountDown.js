@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native'
-import styled from 'styled-components'
+import styled from '@emotion/native'
 import { size } from '../styles/size'
 import SnowFlakeIcon from './SnowFlakeIcon'
 import MarginVertical from './MarginVertical'
@@ -45,8 +45,8 @@ const StartCountDown = () => {
 export default StartCountDown
 
 const StartBody = styled.View`
-  width:${size.width}px;
-  height:${size.height}px;
+  width:${() => `${size.width}px`};
+  height:${() => `${size.height}px`};
   background-color:rgba(0,0,0,.85);
   position:absolute;
   top:0;

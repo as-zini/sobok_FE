@@ -1,6 +1,6 @@
 import React from 'react'
 import { SafeAreaView } from 'react-native'
-import styled from 'styled-components'
+import styled from '@emotion/native'
 import { size } from '../styles/size'
 import bg from '../../../assets/versionBg.png';
 import SnowFlakeIcon from '../components/SnowFlakeIcon';
@@ -26,8 +26,8 @@ const SettingVersion = () => {
 export default SettingVersion
 
 const Body = styled.View`
-  width:${size.width}px;
-  height:${size.height}px;
+  width:${() => `${size.width}px`};
+  height:${() => `${size.height}px`};
   padding:0 30px;
   display:flex;
   justify-content:center;
@@ -35,8 +35,8 @@ const Body = styled.View`
 `
 
 const Bg = styled.Image`
-  width:${size.width}px;
-  height:${size.height}px;
+  width:${() => `${size.width}px`};
+  height:${() => `${size.height}px`};
   z-index:-1;
   position:absolute;
   top:0;

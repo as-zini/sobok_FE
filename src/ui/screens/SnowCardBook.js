@@ -22,7 +22,7 @@ import rolypoly from '../../../assets/rolypoly_graphic.png';
 import pudding from '../../../assets/pudding_graphic.png';
 import quarter from '../../../assets/quarter_moon_graphic.png';
 import { useReport } from '../../hooks/useReport';
-import styled from 'styled-components';
+import styled from '@emotion/native'
 import BackArrowButton from '../components/BackArrowButton';
 import MarginVertical from '../components/MarginVertical';
 import snow_card_book_bg from '../../../assets/statistic_bg.png';
@@ -77,7 +77,7 @@ const SnowCardBook = ({route}) => {
         <CardContents>
           {allCardData.map((el, index) => {
             return(
-            <SnowCardEl key={index} onPress={() => {navigation.navigate('DetailSnowCard',{type:el.type, date:cardData.filter((card) => card.snowCard === el.type)[0].yearMonth})}}>
+            <SnowCardEl key={index} onPress={() => {navigation.navigate('DetailSnowCard',{type:el.type, date:myCardData.includes(el.type) ? cardData.filter((card) => card.snowCard === el.type)[0].yearMonth : "", isMyCard:myCardData.includes(el.type)})}}>
               <SnowCardBookText style={{color:!myCardData.includes(el.type) ? '#fff' : colors.fontMain70, zIndex:!myCardData.includes(el.type) ? 9 : 1}}>{`${el.title}\n눈 조각`}</SnowCardBookText>
                 <SnowCardImg
                   source={cardImgList[index]}
@@ -105,7 +105,7 @@ export default SnowCardBook
 const SnowCardBookBody = styled.View`
   display:flex;
   
-  width:${size.width}px;
+  width:${() => `${size.width}px`};
   padding:0 30px;
 `
 
@@ -113,8 +113,8 @@ const SnowCardBookBg = styled.Image`
   position:absolute;
   top:0;
   z-index:-1;
-  width:${size.width}px;
-  height:${size.height}px;
+  width:${() => `${size.width}px`};
+  height:${() => `${size.height}px`};
 `
 
 const SnowCardBookTitle = styled.Text`
@@ -124,7 +124,7 @@ const SnowCardBookTitle = styled.Text`
 `
 
 const SnowCardBookText = styled.Text`
-  font-size:18px;
+  font-size:16px;
   font-weight:600;
   color:${colors.fontMain70};
   line-height:26px;

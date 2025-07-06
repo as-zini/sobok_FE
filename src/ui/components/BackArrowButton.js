@@ -1,32 +1,36 @@
-import { useNavigation } from '@react-navigation/native'
-import React from 'react'
-import styled from 'styled-components'
-import back_arrow from '../../../assets/back_arrow.png';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import React from 'react';
+import { useNavigation } from '@react-navigation/native';
+import styled from '@emotion/native';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-
-const BackArrowButton = ({isNotBack, direction, isReset}) => {
+const BackArrowButton = ({ isNotBack, direction, isReset }) => {
   const navigation = useNavigation();
-  console.log(isNotBack, direction)
+
+  const handlePress = () => {
+    if (isNotBack && isReset) {
+      navigation.reset({
+        routes: [{ name: direction }]
+      });
+    } else if (isNotBack) {
+      const [stack, screen] = direction.split(' ');
+      navigation.navigate(stack, screen ? { screen } : {});
+    } else {
+      navigation.goBack();
+    }
+  };
 
   return (
-    <BackArrowButtonBody onPress={() => isNotBack && isReset ?
-      navigation.reset({
-        routes:[{
-          name:direction
-        }]
-      }): isNotBack ? navigation.navigate(direction.split(" ")[0],{'screen':direction.split(" ")[1] ? direction.split(" ")[1] : ""}) : navigation.goBack()}>
+    <ButtonBody onPress={handlePress}>
       <MaterialIcons name="keyboard-arrow-left" size={24} color="black" />
-    </BackArrowButtonBody>
-  )
-}
+    </ButtonBody>
+  );
+};
 
-export default BackArrowButton
+export default BackArrowButton;
 
-const BackArrowButtonBody = styled.TouchableOpacity`
-
-`
-
-const BackArrowImg = styled.Image`
-
-`
+const ButtonBody = styled.TouchableOpacity`
+  width: 50px;
+  height: 50px;
+  justify-content: center;
+  align-items: flex-start;
+`;

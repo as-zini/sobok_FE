@@ -1,160 +1,187 @@
-import React, { useEffect, useState } from 'react'
-import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native'
-import MarginVertical from './MarginVertical'
-import AssetEl from './AssetEl'
-import styled from 'styled-components'
-import { useRoutine } from '../../hooks/useRoutine'
-import { colors } from '../styles/colors'
-import search_icon from '../../../assets/search_icon.png';
-import { minToHour } from '../../util'
-import { size } from '../styles/size'
+import React, { useEffect, useState } from 'react';
+import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import styled from '@emotion/native';
+import { useRoutine } from '../../hooks/useRoutine';
+import { colors } from '../styles/colors';
+import { minToHour } from '../../util';
+import { size } from '../styles/size';
+import AssetEl from '../components/AssetEl';
+import MarginVertical from '../components/MarginVertical';
 
+const searchIcon = require('../../../assets/search_icon.png');
 
-const ConnectRoutine = ({pickedRoutines, setPickedRoutines, setStep}) => {
-  const {getRoutineByList} = useRoutine();
-  const [routineInfo, setRoutineInfo] = useState([])
-  const [isComplete, setIsComplete] = useState(false);
-  const [searchValue, setSearchValue] = useState("");
+const ConnectRoutine = ({ pickedRoutines, setPickedRoutines, setStep }) => {
+  const { getRoutineByList } = useRoutine();
+  const [routineInfo, setRoutineInfo] = useState([]);
+  const [searchValue, setSearchValue] = useState('');
 
   useEffect(() => {
-    getRoutineByList(setRoutineInfo, setIsComplete);
-  }, [])
-  
-  
+    getRoutineByList(setRoutineInfo);
+  }, []);
+
+  const filtered = searchValue
+    ? routineInfo.filter(el => el.title.includes(searchValue))
+    : routineInfo.filter(el => !el.accountTitle);
 
   return (
-    <View>
-      <Body>
-        <View style={{width:'100%'}}>
-          <Text style={{fontWeight:600, fontSize:26, color:colors.fontMain}}>{"적금에 루틴을\n연결시켜 볼까요?"}</Text>
-          <MarginVertical top={12}/>
-          <Text style={{fontWeight:500, fontSize:18, color:colors.fontMain60}}>{"아직 적금이 연결되지 않은\n루틴 중 선택할 수 있어요!"}</Text>
-        </View> 
-              <MarginVertical top={35}/>
-              <AnswerInputArea>
-                <AnswerInput
-                  placeholder="루틴을 검색해보세요"
-                  placeholderTextColor="rgba(255,255,255,.8)"
-                  value={searchValue}
-                  onChange={(e) => setSearchValue(e.nativeEvent.text)}
+    <Container>
+      <HeaderText>적금에 루틴을{`\n`}연결시켜 볼까요?</HeaderText>
+      <MarginVertical top={12} />
+      <SubText>아직 적금이 연결되지 않은{`\n`}루틴 중 선택할 수 있어요!</SubText>
+      <MarginVertical top={35} />
+      <InputWrapper>
+        <Input
+          placeholder="루틴을 검색해보세요"
+          placeholderTextColor="rgba(255,255,255,0.8)"
+          value={searchValue}
+          onChangeText={setSearchValue}
+        />
+        <SearchIcon source={searchIcon} />
+      </InputWrapper>
+      <Divider />
+      <MarginVertical top={55} />
+      <CountText>
+        총 {filtered.length}개의 루틴
+      </CountText>
+      <MarginVertical top={40} />
+      <ScrollArea>
+        {filtered.map((el, idx) => (
+          <TouchableOpacity
+            key={idx}
+            onPress={() => setPickedRoutines(prev => [...prev, el])}
+          >
+            <AssetEl
+              item={[el.title, '', minToHour(el.duration), '']}
+              index={idx}
+              isLink={false}
+              category="Save"
+              isTouchable={false}
+            />
+            <MarginVertical top={50} />
+          </TouchableOpacity>
+        ))}
+        {pickedRoutines.length > 0 && (
+          <>
+            <Divider />
+            <MarginVertical top={30} />
+            <FooterRow>
+              <Text style={{ fontSize: 18, fontWeight: 600, color: '#fff', flex: 1 }}>
+                선택된 루틴
+              </Text>
+              <Text style={{ color: '#fff', fontWeight: 500, fontSize: 14, marginRight: 5 }}>
+                한 달
+              </Text>
+              <Text style={{ color: '#fff', fontWeight: 500, fontSize: 18 }}>
+                {minToHour(pickedRoutines.reduce((sum, el) => sum + el.duration, 0))}
+              </Text>
+            </FooterRow>
+            <MarginVertical top={40} />
+            {pickedRoutines.map((el, idx) => (
+              <TouchableOpacity
+                key={idx}
+                onPress={() => setPickedRoutines(r => r.filter(item => item !== el))}
+              >
+                <AssetEl
+                  item={[el.title, '', minToHour(el.duration), '']}
+                  index={idx}
+                  isLink={false}
+                  category="Save"
+                  isTouchable={false}
+                  isChecked
                 />
-                <Image source={search_icon} style={{width:16, height:16, position:'absolute', right:15}}/>
-              </AnswerInputArea>
-              <BorderLine/>
-              <MarginVertical top={55}/>
-              <ScrollView showsVerticalScrollIndicator={false} style={{height:"47%"}}>
-                <View>
-                  <Text style={{fontSize:18, fontWeight:600, color:"#fff"}}>{`총 ${searchValue.length === 0 ? routineInfo.filter((el) => el.accountTitle.length === 0).length : routineInfo.filter((el) => el.title.includes(searchValue)).length}개의 루틴`}</Text>
-                  <MarginVertical top={40}/>
-                </View>
-                
-                {searchValue.length === 0 ? routineInfo.filter((el) => el.accountTitle.length === 0).map((el,index) => {
-                  return(
-                    <TouchableOpacity key={index} onPress={() => {
-                      setPickedRoutines(prev => [...prev, el])
-                      }}>
-                      <AssetEl item={[el.title,"",minToHour(el.duration),""]} index={index} isLink={false} category={"Save"} isTouchable={false}/>
-                      <MarginVertical top={50}/>
-                    </TouchableOpacity>
-                  )
-                }) : routineInfo.filter((el) => el.title.includes(searchValue)).map((el,index) => {
-                  return(
-                    <TouchableOpacity key={index} onPress={() => {
-                      setPickedRoutines(prev => [...prev, el])
-                      }}>
-                      <AssetEl item={[el.title,"",minToHour(el.duration),""]} index={index} isLink={false} category={"Save"} isTouchable={false}/>
-                      <MarginVertical top={50}/>
-                    </TouchableOpacity>
-                  )
-                })}
-                
-                {pickedRoutines.length > 0 ?
-                  <View>
-                    <BorderLine/>
-                    <MarginVertical top={30}/>
-                    <View style={{flexDirection:'row', gap:5, alignItems:'center'}}>
-                    <Text style={{fontSize:18, fontWeight:600, color:"#fff", flexGrow:1}}>선택된 루틴</Text>
-                    <Text style={{color:"#fff", fontWeight:500, fontSize:14}}>한 달</Text>
-                    <Text style={{color:"#fff", fontWeight:500, fontSize:18}}>{`${minToHour(pickedRoutines.reduce((sum,el) => sum += el.duration,0))}`}</Text>
-                    </View>
-                    <MarginVertical top={40}/>
-                  </View>
-                  :
-                  <></>
-                }
-                {pickedRoutines.map((el,index) => {
-                  return(
-                    <TouchableOpacity key={index} onPress={() => setPickedRoutines(pickedRoutines.filter((j) => el !== j))}>
-                      <AssetEl item={[el.title,"",minToHour(el.duration),""]} index={index} isLink={false} category={"Save"} isTouchable={false}/>
-                      <MarginVertical top={50}/>
-                    </TouchableOpacity>
-                  )
-                })}
-              </ScrollView>
-              <TouchableOpacity style={{width:294, display:'flex', justifyContent:'center', alignItems:'center'}} onPress={() => setStep(prev => prev + 1)}>
-                <Text style={{fontWeight:500, fontSize:14, color:colors.gray70}}>나중에 설정하기</Text>
+                <MarginVertical top={50} />
               </TouchableOpacity>
-              <MarginVertical top={10}/>
-              </Body>
-              
-    </View>
-  )
-}
+            ))}
+          </>
+        )}
+      </ScrollArea>
+      <LaterButton onPress={() => (setStep ? setStep(s => s + 1) : null)}>
+        <LaterText>나중에 설정하기</LaterText>
+      </LaterButton>
+    </Container>
+  );
+};
 
-export default ConnectRoutine
+export default ConnectRoutine;
 
-const Body = styled.View`
-  display:flex;
-  justify-content:center;
-  width:100%;
-`
-const Header = styled.View`
-  width:100%;
-  height:50px;
-  justify-content:center;
-`
+const Container = styled.View`
+  width: ${() => `${size.width}px`};
+  height: 70%;
+  align-items: center;
+  padding-horizontal: 30px;
+`;
 
-const Bg = styled.Image`
-  width:${size.width}px;
-  height:${size.height}px;
-  position:absolute;
-  top:0;
-  z-index:-1;
-`
+const HeaderText = styled.Text`
+  font-weight: 600;
+  font-size: 26px;
+  color: ${colors.fontMain};
+  text-align: left;
+  width: 100%;
+`;
 
-const RoutineCategoryText = styled.Text`
-  font-weight:500;
-  font-size:18px;
-  color:${colors.fontMain60};
-  line-height:34px;
-  
-`
+const SubText = styled.Text`
+  font-weight: 500;
+  font-size: 18px;
+  color: ${colors.fontMain60};
+  text-align: left;
+  width: 100%;
+`;
 
-const RoutineQuestionText = styled.Text`
-  font-weight:600;
-  font-size:26px;
-  color:${colors.fontMain};
-  line-height:34px;
+const InputWrapper = styled.View`
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+`;
 
-`
+const Input = styled.TextInput`
+  flex: 1;
+  font-size: 18px;
+  font-weight: 500;
+  color: ${colors.fontMain};
+  height: 40px;
+  padding-horizontal: 10px;
+`;
 
-const AnswerInputArea = styled.View`
-  display:flex;
-  flex-direction:row;
-  align-items:center;
-`
+const SearchIcon = styled(Image)`
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  right: 15px;
+`;
 
-const AnswerInput = styled.TextInput`
-  font-size:18px;
-  font-weight:500;
-  color:${colors.fontMain};
-  width:294px;
-  height:40px;
-  padding:10px 0;
-`
+const Divider = styled.View`
+  width: 100%;
+  height: 0.8px;
+  background-color: #fff;
+`;
 
-const BorderLine = styled.View`
-  width:294px;
-  height:.8px;
-  background-color:#fff;
-`
+const CountText = styled.Text`
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+  width: 100%;
+`;
+
+const ScrollArea = styled(ScrollView)`
+  width: 100%;
+  height: 47%;
+`;
+
+const FooterRow = styled.View`
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+`;
+
+const LaterButton = styled.TouchableOpacity`
+  width: 294px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+`;
+
+const LaterText = styled.Text`
+  font-size: 14px;
+  font-weight: 500;
+  color: ${colors.gray70};
+`;

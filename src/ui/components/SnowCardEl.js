@@ -1,19 +1,19 @@
-import React from 'react'
-import styled from 'styled-components'
-import { colors } from '../styles/colors'
-import snow_card_bg from '../../../assets/snow_card_bg.png';
-import { ImageBackground, View } from 'react-native';
+import React from 'react';
+import { View, Image } from 'react-native';
+import styled from '@emotion/native';
 import SnowFlakeIcon from './SnowFlakeIcon';
+import MarginVertical from './MarginVertical';
 
-import snowman from '../../../assets/glass_snow_graphic.png';
+// Assets
+import snow_card_bg from '../../../assets/snow_card_bg.png';
 import top from '../../../assets/top_graphic.png';
 import beaker from '../../../assets/beaker_graphic.png';
 import donut from '../../../assets/donut_graphic.png';
 import book from '../../../assets/book_graphic.png';
-import victory from '../../../assets/victory_graphic.png';
 import heart from '../../../assets/heart_graphic.png';
+import quarter from '../../../assets/quarter_moon_graphic.png';
 import halfMoon from '../../../assets/half_moon_graphic.png';
-import snake from '../../../assets/snake_graphic.png';
+import full from '../../../assets/full_moon_graphic.png';
 import angel from '../../../assets/angel_graphic.png';
 import cloud from '../../../assets/cloud_graphic.png';
 import hexagon from '../../../assets/hexagon_graphic.png';
@@ -21,102 +21,99 @@ import hermitCrab from '../../../assets/hermit_crab_graphic.png';
 import spring from '../../../assets/spring_graphic.png';
 import rolypoly from '../../../assets/rolypoly_graphic.png';
 import pudding from '../../../assets/pudding_graphic.png';
-import arrow_left from '../../../assets/calandar_arrow_left.png';
-import arrow_right from '../../../assets/calandar_arrow_right.png';
-import MarginVertical from './MarginVertical';
-import quarter from '../../../assets/quarter_moon_graphic.png';
-import full from '../../../assets/full_moon_graphic.png'
-import exercise from '../../../assets/exercise_graphic.png';
-import globe from '../../../assets/globe_graphic.png';
-import guitar from '../../../assets/guitar_graphic.png'
-import fairy from '../../../assets/fairy_graphic.png';
+import snake from '../../../assets/snake_graphic.png';
 import sun from '../../../assets/sun_graphic.png';
 import present from '../../../assets/present_graphic.png';
+import arrowLeft from '../../../assets/calandar_arrow_left.png';
+import arrowRight from '../../../assets/calandar_arrow_right.png';
 
+const images = [
+  top, beaker, donut, book, heart,
+  quarter, halfMoon, full, angel, cloud,
+  hexagon, hermitCrab, spring, rolypoly, pudding,
+  snake, sun, present
+];
 
-const SnowCardEl = ({text, type, isArrow, date}) => {
-  const imgList = [top, beaker, donut, book, heart,quarter, halfMoon, full, angel, cloud, hexagon, hermitCrab,exercise, spring, rolypoly, pudding,globe,guitar,fairy, snake,sun, present]
-
-  
-
-  return (
-    <SnowCardElBody>
-      {isArrow ? 
+const SnowCardEl = ({ text, type, isArrow, date }) => (
+  <Container>
+    {isArrow && (
       <ArrowButton>
-        <ArrowButtonImg source={arrow_left}/>
+        <ArrowImage source={arrowLeft} />
       </ArrowButton>
-      :
-      <></>
-      }
-      <SnowCard>
-        <SnowCardText>{date}</SnowCardText>
-        <View style={{width:150,height:150, alignItems:'center',justifyContent:'center'}}>
-          <SnowCardImg source={imgList[type]}/>
-        </View>
-        <MarginVertical top={10}/>
-        <SnowFlakeIcon color={"white"} size={16}/>
-        <MarginVertical top={10}/>
-        <SnowCardText>{text}</SnowCardText>  
-        <SnowCardBg source={snow_card_bg}/>
-      </SnowCard>
-      {isArrow ? 
+    )}
+    <Card>
+      <DateText>{date}</DateText>
+      <IconWrapper>
+        <CardImage source={images[type]} />
+      </IconWrapper>
+      <MarginVertical top={10} />
+      <SnowFlakeIcon color="white" size={16} />
+      <MarginVertical top={10} />
+      <ContentText>{text}</ContentText>
+      <Background source={snow_card_bg} />
+    </Card>
+    {isArrow && (
       <ArrowButton>
-        <ArrowButtonImg source={arrow_right}/>
+        <ArrowImage source={arrowRight} />
       </ArrowButton>
-      :
-      <></>
-      }
-    </SnowCardElBody>
-  )
-}
+    )}
+  </Container>
+);
 
-export default SnowCardEl
+export default SnowCardEl;
 
+const Container = styled.View`
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+`;
 
-const SnowCardElBody = styled.View`
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  flex-direction:row;
-  gap:12px;
-`
+const Card = styled.TouchableOpacity`
+  width: 240px;
+  height: 290px;
+  border-radius: 12px;
+  justify-content: center;
+  align-items: center;
+`;
 
-const SnowCard = styled.TouchableOpacity`
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  width:240px;
-  height:290px;
-  border-radius:12px;
-`
+const Background = styled.Image`
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+`;
 
-const SnowCardBg = styled.Image`
-  position:absolute;
-  top:0;
-  left:0;
-  z-index:-1;
-`
-const SnowCardImg = styled.Image`
-  width: 90%;      
-  height:90%;
-  resize-mode:contain;
-`
+const CardImage = styled.Image`
+  width: 90%;
+  height: 90%;
+  resize-mode: contain;
+`;
 
-const SnowCardText = styled.Text`
-  font-weight:600;
-  font-size:18px;
-  color:#fff;
-  text-align:center;
-  line-height:26px;
-`
+const IconWrapper = styled.View`
+  width: 150px;
+  height: 150px;
+  justify-content: center;
+  align-items: center;
+`;
 
-const ArrowButton = styled.TouchableOpacity`
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  
-`
+const ContentText = styled.Text`
+  font-weight: 600;
+  font-size: 18px;
+  color: #fff;
+  text-align: center;
+  line-height: 26px;
+`;
 
-const ArrowButtonImg = styled.Image`
+const DateText = styled.Text`
+  font-weight: 600;
+  font-size: 18px;
+  color: #fff;
+  text-align: center;
+  position: absolute;
+  top: 16px;
+`;
 
-`
+const ArrowButton = styled.TouchableOpacity``;
+
+const ArrowImage = styled.Image``;

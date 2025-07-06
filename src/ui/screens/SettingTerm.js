@@ -1,6 +1,6 @@
 import React from 'react'
 import { Image, SafeAreaView, ScrollView, View } from 'react-native'
-import styled from 'styled-components'
+import styled from '@emotion/native'
 import BackArrowButton from '../components/BackArrowButton'
 import bg from '../../../assets/home_bg.png';
 import { size } from '../styles/size';
@@ -194,14 +194,14 @@ export default SettingTerm
 
 
 const Body = styled.View`
-  width:${size.width}px;
-  height:${size.height}px;
+  width:${() => `${size.width}px`};
+  height:${() => `${size.height}px`};
   padding:0 30px;
 `
 
 const Bg = styled.Image`
-  width:${size.width}px;
-  height:${size.height}px;
+  width:${() => `${size.width}px`};
+  height:${() => `${size.height}px`};
   z-index:-1;
   position:absolute;
   top:0;

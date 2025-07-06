@@ -1,72 +1,86 @@
-import React from 'react'
-import styled from 'styled-components'
-import { colors } from '../styles/colors'
-import { View } from 'react-native'
-import { size } from '../styles/size'
+import React from 'react';
+import { View } from 'react-native';
+import styled from '@emotion/native';
+import { colors } from '../styles/colors';
 
-const SimpleTodoEl = ({data, index}) => {
-  return (
-    <SimpleTodoBody>
-      <View style={{flexGrow:.2}}>
-        <TodoIndex>
-          <TodoIndexText>{index}</TodoIndexText>
-        </TodoIndex>
-      </View>
-      <View style={{flexGrow:1}}>
-        <TodoTitle>{data[0]}</TodoTitle>
-        <TodoTime>{data[1]}</TodoTime>
-      </View>
-      <TodoDueTime>{data[2]}</TodoDueTime>
-    </SimpleTodoBody>
-  )
-}
+const SimpleTodoEl = ({ data, index }) => (
+  <Container>
+    <IndexWrapper>
+      <IndexCircle>
+        <IndexText>{index}</IndexText>
+      </IndexCircle>
+    </IndexWrapper>
+    {data[1] !== '' ? (
+      <ContentWrapper>
+        <Title>{data[0]}</Title>
+        <Subtitle>{data[1]}</Subtitle>
+      </ContentWrapper>
+    ) : (
+      <TitleFull>{data[0]}</TitleFull>
+    )}
+    <DueTime>{data[2]}</DueTime>
+  </Container>
+);
 
-export default SimpleTodoEl
+export default SimpleTodoEl;
 
+const Container = styled.View`
+  width: 100%;
+  height: 70px;
+  background-color: #fff;
+  padding-vertical: 17px;
+  padding-horizontal: 20px;
+  flex-direction: row;
+  align-items: center;
+  border-radius: 8px;
+`;
 
-const SimpleTodoBody = styled.View`
-  width:100%;
-  height:70px;
-  background-color:#fff;
-  padding:17px 20px;
-  display:flex;
-  flex-direction:row;
-  justify-content:center;
-  align-items:center;
-  border-radius:8px;
-`
+const IndexWrapper = styled.View`
+  flex: 0.2;
+`;
 
-const TodoIndex = styled.View`
-  width:32px;
-  height:32px;
-  border-radius:50%;
-  background-color:${colors.fontMain};
-  display:flex;
-  justify-content:center;
-  align-items:center;
-`
+const IndexCircle = styled.View`
+  width: 32px;
+  height: 32px;
+  border-radius: 16px;
+  background-color: ${colors.fontMain};
+  justify-content: center;
+  align-items: center;
+`;
 
-const TodoIndexText = styled.Text`
-  color:#fff;
-  font-weight:600;
-  font-size:16px;
-`
+const IndexText = styled.Text`
+  color: #fff;
+  font-weight: 600;
+  font-size: 16px;
+`;
 
-const TodoTitle = styled.Text`
-  font-weight:600;
-  font-size:18px;
-  color:${colors.fontMain};
-  margin-bottom:4px;
-`
+const ContentWrapper = styled.View`
+  flex: 1;
+  margin-left: 10px;
+`;
 
-const TodoTime = styled.Text`
-  font-weight:500;
-  font-size:14px;
-  color:${colors.gray70};
-`
+const Title = styled.Text`
+  font-weight: 600;
+  font-size: 18px;
+  color: ${colors.fontMain};
+  margin-bottom: 4px;
+`;
 
-const TodoDueTime = styled.Text`
-  font-weight:600;
-  font-size:18px;
-  color:${colors.indigoBlue};
-`
+const Subtitle = styled.Text`
+  font-weight: 500;
+  font-size: 14px;
+  color: ${colors.gray70};
+`;
+
+const TitleFull = styled.Text`
+  flex: 1;
+  font-weight: 600;
+  font-size: 18px;
+  color: ${colors.fontMain};
+`;
+
+const DueTime = styled.Text`
+  font-weight: 600;
+  font-size: 18px;
+  color: ${colors.indigoBlue};
+`;

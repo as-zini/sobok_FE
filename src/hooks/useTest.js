@@ -16,7 +16,7 @@ export const useTest = () => {
         preference2:preference2,
         preference3:preference3,
         likeOption:likeOption,
-        extraRequest:extraRequest
+        extraRequest:extraRequest ? extraRequest : ""
     //     "spareTpo" : "출퇴근시간(대중교통)",
 	  // "spareTime": ["09:00-10:00", "18:00-20:00"],
 	  // "preference1": "여러 가지를 다양하게",

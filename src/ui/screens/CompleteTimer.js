@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Image, SafeAreaView, View } from 'react-native'
-import styled from 'styled-components'
+import styled from '@emotion/native'
 
 import complete_timer_bg from '../../../assets/complete_add_saving_bg.png';
 import mild_cloud_icon from '../../../assets/mild_cloud_icon.png';
@@ -57,8 +57,8 @@ const CompleteTimer = ({route}) => {
 export default CompleteTimer
 
 const CompleteTimerBody = styled.View`
- width:${size.width}px;
- height:${size.height}px;
+ width:${() => `${size.width}px`};
+ height:${() => `${size.height}px`};
  display:flex;
  justify-content:center;
  align-items:center;
@@ -67,13 +67,13 @@ const CompleteTimerBody = styled.View`
 const CompleteTimerBg = styled.Image`
   position:absolute;
   top:0;
-  width:${size.width}px;
+  width:${() => `${size.width}px`};
   z-index:-1;
-  height:${size.height}px;
+  height:${() => `${size.height}px`};
 `
 
 const CompleteTimerHeader = styled.View`
-  width:${size.width-50}px;
+  width:${() => `${size.width-50}px`};
   height:50px;
   display:flex;
   justify-content:center;

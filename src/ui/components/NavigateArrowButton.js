@@ -1,24 +1,28 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from 'react';
+import styled from '@emotion/native';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { colors } from '../styles/colors';
 
-import navigate_icon from '../../../assets/navigate_icon.png';
+const NavigateArrowButton = ({ handleArrowButton }) => (
+  <NavigateArrowButtonBody onPress={handleArrowButton}>
+    <MaterialIcons
+      name="keyboard-arrow-right"
+      size={24}
+      color={colors.indigoBlue}
+    />
+  </NavigateArrowButtonBody>
+);
 
-const NavigateArrowButton = ({handleArrowButton}) => {
-  return (
-    <NavigateArrowButtonBody onPress={handleArrowButton}>
-      <NavigateArrowButtonImage source={navigate_icon}/>
-    </NavigateArrowButtonBody>
-  )
-}
-
-export default NavigateArrowButton
-
+export default NavigateArrowButton;
 
 const NavigateArrowButtonBody = styled.TouchableOpacity`
-
-`
+  width: 30px;
+  height: 30px;
+  justify-content: center;
+  align-items: center;
+`;
 
 const NavigateArrowButtonImage = styled.Image`
-  width:24px;
-  height:24px;
-`
+  width: 24px;
+  height: 24px;
+`;

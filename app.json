@@ -1,45 +1,4 @@
 {
-  "expo": {
-    "name": "sobok",
-    "slug": "sobok",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/appstore.png",
-    "userInterfaceStyle": "light",
-    "newArchEnabled": true,
-    "splash": {
-      "image": "./assets/splash_screen.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "ios": {
-      "googleServicesFile": "./GoogleService-Info.plist",
-      "supportsTablet": true,
-      "bundleIdentifier": "com.aszini.sobok",
-      "icon": "./assets/appstore.png",
-      "buildNumber":"2"
-    },
-    "android": {
-      "package": "com.aszini.sobok"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "5b7bd12a-3bea-44d6-9008-129de510a7ff"
-      }
-    }
-  },
-  "web": {
-    "favicon": "./assets/favicon.png"
-  },
-  "plugins": [
-    "@react-native-firebase/app",
-    [
-      "expo-build-properties",
-      {
-        "ios": {
-          "useFrameworks": "static"
-        }
-      }
-    ]
-  ]
+  "name": "sobok",
+  "displayName": "sobok"
 }

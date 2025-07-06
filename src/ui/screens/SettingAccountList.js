@@ -1,8 +1,8 @@
 import React from 'react'
 import { SafeAreaView, TouchableOpacity, View } from 'react-native'
-import styled from 'styled-components'
+import styled from '@emotion/native'
 import { size } from '../styles/size'
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { colors } from '../styles/colors';
 import snowman from '../../../assets/snowman_graphic.png';
 import { useUserInfoStore } from '../../store/user';
@@ -60,16 +60,16 @@ const SettingAccountList = () => {
 export default SettingAccountList
 
 const Body = styled.View`
-  width:${size.width}px;
-  height:${size.height}px;
+  width:${() => `${size.width}px`};
+  height:${() => `${size.height}px`};
   padding:0 30px;
   display:flex;
   align-items:center;
 `
 
 const Bg = styled.Image`
-  width:${size.width}px;
-  height:${size.height}px;
+  width:${() => `${size.width}px`};
+  height:${() => `${size.height}px`};
   z-index:-1;
   position:absolute;
   top:0;
@@ -133,4 +133,5 @@ const RightArrowButton = styled.TouchableOpacity`
   display:flex;
   justify-content:center;
   align-items:center;
+  padding:20px;
 `

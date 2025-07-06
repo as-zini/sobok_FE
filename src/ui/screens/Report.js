@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Image, SafeAreaView, ScrollView, SectionList, Text, View } from 'react-native'
-import styled from 'styled-components'
+import styled from '@emotion/native'
 
 import report_bg from '../../../assets/report_bg.png';
 import { size } from '../styles/size';
@@ -90,7 +90,7 @@ const Report = () => {
       return(
         <>
         <View style={{flexDirection:'row', gap:10, justifyContent:'center', alignItems:'center'}}>
-          <View style={{width:24, height:24, backgroundColor:colors.fontMain, borderRadius:'50%', justifyContent:'center', alignItems:'center'}}>
+          <View style={{width:24, height:24, backgroundColor:colors.fontMain, borderRadius:12, justifyContent:'center', alignItems:'center'}}>
             <Text style={{color:'#fff', fontSize:14, fontWeight:600}}>{index+1}</Text>
           </View>
           <Text style={{fontSize:18, fontWeight:600, color:"#343434", flexGrow:1}}>{item[0]}</Text>
@@ -154,7 +154,7 @@ const Report = () => {
     <ReportContentsBody>
       <ReportIcon source={time_icon} style={{width:40, height:48}}/>
       <MarginVertical top={16}/>
-      <Text style={{fontSize:26, fontWeight:600, color:colors.fontMain80, lineHeight:34}}>{"하루평균"}</Text>
+      <Text style={{fontSize:26, fontWeight:600, color:colors.fontMain80, lineHeight:34}}>{"하루 평균"}</Text>
       <MarginVertical top={12}/>
       <View style={{flexDirection:'row'}}>
         <ReportTitle>{minToHour(reportInfo?.averageTime)}</ReportTitle>
@@ -229,7 +229,7 @@ const Report = () => {
     <ReportContentsBody>
       <ReportIcon source={calandar_icon} style={{width:40, height:45}}/>
       <MarginVertical top={16}/>
-      <Text style={{fontSize:26, fontWeight:600, color:colors.fontMain80, lineHeight:34}}>{`${today.format("M월")}의\n최종 연속 기록은`}</Text>
+      <Text style={{fontSize:26, fontWeight:600, color:colors.fontMain80, lineHeight:34}}>{`${today.format("M월")}의\n최장 연속 기록은`}</Text>
       <MarginVertical top={12}/>
       <View style={{flexDirection:'row'}}>
         <ReportTitle>{`${reportInfo.consecutiveAchieveCount}일`}</ReportTitle>
@@ -325,7 +325,7 @@ const Report = () => {
       </View>
       <MarginVertical top={80}/>
       <View style={{width:'100%', justifyContent:'center', alignItems:'center'}}>
-        <View style={{width:24, height:24, borderRadius:"50%", backgroundColor:colors.fontMain, justifyContent:'center', alignItems:'center'}}>
+        <View style={{width:24, height:24, borderRadius:12, backgroundColor:colors.fontMain, justifyContent:'center', alignItems:'center'}}>
           <Text style={{color:"#fff", fontSize:14, fontWeight:600}}>1</Text>
         </View>
         <MarginVertical top={13}/>
@@ -353,7 +353,7 @@ const Report = () => {
           <DownIconImg source={down_navigate_icon}/>
         </DownIcon>
         <MarginVertical top={100}/>
-        <View style={{width:24, height:24, borderRadius:"50%", backgroundColor:colors.fontMain, justifyContent:'center', alignItems:'center'}}>
+        <View style={{width:24, height:24, borderRadius:12, backgroundColor:colors.fontMain, justifyContent:'center', alignItems:'center'}}>
           <Text style={{color:"#fff", fontSize:14, fontWeight:600}}>2</Text>
         </View>
         <MarginVertical top={13}/>
@@ -379,7 +379,7 @@ const Report = () => {
           <DownIconImg source={down_navigate_icon}/>
         </DownIcon>
         <MarginVertical top={100}/>        
-        <View style={{width:24, height:24, borderRadius:"50%", backgroundColor:colors.fontMain, justifyContent:'center', alignItems:'center'}}>
+        <View style={{width:24, height:24, borderRadius:12, backgroundColor:colors.fontMain, justifyContent:'center', alignItems:'center'}}>
           <Text style={{color:"#fff", fontSize:14, fontWeight:600}}>3</Text>
         </View>
         <MarginVertical top={13}/>
@@ -412,7 +412,7 @@ const Report = () => {
         <MarginVertical top={76}/>     
         <Text style={{fontSize:14, fontWeight:500, color:colors.gray77, textAlign:'center'}}>{`${today.format("M월")}도 수고하셨어요!\n${today.format("M월")}의 키워드를 볼까요?`}</Text> 
         <MarginVertical top={8}/>
-        <Button text={"눈 카드 만들기"} handleButton={() => {getSnowCard(today.format('YYYY-MM'));navigation.navigate("CompleteSnowCard",{type:'quarter'})}}/>
+        <Button text={"눈 카드 만들기"} handleButton={() => {getSnowCard(today.format('YYYY-MM'))}}/>
       </View>
 
       
@@ -438,7 +438,7 @@ const Report = () => {
           <MarginVertical top={60}/>
           <ReportContents1/>
           <MarginVertical top={365}/>
-          <ReportContents2/>
+          {/* <ReportContents2/> */}
           <ReportContents3/>
           <ReportContents4/>
           <ReportContents5/>
@@ -461,14 +461,14 @@ const Report = () => {
 export default Report
 
 const ReportBody = styled.View`
-  width:${size.width}px;
+  width:${() => `${size.width}px`};
   padding:0 30px;
   
 `
 
 const ReportBg = styled.Image`
   z-index:-1;
-  width:${size.width}px;
+  width:${() => `${size.width}px`};
   position:absolute;
   top:400px;
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native'
-import styled from 'styled-components'
+import styled from '@emotion/native'
 
 import ai_routine_result_bg from '../../../assets/home_bg.png';
 import { size } from '../styles/size';
@@ -39,7 +39,7 @@ const ViewAiRoutineResult = ({route}) => {
 
   useEffect(() => {
     console.log({
-      accountId:pickedSaving[0].id,
+      accountId:pickedSaving[0]?.id,
       title:editRoutineTitle.length === 0 ? routineInfo.title : editRoutineTitle,
       days:selectedDate,
       todos:routineInfo.todos.map((el) => ({
@@ -57,7 +57,7 @@ const ViewAiRoutineResult = ({route}) => {
   const handleAddButton = () => {
     if(version !== "free"){
     handleAddAiRoutine({
-      id:pickedSaving[0].id,
+      id:pickedSaving[0]?.id,
       title:routineInfo.title,
       startTime:routineInfo.todos[0].start_time,
       endTime:routineInfo.todos[routineInfo.todos.length-1].end_time,
@@ -141,21 +141,22 @@ export default ViewAiRoutineResult
 
 
 const ViewAiRoutineResultBody = styled.View`
-  width:${size.width}px;
+  width:${() => `${size.width}px`};
   display:flex;
   justify-content:center;
   align-items:center;
+  padding: 0 30px;
 `
 
 const ViewAiRoutineResultBg = styled.Image`
   position:absolute;
   top:0;
-  width:${size.width}px;
+  width:${() => `${size.width}px`};
   z-index:-1;
 `
 
 const ViewAiRoutineResultHeader = styled.View`
-  width:${size.width-60}px;
+  width:${() => `${size.width-60}px`};
   display:flex;
   justify-content:center;
   align-items:center;

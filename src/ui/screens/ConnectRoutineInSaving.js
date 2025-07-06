@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView, View } from 'react-native'
 import ConnectRoutine from '../components/ConnectRoutine'
-import styled from 'styled-components';
+import styled from '@emotion/native';
 import { size } from '../styles/size';
 import BackArrowButton from '../components/BackArrowButton';
 import bg from '../../../assets/test_bg.png';
@@ -49,9 +49,9 @@ export default ConnectRoutineInSaving
 const Body = styled.View`
   display:flex;
   align-items:center;
-  width:${size.width}px;
+  width:${() => `${size.width}px`};
   padding: 0 30px;
-  height:${size.height}px;
+  height:${() => `${size.height}px`};
 `
 
 const Header = styled.View`
@@ -62,8 +62,8 @@ const Header = styled.View`
 `
 
 const Bg = styled.Image`
-  width:${size.width}px;
-  height:${size.height}px;
+  width:${() => `${size.width}px`};
+  height:${() => `${size.height}px`};
   position:absolute;
   top:0;
   z-index:-1;

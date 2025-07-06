@@ -1,48 +1,36 @@
-import React, { useEffect } from 'react'
-import styled from 'styled-components';
+import React from 'react';
+import styled from '@emotion/native';
 
 import current_step_icon from '../../../assets/current_step_icon.png';
 import not_current_step_icon from '../../../assets/not_current_step_icon.png';
 
-const Steps = ({step}) => {
+const Steps = ({ step }) => {
   const totalStep = 5;
-  const currentArray = Array(step).fill(true);
-  const notCurrentArray = Array(totalStep-step).fill(false);
-  const totalArray = [...currentArray, ...notCurrentArray];
-
-  useEffect(() => {
-    console.log(currentArray);
-    console.log(totalStep-step);
-  },[])
+  const totalArray = Array.from({ length: totalStep }, (_, i) => i < step);
 
   return (
     <StepsBody>
-      
-        {totalArray.map((el, index) => {
-          return(
-          el === true ? <StepEl key={index}><StepIcon source={current_step_icon}/></StepEl> : <StepEl key={index}><StepIcon source={not_current_step_icon}/></StepEl> 
-          )
-        })}
-        
+      {totalArray.map((isCurrent, index) => (
+        <StepEl key={index}>
+          <StepIcon source={isCurrent ? current_step_icon : not_current_step_icon} />
+        </StepEl>
+      ))}
     </StepsBody>
-  )
-}
+  );
+};
 
 export default Steps;
 
-const StepsBody = styled.View`
-  display:flex;
-  flex-direction:row;
-  gap:10px;
-  
-`
+const StepsBody = styled.View(() => ({
+  flexDirection: 'row',
+  justifyContent: 'center',
+  alignItems: 'center',
+  gap: 10
+}));
 
-const StepEl = styled.View`
+const StepEl = styled.View``;
 
-`
-
-const StepIcon = styled.Image`
-  width:24px;
-  height:24px;
-`
-
+const StepIcon = styled.Image(() => ({
+  width: 24,
+  height: 24
+}));

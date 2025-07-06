@@ -1,121 +1,108 @@
-import React, { useEffect } from 'react'
-import { View } from 'react-native'
-import styled from 'styled-components'
-import { colors } from '../styles/colors'
-import LinkIcon from './LinkIcon'
-import MarginVertical from './MarginVertical'
-import { useNavigation } from '@react-navigation/native'
-import { size } from '../styles/size'
+import React from 'react';
+import { View } from 'react-native';
+import styled from '@emotion/native';
+import { useNavigation } from '@react-navigation/native';
+import LinkIcon from './LinkIcon';
+import MarginVertical from './MarginVertical';
+import { colors } from '../styles/colors';
+import { size } from '../styles/size';
 
-const TodoEl = ({data, index, todoInfo, routineTitle, isTouchable, days}) => {
+const TodoEl = ({ data, index, todoInfo, routineTitle, isTouchable, days }) => {
   const navigation = useNavigation();
 
-  return(
-    isTouchable ? 
-    <TodoElBody onPress={() => navigation.navigate("DetailTodo", {todoInfo:todoInfo, index:index, routineTitle:routineTitle, days:days})}>
-    <TodoIndex>
-      <TodoIndexText>{index+1}</TodoIndexText>
-    </TodoIndex>
-    <SetTodoGap>
-      <TodoTitle>
-        {data[0]}
-      </TodoTitle>
-      <TodoDueTime>{data[2]}</TodoDueTime>
-    </SetTodoGap>
-    <SetTodoGap>
-      <View style={{display:'flex', flexDirection:'row', flexGrow:1}}>
-        
-        <LinkIcon size={14}/>
-        <LinkedAppText>{data[1]}</LinkedAppText>
-      </View>
-      <TodoTime>{data[3]}</TodoTime>
-    </SetTodoGap>
-  </TodoElBody>
-  :
-  <TodoElBodyNotTouchable>
-    <TodoIndex>
-      <TodoIndexText>{index+1}</TodoIndexText>
-    </TodoIndex>
-    <SetTodoGap>
-      <TodoTitle>
-        {data[0]}
-      </TodoTitle>
-      <TodoDueTime>{data[2]}</TodoDueTime>
-    </SetTodoGap>
-    <SetTodoGap>
-      <View style={{display:'flex', flexDirection:'row', flexGrow:1}}>
-        <LinkIcon size={14}/>
-        <LinkedAppText>{data[1]}</LinkedAppText>
-      </View>
-      <TodoTime>{data[3]}</TodoTime>
-    </SetTodoGap>
-  </TodoElBodyNotTouchable>
+  const Container = isTouchable ? TouchableBody : StaticBody;
+  const onPress = isTouchable
+    ? () =>
+        navigation.navigate('DetailTodo', {
+          todoInfo,
+          index,
+          routineTitle,
+          days
+        })
+    : undefined;
 
-  )
-}
+  return (
+    <Container onPress={onPress}>
+      <IndexCircle>
+        <IndexText>{index + 1}</IndexText>
+      </IndexCircle>
 
-export default TodoEl
+      <Row>
+        <TitleText>{data[0]}</TitleText>
+        <DueTimeText>{data[2]}</DueTimeText>
+      </Row>
 
+      <Row>
+        <View style={{ flexDirection: 'row', flex: 1, alignItems: 'center', gap: 5 }}>
+          <LinkIcon size={14} />
+          <AppText>{data[1]}</AppText>
+        </View>
+        <TimeText>{data[3]}</TimeText>
+      </Row>
 
-const TodoElBody = styled.TouchableOpacity`
-  width:${(size.width-60)*.9}px;
-  height:64px;
-  display:flex;
-  gap:8px;
-`
+      <MarginVertical top={8} />
+    </Container>
+  );
+};
 
-const TodoElBodyNotTouchable = styled.TouchableOpacity`
-  width:${(size.width-60)*.9}px;
-  height:64px;
-  display:flex;
-  gap:8px;
-`
+export default TodoEl;
 
-const TodoIndex = styled.View`
-  width:18px;
-  height:18px;
-  background-color:${colors.fontMain};
-  border-radius:9px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-`
+/* Emotion styled components */
 
-const TodoIndexText = styled.Text`
-  color:#fff;
-  font-size:14px;
-  font-weight:600;
-`
+const TouchableBody = styled.TouchableOpacity`
+  width: 100%;
+  height: 64px;
+  flex-direction: column;
+`;
 
-const TodoTitle = styled.Text`
-  font-size:18px;
-  font-weight:600;
-  color:#343434;
-  flex-grow:1;
-`
+const StaticBody = styled.TouchableOpacity`
+  width: ${() => `${(size.width - 60) * 0.9}px`};
+  height: 64px;
+  flex-direction: column;
+`;
 
-const LinkedAppText = styled.Text`
-  font-size:14px;
-  font-weight:500;
-  color:${colors.gray70};
-  
-`
+const IndexCircle = styled.View`
+  width: 18px;
+  height: 18px;
+  background-color: ${colors.fontMain};
+  border-radius: 9px;
+  justify-content: center;
+  align-items: center;
+`;
 
-const TodoDueTime = styled.Text`
-  font-size:18px;
-  font-weight:600;
-  color:${colors.indigoBlue};
-`
+const IndexText = styled.Text`
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+`;
 
-const TodoTime = styled.Text`
-  font-size:14px;
-  font-weight:500;
-  color:${colors.gray70};
-`
+const Row = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;
 
-const SetTodoGap = styled.View`
-  display:flex;
-  width:100%;
-  flex-direction:row;
-  align-items:center;
-`
+const TitleText = styled.Text`
+  font-size: 18px;
+  font-weight: 600;
+  color: #343434;
+  flex: 1;
+`;
+
+const AppText = styled.Text`
+  font-size: 14px;
+  font-weight: 500;
+  color: ${colors.gray70};
+`;
+
+const DueTimeText = styled.Text`
+  font-size: 18px;
+  font-weight: 600;
+  color: ${colors.indigoBlue};
+`;
+
+const TimeText = styled.Text`
+  font-size: 14px;
+  font-weight: 500;
+  color: ${colors.gray70};
+`;

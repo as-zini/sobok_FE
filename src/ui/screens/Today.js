@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Image, SafeAreaView, ScrollView, Text, View } from 'react-native'
-import styled from 'styled-components'
+import styled from '@emotion/native';
 import { colors } from '../styles/colors'
 
 import today_bg from '../../../assets/home_bg.png';
@@ -16,9 +16,9 @@ import { minToHour } from '../../util';
 import timeIcon from '../../../assets/time_icon.png';
 import { useRoutine } from '../../hooks/useRoutine';
 import LinkIcon from '../components/LinkIcon';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import TodoEl from '../components/TodoEl';
-import Fontisto from '@expo/vector-icons/Fontisto';
+import Fontisto from 'react-native-vector-icons/Fontisto';
 
 const containerWidth = size.width-50;
 
@@ -150,11 +150,11 @@ const Today = () => {
                   
                   {
                     toggleId === el.id  ?
-                    <View>
+                    <View style={{width:"100%"}}>
                     <MarginVertical top={20}/>
                     {routineDetail?.todos?.map((todo,idx) => {
                       return(
-                        <View key={idx}>
+                        <View key={idx} style={{width:"100%"}}>
                       <TodoEl data={[todo.title, todo.linkApp, minToHour(todo.duration), `${todo.startTime?.slice(0,5)} - ${todo.endTime?.slice(0,5)}`]} index={idx}/>
                       <MarginVertical top={10}/>
                       </View>
@@ -186,19 +186,19 @@ export default Today
 
 const TodayBody = styled.View`
   display:flex;
-  width:${size.width}px;
+  width:${() => `${size.width}px`};
   align-items:center;
 `
 
 const TodayBg = styled.Image`
-  width:${size.width}px;
+  width:${() => `${size.width}px`};
   position:absolute;
   top:0;
   z-index:-1;
 `
 
 const TodayInfoArea = styled.View`
-  width:${containerWidth}px;
+  width:${() => `${containerWidth}px`};
   height:280px;
   background-color:rgba(255,255,255,.2);
   border-radius:15px;
@@ -208,7 +208,7 @@ const TodayInfoArea = styled.View`
 `
 
 const TodayInfoBlueArea = styled.View`
-  width:${containerWidth}px;
+  width:${() => `${containerWidth}px`};
   height:200px;
   background-color:rgba(106, 143, 246, 0.38);
   position:absolute;
@@ -269,7 +269,7 @@ const BoldBorderLine = styled.View`
 `
 
 const TodayRoutineArea = styled.View`
-  width:100%;
+  width:${() => `${size.width-50}px`};
   padding:30px 25px;
   background-color:rgba(255,255,255,.6);
   border-radius:16px;
@@ -281,6 +281,7 @@ const RoutineEl = styled.View`
   flex-direction:row;
   align-items:center;
   gap:15px;
+  width:100%;
 `
 
 const ToggleButton = styled.TouchableOpacity`
