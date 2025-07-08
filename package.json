@@ -12,6 +12,7 @@
   "dependencies": {
     "@emotion/native": "^11.11.0",
     "@emotion/react": "^11.14.0",
+    "@invertase/react-native-apple-authentication": "^2.4.1",
     "@react-native-async-storage/async-storage": "^2.2.0",
     "@react-native-community/blur": "^4.4.1",
     "@react-native/new-app-screen": "0.80.1",

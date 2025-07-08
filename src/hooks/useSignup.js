@@ -1,6 +1,10 @@
 import { useNavigation } from "@react-navigation/native"
 import axios from "axios"
 import baseUrl from "../api/baseURL";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {
+  appleAuth,
+} from '@invertase/react-native-apple-authentication';
 
 
 export const useSignup = () => {
@@ -61,11 +65,56 @@ export const useSignup = () => {
     }
   }
 
+  const handleAppleLogin = async() => {
+    try {
+      // 1) Apple 로그인 UI 호출
+      const appleAuthRequestResponse = await appleAuth.performRequest({
+        requestedOperation: appleAuth.Operation.LOGIN,
+        requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
+      });
+  
+      // 2) ID 토큰(identityToken)과 authorizationCode 추출
+      const {
+        identityToken,        // JWT 형태의 ID 토큰
+        authorizationCode,    // 서버 검증용 코드
+        user,                 
+        fullName,
+        email,
+      } = appleAuthRequestResponse;
+  
+      if (!identityToken) {
+        throw new Error('Apple Sign-In failed – no identity token returned');
+      }
+  
+      // 3) 토큰을 기기에 안전하게 저장 (예: AsyncStorage)
+      await AsyncStorage.setItem('@apple_identity_token', identityToken);
+      // 또는 SecureStore:
+      // await SecureStore.setItemAsync('apple_identity_token', identityToken);
+      console.log("id",identityToken)
+      // 4) 서버로 토큰 보내서 검증/세션 생성
+      const response = await baseUrl.post("/api/auth/apple/native",{
+        identityToken: identityToken
+      })
+      console.log(response)
+  
+      // 5) 이후 유저가 인증된 상태로 앱을 계속 사용
+    } catch (error) {
+      console.error('❌ Apple Sign-In Error', error);
+      Alert.alert('로그인 오류', error.message);
+    }
+  }
+
+
+
 
   return {
     handleSignup,
     checkAvailability,
     handleSmsSend,
-    handleSmsVarify
+    handleSmsVarify,
+    handleAppleLogin
   }
+
 }
+
+  
