@@ -31,7 +31,7 @@ import MarginVertical from '../components/MarginVertical';
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
 
-const SignupScreen = () => {
+const SignupScreen = ({route}) => {
   const [step, setStep] = useState(1);
   const [idChecked, setIdChecked] = useState(true);
   const [emailChecked, setEmailChecked] = useState(false);
@@ -40,6 +40,7 @@ const SignupScreen = () => {
   const [isVarified, setIsVarified] = useState(false);
   const [varifyCode, setVarifyCode] = useState('');
   const { handleLogin } = useLogin();
+  const {version} = route.params;
   const [values, setValues] = useState({
     username: '',
     displayName: '',
@@ -51,15 +52,21 @@ const SignupScreen = () => {
     birth: ''
   });
   const navigation = useNavigation();
-  const { handleSignup, checkAvailability, handleSmsSend, handleSmsVarify } = useSignup();
+  const { handleSignup, checkAvailability, handleSmsSend, handleSmsVarify, addUserInfo } = useSignup();
 
   const handleButton = () => {
     if (step < 4) {
       setStep(prev => prev + 1);
     } else if (step === 4) {
-      handleSignup(values, setStep);
+      if(version === "email"){
+        handleSignup(values, setStep);
+      }else{
+        addUserInfo({name:values.name, displayName:values.displayName, phoneNumber:values.phoneNumber, birth:values.birth})
+      }
     } else {
-      handleLogin(values.username, values.password, '', true);
+      if(version === "email"){
+        handleLogin(values.username, values.password, '', true);
+      }
       navigation.navigate('ViewSaveTime', { version: 'first', username: values.displayName });
     }
   };
@@ -162,8 +169,9 @@ const SignupScreen = () => {
                   <TextInput
                     placeholder={placeholderText[2][0]}
                     placeholderTextColor="#fff"
-                    value={values.username}
+                    value={version === "email" ? values.username : route.params.email}
                     onChange={e => setValues({ ...values, username: e.nativeEvent.text })}
+                    editable={version === "email"}
                   />
                   {!idChecked && <CheckIcon source={check_icon} />}
                 </Row>
@@ -173,8 +181,9 @@ const SignupScreen = () => {
                   placeholder={placeholderText[2][1]}
                   placeholderTextColor="#fff"
                   secureTextEntry
-                  value={values.password}
+                  value={version === "email" ? values.password : 'social_password'}
                   onChange={e => setValues({ ...values, password: e.nativeEvent.text })}
+                  editable={version === "email"}
                 />
                 <Line />
                 <Row>
@@ -182,18 +191,24 @@ const SignupScreen = () => {
                     placeholder={placeholderText[2][2]}
                     placeholderTextColor="#fff"
                     secureTextEntry
-                    value={values.password2}
+                    value={ version === "email" ? values.password2 : 'apple_password' }
                     onChange={e => setValues({ ...values, password2: e.nativeEvent.text })}
+                    editable={version === "email"}
                   />
                   {!isSame && <CheckIcon source={check_icon} />}
                 </Row>
                 <Line />
               </KeyboardAwareScrollView>
             ) : step === 4 ? (
+              <View style={{height:'300%'}}>
+
+              
               <KeyboardAwareScrollView
                 keyboardShouldPersistTaps="handled"
                 enableOnAndroid
-                contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 20 }}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 20, paddingBottom:20}}
+                style={{height:100}}
               >
                 <ContentText>{contentsText[3]}</ContentText>
                 <CategoryText>{categoryText[3][0]}</CategoryText>
@@ -201,7 +216,8 @@ const SignupScreen = () => {
                   <TextInput
                     placeholder={placeholderText[3][0]}
                     placeholderTextColor="#fff"
-                    value={values.email}
+                    value={ version === "email" ? values.email : route.params.email }
+                    editable={version === "email"}
                     onChange={e => setValues({ ...values, email: e.nativeEvent.text })}
                   />
                   {!emailChecked && <CheckIcon source={check_icon} />}
@@ -225,6 +241,7 @@ const SignupScreen = () => {
                 {phoneChecked === '' ? null : !phoneChecked && (
                   <ErrorText>이미 가입된 전화번호입니다</ErrorText>
                 )}
+                <View style={{alignItems:'center'}}>
                 <TextInput
                   placeholder={placeholderText[3][2]}
                   placeholderTextColor="#fff"
@@ -232,8 +249,9 @@ const SignupScreen = () => {
                   value={varifyCode}
                   onChange={e => setVarifyCode(e.nativeEvent.text)}
                 />
-                {!isVarified && <CheckIcon source={check_icon} style={{ bottom: 5 }} />}
+                {!isVarified && <CheckIcon source={check_icon} style={{ bottom:30 }} />}
                 <Line />
+                </View>
                 <CategoryText>{placeholderText[3][3]}</CategoryText>
                 <TextInput
                   placeholder={placeholderText[3][3]}
@@ -243,7 +261,9 @@ const SignupScreen = () => {
                   onChange={e => setValues({ ...values, birth: e.nativeEvent.text })}
                 />
                 <Line />
+               
               </KeyboardAwareScrollView>
+              </View>
             ) : (
               <Complete body>
                 <CompleteTitle>{`${values.displayName} 님\n환영합니다!`}</CompleteTitle>
@@ -252,8 +272,9 @@ const SignupScreen = () => {
               </Complete>
             )}
           </InputArea>
+          
           <ButtonWrapper>
-            <Button text="다음 단계로" handleButton={handleButton} unChecked={step===2 ? checkList[0] : step===3 ? checkList[1] : step === 4 ? checkList[2] : !isActive} />
+            <Button text="다음 단계로" handleButton={handleButton} unChecked={step===2 ? checkList[0] : step===3 && version === "email" ? checkList[1] : step===3 && version !== "email" ? false : step === 4 ? checkList[2] : !isActive} />
           </ButtonWrapper>
           <Background source={signup_bg} />
         </ContentsBody>
@@ -295,6 +316,7 @@ const ContentText = styled.Text`
   font-weight: 600;
   color: ${colors.fontMain};
   margin-bottom: 40px;
+  line-height:34px;
 `;
 
 const CategoryText = styled.Text`

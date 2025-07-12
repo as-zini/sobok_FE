@@ -9,21 +9,23 @@ import {
 import styled from '@emotion/native';
 import SnowFlakeIcon from './SnowFlakeIcon';
 import { minToHour } from '../../util';
+import MarginVertical from './MarginVertical';
 
 const originalDays = ['일', '월', '화', '수', '목', '금', '토', ''];
 const loopedDays = [...originalDays, ...originalDays, ...originalDays];
 const screenWidth = Dimensions.get('window').width;
-const itemWidth = screenWidth / 3.5;
+const itemWidth = screenWidth / 5;
 
 const SaveTimeAtHome = ({ totalList }) => {
   const scrollX = useRef(new Animated.Value(0)).current;
   const listRef = useRef(null);
-  const [selectedIndex, setSelectedIndex] = useState(originalDays.length);
+  const todayIndex = new Date().getDay()+2; // 0(일) ~ 6(토)
+  const [selectedIndex, setSelectedIndex] = useState(originalDays.length + todayIndex);
 
   useEffect(() => {
     setTimeout(() => {
       listRef.current?.scrollToOffset({
-        offset: itemWidth * originalDays.length,
+        offset: itemWidth * (originalDays.length + todayIndex),
         animated: false
       });
     }, 100);
@@ -71,6 +73,7 @@ const SaveTimeAtHome = ({ totalList }) => {
     <Container>
       <TimeText>{getSelectedTime()}</TimeText>
       <SubText>의 자투리 시간이{`\n`}생깁니다!</SubText>
+      
       <SnowFlakeIcon color="white" size={16} />
 
       <SliderContainer>
@@ -100,6 +103,7 @@ const SaveTimeAtHome = ({ totalList }) => {
               >
                 {item}
               </DayText>
+              <MarginVertical top={12}/>
               <Line style={{ height: isRedText(index) ? 26 : 16 }} />
             </ItemContainer>
           )}
@@ -120,6 +124,7 @@ const TimeText = styled.Text`
   font-size: 34px;
   font-weight: 500;
   color: #fff;
+  line-height:38px;
 `;
 
 const SubText = styled.Text`
@@ -134,6 +139,7 @@ const SliderContainer = styled.View`
   width: 80%;
   height: 100px;
   overflow: hidden;
+  
 `;
 
 const ItemContainer = styled.View`
@@ -143,11 +149,12 @@ const ItemContainer = styled.View`
 `;
 
 const DayText = styled.Text`
-  margin-right: 50px;
+  margin-left:20px;
 `;
 
 const Line = styled.View`
   width: 2px;
   background-color: #e0e0e0;
-  margin-right: 50px;
+  margin-left:20px;
+
 `;

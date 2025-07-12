@@ -133,11 +133,11 @@ const Home = () => {
                       </>
                     ) : (
                       <>
-                        <Text style={{ fontWeight: '500', color: '#fff', fontSize: 18 }}>어서오세요!</Text>
+                        <Text style={{ fontWeight: '500', color: '#fff', fontSize: 18, }}>어서오세요!</Text>
                         <MarginVertical top={9} />
                       </>
                     )}
-                    <View style={{ flexDirection: 'row', alignItems: 'center', paddingRight: 30 }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', paddingRight: 30, justifyContent:'space-between' }}>
                       <TodoDuringTime style={{ fontSize: !nowTodo[0]?.message && nowTodo.length > 0 ? 48 : 34 }}>
                         {nowTodo?.length > 0 && !nowTodo[0]?.message
                           ? getTimeDifference(nowTodo[0].startTime, nowTodo[0].endTime)
@@ -154,7 +154,7 @@ const Home = () => {
                   </View>
                 </View>
                 <TodoBgArea>
-                  <TodoAreaBg source={home_main_square_bg} />
+                  <TodoAreaBg source={home_main_square_bg} style={{zIndex:3}}/>
                   <Image source={home_square_middle} style={{ position: 'absolute', top: 0, left: 10, zIndex: 2 }} />
                   <Image source={home_square_small} style={{ position: 'absolute', top: 10, left: 20 }} />
                 </TodoBgArea>
@@ -256,13 +256,14 @@ const HomeBg = styled.Image`
 const UserName = styled.Text`
   font-weight: 700;
   font-size: 16px;
-  color: ${colors.fontSub};
+  color: #4c4c4c;
 `;
 
 const HomeText = styled.Text`
   font-weight: 700;
   font-size: 24px;
   color: ${colors.fontMain};
+  line-height:100%;
 `;
 
 const TodoArea = styled.View``;
@@ -307,13 +308,15 @@ const TotalTimeList = styled.View`
   width: 327px;
   background-color: #fff;
   border-radius: 16px;
-  padding: 20px;
+  padding: 24px 32px;
+
 `;
 
 const TotalTimeEl = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
   width: 264px;
+  gap:23px;
 `;
 
 const TotalTimeIcon = styled.Image``;

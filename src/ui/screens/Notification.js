@@ -92,6 +92,7 @@ const Title = styled.Text`
 const CountText = styled.Text`
   font-weight: 600;
   color: ${colors.fontMain90};
+  font-size:18px;
 `;
 
 const SectionDate = styled.Text`
@@ -132,6 +133,7 @@ const NotiTextContainer = styled.View`
 
 const NotiText = styled.Text`
   color: ${colors.gray52};
+  line-height:22px;
 `;
 
 const NotiTime = styled.Text`
