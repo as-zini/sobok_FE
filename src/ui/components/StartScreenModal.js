@@ -2,12 +2,6 @@ import React from 'react';
 import { Dimensions, Platform, SafeAreaView, View } from 'react-native';
 import Modal from 'react-native-modal';
 import styled from '@emotion/native';
-import {
-  appleAuth,
-  AppleButton,
-  AppleAuthRequestScope,
-  AppleAuthRequestOperation,
-} from '@invertase/react-native-apple-authentication';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
@@ -21,43 +15,15 @@ import { size } from '../styles/size';
 import baseUrl from '../../api/baseURL';
 import { useSignup } from '../../hooks/useSignup';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { login, getProfile } from '@react-native-seoul/kakao-login';
 
 const StartScreenModal = ({ isSignupModalVisible, setIsSignupModalVisible }) => {
   const navigation = useNavigation();
-  const {handleAppleLogin} = useSignup();
+  const {handleAppleLogin, handleKakaoLogin} = useSignup();
 
   
 // 또는 import * as SecureStore from 'expo-secure-store';
 
-const handleKakaoLogin = async () => {
-    try {
-      // 1) 카카오 로그인 실행
-      const token = await login();
-      console.log("!!!")
-      console.log('accessToken:', token.accessToken);
 
-      // 2) (선택) 유저 프로필 가져오기
-      const profile = await getProfile();
-      console.log('profile:', profile);
-
-      // 3) 백엔드로 토큰 전송
-      // const response = await fetch('https://YOUR_BACKEND/api/auth/kakao', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ accessToken: token.accessToken }),
-      // });
-      // if (!response.ok) throw new Error('서버 인증 실패');
-      // const result = await response.json();
-      // console.log('백엔드 응답:', result);
-
-      // // 4) 로그인 성공 처리 (예: 토큰 저장, 내비게이션 이동)
-      // Alert.alert('로그인 성공', `환영합니다, ${result.userName}님!`);
-    } catch (error) {
-      console.error(error);
-      Alert.alert('로그인 오류', error.message);
-    }
-  };
 
 
   return (
@@ -80,7 +46,7 @@ const handleKakaoLogin = async () => {
                 <PlatformIcon source={google_icon} />
                 <PlatformText>Google로 시작하기</PlatformText>
               </SignupButton>
-              <SignupButton onPress={handleKakaoLogin}>
+              <SignupButton onPress={() => handleKakaoLogin(setIsSignupModalVisible)}>
                 <PlatformIcon source={kakao_icon} />
                 <PlatformText>카카오로 시작하기</PlatformText>
               </SignupButton>

@@ -5,6 +5,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   appleAuth,
 } from '@invertase/react-native-apple-authentication';
+import { login, getProfile } from '@react-native-seoul/kakao-login';
+
 
 
 export const useSignup = () => {
@@ -138,6 +140,40 @@ export const useSignup = () => {
     }
   }
 
+  const handleKakaoLogin = async (setIsSignupModalVisible) => {
+    try {
+      // 1) 카카오 로그인 실행
+      const token = await login();
+      console.log('accessToken:', token.accessToken);
+
+      // 2) (선택) 유저 프로필 가져오기
+      const profile = await getProfile();
+      console.log('profile:', profile);
+
+      const response = await baseUrl.post("/api/auth/kakao/native",{
+        accessToken: token.accessToken
+      })
+
+      console.log(response.data)
+      const refreshToken = response.data.refreshToken;
+      const accessToken = response.data.accessToken;
+      const userInfo = response.data.user
+
+      await AsyncStorage.setItem("access_token", accessToken);
+      await AsyncStorage.setItem("refresh_token",refreshToken);
+
+      setIsSignupModalVisible(false);
+      if(response.data.user.isExistingUser){
+        navigation.navigate("Tabs")
+      }else{
+        navigation.navigate("Signup", {email:userInfo.email, version:"kakao"})
+      }
+    } catch (error) {
+      console.error(error);
+      Alert.alert('로그인 오류', error.message);
+    }
+  };
+
 
 
 
@@ -147,7 +183,8 @@ export const useSignup = () => {
     handleSmsSend,
     handleSmsVarify,
     handleAppleLogin,
-    addUserInfo
+    addUserInfo,
+    handleKakaoLogin
   }
 
 }

@@ -169,9 +169,9 @@ const SignupScreen = ({route}) => {
                   <TextInput
                     placeholder={placeholderText[2][0]}
                     placeholderTextColor="#fff"
-                    value={version === 'apple' ? route.params.email : values.username}
+                    value={version === 'apple' || version === "kakao" ? route.params.email : values.username}
                     onChange={e => setValues({ ...values, username: e.nativeEvent.text })}
-                    editable={version !== 'apple'}
+                    editable={version !== 'apple' && version !== "kakao"}
                   />
                   {!idChecked && <CheckIcon source={check_icon} />}
                 </Row>
@@ -181,9 +181,9 @@ const SignupScreen = ({route}) => {
                   placeholder={placeholderText[2][1]}
                   placeholderTextColor="#fff"
                   secureTextEntry
-                  value={version === 'apple' ? 'apple_password' : values.password}
+                  value={version === 'apple' || version === "kakao" ? 'apple_password' : values.password}
                   onChange={e => setValues({ ...values, password: e.nativeEvent.text })}
-                  editable={version !== 'apple'}
+                  editable={version !== 'apple' && version !== "kakao"}
                 />
                 <Line />
                 <Row>
@@ -191,19 +191,24 @@ const SignupScreen = ({route}) => {
                     placeholder={placeholderText[2][2]}
                     placeholderTextColor="#fff"
                     secureTextEntry
-                    value={version === 'apple' ? 'apple_password' : values.password2}
+                    value={version === 'apple' || version === "kakao" ? 'apple_password' : values.password2}
                     onChange={e => setValues({ ...values, password2: e.nativeEvent.text })}
-                    editable={version !== 'apple'}
+                    editable={version !== 'apple' && version !== "kakao"}
                   />
                   {!isSame && <CheckIcon source={check_icon} />}
                 </Row>
                 <Line />
               </KeyboardAwareScrollView>
             ) : step === 4 ? (
+              <View style={{height:'300%'}}>
+
+              
               <KeyboardAwareScrollView
                 keyboardShouldPersistTaps="handled"
                 enableOnAndroid
-                contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 20 }}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 20, paddingBottom:20}}
+                style={{height:100}}
               >
                 <ContentText>{contentsText[3]}</ContentText>
                 <CategoryText>{categoryText[3][0]}</CategoryText>
@@ -211,8 +216,8 @@ const SignupScreen = ({route}) => {
                   <TextInput
                     placeholder={placeholderText[3][0]}
                     placeholderTextColor="#fff"
-                    value={version === 'apple' ? route.params.email : values.email}
-                    editable={version !== 'apple'}
+                    value={version === 'apple' || version === "kakao" ? route.params.email : values.email}
+                    editable={version !== 'apple' && version !== "kakao"}
                     onChange={e => setValues({ ...values, email: e.nativeEvent.text })}
                   />
                   {!emailChecked && <CheckIcon source={check_icon} />}
@@ -236,6 +241,7 @@ const SignupScreen = ({route}) => {
                 {phoneChecked === '' ? null : !phoneChecked && (
                   <ErrorText>이미 가입된 전화번호입니다</ErrorText>
                 )}
+                <View style={{alignItems:'center'}}>
                 <TextInput
                   placeholder={placeholderText[3][2]}
                   placeholderTextColor="#fff"
@@ -243,8 +249,9 @@ const SignupScreen = ({route}) => {
                   value={varifyCode}
                   onChange={e => setVarifyCode(e.nativeEvent.text)}
                 />
-                {!isVarified && <CheckIcon source={check_icon} style={{ bottom: 5 }} />}
+                {!isVarified && <CheckIcon source={check_icon} style={{ bottom:30 }} />}
                 <Line />
+                </View>
                 <CategoryText>{placeholderText[3][3]}</CategoryText>
                 <TextInput
                   placeholder={placeholderText[3][3]}
@@ -254,7 +261,9 @@ const SignupScreen = ({route}) => {
                   onChange={e => setValues({ ...values, birth: e.nativeEvent.text })}
                 />
                 <Line />
+               
               </KeyboardAwareScrollView>
+              </View>
             ) : (
               <Complete body>
                 <CompleteTitle>{`${values.displayName} 님\n환영합니다!`}</CompleteTitle>
@@ -263,8 +272,9 @@ const SignupScreen = ({route}) => {
               </Complete>
             )}
           </InputArea>
+          
           <ButtonWrapper>
-            <Button text="다음 단계로" handleButton={handleButton} unChecked={step===2 ? checkList[0] : step===3 ? checkList[1] : step === 4 ? checkList[2] : !isActive} />
+            <Button text="다음 단계로" handleButton={handleButton} unChecked={step===2 ? checkList[0] : step===3 && version === "email" ? checkList[1] : step===3 && version !== "email" ? false : step === 4 ? checkList[2] : !isActive} />
           </ButtonWrapper>
           <Background source={signup_bg} />
         </ContentsBody>
