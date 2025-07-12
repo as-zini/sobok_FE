@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Dimensions, Platform, SafeAreaView, View } from 'react-native';
 import Modal from 'react-native-modal';
 import styled from '@emotion/native';
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 
 
 import signup_modal_bg from '../../../assets/signup_modal_bg.png';
@@ -18,12 +22,15 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const StartScreenModal = ({ isSignupModalVisible, setIsSignupModalVisible }) => {
   const navigation = useNavigation();
-  const {handleAppleLogin, handleKakaoLogin} = useSignup();
+  const {handleAppleLogin, handleKakaoLogin, handleGoogleAuth} = useSignup();
 
-  
-// 또는 import * as SecureStore from 'expo-secure-store';
-
-
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId: '927685447127-gh9fmj2vpalns39uu167gdpl66iavht5.apps.googleusercontent.com',
+      iosClientId: "927685447127-a7muurhgj3me105a9vbhbklnq18at29c.apps.googleusercontent.com",  // 백엔드 검증용 “웹” 클라이언트 ID
+      offlineAccess: true,                     // 서버에서 리프레시 토큰을 받으려면 true
+    });
+  }, []);
 
 
   return (
@@ -42,7 +49,7 @@ const StartScreenModal = ({ isSignupModalVisible, setIsSignupModalVisible }) => 
             <SignupTitle>시작하기</SignupTitle>
             <SignupText>당신의 시작을 응원합니다!!{"\n"}어떤 경로로 시작해볼까요?</SignupText>
             <SignupPlatformArea>
-              <SignupButton>
+              <SignupButton onPress={() => handleGoogleAuth(setIsSignupModalVisible)}>
                 <PlatformIcon source={google_icon} />
                 <PlatformText>Google로 시작하기</PlatformText>
               </SignupButton>

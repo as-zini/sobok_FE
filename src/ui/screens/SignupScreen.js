@@ -169,9 +169,9 @@ const SignupScreen = ({route}) => {
                   <TextInput
                     placeholder={placeholderText[2][0]}
                     placeholderTextColor="#fff"
-                    value={version === 'apple' || version === "kakao" ? route.params.email : values.username}
+                    value={version === "email" ? values.username : route.params.email}
                     onChange={e => setValues({ ...values, username: e.nativeEvent.text })}
-                    editable={version !== 'apple' && version !== "kakao"}
+                    editable={version === "email"}
                   />
                   {!idChecked && <CheckIcon source={check_icon} />}
                 </Row>
@@ -181,9 +181,9 @@ const SignupScreen = ({route}) => {
                   placeholder={placeholderText[2][1]}
                   placeholderTextColor="#fff"
                   secureTextEntry
-                  value={version === 'apple' || version === "kakao" ? 'apple_password' : values.password}
+                  value={version === "email" ? values.password : 'social_password'}
                   onChange={e => setValues({ ...values, password: e.nativeEvent.text })}
-                  editable={version !== 'apple' && version !== "kakao"}
+                  editable={version === "email"}
                 />
                 <Line />
                 <Row>
@@ -191,9 +191,9 @@ const SignupScreen = ({route}) => {
                     placeholder={placeholderText[2][2]}
                     placeholderTextColor="#fff"
                     secureTextEntry
-                    value={version === 'apple' || version === "kakao" ? 'apple_password' : values.password2}
+                    value={ version === "email" ? values.password2 : 'apple_password' }
                     onChange={e => setValues({ ...values, password2: e.nativeEvent.text })}
-                    editable={version !== 'apple' && version !== "kakao"}
+                    editable={version === "email"}
                   />
                   {!isSame && <CheckIcon source={check_icon} />}
                 </Row>
@@ -216,8 +216,8 @@ const SignupScreen = ({route}) => {
                   <TextInput
                     placeholder={placeholderText[3][0]}
                     placeholderTextColor="#fff"
-                    value={version === 'apple' || version === "kakao" ? route.params.email : values.email}
-                    editable={version !== 'apple' && version !== "kakao"}
+                    value={ version === "email" ? values.email : route.params.email }
+                    editable={version === "email"}
                     onChange={e => setValues({ ...values, email: e.nativeEvent.text })}
                   />
                   {!emailChecked && <CheckIcon source={check_icon} />}

@@ -6,6 +6,10 @@ import {
   appleAuth,
 } from '@invertase/react-native-apple-authentication';
 import { login, getProfile } from '@react-native-seoul/kakao-login';
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 
 
 
@@ -174,6 +178,36 @@ export const useSignup = () => {
     }
   };
 
+  const handleGoogleAuth = async (setIsSignupModalVisible) => {
+    try {
+      await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+      // 로그인 및 동의 화면
+      const userData = await GoogleSignin.signIn();
+
+      const response = await baseUrl.post("/api/auth/google/native",{
+        idToken: userData.data.idToken
+      })
+
+      console.log(response.data)
+      const refreshToken = response.data.refreshToken;
+      const accessToken = response.data.accessToken;
+      const userInfo = response.data.user
+
+      await AsyncStorage.setItem("access_token", accessToken);
+      await AsyncStorage.setItem("refresh_token",refreshToken);
+
+      setIsSignupModalVisible(false);
+      if(response.data.user.isExistingUser){
+        navigation.navigate("Tabs")
+      }else{
+        navigation.navigate("Signup", {email:userInfo.email, version:"google"})
+      }
+    } catch (error) {
+      console.error(error);
+      
+    }
+  }
+
 
 
 
@@ -184,7 +218,8 @@ export const useSignup = () => {
     handleSmsVarify,
     handleAppleLogin,
     addUserInfo,
-    handleKakaoLogin
+    handleKakaoLogin,
+    handleGoogleAuth
   }
 
 }
