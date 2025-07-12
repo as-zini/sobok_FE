@@ -97,8 +97,8 @@ const RoutinePauseModal = ({
 export default RoutinePauseModal;
 
 const Container = styled.View`
-  width: ${size.width}px;
-  height: ${props => props.height}px;
+  width: ${() => `${size.width}px`};
+  height: ${props => `${props.height}px`};
   justify-content: center;
   align-items: center;
   position: absolute;
@@ -134,4 +134,5 @@ const Background = styled(Image)`
   width: ${size.width}px;
   height: 100%;
   z-index: -1;
+  border-radius:20px;
 `;

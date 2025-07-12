@@ -65,7 +65,7 @@ export const useSignup = () => {
     }
   }
 
-  const handleAppleLogin = async() => {
+  const handleAppleLogin = async(setIsSignupModalVisible) => {
     try {
       // 1) Apple 로그인 UI 호출
       const appleAuthRequestResponse = await appleAuth.performRequest({
@@ -95,12 +95,46 @@ export const useSignup = () => {
       const response = await baseUrl.post("/api/auth/apple/native",{
         identityToken: identityToken
       })
-      console.log(response)
+
+      console.log(response.data)
+      const refreshToken = response.data.refreshToken;
+      const accessToken = response.data.accessToken;
+      const userInfo = response.data.user
+
+      await AsyncStorage.setItem("access_token", accessToken);
+      await AsyncStorage.setItem("refresh_token",refreshToken);
+
+      setIsSignupModalVisible(false);
+      if(response.data.user.isExistingUser){
+        navigation.navigate("Tabs")
+      }else{
+        navigation.navigate("Signup", {email:userInfo.email, version:"apple"})
+      }
+      
   
       // 5) 이후 유저가 인증된 상태로 앱을 계속 사용
     } catch (error) {
       console.error('❌ Apple Sign-In Error', error);
       Alert.alert('로그인 오류', error.message);
+    }
+  }
+
+  const addUserInfo= async(userInfo) => {
+    try {
+      const token = await AsyncStorage.getItem("access_token")
+      const response = await baseUrl.put('/user/oauth/additional-info',{
+        name:userInfo.name,
+        displayName:userInfo.displayName,
+        phoneNumber:userInfo.phoneNumber,
+        birth:userInfo.birth
+      },{
+        headers:{
+          Authorization:`Bearer ${token}`
+        }
+      })
+      console.log(response.data)
+    } catch (error) {
+      console.log(error)
     }
   }
 
@@ -112,7 +146,8 @@ export const useSignup = () => {
     checkAvailability,
     handleSmsSend,
     handleSmsVarify,
-    handleAppleLogin
+    handleAppleLogin,
+    addUserInfo
   }
 
 }

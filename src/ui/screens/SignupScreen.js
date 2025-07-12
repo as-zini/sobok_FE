@@ -31,7 +31,7 @@ import MarginVertical from '../components/MarginVertical';
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
 
-const SignupScreen = () => {
+const SignupScreen = ({route}) => {
   const [step, setStep] = useState(1);
   const [idChecked, setIdChecked] = useState(true);
   const [emailChecked, setEmailChecked] = useState(false);
@@ -40,6 +40,7 @@ const SignupScreen = () => {
   const [isVarified, setIsVarified] = useState(false);
   const [varifyCode, setVarifyCode] = useState('');
   const { handleLogin } = useLogin();
+  const {version} = route.params;
   const [values, setValues] = useState({
     username: '',
     displayName: '',
@@ -51,15 +52,21 @@ const SignupScreen = () => {
     birth: ''
   });
   const navigation = useNavigation();
-  const { handleSignup, checkAvailability, handleSmsSend, handleSmsVarify } = useSignup();
+  const { handleSignup, checkAvailability, handleSmsSend, handleSmsVarify, addUserInfo } = useSignup();
 
   const handleButton = () => {
     if (step < 4) {
       setStep(prev => prev + 1);
     } else if (step === 4) {
-      handleSignup(values, setStep);
+      if(version === "email"){
+        handleSignup(values, setStep);
+      }else{
+        addUserInfo({name:values.name, displayName:values.displayName, phoneNumber:values.phoneNumber, birth:values.birth})
+      }
     } else {
-      handleLogin(values.username, values.password, '', true);
+      if(version === "email"){
+        handleLogin(values.username, values.password, '', true);
+      }
       navigation.navigate('ViewSaveTime', { version: 'first', username: values.displayName });
     }
   };
@@ -162,8 +169,9 @@ const SignupScreen = () => {
                   <TextInput
                     placeholder={placeholderText[2][0]}
                     placeholderTextColor="#fff"
-                    value={values.username}
+                    value={version === 'apple' ? route.params.email : values.username}
                     onChange={e => setValues({ ...values, username: e.nativeEvent.text })}
+                    editable={version !== 'apple'}
                   />
                   {!idChecked && <CheckIcon source={check_icon} />}
                 </Row>
@@ -173,8 +181,9 @@ const SignupScreen = () => {
                   placeholder={placeholderText[2][1]}
                   placeholderTextColor="#fff"
                   secureTextEntry
-                  value={values.password}
+                  value={version === 'apple' ? 'apple_password' : values.password}
                   onChange={e => setValues({ ...values, password: e.nativeEvent.text })}
+                  editable={version !== 'apple'}
                 />
                 <Line />
                 <Row>
@@ -182,8 +191,9 @@ const SignupScreen = () => {
                     placeholder={placeholderText[2][2]}
                     placeholderTextColor="#fff"
                     secureTextEntry
-                    value={values.password2}
+                    value={version === 'apple' ? 'apple_password' : values.password2}
                     onChange={e => setValues({ ...values, password2: e.nativeEvent.text })}
+                    editable={version !== 'apple'}
                   />
                   {!isSame && <CheckIcon source={check_icon} />}
                 </Row>
@@ -201,7 +211,8 @@ const SignupScreen = () => {
                   <TextInput
                     placeholder={placeholderText[3][0]}
                     placeholderTextColor="#fff"
-                    value={values.email}
+                    value={version === 'apple' ? route.params.email : values.email}
+                    editable={version !== 'apple'}
                     onChange={e => setValues({ ...values, email: e.nativeEvent.text })}
                   />
                   {!emailChecked && <CheckIcon source={check_icon} />}
@@ -295,6 +306,7 @@ const ContentText = styled.Text`
   font-weight: 600;
   color: ${colors.fontMain};
   margin-bottom: 40px;
+  line-height:34px;
 `;
 
 const CategoryText = styled.Text`

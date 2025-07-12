@@ -145,6 +145,7 @@ const Subtitle = styled.Text`
   color: ${colors.fontMain80};
   font-size: 16px;
   font-weight: 500;
+  line-height:26px;
 `;
 
 const InputArea = styled.View`
