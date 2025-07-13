@@ -62,7 +62,7 @@ const DetailInstallmentSavingScreen = ({route}) => {
   }, [savingInfo]);
 
   useEffect(() => {
-    if(savingInfo && dayjs().isAfter(dayjs('2020-01-01')) && !savingInfo.is_extended){
+    if(savingInfo && dayjs().isAfter(dayjs(savingInfo.expired_at)) && !savingInfo.is_extended){
       setIsCompleteSavingModalVisible(true)
     }
   },[])
@@ -171,9 +171,9 @@ const DetailInstallmentSavingScreen = ({route}) => {
         id={id}
         setSavingLog={setSavingLog}/>
       
-      {/* <SavingAlerteModal isAlertModalVisible={isAlertModal} setIsAlertModalVisible={setIsAlertModal} id={id} version={"saving"}/> */}
-      {/* <SavingAlerteModal isAlertModalVisible={isDeleteAlertModalVisible} setIsAlertModalVisible={setIsDeleteAlertModalVisible} id={id} version={"deleteSaving"}/> */}
-      <CompleteSavingModal isCompleteModalVisible={isCompleteSavingModalVisible} setIsCompleteModalVisible={setIsCompleteSavingModalVisible} id={id} title={savingInfo.title}/>
+      <SavingAlerteModal isAlertModalVisible={isAlertModal} setIsAlertModalVisible={setIsAlertModal} id={id} version={"saving"}/>
+      <SavingAlerteModal isAlertModalVisible={isDeleteAlertModalVisible} setIsAlertModalVisible={setIsDeleteAlertModalVisible} id={id} version={"deleteSaving"}/>
+      <CompleteSavingModal isCompleteModalVisible={isCompleteSavingModalVisible} setIsCompleteModalVisible={setIsCompleteSavingModalVisible} id={id} title={savingInfo.title} time={savingInfo.time}/>
       </ScrollView>
       
       </View>
