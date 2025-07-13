@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { SafeAreaView, ImageBackground, View, Text, ScrollView, Dimensions } from 'react-native'
 import styled from '@emotion/native'
 
@@ -9,9 +9,10 @@ import { colors } from '../styles/colors'
 import BackArrowButton from '../components/BackArrowButton'
 import MarginVertical from '../components/MarginVertical'
 import SnowFlakeIcon from '../components/SnowFlakeIcon'
+import { useInstallmentSaving } from '../../hooks/useInstallmentSaving'
 
 const BAR_DATA = [
-  { month: '9월', value: 400, date: '2024.09', point: 400, percent: 20 },
+  { month: '9월', value: 800, date: '2024.09', point: 800, percent: 40 },
   { month: '10월', value: 600, date: '2024.10', point: 600, percent: 40 },
   { month: '11월', value: 800, date: '2024.11', point: 800, percent: 60 },
   { month: '12월', value: 1000, date: '2024.12', point: 1000, percent: 80 },
@@ -22,9 +23,17 @@ const SCREEN_WIDTH = Dimensions.get('window').width
 const BAR_WIDTH = 40
 const BAR_MARGIN = 16
 
-const ViewInterest = () => {
+const ViewInterest = ({route}) => {
   const scrollRef = useRef(null)
   const [centerIndex, setCenterIndex] = useState(2) // 초기 중앙 인덱스
+  const {getInterestInfo} = useInstallmentSaving();
+  const {id} = route.params;
+  const [totalBalance, setTotalBalance] = useState(0)
+  const [interestInfo, setInterestInfo] = useState([])
+
+  useEffect(() => {
+    getInterestInfo(id, setInterestInfo, setTotalBalance)
+  },[])
 
   // 스크롤 시 중앙 인덱스 계산
   const handleScroll = (event) => {
@@ -60,10 +69,11 @@ const ViewInterest = () => {
           <PercentIcon source={icon}/>
           <MarginVertical top={20}/>
           <Title>영어천재적금 의{"\n"}총 이자</Title>
-          <PointText>500P</PointText>
+          <PointText>{`${totalBalance}P`}</PointText>
         </TopSection>
         <MarginVertical top={40}/>
         {/* 중간 이자 정보 */}
+        {interestInfo.length > 0 ?
         <MidSection>
           <SnowFlakeIcon color={"indigo"} size={16}/>
           <MarginVertical top={12}/>
@@ -72,8 +82,11 @@ const ViewInterest = () => {
           <MarginVertical top={20}/>
           <PercentBadge>{BAR_DATA[centerIndex].percent}%</PercentBadge>
         </MidSection>
+        : <></>
+        }
 
         {/* 하단 스크롤 바 차트 */}
+        {interestInfo.length > 0 ?
         <BarScrollView
           ref={scrollRef}
           horizontal
@@ -82,13 +95,14 @@ const ViewInterest = () => {
           onScroll={handleScroll}
           scrollEventThrottle={16}
         >
-          {BAR_DATA.map((bar, idx) => (
-            <BarContainer key={bar.month}>
-              <Bar style={{ height: bar.value / 15, backgroundColor: idx === centerIndex ? '#4A6CF7' : '#E3E8F7' }} />
-              <BarLabel>{bar.month}</BarLabel>
+          {interestInfo?.map((data, idx) => (
+            <BarContainer key={idx}>
+              <Bar style={{ height: data.interest / 15, backgroundColor: idx === centerIndex ? '#4A6CF7' : '#E3E8F7' }} />
+              <BarLabel>{el.yearMonth}</BarLabel>
             </BarContainer>
           ))}
         </BarScrollView>
+        :<></>}
         
       </Container>
       <Bg source={bg}/>

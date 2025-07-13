@@ -23,6 +23,7 @@ import { useInstallmentSaving } from '../../hooks/useInstallmentSaving';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import SavingAlerteModal from '../components/SavingAlertModal';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import CompleteSavingModal from '../components/CompleteSavingModal';
 
 
 const DetailInstallmentSavingScreen = ({route}) => {
@@ -37,7 +38,9 @@ const DetailInstallmentSavingScreen = ({route}) => {
   const [isReady, setIsReady] = useState(false);
   const hasAlertShown = useRef(false);
   const [isDeleteAlertModalVisible, setIsDeleteAlertModalVisible] = useState(false)
+  const [isCompleteSavingModalVisible, setIsCompleteSavingModalVisible] = useState(false);
 
+ 
 
   
 
@@ -57,6 +60,12 @@ const DetailInstallmentSavingScreen = ({route}) => {
       hasAlertShown.current = true;
     }
   }, [savingInfo]);
+
+  useEffect(() => {
+    if(savingInfo && dayjs().isAfter(dayjs('2020-01-01')) && !savingInfo.is_extended){
+      setIsCompleteSavingModalVisible(true)
+    }
+  },[])
   // const startedAt = dayjs(new Date(Number(savingInfo.created_at.slice(0,4)),Number(savingInfo.created_at.slice(5,7))-1,Number(savingInfo.created_at.slice(8,10))+1))
   const startedAt = dayjs(`${savingInfo.created_at} 00:00`)
 
@@ -132,7 +141,7 @@ const DetailInstallmentSavingScreen = ({route}) => {
           <MarginVertical top={32}/>
           <View style={{flexDirection:'row',alignItems:'center'}}>
             <InterestText>{`월 ${savingInfo.interest}%`}</InterestText>
-            <TouchableOpacity onPress={() => navigation.navigate("ViewInterest")}>
+            <TouchableOpacity onPress={() => navigation.navigate("ViewInterest", {id:id})}>
               <MaterialIcons name="keyboard-arrow-right" size={22} color="rgba(20, 36, 72, 0.4)" />
             </TouchableOpacity>
           </View>
@@ -162,9 +171,9 @@ const DetailInstallmentSavingScreen = ({route}) => {
         id={id}
         setSavingLog={setSavingLog}/>
       
-      <SavingAlerteModal isAlertModalVisible={isAlertModal} setIsAlertModalVisible={setIsAlertModal} id={id} version={"saving"}/>
-      <SavingAlerteModal isAlertModalVisible={isDeleteAlertModalVisible} setIsAlertModalVisible={setIsDeleteAlertModalVisible} id={id} version={"deleteSaving"}/>
-      
+      {/* <SavingAlerteModal isAlertModalVisible={isAlertModal} setIsAlertModalVisible={setIsAlertModal} id={id} version={"saving"}/> */}
+      {/* <SavingAlerteModal isAlertModalVisible={isDeleteAlertModalVisible} setIsAlertModalVisible={setIsDeleteAlertModalVisible} id={id} version={"deleteSaving"}/> */}
+      <CompleteSavingModal isCompleteModalVisible={isCompleteSavingModalVisible} setIsCompleteModalVisible={setIsCompleteSavingModalVisible} id={id} title={savingInfo.title}/>
       </ScrollView>
       
       </View>

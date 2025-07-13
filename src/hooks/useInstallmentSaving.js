@@ -137,6 +137,52 @@ export const useInstallmentSaving = () => {
     }
   }
 
+  const handleAccountEnd = async(id, setStep) => {
+    try {
+      const token = await AsyncStorage.getItem("access_token")
+      const response = await baseUrl.post(`/account/end?accountId=${id}`,{
+        headers:{
+          Authorization:`Bearer ${token}`
+        }
+      })
+      console.log(response.data)
+      setStep(1)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleAccountExtend = async(id, duration, setStep) => {
+    try {
+      const token = await AsyncStorage.getItem("access_token")
+      const response = await baseUrl.post(`/account/extend?accountId=${id}&duration=${duration}`,{
+        headers:{
+          Authorization:`Bearer ${token}`
+        }
+      })
+      console.log(response.data)
+      setStep(3)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const getInterestInfo = async(id, setInterestInfo, setTotalBalance) => {
+    try {
+      const token = await AsyncStorage.getItem("access_token")
+      const response = await baseUrl.get(`/account/interest-balance?accountId=${id}`,{
+        headers:{
+          Authorization:`Bearer ${token}`
+        }
+      })
+      console.log(response.data)
+      setInterestInfo(response.data.monthlyInterest.data === "none" ? [] : response.data.monthlyInterest.data)
+      setTotalBalance(response.data.totalBalance)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  
   return {
     getSavingList,
     getSavingLog,
@@ -145,7 +191,10 @@ export const useInstallmentSaving = () => {
     getInvalidSavingList,
     getSavingDetail,
     handleConnectAsset,
-    handleDeleteSaving
+    handleDeleteSaving,
+    handleAccountEnd,
+    handleAccountExtend,
+    getInterestInfo
   }
 }
 
