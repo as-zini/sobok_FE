@@ -132,13 +132,16 @@ const NotiTextContainer = styled.View`
 `;
 
 const NotiText = styled.Text`
-  color: ${colors.gray52};
+  color: rgba(52, 52, 52, 0.8);
   line-height:22px;
+  font-size:16px;
+  font-weight:500;
 `;
 
 const NotiTime = styled.Text`
   font-size: 14px;
   color: rgba(112,113,114,0.7);
+  font-weight:500;
 `;
 
 const ContentsArea = styled.View``;

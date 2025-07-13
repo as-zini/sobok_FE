@@ -32,6 +32,15 @@ const StartScreenModal = ({ isSignupModalVisible, setIsSignupModalVisible }) => 
     });
   }, []);
 
+  const token = async() => {
+    const token = await AsyncStorage.getItem("access_token")
+    console.log("token",token)
+  }
+
+  useEffect(() => {
+    console.log(token())
+  })
+
 
   return (
     <SafeAreaView>

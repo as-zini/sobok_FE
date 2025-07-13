@@ -33,6 +33,6 @@ const HalfButton = styled.TouchableOpacity`
 `;
 
 const ButtonText = styled.Text`
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
 `;

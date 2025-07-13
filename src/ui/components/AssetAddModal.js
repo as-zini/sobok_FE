@@ -12,8 +12,8 @@ import ai_routine_icon from '../../../assets/routine_icon.png';
 
 import { size } from '../styles/size';
 import { colors } from '../styles/colors';
-import NavigateArrowButton from './NavigateArrowButton';
 import MarginVertical from './MarginVertical';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 
 const AssetAddModal = ({ isAssetAddModalVisible, setIsAssetAddModalVisible }) => {
   const assetCategory = ['적금', 'AI 루틴', '자율루틴'];
@@ -54,15 +54,15 @@ const AssetAddModal = ({ isAssetAddModalVisible, setIsAssetAddModalVisible }) =>
           <MarginVertical top={38} />
           <AssetAddArea>
             {assetCategory.map((el, index) => (
-              <AssetAddEl key={index} style={{ width: index === 0 ? 310 : 144 }}>
+              <AssetAddEl key={index} style={{ width: index === 0 ? 310 : 144, justifyContent: index === 0 ? 'space-between' : 'flex-start'}}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <AssetCategory>{el}</AssetCategory>
-                  <NavigateArrowButton
-                    handleArrowButton={() => handleAddAssetButton(index)}
-                  />
+                  <ArrowButton style={{padding: index === 0 ? 5 : 3}} onPress={() => handleAddAssetButton(index)}>
+                    <MaterialIcons name="keyboard-arrow-right" size={24} color="#AEAEB2" />
+                  </ArrowButton>
                 </View>
                 {index === 0 ? (
-                  <View style={{ flexDirection: 'row', marginTop: 42 }}>
+                  <View style={{ flexDirection: 'row'}}>
                     <AssetText style={{ flex: 1, fontSize: 15 }}>
                       {assetText[index]}
                     </AssetText>
@@ -73,7 +73,7 @@ const AssetAddModal = ({ isAssetAddModalVisible, setIsAssetAddModalVisible }) =>
                   </View>
                 ) : (
                   <>
-                    <AssetText style={{ flex: 1, marginTop: 12 }}>
+                    <AssetText style={{ flex: 1, fontSize:13}}>
                       {assetText[index]}
                     </AssetText>
                     <View
@@ -105,7 +105,7 @@ export default AssetAddModal;
 
 const ModalBody = styled.View`
   width: ${() => `${size.width}px`};
-  height: 620px;
+  height: 650px;
   border-radius: 24px;
   position: absolute;
   bottom: -40px;
@@ -147,6 +147,7 @@ const AssetAddArea = styled.View`
   flex-direction: row;
   flex-wrap: wrap;
   gap: 17px;
+  
 `;
 
 const AssetAddEl = styled.View`
@@ -154,6 +155,7 @@ const AssetAddEl = styled.View`
   height: 144px;
   border-radius: 16px;
   padding: 20px;
+  
 `;
 
 const AssetCategory = styled.Text`
@@ -170,3 +172,9 @@ const AssetText = styled.Text`
 `;
 
 const AssetIcon = styled.Image``;
+
+
+const ArrowButton = styled.TouchableOpacity`
+  justify-content:center;
+  align-items:center;
+`

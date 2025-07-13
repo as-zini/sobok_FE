@@ -183,6 +183,7 @@ export const useSignup = () => {
       await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
       // 로그인 및 동의 화면
       const userData = await GoogleSignin.signIn();
+      console.log(userData.data.idToken)
 
       const response = await baseUrl.post("/api/auth/google/native",{
         idToken: userData.data.idToken

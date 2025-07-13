@@ -213,7 +213,7 @@ const Home = () => {
               <View style={{ width: 327, flexDirection: 'row', alignItems: 'flex-end' }}>
                 <SaveTimeTitle>{`${userInfo.displayName} 님의\n총 자투리 시간`}</SaveTimeTitle>
                 <TouchableOpacity onPress={() => navigation.navigate('ViewSaveTime', { version: '' })}>
-                  <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
+                  <MaterialIcons name="keyboard-arrow-right" size={24} color="#AEAEB2" />
                 </TouchableOpacity>
               </View>
 
@@ -348,7 +348,7 @@ const BorderLine = styled.View`
 
 const SaveTimeTitle = styled.Text`
   font-weight: 700;
-  font-size: 20px;
+  font-size: 16px;
   color: ${colors.gray77};
   flex: 1;
 `;
