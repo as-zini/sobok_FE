@@ -68,8 +68,9 @@ const SavingAlertModal = ({ isAlertModalVisible, setIsAlertModalVisible, id, ver
           }}
         />
         <MarginVertical top={36} />
+        <Background source={routine_pause_bg} />
       </Container>
-      <Background source={routine_pause_bg} />
+      
     </Modal>
   );
 };
@@ -77,22 +78,23 @@ const SavingAlertModal = ({ isAlertModalVisible, setIsAlertModalVisible, id, ver
 export default SavingAlertModal;
 
 const Container = styled.View`
-  width: ${size.width}px;
+  width: ${() => `${size.width}px`};
   padding: 40px 0;
   justify-content: center;
   align-items: center;
   position: absolute;
-  bottom: 0;
+  bottom: -20px;
   left: -20px;
+  height:450px;
 `;
 
 const Background = styled.Image`
   position: absolute;
-  bottom: -20px;
-  left: -20px;
-  width: ${size.width}px;
-  border-radius: 20px;
+  top:0;
+  width: ${() => `${size.width}px`};
+  border-radius: 24px;
   z-index: -1;
+  height:450px;
 `;
 
 const Title = styled.Text`

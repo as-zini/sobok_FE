@@ -45,6 +45,7 @@ import SettingVersion from '../ui/screens/SettingVersion';
 import SettingAccountList from '../ui/screens/SettingAccountList';
 import SettingAccount from '../ui/screens/SettingAccount';
 import Notification from '../ui/screens/Notification';
+import ViewInterest from '../ui/screens/ViewInterest.js';
 
 
 
@@ -131,6 +132,7 @@ const StackNavigation = () => {
       <Stack.Screen name="SettingAccountList" component={SettingAccountList}/>
       <Stack.Screen name='SettingAccount' component={SettingAccount}/>
       <Stack.Screen name="Notification" component={Notification}/>
+      <Stack.Screen name="ViewInterest" component={ViewInterest}/>
     </Stack.Navigator>
   )
 }

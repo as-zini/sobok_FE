@@ -77,15 +77,17 @@ const AddSaveTime = ({ route }) => {
   return (
     <SafeAreaView>
       <Container showsVerticalScrollIndicator={false}>
+        <View style={{alignItems:'center'}}>
         <Header>
           <View style={{ position: 'absolute', left: 0 }}>
             <BackArrowButton />
           </View>
           <HeaderText>자투리 시간</HeaderText>
         </Header>
-
+        <View style={{width:'90%'}}>
         <MarginVertical top={30} />
         <Image source={time_icon} style={{ width: 35, height: 42 }} />
+        <MarginVertical top={18}/>
         <HeaderText style={{ color: colors.fontMain70 }}>
           {`자투리 시간 ${length + 1}`}
         </HeaderText>
@@ -100,6 +102,7 @@ const AddSaveTime = ({ route }) => {
 
         <MarginVertical top={56} />
         <SubHeaderText style={{ color: colors.gray70 }}>반복 요일</SubHeaderText>
+        </View>
         <MarginVertical top={16} />
         <WeekCalandar
           selectedDate={selectedDate}
@@ -143,6 +146,7 @@ const AddSaveTime = ({ route }) => {
           </TrashButton>
           <MarginVertical top={20} />
         </Footer>
+        </View>
       </Container>
       <Background source={savetime_bg} />
     </SafeAreaView>
@@ -155,6 +159,7 @@ export default AddSaveTime;
 const Container = styled.ScrollView`
   width: ${() => `${size.width}px`};
   padding: 0 30px;
+  
 `;
 
 const Background = styled.Image`
@@ -163,6 +168,7 @@ const Background = styled.Image`
   position: absolute;
   top: 0;
   z-index: -1;
+
 `;
 
 const Header = styled.View`
@@ -175,6 +181,7 @@ const Header = styled.View`
 const HeaderText = styled.Text`
   font-size: 18px;
   font-weight: 600;
+  color:${() => `${colors.fontMain80}`};
 `;
 
 const TitleInput = styled(TextInput)`

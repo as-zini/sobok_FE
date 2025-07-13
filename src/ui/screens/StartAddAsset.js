@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image, SafeAreaView } from 'react-native';
+import { Image, SafeAreaView, View } from 'react-native';
 import styled from '@emotion/native';
 import { size } from '../styles/size';
 import { colors } from '../styles/colors';
@@ -53,7 +53,7 @@ const StartAddAsset = ({ route }) => {
         <Description>
           {version === 'Saving' ? assetText[0] : version === 'Ai' ? assetText[1] : assetText[2]}
         </Description>
-        <MarginVertical top={380} />
+        <View style={{position:'absolute', bottom:120}}>
         <Button
           text={
             version === 'Saving'
@@ -64,6 +64,7 @@ const StartAddAsset = ({ route }) => {
           }
           handleButton={() =>  navigation.navigate(version === "Saving" ? "AddInstallmentSaving" : version === "Ai" ? "Test" : "AddFreeRoutine" )}
         />
+        </View>
         <AiRoutineAlertModal
           isPauseModalVisible={isAlertModalVisible}
           setIsPauseModalVisible={setIsAlertModalVisible}
@@ -87,7 +88,6 @@ export default StartAddAsset;
 const Container = styled.View`
   width: ${() => `${size.width}px`};
   height: ${() => `${size.height}px`};
-  justify-content: center;
   align-items: center;
 `;
 

@@ -6,6 +6,7 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import dayjs from 'dayjs';
 import Octicons from 'react-native-vector-icons/Octicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Fontisto from 'react-native-vector-icons/Fontisto';
 
 import savetime_bg from '../../../assets/savetime_bg.png';
 import save_time_bg_first from '../../../assets/report_bg.png';
@@ -29,7 +30,6 @@ const ViewSaveTime = ({ route }) => {
   );
   const [spareTimeList, setSpareTimeList] = useState([]);
   const [durationByDay, setDurationByDay] = useState(0);
-  const [usedSaveTimeMode, setUsedSaveTimeMode] = useState(false);
 
   const { getSpareTimeByDay } = useSaveTime();
 
@@ -73,21 +73,12 @@ const ViewSaveTime = ({ route }) => {
             <BackArrowButton />
           </View>
           {version !== 'first' && (
-            <ModeButton onPress={() => setUsedSaveTimeMode(prev => !prev)}>
-              <ModeText style={{ fontSize: usedSaveTimeMode ? 14 : 18 }}>
-                {usedSaveTimeMode
-                  ? '사용하고 있는\n자투리 시간'
-                  : '자투리 시간'}
+              <ModeText>
+                자투리 시간
               </ModeText>
-              <MaterialIcons
-                name="keyboard-arrow-right"
-                size={20}
-                color="white"
-              />
-            </ModeButton>
           )}
         </Header>
-
+        <View style={{alignItems:'flex-start', width:'100%'}}>
         <MarginVertical top={30} />
         <Image source={TimeIcon} style={{ width: 40, height: 48 }} />
         <MarginVertical top={15} />
@@ -112,6 +103,7 @@ const ViewSaveTime = ({ route }) => {
             </InfoText>
           </>
         )}
+        </View>
 
         <MarginVertical top={40} />
         <WeekCalandar
@@ -123,35 +115,36 @@ const ViewSaveTime = ({ route }) => {
         <HLine />
 
         <ScrollView
-          style={{ maxHeight: version === 'first' ? '28%' : '38%' }}
+          style={{ maxHeight: version === 'first' ? '28%' : '38%', width:'90%'}}
           showsVerticalScrollIndicator={false}
         >
-          <MarginVertical top={26} />
+          <MarginVertical top={32} />
           {spareTimeList.map((el, idx) => (
             <View key={idx}>
               <Row onPress={() => navigation.navigate('AddSaveTime', { spareTimeEl: el, length: idx })}>
                 <TimeLabel>
                   <LabelText style={{ color: '#fff' }}>{el.startTime}</LabelText>
                 </TimeLabel>
-                <Content>
+                <Content style={{justifyContent:'space-between'}}>
                   <LabelText>{el.title}</LabelText>
                   <SubText>{`${el.startTime} - ${el.endTime}`}</SubText>
                 </Content>
                 <IconRow>
-                  <Octicons name="clock" size={16} color="rgba(20,36,72,0.2)" />
+                  <Fontisto name="clock" size={16} color="rgba(20,36,72,0.2)" />
                   <LabelText style={{ color: colors.indigoBlue }}>
                     {minToHour(el.duration)}
                   </LabelText>
                 </IconRow>
               </Row>
               <MarginVertical top={12} />
+              <View style={{backgroundColor:'#fff', height:40, width:1.5, position:'absolute', bottom:20, left:32}}></View>
             </View>
           ))}
-          <Row onPress={() => navigation.navigate('AddSaveTime', { spareTimeEl: false, length: spareTimeList.length })}>
+          <Row onPress={() => navigation.navigate('AddSaveTime', { spareTimeEl: false, length: spareTimeList.length })} style={{height:'auto', alignItems:'center'}}>
             <TimeLabel>
               <LabelText style={{ color: '#fff' }}>+</LabelText>
             </TimeLabel>
-            <Content>
+            <Content style={{justifyContent:'center'}}>
               <LabelText style={{ color: 'rgba(52,52,52,0.6)' }}>
                 자투리 시간 추가하기
               </LabelText>
@@ -178,6 +171,7 @@ const Body = styled.View`
   width: ${() => `${size.width}px`};
   height: ${() => `${size.height}px`};
   padding: 0 30px;
+  align-items:center;
 `;
 
 const Background = styled.Image`
@@ -196,21 +190,12 @@ const Header = styled.View`
   height: 50px;
 `;
 
-const ModeButton = styled.TouchableOpacity`
-  padding: 6px 12px;
-  background-color: ${colors.indigoBlue50};
-  border-radius: 29px;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 120px;
-  align-items: center;
-`;
-
 const ModeText = styled.Text`
-  color: #fff;
+  color: #4C4C4C;
   text-align: center;
   flex-grow: 1;
-  font-weight: 500;
+  font-weight: 600;
+  font-size:16px;
 `;
 
 const TitleText = styled.Text`
@@ -254,19 +239,20 @@ const SubText = styled.Text`
 const Row = styled.TouchableOpacity`
   flex-direction: row;
   gap: 14px;
-  align-items: flex-start;
+  align-items: center;
+  height:95px;
+  align-items:flex-start;
 `;
 
 const Content = styled.View`
   flex-grow: 1;
-  height: 40px;
-  justify-content: center;
+  height:50px;
 `;
 
 const IconRow = styled.View`
   flex-direction: row;
   align-items: center;
-  gap: 3px;
+  gap: 6px;
 `;
 
 const HLine = styled.View`
@@ -279,7 +265,7 @@ const Footer = styled.View`
   width: ${() => `${size.width}px`};
   height: 100px;
   position: absolute;
-  bottom: 70px;
+  bottom: 90px;
   right: 0;
   justify-content: center;
   align-items: center;

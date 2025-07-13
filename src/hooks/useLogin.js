@@ -13,7 +13,7 @@ export const useLogin = () => {
         username:id,
         password:password,
       })
-      console.log(response.data)
+      console.log("data",response.data)
       console.log(response.headers['set-cookie'])
       const refreshToken = response.headers['set-cookie'][0].match(/refreshToken=([^;]*)/)?.[1];
       const accessToken = response.data.accessToken;
