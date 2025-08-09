@@ -20,27 +20,27 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
-  <key>CFBundleURLTypes</key>
-  <array>
-    <dict>
-    <key>CFBundleTypeRole</key>
-    <string>Editor</string>
-    <key>CFBundleURLSchemes</key>
-    <array>
-    <string>kakaof83381080c3d72f68b8b1eb9d49079ae</string>
-		<string>com.googleusercontent.apps.927685447127-a7muurhgj3me105a9vbhbklnq18at29c</string>
-  </array>
-  </dict>
-  </array>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>kakaof83381080c3d72f68b8b1eb9d49079ae</string>
+				<string>com.googleusercontent.apps.927685447127-a7muurhgj3me105a9vbhbklnq18at29c</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
-  <key>KAKAO_APP_KEY</key>
-  <string>f83381080c3d72f68b8b1eb9d49079ae</string>
-  <key>LSApplicationQueriesSchemes</key>
-  <array>
-  <string>kakaokompassauth</string>
-  <string>kakaolink</string>
-  </array>
+	<key>KAKAO_APP_KEY</key>
+	<string>f83381080c3d72f68b8b1eb9d49079ae</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>kakaokompassauth</string>
+		<string>kakaolink</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -78,6 +78,11 @@
 		<string>Coticons.ttf</string>
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

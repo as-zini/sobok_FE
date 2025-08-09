@@ -1,24 +1,55 @@
-import { getMessaging, getToken } from "firebase/messaging";
-
+import firebase from '@react-native-firebase/app';
+import messaging from '@react-native-firebase/messaging';
+import { Platform } from 'react-native';
 
 export const useNotification = () => {
-  const messaging = getMessaging();
 
-  const requestPermission = async() => {
-    const permission = await Notification.requestPermission();
-    if (permission === "granted") {
-        const fcmToken = await getToken(messaging, {
-            vapidKey: "YOUR_PUBLIC_VAPID_KEY",
-        });
-        console.log("FCM Token:", fcmToken);
-        return fcmToken;
-    } else {
-        console.log("Permission denied");
-        return null;
+  // src/push/fcm.js
+  async function requestNotificationPermission() {
+  try {
+    const status = await messaging().requestPermission({
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      provisional: false, // 조용한 권한을 원하면 true
+      sound: true,
+    });
+
+    const AUTHORIZED = messaging.AuthorizationStatus.AUTHORIZED;
+    const PROVISIONAL = messaging.AuthorizationStatus.PROVISIONAL;
+
+    return status === AUTHORIZED || status === PROVISIONAL;
+  } catch (e) {
+    console.warn('requestPermission failed:', e);
+    return false;
+  }
+}
+
+  async function getFcmToken() {
+  try {
+    if (Platform.OS === 'ios') {
+      try {
+        await messaging().registerDeviceForRemoteMessages();
+      } catch (e) {
+        console.warn('registerDeviceForRemoteMessages failed:', e);
+      }
     }
+    const token = await messaging().getToken();
+    return token || null;
+  } catch (e) {
+    console.warn('getToken failed:', e);
+    return null;
+  }
+}
+
+function watchTokenRefresh(onNewToken) {
+  return messaging().onTokenRefresh(onNewToken);
 }
 
   return {
-
+    requestNotificationPermission,
+    getFcmToken,
+    watchTokenRefresh
   }
 }

@@ -17,11 +17,20 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  NSLog(@"[DEBUG] didFinishLaunching start")
+
+  NSString *path = [[NSBundle mainBundle] pathForResource:@"GoogleService-Info" ofType:@"plist"];
+  NSLog(@"[DEBUG] GoogleService-Info.plist path = %@", path);
+
+  if ([FIRApp defaultApp] == nil) {
+    [FIRApp configure]; // ✅ 수동 초기화(안전망)
+  }
   self.moduleName = @"main";
 
   // You can add your custom initial props in the dictionary below.
   // They will be passed down to the ViewController used by React Native.
   self.initialProps = @{};
+  
 
   return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }

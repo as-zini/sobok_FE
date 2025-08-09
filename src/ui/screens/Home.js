@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import styled from '@emotion/native';
+import { firebase } from '@react-native-firebase/app';
 
 import home_bg from '../../../assets/home_bg.png';
 import snow_flake_icon_white from '../../../assets/snow_flake_icon_white.png';
@@ -37,6 +38,7 @@ import home_button_bg from '../../../assets/home_button_bg.png';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import baseUrl from '../../api/baseURL';
 import { getTimeDifference, minToHour } from '../../util';
+import { useNotification } from '../../hooks/useNotification';
 
 dayjs.extend(isSameOrBefore);
 
@@ -55,6 +57,7 @@ const Home = () => {
   const { nowTodo } = useNowTodoStore();
   const { getTotalSpareTime } = useSaveTime();
   const [spareTimeTotal, setSpareTimeTotal] = useState({});
+  const {getFcmToken, requestNotificationPermission, watchTokenRefresh} = useNotification();
 
   const getTimesAfter = (timeString, data) => {
     const [hour, minute, second] = timeString?.split(':');
@@ -93,6 +96,37 @@ const Home = () => {
   useEffect(() => {
     console.log('now!!!!', nowTodo);
   }, [nowTodo]);
+
+  useEffect(() => {
+    console.log('RNFirebase default app name:', firebase.app().name); // => [DEFAULT] 찍히면 OK
+  }, []);
+
+  useEffect(() => {
+    let unsub = null;
+
+    (async () => {
+      const granted = await requestNotificationPermission();
+      if (!granted) {
+        console.warn('알림 권한이 거부되었습니다.');
+        return;
+      }
+
+      const token = await getFcmToken();
+      if (token) {
+        console.log('FCM token:', token);
+        // await registerTokenToBackend(token);
+      }
+
+      unsub = watchTokenRefresh(async (newToken) => {
+        console.log('토큰 갱신됨:', newToken);
+        // await registerTokenToBackend(newToken);
+      });
+    })();
+
+    return () => {
+      if (typeof unsub === 'function') unsub();
+    };
+  }, []);
 
   return (
     <>

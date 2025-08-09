@@ -17,6 +17,12 @@ end
 target 'sobok' do
   config = use_native_modules!
 
+  pod 'GoogleUtilities',      :modular_headers => true
+  pod 'FirebaseCoreInternal', :modular_headers => true
+  pod 'FirebaseCore',         :modular_headers => true
+
+  pod 'Alamofire', '~> 5.9'
+
   use_react_native!(
     :path => config[:reactNativePath],
     # An absolute path to your application root.
