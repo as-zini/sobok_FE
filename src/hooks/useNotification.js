@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import firebase from '@react-native-firebase/app';
 import messaging from '@react-native-firebase/messaging';
 import { Platform } from 'react-native';
@@ -47,9 +48,23 @@ function watchTokenRefresh(onNewToken) {
   return messaging().onTokenRefresh(onNewToken);
 }
 
+async function sendTokenToBack(token){
+  try {
+    const response = await baseUrl.post(`/fcm/register?fcmToken=${token}`,{
+      headers:{
+        Authorization:`Bearer ${token}`
+      }
+    })
+    console.log(response.data)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
   return {
     requestNotificationPermission,
     getFcmToken,
-    watchTokenRefresh
+    watchTokenRefresh,
+     sendTokenToBack
   }
 }

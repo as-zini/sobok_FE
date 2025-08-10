@@ -39,6 +39,9 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import baseUrl from '../../api/baseURL';
 import { getTimeDifference, minToHour } from '../../util';
 import { useNotification } from '../../hooks/useNotification';
+import { Platform } from 'react-native';
+import messaging from '@react-native-firebase/messaging';
+
 
 dayjs.extend(isSameOrBefore);
 
@@ -57,7 +60,7 @@ const Home = () => {
   const { nowTodo } = useNowTodoStore();
   const { getTotalSpareTime } = useSaveTime();
   const [spareTimeTotal, setSpareTimeTotal] = useState({});
-  const {getFcmToken, requestNotificationPermission, watchTokenRefresh} = useNotification();
+  const {getFcmToken, requestNotificationPermission, watchTokenRefresh, sendTokenToBack} = useNotification();
 
   const getTimesAfter = (timeString, data) => {
     const [hour, minute, second] = timeString?.split(':');
@@ -97,36 +100,90 @@ const Home = () => {
     console.log('now!!!!', nowTodo);
   }, [nowTodo]);
 
-  useEffect(() => {
-    console.log('RNFirebase default app name:', firebase.app().name); // => [DEFAULT] 찍히면 OK
-  }, []);
+  // useEffect(() => {
+  //   let unsub = null;
 
-  useEffect(() => {
-    let unsub = null;
+  //   (async () => {
+  //     const granted = await requestNotificationPermission();
+  //     if (!granted) {
+  //       console.warn('알림 권한이 거부되었습니다.');
+  //       return;
+  //     }
 
-    (async () => {
+  //     const token = await getFcmToken();
+  //     if (token) {
+  //       console.log('FCM token:', token);
+  //       await sendTokenToBack(token);
+  //     }
+
+  //     unsub = watchTokenRefresh(async (newToken) => {
+  //       console.log('토큰 갱신됨:', newToken);
+  //       await sendTokenToBack(newToken);
+  //     });
+  //   })();
+
+  //   return () => {
+  //     if (typeof unsub === 'function') unsub();
+  //   };
+  // }, []);
+
+
+const LAST_TOKEN_KEY = 'fcmToken';
+
+useEffect(() => {
+  let unsub;
+  let mounted = true;
+
+  (async () => {
+    try {
       const granted = await requestNotificationPermission();
       if (!granted) {
         console.warn('알림 권한이 거부되었습니다.');
         return;
       }
 
-      const token = await getFcmToken();
-      if (token) {
-        console.log('FCM token:', token);
-        // await registerTokenToBackend(token);
+      // iOS는 원격알림 등록이 필요할 때가 많음
+      if (Platform.OS === 'ios') {
+        try { await messaging().registerDeviceForRemoteMessages(); }
+        catch (e) { console.warn('registerDeviceForRemoteMessages failed:', e); }
       }
 
-      unsub = watchTokenRefresh(async (newToken) => {
-        console.log('토큰 갱신됨:', newToken);
-        // await registerTokenToBackend(newToken);
-      });
-    })();
+      const token = await getFcmToken();
+      if (token) {
+        const prev = await AsyncStorage.getItem(LAST_TOKEN_KEY);
+        if (prev !== token) {
+          await sendTokenToBack(token);
+          await AsyncStorage.setItem(LAST_TOKEN_KEY, token);
+          console.log('토큰 전송(최초/변경):', token);
+        } else {
+          console.log('토큰 변경 없음, 전송 생략');
+        }
+      } else {
+        console.log('토큰 없음(getFcmToken null)');
+      }
 
-    return () => {
-      if (typeof unsub === 'function') unsub();
-    };
-  }, []);
+      // 갱신 구독
+      unsub = watchTokenRefresh(async (newToken) => {
+        if (!mounted || !newToken) return;
+        const prev = await AsyncStorage.getItem(LAST_TOKEN_KEY);
+        if (prev !== newToken) {
+          await sendTokenToBack(newToken);
+          await AsyncStorage.setItem(LAST_TOKEN_KEY, newToken);
+          console.log('토큰 갱신 & 전송:', newToken);
+        } else {
+          console.log('갱신 이벤트였지만 동일 토큰, 전송 생략');
+        }
+      });
+    } catch (e) {
+      console.warn('푸시 초기화 실패:', e);
+    }
+  })();
+
+  return () => {
+    mounted = false;
+    if (typeof unsub === 'function') unsub();
+  };
+}, []);
 
   return (
     <>
