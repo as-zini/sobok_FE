@@ -146,7 +146,7 @@ export default AssetLinkModal;
 
 // Emotion styled components
 const Body = styled.View`
-  width: ${size.width}px;
+  width: ${() => `${size.width}px`};
   position: absolute;
   left: -20px;
   bottom: -20px;
@@ -158,7 +158,7 @@ const Body = styled.View`
 `;
 
 const BgImage = styled.Image`
-  width: ${size.width}px;
+  width:${() => `${size.width}px`};
   height: 550px;
   position: absolute;
   z-index: -1;

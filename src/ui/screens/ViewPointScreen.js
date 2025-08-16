@@ -48,7 +48,7 @@ const ViewPointScreen = () => {
   const BlurChild = () => (
     <View style={{ paddingHorizontal: 30, paddingVertical: 40 }}>
       <ScrollView style={{ minHeight: 200 }}>
-        <View style={{ flexDirection: 'row', gap: 4 }}>
+        <View style={{ flexDirection: 'row', gap: 4, alignItems:'center' }}>
           <SettingPeriodText>
             {`${selectedRange.startDate} - ${selectedRange.endDate}`}
           </SettingPeriodText>

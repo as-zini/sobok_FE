@@ -14,7 +14,7 @@ import MarginVertical from './MarginVertical';
 const originalDays = ['일', '월', '화', '수', '목', '금', '토', ''];
 const loopedDays = [...originalDays, ...originalDays, ...originalDays];
 const screenWidth = Dimensions.get('window').width;
-const itemWidth = screenWidth / 5;
+const itemWidth = screenWidth / 4.3;
 
 const SaveTimeAtHome = ({ totalList }) => {
   const scrollX = useRef(new Animated.Value(0)).current;
@@ -139,7 +139,6 @@ const SliderContainer = styled.View`
   width: 80%;
   height: 100px;
   overflow: hidden;
-  
 `;
 
 const ItemContainer = styled.View`
@@ -149,12 +148,10 @@ const ItemContainer = styled.View`
 `;
 
 const DayText = styled.Text`
-  margin-left:20px;
 `;
 
 const Line = styled.View`
   width: 2px;
   background-color: #e0e0e0;
-  margin-left:20px;
 
 `;

@@ -32,6 +32,7 @@ import { useNowTodoStore } from '../../store/todo';
 import SaveTimeAtHome from '../components/SaveTimeAtHome';
 import saving_time_home_bg from '../../../assets/saving_time_home_bg.png';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useSaveTime } from '../../hooks/useSaveTime';
 import smile_icon from '../../../assets/smile_icon.png';
 import home_button_bg from '../../../assets/home_button_bg.png';
@@ -198,7 +199,7 @@ useEffect(() => {
                   style={{ justifyContent: 'center', alignItems: 'center' }}
                   onPress={() => navigation.navigate('Notification')}
                 >
-                  <Ionicons name="notifications" size={32} color="#fff" />
+                  
                 </TouchableOpacity>
               </View>
 

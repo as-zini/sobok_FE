@@ -44,7 +44,7 @@ const ConnectRoutine = ({ pickedRoutines, setPickedRoutines, setStep }) => {
         총 {filtered.length}개의 루틴
       </CountText>
       <MarginVertical top={40} />
-      <ScrollArea>
+      <ScrollArea showsVerticalScrollIndicator={false}>
         {filtered.map((el, idx) => (
           <TouchableOpacity
             key={idx}
@@ -105,10 +105,9 @@ const ConnectRoutine = ({ pickedRoutines, setPickedRoutines, setStep }) => {
 export default ConnectRoutine;
 
 const Container = styled.View`
-  width: ${() => `${size.width}px`};
-  height: 70%;
+  width: 100%;
+  height: 73%;
   align-items: center;
-  padding-horizontal: 30px;
 `;
 
 const HeaderText = styled.Text`

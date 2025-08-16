@@ -233,7 +233,7 @@ const Test = () => {
           <></>
           }
           {step===4 && detailStep === 1 ?
-          <ScrollView showsVerticalScrollIndicator={false} style={{height:'40%'}}>
+          <ScrollView showsVerticalScrollIndicator={false} style={{height:'38%'}}>
             <InterestCategory>언어</InterestCategory>
             <MarginVertical top={15}/>
             <InterestBody>
@@ -431,9 +431,9 @@ const TestCheckArea = styled.View`
 `
 
 const TestCheckEl = styled.TouchableOpacity`
-  width:${() => `${width*.75/2}px`};
+  width:${() => `${size.width*.79/2}px`};
   background-color:#fff;
-  height:${() => `${width*.75/2}px`};
+  height:${() => `${size.width*.79/2}px`};
   border-radius:15px;
 `
 
@@ -459,9 +459,10 @@ const SpareTimeAddButton = styled.TouchableOpacity`
   height:70px;
   z-index:9;
   border-radius:8px;
-  display:flex
-  justify-content:center;
+  display:flex;
+   justify-content:center;
   align-items:center;
+ 
 `
 
 const SpareTimeButtonText = styled.Text`

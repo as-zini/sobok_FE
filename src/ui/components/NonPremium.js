@@ -18,8 +18,8 @@ const NonPremium = () => {
       <Bg source={bg} resizeMode="cover" />
 
       {/* 상단 경고 배너 */}
-      <TopBanner style={{ position: 'absolute', top: 70, zIndex: 9 }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <TopBanner style={{ position: 'absolute', top: 100, zIndex: 9 }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent:'center' }}>
           <MaterialCommunityIcons name="alert-circle" size={18} color="#fff" />
           <View style={{ width: 7 }} />
           <MarginVertical top={0} />
@@ -86,7 +86,7 @@ const CenterArea = styled.View({
 });
 
 const ActionButton = styled.TouchableOpacity({
-  width: '100%',
+  width: '90%',
   height: 56,
   backgroundColor: '#fff',
   borderRadius: 10,

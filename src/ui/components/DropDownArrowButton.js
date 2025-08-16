@@ -1,16 +1,12 @@
 import React from 'react';
 import styled from '@emotion/native';
 
-import drop_down_arrow_icon from '../../../assets/drop_down_arrow_icon.png';
-import drop_down_icon_white from '../../../assets/drop_down_icon_white.png';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const DropDownArrowButton = ({ size, handleArrowButton, color }) => {
   return (
     <Container onPress={handleArrowButton}>
-      <Icon
-        source={color === 'white' ? drop_down_icon_white : drop_down_arrow_icon}
-        size={size}
-      />
+       <MaterialIcons name="keyboard-arrow-down" size={24} color={color === "white" ? "#fff" : "#777"} />
     </Container>
   );
 };

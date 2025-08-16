@@ -57,10 +57,10 @@ const ViewRoutineListScreen = () => {
   ];
 
   const RenderItem = ({ item, index }) => (
-    <>
+    <View>
       <AssetEl item={item} index={index} isLink={!!item[2]} category="Routine" isTouchable />
       <MarginVertical top={50} />
-    </>
+    </View>
   );
 
   const ListHeader = ({ title, version }) => (
@@ -114,16 +114,18 @@ const ViewRoutineListScreen = () => {
         )}
         <MarginVertical top={isList ? 72 : 23} />
         {isList ? (
-          <ScrollView style={{ marginBottom: 200 }} showsVerticalScrollIndicator={false}>
+          <ScrollView style={{ marginBottom: 200,width:'100%', height:'100%'}} showsVerticalScrollIndicator={false}>
             <SectionList
               sections={DataForList}
               keyExtractor={(item, index) => `${item}-${index}`}
               renderItem={RenderItem}
               renderSectionHeader={({ section: { title } }) => <ListHeader title={title} version={isList} />}
+              style={{width:"100%"}}
             />
+            <MarginVertical top={750}/>
           </ScrollView>
         ) : null}
-        <ScrollView style={{ marginBottom: isList ? 0 : 620 }} showsVerticalScrollIndicator={false}>
+        <ScrollView style={{ marginBottom: isList ? 0 : 620, width:"100%" }} showsVerticalScrollIndicator={false}>
           {!isList &&
             todayRoutineList.map((el, index) => (
               <View key={index}>
@@ -135,7 +137,7 @@ const ViewRoutineListScreen = () => {
             ))}
         </ScrollView>
       </Container>
-      <Background source={require('../../../assets/installment_saving_bg.png')} />
+      <Background source={installment_saving_bg} />
     </SafeAreaView>
   );
 };
@@ -160,7 +162,7 @@ const Background = styled.Image`
 
 const Header = styled.View`
   flex-direction: row;
-  width: 100%;
+  width: ${() => `${size.width}px`};;
   justify-content: center;
   align-items: center;
 `;
@@ -173,6 +175,8 @@ const ToggleButton = styled.TouchableOpacity`
   padding-horizontal: 20px;
   background-color: ${colors.indigoBlue50};
   border-radius: 29px;
+  width:92px;
+  height:32px;
 `;
 
 const ToggleButtonText = styled.Text`

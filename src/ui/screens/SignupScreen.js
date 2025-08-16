@@ -276,9 +276,11 @@ const SignupScreen = ({route}) => {
           <ButtonWrapper>
             <Button text="다음 단계로" handleButton={handleButton} unChecked={step===2 ? checkList[0] : step===3 && version === "email" ? checkList[1] : step===3 && version !== "email" ? false : step === 4 ? checkList[2] : !isActive} />
           </ButtonWrapper>
-          <Background source={signup_bg} />
+          
         </ContentsBody>
+        
       </TouchableWithoutFeedback>
+      <Background source={signup_bg} />
     </SafeAreaView>
   );
 };
@@ -289,14 +291,17 @@ export default SignupScreen;
 const ContentsBody = styled.View(() => ({
   width,
   height,
-  alignItems: 'center'
+  alignItems: 'center',
+  
 }));
 
 const Background = styled.Image(() => ({
-  width,
-  height,
+  width:size.width,
+  height:size.height,
   position: 'absolute',
-  zIndex: -1
+  top:0,
+  zIndex: -1,
+  
 }));
 
 const Header = styled.View(() => ({

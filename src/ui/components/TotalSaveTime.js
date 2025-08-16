@@ -143,11 +143,13 @@ const TotalSaveTime = ({time}) => {
         <MarginVertical top={60}/>
         <SmallText>{`${routineDetailInfo.accountTitle} 적금에\n소복!하게 저금 완료`}</SmallText>
         <MarginVertical top={8}/>
+        <View style={{width:"100%", justifyContent:'center', alignItems:'center'}}>
         <Button text={"시간 모으러 가기"} handleButton={() => navigation.reset({
           routes:[{
             name:'Tabs'
           }]
         })}/>
+        </View>
       </TotalSaveTimeBody>
     </View>
     </ScrollView>

@@ -70,6 +70,7 @@ const TicketPurchase = ({ route }) => {
 구매 가능`}
           </TicketText>
         </TicketArea>
+        <MarginVertical top={32}/>
         <ExpirationText>
           {userInfo.isPremium
             ? '구독권 만료까지'
@@ -93,7 +94,7 @@ const TicketPurchase = ({ route }) => {
                 .add(1, 'M')
                 .format('M월')} 구독권을 구매할 수 있어요!`}
         </SubscribeText>
-        <MarginVertical top={35} />
+        <MarginVertical top={40} />
         <ProgressBar
           version="Point"
           userPoint={userInfo.point}
