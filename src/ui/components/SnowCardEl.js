@@ -19,22 +19,46 @@ import cloud from '../../../assets/cloud_graphic.png';
 import hexagon from '../../../assets/hexagon_graphic.png';
 import hermitCrab from '../../../assets/hermit_crab_graphic.png';
 import spring from '../../../assets/spring_graphic.png';
+import exercise from '../../../assets/exercise_graphic.png';
 import rolypoly from '../../../assets/rolypoly_graphic.png';
 import pudding from '../../../assets/pudding_graphic.png';
 import snake from '../../../assets/snake_graphic.png';
+import globe from '../../../assets/globe_graphic.png';
+import guitar from '../../../assets/guitar_graphic.png'
+import fairy from '../../../assets/fairy_graphic.png';
 import sun from '../../../assets/sun_graphic.png';
 import present from '../../../assets/present_graphic.png';
 import arrowLeft from '../../../assets/calandar_arrow_left.png';
 import arrowRight from '../../../assets/calandar_arrow_right.png';
 
-const images = [
-  top, beaker, donut, book, heart,
-  quarter, halfMoon, full, angel, cloud,
-  hexagon, hermitCrab, spring, rolypoly, pudding,
-  snake, sun, present
-];
+const images = {
+  "english":top,
+  "beaker":beaker,
+  "donut":donut,
+  "reading":book,
+  "like":heart,
+  "quarter":quarter,
+  "half":halfMoon,
+  "full":full,
+  "angel":angel,
+  "cloud":cloud,
+  "hexagon":hexagon,
+  "crab":hermitCrab,
+  "spring":spring,
+  "exercise":exercise,
+  "rolypoly":rolypoly,
+  "pudding":pudding,
+  "snake":snake,
+  "other":guitar,
+  "fairy":fairy,
+  "second-lenguage":globe,
+  "self-improvement":sun,
+  "hobboy":present,
+}
 
-const SnowCardEl = ({ text, type, isArrow, date }) => (
+const SnowCardEl = ({ text, type, isArrow, date }) => {
+  console.log(type)
+  return(
   <Container>
     {isArrow && (
       <ArrowButton>
@@ -58,7 +82,7 @@ const SnowCardEl = ({ text, type, isArrow, date }) => (
       </ArrowButton>
     )}
   </Container>
-);
+)};
 
 export default SnowCardEl;
 

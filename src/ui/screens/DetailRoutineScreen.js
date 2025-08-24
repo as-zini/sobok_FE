@@ -246,7 +246,7 @@ const TotalRoutineCount = styled.Text`
 const RoutineCompleteBar = styled.View`
   position: absolute;
   bottom: 0;
-  width: ${size.width}px;
+  width: ${() => `${size.width}px`};
   height: 110px;
   justify-content: center;
   align-items: center;
