@@ -132,6 +132,6 @@ const CategoryName = styled.Text`
 const RightArrowButton = styled.TouchableOpacity`
   display:flex;
   justify-content:center;
-  align-items:center;
-  padding:20px;
+  align-items:flex-end;
+  padding:10px;
 `

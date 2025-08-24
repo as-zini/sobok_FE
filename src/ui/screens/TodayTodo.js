@@ -188,8 +188,8 @@ const TodayTodo = () => {
             const t2 = dayjs(`${today}T${nowTodo[0].startTime}`);
             if(!nowTodo[0].message && isWithin5Minutes(t2)){
               setIsStart(true)
-        }
-            }}>
+            }
+        }}>
           <Image source={button_icon} style={{width:48, height:34}}/>
           <MarginVertical top={12}/>
           <StartButtonText>{nowTodo[0].message ? "오늘 남은 할 일이 없어요!" : nowTodo.length > 0 ? `${nowTodo[0].title} 시작하기` : ""}</StartButtonText>
@@ -248,13 +248,13 @@ const DetailTodayTime = styled.Text`
 const StartButton = styled.TouchableOpacity`
   width:${() => `${size.width}px`};
   background-color:rgba(255,255,255,.8);
-  height:130px;
+  height:150px;
   border-radius:12px;
   display:flex;
   justify-content:center;
   align-items:center;
   position:absolute;
-  bottom:60px;
+  bottom:40px;
   left:0;
 `
 

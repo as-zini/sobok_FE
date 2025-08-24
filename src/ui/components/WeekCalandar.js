@@ -117,7 +117,7 @@ const WeekCalandar = ({ selectedDate, setSelectedDate, isDuplication, version, a
                 {((isDuplication && selectedDate.includes(idx)) || (!isDuplication && selectedDate === date)) && (
                   <SelectedCircle />
                 )}
-                <DateText style={{ color: ((isDuplication && selectedDate.includes(idx)) || (!isDuplication && selectedDate === date)) ? '#fff' : colors.fontMain }}>
+                <DateText style={{ color: ((isDuplication && selectedDate.includes(idx)) || (!isDuplication && selectedDate === date)) ? '#fff' : colors.fontMain, fontSize:16 }}>
                   {date}
                 </DateText>
               </DateItem>

@@ -47,7 +47,7 @@ const AddFreeRoutine = () => {
     else {
       navigation.navigate("CompleteAddSaving",{
         newSavingData:newSavingData,
-        routineTitle:pickedRoutines.length > 0 ? `${pickedRoutines[0].title}외 ${pickedRoutines.length-1}개 루틴` : ""
+        routineTitle:pickedRoutines.length > 0 ? `${pickedRoutines[0].title}외\n${pickedRoutines.length-1}개 루틴` : ""
       })
     }
     if(step===3){
@@ -141,7 +141,7 @@ const AddFreeRoutine = () => {
             
           </InputArea>
           {step !== 4 ?
-          <View style={{position:'absolute', bottom:150, justifyContent:'center', alignItems:'center'}}>
+          <View style={{position:'absolute', bottom:100, justifyContent:'center', alignItems:'center'}}>
             <Button text={"다음 단계로"} handleButton={handleNextStep} unChecked={step===1&&newSavingData.title.length === 0 ? true: step===2 && newSavingData.target.length === 0 ? true:false}/>
           </View>
           :
@@ -154,7 +154,11 @@ const AddFreeRoutine = () => {
         
         </AddFreeRoutineBody>
         :
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom:  200   }}
+        // iOS에서 세이프에어리어 자동 반영
+        contentInsetAdjustmentBehavior="automatic"
+        keyboardShouldPersistTaps="handled">
         <AddFreeRoutineBody>
           <AddFreeRoutineHeader>
             <BackArrowButton/>
@@ -191,15 +195,15 @@ const AddFreeRoutine = () => {
             
           </InputArea>
           {step !== 4 ?
-          <View style={{position:'absolute', bottom:150, justifyContent:'center', alignItems:'center'}}>
+          <View style={{justifyContent:'center', alignItems:'center'}}>
             <Button text={"다음 단계로"} handleButton={handleNextStep} unChecked={step===1&&newSavingData.title.length === 0 ? true: step===2 && newSavingData.target.length === 0 ? true:false}/>
           </View>
           :
-          <View style={{marginTop: step === 3 ? 20 : 'auto', marginBottom: 40}}>
+          <View style={{marginTop: step === 3 ? 20 : 'auto', marginBottom: 60}}>
             <Button text={"다음 단계로"} handleButton={handleNextStep} unChecked={step===1&&newSavingData.title.length === 0 ? true: step===2 && newSavingData.target.length === 0 ? true:false}/>
+            <MarginVertical top={50}/>
           </View>
           }
-          
         
         
         </AddFreeRoutineBody>
@@ -217,7 +221,7 @@ const AddFreeRoutineBody = styled.View`
   width:${() => `${size.width}px`};
   display:flex;
   align-items:center;
-  min-height:${() => `${size.height}px`}px;
+  height:${() => `${size.height}px`};
   padding:0 30px;
   position:relative;
 `
@@ -242,6 +246,7 @@ const InputArea = styled.View`
   align-items:flex-start;
   width:100%;
   padding:0 10px;
+  
 `
 
 const RoutineCategoryText = styled.Text`

@@ -170,7 +170,7 @@ const AddFreeRoutine = () => {
               <View style={{ alignItems: 'center', width: '100%' }}>
                 <MarginVertical top={60} />
                 <View style={{ width: 294, height: 80, justifyContent: 'center', alignItems: 'center' }}>
-                  <QuestionText>
+                  <QuestionText style={{textAlign:'center'}}>
                     {selectedDate.length > 0
                       ? sortDays([...selectedDate]).map((d) => EngDayToKor(d))
                       : '루틴을 반복할 요일을\n선택해주세요'}

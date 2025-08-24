@@ -2,12 +2,14 @@ import React from 'react';
 import { Image, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { BlurView } from '@react-native-community/blur';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import Home from '../ui/screens/Home';
 import Today from '../ui/screens/Today';
 import Statistic from '../ui/screens/Statistic';
 import MyPage from '../ui/screens/MyPage';
 import { size } from '../ui/styles/size';
+import { colors } from '../ui/styles/colors';
 
 const Tab = createBottomTabNavigator();
 
@@ -40,8 +42,8 @@ const BottomTabNavigation = () => (
             break;
           case 'REPORT':
             iconPath = focused
-              ? require('../../assets/report_icon_focused.png')
-              : require('../../assets/report_icon.png');
+              ? require('../../assets/report_icon.png')
+              : require('../../assets/report_icon.png')
             break;
           case 'MY':
             iconPath = focused
@@ -49,6 +51,7 @@ const BottomTabNavigation = () => (
               : require('../../assets/my_icon.png');
             break;
         }
+        if(route.name === "REPORT" && focused)return <MaterialCommunityIcons name="chart-scatter-plot" size={24} color={colors.fontMain}/>
         return <TabBarIcon iconPath={iconPath} focused={focused} routeName={route.name} />;
       },
       tabBarActiveTintColor: 'black',

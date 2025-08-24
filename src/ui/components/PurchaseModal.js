@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import Modal from 'react-native-modal';
 import { Image } from 'react-native';
 import styled from '@emotion/native';
@@ -24,12 +24,17 @@ const PurchaseModal = ({ isPurchaseModalVisible, setIsPurchaseModalVisible, vers
   const { userInfo } = useUserInfoStore();
   const { getUserInfo } = useGetInfo();
 
-  useCallback(() => {
+  useEffect(() => {
     getUserPremium(setUserPremium);
     getUserInfo();
   }, [isPurchaseModalVisible]);
 
-  React.useEffect(() => {
+
+  useEffect(() => {
+    console.log(isInsufficiency, userPremium, userInfo.point)
+  },[userPremium])
+
+  useEffect(() => {
     if (userPremium > userInfo.point || userInfo.isPremium) {
       setIsInsufficiency(true);
     }
@@ -38,8 +43,7 @@ const PurchaseModal = ({ isPurchaseModalVisible, setIsPurchaseModalVisible, vers
   const titleText =
     version === 'Purchase'
       ? isComplete
-        ? `${dayjs().format('M월')} 구독권
-구매 완료!`
+        ? `${dayjs().format('M월')} 구독권\n구매 완료!`
         : isInsufficiency
         ? '포인트가 부족해요'
         : '프리미엄 구독권을 구매할까요?'
@@ -50,13 +54,13 @@ const PurchaseModal = ({ isPurchaseModalVisible, setIsPurchaseModalVisible, vers
   const bodyText =
     version === 'Purchase'
       ? isComplete
-        ? '이번 달도 소복과 함께 시간을 모아봐요!'
+        ? '이번 달도 소복과 함께\n시간을 모아봐요!'
         : isInsufficiency
-        ? '자투리 시간을 알차게 보내고 포인트를 조금 더 모아봐요!'
-        : '구독권 상세 페이지의 주의사항을 꼭 읽어보고 구매해주세요!'
+        ? '자투리 시간을 알차게 보내고\n포인트를 조금 더 모아봐요!'
+        : '구독권 상세 페이지의 주의사항을\n꼭 읽어보고 구매해주세요!'
       : isComplete
-      ? '루틴 페이지에서 언제든 다시 시작할 수 있어요!'
-      : '잠시 미뤄두었다가 언제든 다시 시작할 수 있어요!';
+      ? '루틴 페이지에서 언제든\n다시 시작할 수 있어요!'
+      : '잠시 미뤄두었다가\n언제든 다시 시작할 수 있어요!';
 
   return (
     <Modal
@@ -108,8 +112,9 @@ const PurchaseModal = ({ isPurchaseModalVisible, setIsPurchaseModalVisible, vers
             <MarginVertical top={36} />
           </>
         )}
-      </Container>
       <Background bottom={isComplete ? -80 : -20} source={routinePauseBg} />
+
+      </Container>
     </Modal>
   );
 };
@@ -117,8 +122,8 @@ const PurchaseModal = ({ isPurchaseModalVisible, setIsPurchaseModalVisible, vers
 export default PurchaseModal;
 
 const Container = styled.View`
-  width: ${size.width}px;
-  height: ${props => props.height}px;
+  width: ${() => `${size.width}px`};
+  height: ${props => `${props.height}px`};
   justify-content: center;
   align-items: center;
   position: absolute;
@@ -150,7 +155,8 @@ const Body = styled.Text`
 const Background = styled(Image)`
   position: absolute;
   bottom: ${props => props.bottom}px;
-  width: ${size.width}px;
+  width: ${() => `${size.width}px`};
   height: 100%;
   z-index: -1;
+  border-radius:20px;
 `;
