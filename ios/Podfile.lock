@@ -1789,7 +1789,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - react-native-safe-area-context (5.5.1):
+  - react-native-safe-area-context (5.6.1):
     - boost
     - DoubleConversion
     - fast_float
@@ -1808,8 +1808,8 @@ PODS:
     - React-hermes
     - React-ImageManager
     - React-jsi
-    - react-native-safe-area-context/common (= 5.5.1)
-    - react-native-safe-area-context/fabric (= 5.5.1)
+    - react-native-safe-area-context/common (= 5.6.1)
+    - react-native-safe-area-context/fabric (= 5.6.1)
     - React-NativeModulesApple
     - React-RCTFabric
     - React-renderercss
@@ -1820,7 +1820,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - react-native-safe-area-context/common (5.5.1):
+  - react-native-safe-area-context/common (5.6.1):
     - boost
     - DoubleConversion
     - fast_float
@@ -1849,7 +1849,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - react-native-safe-area-context/fabric (5.5.1):
+  - react-native-safe-area-context/fabric (5.6.1):
     - boost
     - DoubleConversion
     - fast_float
@@ -2386,15 +2386,15 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - RNFBApp (23.0.0):
+  - RNFBApp (23.1.1):
     - Firebase/CoreOnly (= 12.1.0)
     - React-Core
-  - RNFBMessaging (23.0.0):
+  - RNFBMessaging (23.1.1):
     - Firebase/Messaging (= 12.1.0)
     - FirebaseCoreExtension
     - React-Core
     - RNFBApp
-  - RNGestureHandler (2.27.1):
+  - RNGestureHandler (2.28.0):
     - boost
     - DoubleConversion
     - fast_float
@@ -2453,7 +2453,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - RNScreens (4.11.1):
+  - RNScreens (4.15.2):
     - boost
     - DoubleConversion
     - fast_float
@@ -2481,10 +2481,10 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RNScreens/common (= 4.11.1)
+    - RNScreens/common (= 4.15.2)
     - SocketRocket
     - Yoga
-  - RNScreens/common (4.11.1):
+  - RNScreens/common (4.15.2):
     - boost
     - DoubleConversion
     - fast_float
@@ -2514,7 +2514,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - RNVectorIcons (10.2.0):
+  - RNVectorIcons (10.3.0):
     - boost
     - DoubleConversion
     - fast_float
@@ -2894,7 +2894,7 @@ SPEC CHECKSUMS:
   React-Mapbuffer: 0c045c844ce6d85cde53e85ab163294c6adad349
   React-microtasksnativemodule: d9499269ad1f484ae71319bac1d9231447f2094e
   react-native-blur: 477fac85a42b5506232ef1d2b82aad359feadd26
-  react-native-safe-area-context: d3738f0c3b1fcefaed874a45891b0d44306c47c1
+  react-native-safe-area-context: 8ed800930eb7d0b6651218f69656e823d37b6ef7
   react-native-splash-screen: 95994222cc95c236bd3cdc59fe45ed5f27969594
   React-NativeModulesApple: 983f3483ef0a3446b56d490f09d579fba2442e17
   React-oscompat: 114036cd8f064558c9c1a0c04fc9ae5e1453706a
@@ -2929,12 +2929,12 @@ SPEC CHECKSUMS:
   ReactCommon: 17fd88849a174bf9ce45461912291aca711410fc
   RNAppleAuthentication: c3dddf5918126c9aae85dc2e2ce9fb87835e9e04
   RNCAsyncStorage: 1f04c8d56558e533277beda29187f571cf7eecb2
-  RNFBApp: 02bdc42d08f52220865f83de721e3deec9c2b84c
-  RNFBMessaging: d702f67c6c947ae0831c0d6721029d7e5a863f7d
-  RNGestureHandler: 5e1a1605659c22098719fc2e8aee453fe728f52e
+  RNFBApp: 053f79dccb3e34415dac9a5167bd33094d8a1441
+  RNFBMessaging: 0fec4854dc48e377b80e1e9bc54841ed390fef3c
+  RNGestureHandler: db29d3e7edf41a11d133cc3ffd4029762376ed1a
   RNGoogleSignin: c20826f5f26e506c7fde2e6efe80e155c50fec55
-  RNScreens: ee2abe7e0c548eed14e92742e81ed991165c56aa
-  RNVectorIcons: ef9b4b0b786053ebdd63ee2972f48de9633ba166
+  RNScreens: 5217f22bdb7bf62fe76ff5bec2b4bb9aebb11eeb
+  RNVectorIcons: be4d047a76ad307ffe54732208fb0498fcb8477f
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: daa1e4de4b971b977b23bc842aaa3e135324f1f3
 
