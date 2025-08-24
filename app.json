@@ -1,4 +1,19 @@
 {
-  "name": "sobok",
-  "displayName": "sobok"
+  "expo": {
+    "name": "sobok",
+    "slug": "sobok-new",
+    "version": "1.0.0",
+    "ios": {
+      "bundleIdentifier": "com.wawachi.sobok",
+      "buildNumber": "1"
+    },
+    "android": {
+      "package": "com.wawachi.sobok"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "299f9deb-56e8-49f8-9640-ba6563a09d29"
+      }
+    }
+  }
 }
