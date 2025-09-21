@@ -57,7 +57,7 @@ const DetailSnowCard = ({route}) => {
         <MarginVertical top={24}/>
         <SnowFlakeIcon color={'indigo'} size={16}/>
         <MarginVertical top={11}/>
-        <Title>{`${cardInfo[type].title}\n눈조각`}</Title>
+        <Title>{`${cardInfo[type].title}\n눈 조각`}</Title>
         <MarginVertical top={16}/>
         <Text>{cardInfo[type].text}</Text>
       </DetailSnowCardBody>

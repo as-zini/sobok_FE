@@ -161,9 +161,8 @@ const SignupScreen = ({route}) => {
               <KeyboardAwareScrollView
                 keyboardShouldPersistTaps="handled"
                 enableOnAndroid
-                contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 20 }}
               >
-                <ContentText>{contentsText[2]}</ContentText>
+                <ContentText style={{marginBottom:0}}>{contentsText[2]}</ContentText>
                 <CategoryText>{categoryText[2][0]}</CategoryText>
                 <Row>
                   <TextInput
@@ -201,16 +200,13 @@ const SignupScreen = ({route}) => {
               </KeyboardAwareScrollView>
             ) : step === 4 ? (
               <View style={{height:'300%'}}>
-
-              
               <KeyboardAwareScrollView
                 keyboardShouldPersistTaps="handled"
                 enableOnAndroid
                 showsVerticalScrollIndicator={false}
-                contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 20, paddingBottom:20}}
                 style={{height:100}}
               >
-                <ContentText>{contentsText[3]}</ContentText>
+                <ContentText style={{marginBottom:0}}>{contentsText[3]}</ContentText>
                 <CategoryText>{categoryText[3][0]}</CategoryText>
                 <Row>
                   <TextInput
@@ -249,10 +245,10 @@ const SignupScreen = ({route}) => {
                   value={varifyCode}
                   onChange={e => setVarifyCode(e.nativeEvent.text)}
                 />
-                {!isVarified && <CheckIcon source={check_icon} style={{ bottom:30 }} />}
+                {isVarified && <CheckIcon source={check_icon} style={{ bottom:30 }} />}
                 <Line />
                 </View>
-                <CategoryText>{placeholderText[3][3]}</CategoryText>
+                <CategoryText>{categoryText[3][2]}</CategoryText>
                 <TextInput
                   placeholder={placeholderText[3][3]}
                   placeholderTextColor="#fff"
@@ -292,7 +288,7 @@ const ContentsBody = styled.View(() => ({
   width,
   height,
   alignItems: 'center',
-  
+  paddingHorizontal:40
 }));
 
 const Background = styled.Image(() => ({
@@ -375,9 +371,10 @@ const PhoneIcon = styled.Image`
 `;
 
 const ErrorText = styled.Text`
-  color: ${colors.fontMain};
+  color: ${colors.error};
   font-weight: 500;
-  font-size: 16px;
+  font-size: 14px;
+  margin-top:-20px;
   margin-bottom: 20px;
 `;
 

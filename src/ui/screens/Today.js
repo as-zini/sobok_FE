@@ -156,7 +156,7 @@ const Today = () => {
                       return(
                         <View key={idx} style={{width:"100%"}}>
                       <TodoEl data={[todo.title, todo.linkApp, minToHour(todo.duration), `${todo.startTime?.slice(0,5)} - ${todo.endTime?.slice(0,5)}`]} index={idx}/>
-                      <MarginVertical top={10}/>
+                      <MarginVertical top={26}/>
                       </View>
                     )
                     })}

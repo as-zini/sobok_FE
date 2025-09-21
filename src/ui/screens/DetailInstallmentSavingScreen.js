@@ -78,19 +78,6 @@ const DetailInstallmentSavingScreen = ({route}) => {
           <DropDownArrowButton size={16} handleArrowButton={() => setIsCalandarModalVisible(true)}/>
         </View>
         <MarginVertical top={32}/>
-        {/* <SectionList
-            sections={Data}
-            keyExtractor={(item, index) => item + index}
-            scrollEnabled={false}
-            renderItem={({item, index}) => (
-              <LenderItem item={item} index={index}></LenderItem>
-            )}
-            renderSectionHeader={({section: {title}}) => (
-              <ListHeader title={title}/>
-            )}
-          >
-        </SectionList> */}
-        
         {savingLog.map((el,index) => {
           return(
             <View key={index}>

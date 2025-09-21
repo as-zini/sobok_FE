@@ -22,11 +22,10 @@ const TodoEl = ({ data, index, todoInfo, routineTitle, isTouchable, days }) => {
     : undefined;
 
   return (
-    <Container onPress={onPress}>
+    <Container onPress={onPress} style={{gap:8}}>
       <IndexCircle>
         <IndexText>{index + 1}</IndexText>
       </IndexCircle>
-
       <Row>
         <TitleText>{data[0]}</TitleText>
         <DueTimeText>{data[2]}</DueTimeText>

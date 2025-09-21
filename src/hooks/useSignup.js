@@ -54,6 +54,7 @@ export const useSignup = () => {
       setPhoneChecked(true);
     } catch (error) {
       console.log(error)
+      setPhoneChecked(false);
     }
   }
 

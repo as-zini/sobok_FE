@@ -51,9 +51,9 @@ const images = {
   "snake":snake,
   "other":guitar,
   "fairy":fairy,
-  "second-lenguage":globe,
+  "second-language":globe,
   "self-improvement":sun,
-  "hobboy":present,
+  "hobby":present,
 }
 
 const SnowCardEl = ({ text, type, isArrow, date }) => {

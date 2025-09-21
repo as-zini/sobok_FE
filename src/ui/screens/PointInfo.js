@@ -14,6 +14,7 @@ import MarginVertical from '../components/MarginVertical';
 
 import crownIcon from '../../../assets/crown_icon.png';
 import pointInfoImg1 from '../../../assets/point_info_img1.png';
+import pointInfoImg2 from '../../../assets/point_info_img2.png';
 import calendarIcon from '../../../assets/calandar_icon.png';
 import reportIcon from '../../../assets/report_arrive_icon.png';
 import snowCardIcon from '../../../assets/snow_card_icon.png';
@@ -33,19 +34,19 @@ const PointInfo = () => {
             <HeaderText>프리미엄 구독권</HeaderText>
           </Header>
           <MarginVertical top={170} />
-          <Image source={crownIcon} />
+          <Image source={crownIcon} style={{width:48, height:48}}/>
           <PlanButton onPress={() => navigation.goBack()}>
             <PlanText>소복 프리미엄 구독권</PlanText>
           </PlanButton>
           <MarginVertical top={16} />
           <TopTitle>
-            {`${userInfo.displayName} 님께서 쌓은 시간, 지금 보여드릴게요!`}
+            {`${userInfo.displayName} 님께서 쌓은 시간,\n지금 보여드릴게요!`}
           </TopTitle>
           <MarginVertical top={30} />
           <SnowFlakeIcon size={16} color="white" />
           <MarginVertical top={10} />
           <HeaderText>
-            {'한 달 동안 꾸준히 남겨온 시간의 발자국을 모두 모아 보여드려요!'}
+            {'한 달 동안 꾸준히 남겨온\n시간의 발자국을 모두 모아 보여드려요!'}
           </HeaderText>
         </TopArea>
         <InfoArea>
@@ -62,17 +63,17 @@ const PointInfo = () => {
             <SnowFlakeIcon size={16} color="indigo" />
             <MarginVertical top={7} />
             <InfoText>
-              {'매달, 언제 얼마나 시간을 모았는지 자세하게 보여드립니다!'}
+              {'매달, 언제 얼마나 시간을 모았는지\n자세하게 보여드립니다!'}
             </InfoText>
             <MarginVertical top={25} />
-            <Image source={pointInfoImg1} />
+            <Image source={pointInfoImg1} style={{width:'100%', resizeMode:'contain', height:210}}/>
             <MarginVertical top={10} />
             <Row>
               <MaterialIcons name="info" size={24} color={colors.fontMain50} />
               <CautionText>
-                {'구매 시점으로부터 한 달 동안 모든 통계를 볼 수 있습니다.'}
+                {'구매 시점으로부터 한 달 동안\n모든 통계를 볼 수 있습니다.'}
               </CautionText>
-              <Icon source={calendarIcon} style={{ transform: [{ rotate: '15deg' }] }} />
+              <Icon source={calendarIcon} style={{ transform: [{ rotate: '15deg' }] , width:80, resizeMode:'contain'}} />
             </Row>
           </InfoEl>
           <MarginVertical top={65} />
@@ -88,15 +89,15 @@ const PointInfo = () => {
             <SnowFlakeIcon size={16} color="indigo" />
             <MarginVertical top={7} />
             <InfoText>
-              {'매달 1일, 한 달 동안의 자투리 시간 활용을 꼼꼼하게 분석해 드릴게요!'}
+              {'매달 1일, 한 달 동안의 자투리 시간 활용을\n꼼꼼하게 분석해 드릴게요!'}
             </InfoText>
             <MarginVertical top={25} />
-            <Image source={pointInfoImg1} />
+            <Image source={pointInfoImg2} style={{width:'100%', resizeMode:'contain', height:260}}/>
             <MarginVertical top={10} />
             <Row>
               <MaterialIcons name="info" size={24} color={colors.fontMain50} />
               <CautionText>
-                {'구독한 기간 동안의 리포트만 볼 수 있습니다.'}
+                {'구독한 기간 동안의\n리포트만 볼 수 있습니다.'}
               </CautionText>
               <Icon source={reportIcon} style={{ transform: [{ rotate: '15deg' }] }} />
             </Row>
@@ -114,16 +115,15 @@ const PointInfo = () => {
             <SnowFlakeIcon size={16} color="indigo" />
             <MarginVertical top={7} />
             <InfoText>
-              {'매달 1일, 한 달 동안의 자투리 시간 활용을 꼼꼼하게 분석해 드릴게요!'}
+              {'매달, 언제 얼마나 시간을 모았는지\n자세하게 보여드립니다!'}
             </InfoText>
             <MarginVertical top={25} />
-            <SnowCardEl text={'구름모양의 눈 조각'} type={9} date={'2025.04'} />
+            <SnowCardEl text={'구름모양의 눈 조각'} type={"cloud"} date={'2025.04'} />
             <MarginVertical top={15} />
             <Row>
               <MaterialIcons name="info" size={24} color={colors.fontMain50} />
-              <CautionText>눈카드는
-리포트와 함께 제공됩니다.</CautionText>
-              <Icon source={snowCardIcon} />
+              <CautionText>{"눈카드는 리포트와 함께\n제공됩니다."}</CautionText>
+              <Icon source={snowCardIcon} style={{width:92, resizeMode:'contain'}}/>
             </Row>
           </InfoEl>
           <MarginVertical top={150} />
