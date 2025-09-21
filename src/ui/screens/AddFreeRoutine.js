@@ -46,13 +46,13 @@ const AddFreeRoutine = () => {
 
   const EngDayToKor = (day) => {
     switch (day) {
-      case 'SUNDAY': return '일';
-      case 'MONDAY': return '월';
-      case 'TUESDAY': return '화';
-      case 'WEDNESDAY': return '수';
-      case 'THURSDAY': return '목';
-      case 'FRIDAY': return '금';
-      case 'SATURDAY': return '토';
+      case 'SUNDAY': return '일 ';
+      case 'MONDAY': return '월 ';
+      case 'TUESDAY': return '화 ';
+      case 'WEDNESDAY': return '수 ';
+      case 'THURSDAY': return '목 ';
+      case 'FRIDAY': return '금 ';
+      case 'SATURDAY': return '토 ';
     }
   };
 
@@ -169,7 +169,7 @@ const AddFreeRoutine = () => {
             {step === 2 && (
               <View style={{ alignItems: 'center', width: '100%' }}>
                 <MarginVertical top={60} />
-                <View style={{ width: 294, height: 80, justifyContent: 'center', alignItems: 'center' }}>
+                <View style={{ width: 294, height: 80, justifyContent: 'center', alignItems: 'center'}}>
                   <QuestionText style={{textAlign:'center'}}>
                     {selectedDate.length > 0
                       ? sortDays([...selectedDate]).map((d) => EngDayToKor(d))

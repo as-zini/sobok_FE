@@ -11,7 +11,8 @@ const colors = {
   fontSub:'#4c4c4c',
   gray77:"#777777",
   darkGray:"#4A5660",
-  gray70:"#707172"
+  gray70:"#707172",
+  error:"#FF4848"
 }
 
 export {colors};

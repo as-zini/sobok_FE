@@ -228,6 +228,8 @@ const AddTodoBody = styled.View`
   justify-content: center;
   align-items: center;
   padding: 0 30px;
+  width:${() => `${size.width}px`};
+  height: ${() => `${size.height}px`};
 `;
 
 const AddTodoHeader = styled.View`
@@ -304,7 +306,7 @@ const TrashButtonIcon = styled.Image`
 const AddTodoBg = styled.Image`
   position: absolute;
   top: 0;
-  width: ${size.width}px;
-  height: ${size.height}px;
+  width: ${() => `${size.width}px`};
+  height: ${() => `${size.height}px`};
   z-index: -1;
 `;

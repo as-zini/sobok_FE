@@ -17,6 +17,7 @@ import Button from '../components/Button';
 import ProgressBar from '../components/ProgressBar';
 import BackArrowButton from '../components/BackArrowButton';
 import PurchaseModal from '../components/PurchaseModal';
+import ticketUncheckIcon from '../../../assets/ticket_uncheck_icon.png'
 
 const TicketPurchase = ({ route }) => {
   const { userInfo } = useUserInfoStore();
@@ -38,8 +39,8 @@ const TicketPurchase = ({ route }) => {
           </View>
           <Title>구독권 구매하기</Title>
         </Header>
-        <MarginVertical top={50} />
-        <Image source={crownIconIndigo} />
+        <MarginVertical top={50}/>
+        <Image source={crownIconIndigo} style={{width:20,height:20}}/>
         <TouchableOpacity
           style={{
             width: 140,
@@ -57,10 +58,10 @@ const TicketPurchase = ({ route }) => {
         </TouchableOpacity>
         <MarginVertical top={44} />
         <TicketArea>
-          <Image source={ticketImg} style={{ zIndex: 2 }} />
+          <Image source={ticketImg} style={{ zIndex: 2 ,width:240, height:110, resizeMode:'contain'}} />
           <Image
-            source={ticketCheckIcon}
-            style={{ position: 'absolute', top: 60, left: 110, zIndex: 2 }}
+            source={userInfo.isPremium ? ticketCheckIcon : ticketUncheckIcon}
+            style={{ position: 'absolute', top:14,zIndex: 2 , width:32,height:32}}
           />
           <TicketText>
             {userInfo.isPremium
@@ -129,7 +130,7 @@ const Body = styled.View`
 const Background = styled.Image`
   position: absolute;
   width: ${() => `${size.width}px`};
-  height: ${size.height}px;
+  height: ${() => `${size.height}px`};;
   top: 0;
   z-index: -1;
 `;
@@ -148,15 +149,16 @@ const Title = styled.Text`
   color: ${colors.darkGray};
 `;
 
-const TicketArea = styled.View``;
+const TicketArea = styled.View`
+  align-items:center
+`;
 
 const TicketText = styled.Text`
   font-size: 18px;
   font-weight: 600;
   color: #fff;
   position: absolute;
-  left: 95px;
-  top: 60px;
+  top: 50px;
   text-align: center;
   z-index: 2;
 `;

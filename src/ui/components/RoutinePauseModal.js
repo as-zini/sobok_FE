@@ -131,7 +131,7 @@ const Background = styled(Image)`
   position: absolute;
   bottom: ${props => props.bottom}px;
   left: 0px;
-  width: ${size.width}px;
+  width: 100%;
   height: 100%;
   z-index: -1;
   border-radius:20px;
