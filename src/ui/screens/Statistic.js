@@ -73,6 +73,10 @@ const Statistic = () => {
     getContinuitySuccess(setAchieve)
   },[])
 
+  useEffect(() => {
+    console.log(selectedRange)
+  }, [selectedRange])
+
   function getWeekOfMonth() {
     const startOfMonth = today.startOf('month');
     const startDayOfWeek = startOfMonth.day(); // 0(일) ~ 6(토)

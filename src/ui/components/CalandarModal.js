@@ -48,6 +48,7 @@ const CalandarModal = ({
           <Calandar selectedRange={selectedRange} setSelectedRange={setSelectedRange} />
           <MarginVertical top={20} />
           <Footer>
+            <View style={{flexGrow:1}}>
             <PeriodText>
               {selectedRange.startDate
                 ? `${selectedRange.startDate}`
@@ -68,6 +69,7 @@ const CalandarModal = ({
                 </Text>
               )}
             </PeriodText>
+            </View>
             <SmallButton
               text="확인"
               width={100}
@@ -77,8 +79,8 @@ const CalandarModal = ({
               handleButton={handleCalandarModal}
             />
           </Footer>
-        </ModalContainer>
         <BackgroundImage source={calandar_modal_bg} />
+        </ModalContainer>
       </Modal>
     </SafeAreaView>
   );
@@ -87,14 +89,17 @@ const CalandarModal = ({
 export default CalandarModal;
 
 const ModalContainer = styled.View`
-  width: ${size.width}px;
-  height: 600px;
+  width: ${() => `${size.width}px`};
+  height: 500px;
   padding-horizontal: 40px;
+  position:absolute;
+  bottom:-20px;
+  left:-20px;
 `;
 
 const BackgroundImage = styled.Image`
   position: absolute;
-  width: ${size.width}px;
+  width: ${() => `${size.width}px`};
   height: 600px;
   top: 0;
   border-radius: 20px;

@@ -4,7 +4,7 @@ import NavigationService from '../ui/components/NavigationService';
 
 const baseUrl = axios.create({
   baseURL: 'https://sobok-app.com',
-  timeout: 7000,
+  timeout: 10000,
   headers: { 'Content-Type': 'application/json' },
   withCredentials: true,
 });

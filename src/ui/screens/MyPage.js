@@ -94,7 +94,7 @@ const MyPage = () => {
           <MarginVertical top={12}/>
           <MyPageTitle>{`안녕하세요,\n${userInfo.displayName} 님`}</MyPageTitle>
           <MarginVertical top={15}/>
-          <MyPageText>오늘도 소복이{"\n"}시간을  쌓아볼까요?</MyPageText>
+          <MyPageText>오늘도 소복이{"\n"}시간을 쌓아볼까요?</MyPageText>
         </ProfileArea>
         <MarginVertical top={48}/>
         <MyInfoArea>
@@ -191,7 +191,7 @@ const SettingButton = styled.TouchableOpacity`
   height:50px;
   display:flex;
   justify-content:center;
-  align-items:center;
+  align-items:flex-end;
 `
 
 
@@ -221,10 +221,11 @@ const MyPageText = styled.Text`
   font-size:18px;
   color:${colors.fontMain70};
   line-height:26px;
+  text-align:start;
 `
 
 const MyInfoArea = styled.View`
-  width:300px;
+  width:100%;
   display:flex;
   align-items:flex-start;
 `

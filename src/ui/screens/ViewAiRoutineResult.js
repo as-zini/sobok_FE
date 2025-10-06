@@ -113,7 +113,13 @@ const ViewAiRoutineResult = ({route}) => {
           {routineInfo.todos.map((el,index) => {
             return(
               <View key={index}>
-                <TodoEl data={[el.title,"", `${minToHour(el.duration)}`, version === "free" ? `${el.startTime.slice(0,6)} - ${el.endTime.slice(0,6)}`:`${el.start_time} - ${el.end_time}`]} index={index} isTouchable={false}/>
+                <TodoEl
+                  data={[el.title,"", `${minToHour(el.duration)}`, version === "free" ? `${el.startTime.slice(0,5)} - ${el.endTime.slice(0,5)}`:`${el.start_time} - ${el.end_time}`]}
+                  index={index}
+                  isTouchable={version === "free" ? true : false}
+                  todoInfo={el}
+                  routineTitle={routineInfo?.title}
+                  days={routineInfo?.days}/>
                 <MarginVertical top={40}/>
               </View>
             )

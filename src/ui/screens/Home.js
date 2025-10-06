@@ -262,7 +262,7 @@ useEffect(() => {
                 <TotalTimeList>
                   <TotalTimeEl onPress={() => navigation.navigate('ViewSave')}>
                     <View style={{ maxWidth: 60, height: 30, justifyContent: 'center' }}>
-                      <TotalTimeIcon source={installment_saving_icon} style={{ width: 40, height: 30 }} />
+                      <TotalTimeIcon source={installment_saving_icon} style={{ width: 40, height: 30,resizeMode:'contain' }} />
                     </View>
                     <View style={{ flex: 2 }}>
                       <TotalTimeCategory>적금</TotalTimeCategory>
@@ -275,7 +275,7 @@ useEffect(() => {
 
                   <TotalTimeEl onPress={() => navigation.navigate('ViewRoutine')}>
                     <View style={{ maxWidth: 60, height: 30, justifyContent: 'center' }}>
-                      <TotalTimeIcon source={routine_icon} style={{ width: 40, height: 25 }} />
+                      <TotalTimeIcon source={routine_icon} style={{ width: 40, height: 25, resizeMode:'contain' }} />
                     </View>
                     <View style={{ flex: 2 }}>
                       <TotalTimeCategory>루틴</TotalTimeCategory>
@@ -288,7 +288,7 @@ useEffect(() => {
 
                   <TotalTimeEl onPress={() => navigation.navigate('ViewPoint')}>
                     <View style={{ maxWidth: 60, height: 30, justifyContent: 'center' }}>
-                      <TotalTimeIcon source={point_icon} style={{ width: 40, height: 40 }} />
+                      <TotalTimeIcon source={point_icon} style={{ width: 40, height: 40,resizeMode:'contain' }} />
                     </View>
                     <View style={{ flex: 2 }}>
                       <TotalTimeCategory>포인트</TotalTimeCategory>

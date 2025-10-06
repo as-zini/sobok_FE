@@ -59,6 +59,7 @@ export const useSignup = () => {
   }
 
   const handleSmsVarify = async(phone,code, setIsVarified) => {
+    console.log(phone, code)
     try {
       const response = await baseUrl.post('/sms/verify',{
         phoneNumber:phone,

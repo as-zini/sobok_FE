@@ -103,7 +103,7 @@ const Container = styled.View`
   align-items: center;
   position: absolute;
   bottom: 0px;
-  border-radius: 20px;
+  border-radius:20px;
   overflow: hidden;
 `;
 
@@ -131,7 +131,7 @@ const Background = styled(Image)`
   position: absolute;
   bottom: ${props => props.bottom}px;
   left: 0px;
-  width: 100%;
+  width: ${() => `${size.width}px`};
   height: 100%;
   z-index: -1;
   border-radius:20px;

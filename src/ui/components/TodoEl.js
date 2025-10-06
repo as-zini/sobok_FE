@@ -10,7 +10,7 @@ import { size } from '../styles/size';
 const TodoEl = ({ data, index, todoInfo, routineTitle, isTouchable, days }) => {
   const navigation = useNavigation();
 
-  const Container = isTouchable ? TouchableBody : StaticBody;
+  const Container = TouchableBody
   const onPress = isTouchable
     ? () =>
         navigation.navigate('DetailTodo', {
@@ -22,7 +22,7 @@ const TodoEl = ({ data, index, todoInfo, routineTitle, isTouchable, days }) => {
     : undefined;
 
   return (
-    <Container onPress={onPress} style={{gap:8}}>
+    <Container onPress={onPress} style={{gap:8}} disabled={isTouchable ? false : true}>
       <IndexCircle>
         <IndexText>{index + 1}</IndexText>
       </IndexCircle>
@@ -49,12 +49,6 @@ export default TodoEl;
 /* Emotion styled components */
 
 const TouchableBody = styled.TouchableOpacity`
-  width: 100%;
-  height: 64px;
-  flex-direction: column;
-`;
-
-const StaticBody = styled.TouchableOpacity`
   width: ${() => `${(size.width - 60) * 0.9}px`};
   height: 64px;
   flex-direction: column;

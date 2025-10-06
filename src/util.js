@@ -31,4 +31,17 @@ export function getTimeDifference(startTime, endTime) {
   // "XH YM" 형식으로 반환
   return hours !== 0 ? `${hours}H ${minutes}M` : `${minutes}M`;
 }
- 
+
+export function debouce(cb, wait){
+  let timer = null
+  
+  return function(...args) {
+    // 이전 타이머 취소
+    if (timer) clearTimeout(timer);
+
+    // 새 타이머 등록
+    timer = setTimeout(() => {
+      cb(...args);  // 마지막 인자로 실행
+    }, wait);
+  };
+}
