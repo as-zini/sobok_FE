@@ -27,9 +27,9 @@ export const useRoutine = () => {
   }
 
   const getRoutineByCalandar = async(selectedDate, setTodayRoutineList, isNextMonth) => {
-    const year = dayjs().get("year");
-    const month = String(selectedDate).length === 1 && isNextMonth === true ? dayjs().add(1,'month').format("MM") : dayjs().format("MM");
     
+    const year = dayjs().get("year");
+    const month = String(selectedDate).length === 1 && isNextMonth ? `${dayjs().add(1,'month').format("MM")}` : `${dayjs().format("MM")}`;
     
     try {
       const token = await AsyncStorage.getItem("access_token")
@@ -155,10 +155,11 @@ export const useRoutine = () => {
         days: newRoutineData.days,
         todos:newRoutineData.todos
       },{
+        timeout:15000,
         headers:{
           Authorization:`Bearer ${token}`
         }
-      })
+      },)
       console.log(response.data);
       navigation.navigate("AiRoutineComplete",{isComplete:true})
     } catch (error) {

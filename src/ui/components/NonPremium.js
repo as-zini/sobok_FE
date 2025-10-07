@@ -37,7 +37,7 @@ const NonPremium = () => {
           {`구독권을 구매하고\n쌓인 시간을 확인해보세요!`}
         </BannerText>
         <MarginVertical top={20} />
-        <Image source={crown_icon} />
+        <Image source={crown_icon} style={{width:40, height:40}}/>
         <MarginVertical top={8} />
         <ActionButton onPress={() => navigation.navigate('ViewPoint')}>
           <ButtonText style={{ color: colors.indigoBlue }}>

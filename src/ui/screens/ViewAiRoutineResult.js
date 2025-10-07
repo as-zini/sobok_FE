@@ -18,6 +18,7 @@ import { useNavigation } from '@react-navigation/native';
 import { minToHour } from '../../util';
 import TodoEl from '../components/TodoEl';
 import { useRoutine } from '../../hooks/useRoutine';
+import { useTodo } from '../../hooks/useTodo';
 
 const ViewAiRoutineResult = ({route}) => {
   const data = [["영어 강의 1강","스픽", "1H 30M","06:00 - 07:00"],["영어 단어 10개 암기", "말해보카", "1H:00","07:30 - 08:30"]]
@@ -31,6 +32,8 @@ const ViewAiRoutineResult = ({route}) => {
   const {handleAddAiRoutine} = useRoutine();
   const [editRoutineTitle, setEditRoutineTitle] = useState("")
   const {handleEditRoutine} = useRoutine();
+  const [isDuplicated, setIsDuplicated] = useState(false);
+  const {checkDuplicatedTodo} = useTodo();
 
   useEffect(() => {
     // console.log(aiRoutineInfo.todos.reduce((sum,el) => sum + Number(el.duration),0))
@@ -38,18 +41,26 @@ const ViewAiRoutineResult = ({route}) => {
   }, [selectedDate])
 
   useEffect(() => {
-    console.log({
-      accountId:pickedSaving[0]?.id,
-      title:editRoutineTitle.length === 0 ? routineInfo.title : editRoutineTitle,
-      days:selectedDate,
-      todos:routineInfo.todos.map((el) => ({
-        title:el.title,
-        startTime:el.startTime,
-        endTime:el.endTime,
-        linkApp:el.linkApp,
-      }))
-    })
+    // console.log({
+    //   accountId:pickedSaving[0]?.id,
+    //   title:editRoutineTitle.length === 0 ? routineInfo.title : editRoutineTitle,
+    //   days:selectedDate,
+    //   todos:routineInfo.todos.map((el) => ({
+    //     title:el.title,
+    //     startTime:el.startTime,
+    //     endTime:el.endTime,
+    //     linkApp:el.linkApp,
+    //   }))
+    // })
+    console.log(routineInfo)
   }, [selectedDate])
+  
+  if(version === "ai"){
+    useEffect(() => {
+      checkDuplicatedTodo({startTime:route.params.time[0].slice(0,5), endTime:route.params.time[0].slice(6)}, setIsDuplicated, selectedDate)
+      console.log("!!!!!!!",isDuplicated, route.params.time)
+    },[selectedDate])
+  }
   
 
 
@@ -84,6 +95,9 @@ const ViewAiRoutineResult = ({route}) => {
     <SafeAreaView>
       <ViewAiRoutineResultBody>
         <ViewAiRoutineResultHeader>
+          <View style={{position:'absolute', left:0}}>
+          <BackArrowButton isNotBack={true} direction={"Tabs"} isReset={true}/>
+          </View>
           <Text style={{fontWeight:600, fontSize:18, color:colors.darkGray}}>{version === "free" ? "루틴 수정하기":"생성된 루틴"}</Text>
         </ViewAiRoutineResultHeader>
         <MarginVertical top={44}/>
@@ -99,7 +113,11 @@ const ViewAiRoutineResult = ({route}) => {
           <LinkIcon size={16}/>
           <ViewAiRoutineResultText>{pickedSaving.length === 0 ? `적금 연결하기` : pickedSaving[0].title}</ViewAiRoutineResultText>
         </TouchableOpacity>
-        <MarginVertical top={40}/>
+        <MarginVertical top={20}/>
+        {isDuplicated ?
+        <Text style={{color:colors.error, fontWeight:600}}>선택한 시간에 이미 할 일이 있습니다</Text>
+        :<></>}
+        <MarginVertical top={10}/>
         {/* <TouchableOpacity onPress={() => setIsRoutineRepeatModalVisible(true)}> */}
         <View>
           <WeekCalandar selectedDate={selectedDate} setSelectedDate={setSelectedDate} isDuplication={true} version={"day"}/>
@@ -113,7 +131,13 @@ const ViewAiRoutineResult = ({route}) => {
           {routineInfo.todos.map((el,index) => {
             return(
               <View key={index}>
-                <TodoEl data={[el.title,"", `${minToHour(el.duration)}`, version === "free" ? `${el.startTime.slice(0,6)} - ${el.endTime.slice(0,6)}`:`${el.start_time} - ${el.end_time}`]} index={index} isTouchable={false}/>
+                <TodoEl
+                  data={[el.title,"", `${minToHour(el.duration)}`, version === "free" ? `${el.startTime.slice(0,5)} - ${el.endTime.slice(0,5)}`:`${el.start_time} - ${el.end_time}`]}
+                  index={index}
+                  isTouchable={version === "free" ? true : false}
+                  todoInfo={el}
+                  routineTitle={routineInfo?.title}
+                  days={routineInfo?.days}/>
                 <MarginVertical top={40}/>
               </View>
             )
@@ -121,7 +145,7 @@ const ViewAiRoutineResult = ({route}) => {
         </ScrollView>
 
         <View>
-          <Button text={version === "free" ? "루틴 수정하기":"루틴 완성하기"} handleButton={handleAddButton}/>
+          <Button text={version === "free" ? "루틴 수정하기":"루틴 완성하기"} handleButton={handleAddButton} unChecked={isDuplicated}/>
         </View>
       </ViewAiRoutineResultBody>
       <RoutineRepeatModal isRoutineRepeatModalVisible={isRoutineRepeatModalVisible} setIsRoutineRepeatModalVisible={setIsRoutineRepeatModalVisible}/>

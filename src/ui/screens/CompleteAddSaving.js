@@ -74,15 +74,19 @@ const CompleteAddSaving = ({ route }) => {
               <View style={{ width: 200 }}>
                 <Image source={snowman} style={{ width: 48, height: 48 }} />
                 <MarginVertical top={15} />
-                <InfoText color={colors.fontMain70} align="flex-start">
-                  {`일주일에\n${minToHour(
+                <InfoTextArea>
+                <InfoText color={colors.fontMain70} style={{justifyContent:'flex-start'}}>
+                  일주일에
+                </InfoText>
+                <InfoText>
+                  {`${minToHour(
                     Math.floor(newSavingData.time / 4)
                   )}씩, ${newSavingData.duration}개월 동안`}
                 </InfoText>
                 {routineTitle ? (
                   <Row>
                     <LinkIcon size={16} />
-                    <InfoText color={colors.fontMain70} align="flex-start">
+                    <InfoText color={colors.fontMain70}>
                       {routineTitle}
                     </InfoText>
                   </Row>
@@ -92,6 +96,7 @@ const CompleteAddSaving = ({ route }) => {
                 <InfoText color={colors.fontMain70} align="flex-start">
                   으로 모아볼게요!
                 </InfoText>
+                </InfoTextArea>
               </View>
               <MarginVertical top={20} />
               <DividerDark />
@@ -194,6 +199,7 @@ const Row = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: ${(props) => props.justify || 'flex-start'};
+  gap:4px;
 `;
 const ValueText = styled.Text`
   font-weight: 600;
@@ -211,3 +217,7 @@ const Spacer = styled.View`
 const SpacerEnd = styled(Spacer)`
   margin-right: 50px;
 `;
+
+const InfoTextArea = styled.View({
+  alignItems:'flex-start',
+})

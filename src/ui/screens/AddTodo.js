@@ -229,12 +229,11 @@ const AddTodoBody = styled.View`
   align-items: center;
   padding: 0 30px;
   width:${() => `${size.width}px`};
-  height: ${() => `${size.height}px`};
 `;
 
 const AddTodoHeader = styled.View`
   flex-direction: row;
-  width: 310px;
+  width: 100%;
   height: 50px;
   justify-content: center;
   align-items: center;

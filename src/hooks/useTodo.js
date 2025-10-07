@@ -50,6 +50,24 @@ export const useTodo = () => {
     }
   }
 
+const getCompletedTodo = async(setCompletedTodo) => {
+    try {
+      const token = await AsyncStorage.getItem("access_token")
+
+      const response = await baseUrl.get('/routine/today/completed',{
+        headers:{
+          Authorization:`Bearer ${token}`
+        }
+      })
+      if(!response.data.message){
+        setCompletedTodo(response.data)
+      }
+    } catch (error) {
+      console.log("getNotCompletedTodo")
+      console.log(error)
+    }
+  }
+
   const startTodo = async(id, setLogId, linkApp) => {
     try {
       const token = await AsyncStorage.getItem("access_token")
@@ -200,6 +218,7 @@ export const useTodo = () => {
     startTodo,
     handleTodoEdit,
     checkDuplicatedTodo,
-    handleDeleteTodo
+    handleDeleteTodo,
+    getCompletedTodo
   }
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import {
   Dimensions,
   Image,
@@ -27,6 +27,7 @@ import check_icon from '../../../assets/check_icon_indigo.png';
 import { useSignup } from '../../hooks/useSignup';
 import { useLogin } from '../../hooks/useLogin';
 import MarginVertical from '../components/MarginVertical';
+import { debouce } from '../../util';
 
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
@@ -53,6 +54,18 @@ const SignupScreen = ({route}) => {
   });
   const navigation = useNavigation();
   const { handleSignup, checkAvailability, handleSmsSend, handleSmsVarify, addUserInfo } = useSignup();
+
+  // 디바운스된 인증번호 설정 함수
+    
+    const debouncedVerify= useMemo(
+      () =>
+        debouce((code) => {
+          // 최신 phoneNumber로 검증
+          console.log(code)
+          handleSmsVarify(values.phoneNumber, code, setIsVarified);
+        }, 500),
+      [values.phoneNumber] // 의도적으로 phoneNumber만 의존
+    );
 
   const handleButton = () => {
     if (step < 4) {
@@ -122,9 +135,9 @@ const SignupScreen = ({route}) => {
     }
   }, [values]);
 
-  useEffect(() => {
-    handleSmsVarify(values.phoneNumber, varifyCode, setIsVarified);
-  }, [varifyCode]);
+  // useEffect(() => {
+  //   debouncedVerify(varifyCode);
+  // }, [varifyCode]);
 
   return (
     <SafeAreaView>
@@ -243,7 +256,7 @@ const SignupScreen = ({route}) => {
                   placeholderTextColor="#fff"
                   keyboardType="numeric"
                   value={varifyCode}
-                  onChange={e => setVarifyCode(e.nativeEvent.text)}
+                  onChange={e => {setVarifyCode(e.nativeEvent.text);debouncedVerify(e.nativeEvent.text);}}
                 />
                 {isVarified && <CheckIcon source={check_icon} style={{ bottom:30 }} />}
                 <Line />

@@ -73,7 +73,7 @@ const DetailInstallmentSavingScreen = ({route}) => {
     return(
       <>
       <View style={{paddingHorizontal:30, paddingVertical:40}}>
-        <View style={{display:'flex', flexDirection:'row', gap:4}}>
+        <View style={{display:'flex', flexDirection:'row', gap:4, alignItems:'center'}}>
           <SettingPeriodText>{selectedRange.startDate && selectedRange.endDate ? `${selectedRange.startDate} - ${selectedRange.endDate}` : "날짜를 선택해주세요"}</SettingPeriodText>
           <DropDownArrowButton size={16} handleArrowButton={() => setIsCalandarModalVisible(true)}/>
         </View>

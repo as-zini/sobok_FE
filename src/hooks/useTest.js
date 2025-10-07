@@ -37,7 +37,8 @@ export const useTest = () => {
           name:'ViewAiRoutine',
           params:{
             routineInfo:response.data,
-            version:"ai"
+            version:"ai",
+            time:spareTime
           }
         }]
       })

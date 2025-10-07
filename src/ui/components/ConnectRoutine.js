@@ -14,14 +14,15 @@ const ConnectRoutine = ({ pickedRoutines, setPickedRoutines, setStep }) => {
   const { getRoutineByList } = useRoutine();
   const [routineInfo, setRoutineInfo] = useState([]);
   const [searchValue, setSearchValue] = useState('');
+  const [isComplete, setIsComplete] = useState(false);
 
   useEffect(() => {
-    getRoutineByList(setRoutineInfo);
+    getRoutineByList(setRoutineInfo, setIsComplete);
   }, []);
 
   const filtered = searchValue
     ? routineInfo.filter(el => el.title.includes(searchValue))
-    : routineInfo.filter(el => !el.accountTitle);
+    : routineInfo
 
   return (
     <Container>
@@ -39,16 +40,16 @@ const ConnectRoutine = ({ pickedRoutines, setPickedRoutines, setStep }) => {
         <SearchIcon source={searchIcon} />
       </InputWrapper>
       <Divider />
-      <MarginVertical top={55} />
+      <MarginVertical top={30} />
       <CountText>
         총 {filtered.length}개의 루틴
       </CountText>
       <MarginVertical top={40} />
       <ScrollArea showsVerticalScrollIndicator={false}>
-        {filtered.map((el, idx) => (
+        { filtered.map((el, idx) => (
           <TouchableOpacity
             key={idx}
-            onPress={() => setPickedRoutines(prev => [...prev, el])}
+            onPress={() => pickedRoutines.includes(el) ? setPickedRoutines(prev => prev.filter((p) => p.id !== el.id)):setPickedRoutines(prev => [...prev, el])}
           >
             <AssetEl
               item={[el.title, '', minToHour(el.duration), '']}

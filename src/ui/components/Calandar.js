@@ -142,15 +142,15 @@ const Calandar = ({
                 const isEmpty = !date;
                 const fullDate = `${today.format('YYYY-MM')}-${date}`;
                 const isStartOrEnd =
-                  dayjs(fullDate).isSame(dayjs(selectedRange.startDate)) ||
+                  dayjs(fullDate).isSame(dayjs(selectedRange?.startDate)) ||
                   (selectedRange.endDate &&
-                    dayjs(fullDate).isSame(dayjs(selectedRange.endDate)));
+                    dayjs(fullDate).isSame(dayjs(selectedRange?.endDate)));
                 const inRange =
                   version !== 'statistic' &&
-                  selectedRange.startDate &&
-                  selectedRange.endDate &&
-                  dayjs(fullDate).isAfter(dayjs(selectedRange.startDate)) &&
-                  dayjs(fullDate).isBefore(dayjs(selectedRange.endDate));
+                  selectedRange?.startDate &&
+                  selectedRange?.endDate &&
+                  dayjs(fullDate).isAfter(dayjs(selectedRange?.startDate)) &&
+                  dayjs(fullDate).isBefore(dayjs(selectedRange?.endDate));
 
                 return (
                   <DateEl
@@ -164,10 +164,8 @@ const Calandar = ({
                           : isStartOrEnd
                           ? colors.fontMain
                           : 'transparent'
-                        : someAchieveDate.includes(date)
-                        ? 'rgba(106, 143, 246, 0.4)'
-                        : AllAchieveDate.includes(date)
-                        ? colors.indigoBlue
+                        : Number(selectedRange.startDate?.slice(8)) === date
+                        ? colors.fontMain
                         : 'transparent',
                       borderRadius: isStartOrEnd ? 25 : 0,
                     }}
@@ -241,9 +239,10 @@ const CalandarContentsBody = styled.View`
 
 const DayArea = styled.View`
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   margin-left: -5px;
+  width:80%;
 `;
 
 const DayEl = styled.View``;
