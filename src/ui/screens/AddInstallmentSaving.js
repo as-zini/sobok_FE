@@ -8,19 +8,10 @@ import BackArrowButton from '../components/BackArrowButton';
 import StepNumber from '../components/StepNumber';
 import Steps from '../components/Step';
 import { colors } from '../styles/colors';
-import check_icon_indigo from '../../../assets/check_icon_indigo.png';
 import Button from '../components/Button';
 import MarginVertical from '../components/MarginVertical';
-import WeekCalandar from '../components/WeekCalandar';
 import TimeSliderBar from '../components/TimeSliderBar';
 import { useNavigation } from '@react-navigation/native';
-import SimpleTodoEl from '../components/SimpleTodoEl';
-import mild_routine_icon from '../../../assets/mild_routine_icon.png';
-import LinkIcon from '../components/LinkIcon';
-import TodoEl from '../components/TodoEl';
-import DoubleButton from '../components/DoubleButton';
-import search_icon from '../../../assets/search_icon.png';
-import AssetEl from '../components/AssetEl';
 import { useRoutine } from '../../hooks/useRoutine';
 import { minToHour } from '../../util';
 import ConnectRoutine from '../components/ConnectRoutine';
@@ -30,7 +21,6 @@ const AddFreeRoutine = () => {
   const categoryText = ["이름", "기본 설정", "루틴 연결", "시간 설정"];
   const questionText = ["적금의 이름을\n지어주세요!","새로 만들 적금을\n소개해주세요!","적금에 루틴을\n연결시켜 볼까요?","얼마동안, 얼마만큼의\n시간을 모을까요?" ]
   const navigation = useNavigation();
-  const data = [["영어 강의 1강", "스픽", "1H 30M", "06:00 - 07:00"], ["영어 단어 10개 암기", "말해보카", "1H 00M", "07:30 - -8:30"]]
   const [newSavingData, setNewSavingData] = useState({title:"",target:"", isPublic:true, time:0, duration:0, routineIds:[]});
   const [routineInfo, setRoutineInfo] = useState([]);
   const [isComplete, setIsComplete] = useState(false);

@@ -37,14 +37,13 @@ import { useUserInfoStore } from '../../store/user'
 import { useTodo } from '../../hooks/useTodo'
 import { size } from '../styles/size'
 
-const width = Dimensions.get('screen').width;
-const height = Dimensions.get('screen').height;
 
 const Test = () => {
   const [step, setStep] = useState(1);
   const [detailStep, setDetailStep] = useState(1);
   const {userInfo, setUserInfo} = useUserInfoStore()
   const [isChoiceModalVisible, setIsChoiceModalVisible] = useState(false);
+  const [isTimeEditModlVisible, setIsTimeEditModalVisible] = useState(false);
   const TestCategoryTextList = ["자투리 시간", "자투리 시간", "루틴 속성", ["취향", "세부사항"], ""]
   const TestText = ["언제 자투리 시간이\n생기나요?", "자투리 시간이\n얼마나 생기나요?", [`${userInfo.displayName} 님은 무엇을\n더 선호하시나요?`,`${userInfo.displayName} 님은 어떤 계획을\n더 선호하시나요?`,`${userInfo.displayName} 님은\n집중할 때 어때요?`], [`${userInfo.displayName} 님의 관심은\n어디로 향하고 있나요?`,`${userInfo.displayName} 님,\n원하는 것을 말씀해주세요!`]];
   const iconHeight = detailStep === 2 ? 63 : 52;
@@ -56,12 +55,11 @@ const Test = () => {
   const [step4Value, setStep4Value] = useState("");
   const unChecked = step === 1 && isClicked === 0 ? true: step===2 && timeList?.length === 0 ? true : step === 4 && detailStep === 2 && (step4Value.length > 30) ? true : false
   const [step3Data, setStep3Data ] = useState({step1:"", step2:"", step3:""});
-  const interestCategory = ["언어", "공부"]
-  const interestList = [""]
   const step3Value1 = ["여러가지를 다양하게", "느슨하고 여유로운", "오래 오래 집중하기"];
   const step3Value2 = ["하나를 진득하게", "촘촘하고 체계적인", "쉽게 질려 금방 쉬기"];
   const [step3Clicked, setStep3Clicked] = useState(0);
   const [likeOption, setLikeOption] = useState([]);
+  const [editTimeNum, setEditTimeNum] = useState(0);
   
 
   
@@ -92,16 +90,10 @@ const Test = () => {
       }
       else{
       setStep((prev) => prev+1);
-      console.log(detailStep)
       
       }
     }
   }
-
-  useEffect(() => {
-   console.log(step, detailStep, timeList)
-  }, [step, detailStep])
-
   
   
   const DataForLang = [
@@ -200,16 +192,22 @@ const Test = () => {
           
           </>
           : step === 2 ?
-          <View style={{width:"100%", gap:10}}>
+          <View style={{width:"100%", gap:10,maxHeight:size.height*.4}}>
+            <ScrollView style={{width:'100%',gap:10}} showsVerticalScrollIndicator={false}>
             {timeList.map((el,index) => {
               return(
-                <SimpleTodoEl key={index} index={index+1} data={[`${el.startTime} - ${el.endTime}`,"",`${getTimeDifference(el.startTime, el.endTime)}`]}/>
+                <View key={index}>
+                  <SimpleTodoEl index={index+1} data={[`${el.startTime} - ${el.endTime}`,"",`${getTimeDifference(el.startTime, el.endTime)}`]} handleClick={() => {setIsTimeEditModalVisible(true); setEditTimeNum(index)}}/>
+                  <MarginVertical top={10}/>
+                </View>
               )
             })}
+            </ScrollView>
             <SpareTimeAddButton onPress={() => setIsChoiceModalVisible(true)}>
               <SpareTimeButtonText>+</SpareTimeButtonText>
             </SpareTimeAddButton>
-            <ChoiceModal isChoiceModalVisible={isChoiceModalVisible} setIsChoiceModalVisible={setIsChoiceModalVisible} setTime={setTime} time={time} setTimeList={setTimeList}/>
+            <ChoiceModal isChoiceModalVisible={isChoiceModalVisible} setIsChoiceModalVisible={setIsChoiceModalVisible} setTime={setTime} time={time} setTimeList={setTimeList} version={"add"} timeList={timeList}/>
+            <ChoiceModal isChoiceModalVisible={isTimeEditModlVisible} setIsChoiceModalVisible={setIsTimeEditModalVisible} setTime={setTime} time={time} setTimeList={setTimeList} version={"edit"} timeList={timeList} timeId={editTimeNum}/>
           </View>
           : step === 3 ?
           <>

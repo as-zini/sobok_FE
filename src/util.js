@@ -45,3 +45,31 @@ export function debouce(cb, wait){
     }, wait);
   };
 }
+
+const toMinutes = (t) => {
+  const [h, m] = t.split(":").map(Number);
+  return h * 60 + m;
+};
+
+// 구간 정규화: 같은날이면 [start,end] 한 개,
+// 자정 넘으면 [start,1440]과 [0,end] 두 개로 쪼갬
+const normalize = ({ startTime, endTime }) => {
+  const s = toMinutes(startTime);
+  const e = toMinutes(endTime);
+  if (s === e) return [];                 // 길이 0 구간(겹침 없음)로 취급
+  if (s < e) return [[s, e]];            // 같은 날
+  return [[s, 1440], [0, e]];            // 자정 넘어감
+};
+
+// 열린 구간 겹침: [a,b)와 [c,d) 겹침 조건
+const overlap = (aStart, aEnd, bStart, bEnd) =>
+  aStart < bEnd && aEnd > bStart;         // 경계 접촉만(=)은 겹침 아님
+
+// target과 목록의 어느 하나라도 겹치면 true
+export function hasOverlap(target, list) {
+  const tSegs = normalize(target);
+  return list.some((r) => {
+    const rSegs = normalize(r);
+    return tSegs.some(([ts, te]) => rSegs.some(([rs, re]) => overlap(ts, te, rs, re)));
+  });
+}

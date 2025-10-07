@@ -155,10 +155,11 @@ export const useRoutine = () => {
         days: newRoutineData.days,
         todos:newRoutineData.todos
       },{
+        timeout:15000,
         headers:{
           Authorization:`Bearer ${token}`
         }
-      })
+      },)
       console.log(response.data);
       navigation.navigate("AiRoutineComplete",{isComplete:true})
     } catch (error) {

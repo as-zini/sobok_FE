@@ -9,7 +9,7 @@ import { colors } from '../styles/colors';
 import TimeSliderBar from './TimeSliderBar';
 import MarginVertical from './MarginVertical';
 import Button from './Button';
-import { getTimeDifference } from '../../util';
+import { getTimeDifference, hasOverlap } from '../../util';
 import { useTodo } from '../../hooks/useTodo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
@@ -18,19 +18,41 @@ const SpareTimeChoiceModal = ({
   setIsChoiceModalVisible,
   setTime,
   time,
-  setTimeList
+  setTimeList,
+  version,
+  timeList,
+  timeId
 }) => {
   const [isDuplicated, setIsDuplicated] = useState(false);
-  const { checkDuplicatedTodo } = useTodo();
-
+  
   useEffect(() => {
-    checkDuplicatedTodo(time, setIsDuplicated);
-  }, [time]);
+    if(time?.startTime && time?.endTime){
+      checkDuplicatedTime()
+    }
+  },[time])
+
 
   const handleSpareTimeModal = () => {
-    setTimeList(prev => [...prev, time]);
-    setIsChoiceModalVisible(false);
+    if(version === "add"){
+      setTimeList(prev => [...prev, time]);
+      setIsChoiceModalVisible(false);
+    }else{
+      setTimeList(prev => {
+        const newList = [...prev.slice(0,timeId), time, ...prev.slice(timeId+1)]
+        return newList
+      })
+      setIsChoiceModalVisible(false);
+    }
+    
   };
+
+  function checkDuplicatedTime(){
+    if(hasOverlap(time, timeList)){
+      setIsDuplicated(true)
+    }else{
+      setIsDuplicated(false)
+    }
+  }
 
   return (
     <SafeAreaView>
@@ -43,7 +65,7 @@ const SpareTimeChoiceModal = ({
         onBackdropPress={() => setIsChoiceModalVisible(false)}
       >
         <SpareTimeModalBody>
-          <SpareTimeModalTitle>자투리 시간 선택하기</SpareTimeModalTitle>
+          <SpareTimeModalTitle>{version === "add" ? "자투리 시간 설정하기" : "자투리 시간 수정하기"}</SpareTimeModalTitle>
           <SpareTimeModalText>
             {"자투리 시간이 생기는\n시각을 알려주세요"}
           </SpareTimeModalText>

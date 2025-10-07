@@ -53,7 +53,7 @@ const CreateLoading = ({ categoryText, isComplete }) => {
         <CloudIcon source={cloudIcon} />
         <SnowIcon source={snowflakeIcon} />
         <PercentText>{progress}%</PercentText>
-        <Title>{`${categoryText}\n만드는중`}</Title>
+        <Title>{`${categoryText}\n만드는 중`}</Title>
         <DescText>{`조금만 기다리면\n${userInfo.displayName} 님만의 맞춤 루틴 완성!`}</DescText>
       </Body>
       <Background source={bgImage} />

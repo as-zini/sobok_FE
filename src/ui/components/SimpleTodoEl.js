@@ -3,8 +3,8 @@ import { View } from 'react-native';
 import styled from '@emotion/native';
 import { colors } from '../styles/colors';
 
-const SimpleTodoEl = ({ data, index }) => (
-  <Container>
+const SimpleTodoEl = ({ data, index, handleClick }) => (
+  <Container onPress={handleClick}>
     <IndexWrapper>
       <IndexCircle>
         <IndexText>{index}</IndexText>
@@ -24,7 +24,7 @@ const SimpleTodoEl = ({ data, index }) => (
 
 export default SimpleTodoEl;
 
-const Container = styled.View`
+const Container = styled.TouchableOpacity`
   width: 100%;
   height: 70px;
   background-color: #fff;
