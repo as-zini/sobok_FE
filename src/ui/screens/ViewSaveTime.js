@@ -69,8 +69,8 @@ const ViewSaveTime = ({ route }) => {
     <SafeAreaView>
       <Body>
         <Header>
-          <View style={{ position: 'absolute', left: 0 }}>
-            <BackArrowButton />
+          <View style={{ position: 'absolute', left: 0}}>
+            <BackArrowButton isNotBack={false}/>
           </View>
           {version !== 'first' && (
               <ModeText>

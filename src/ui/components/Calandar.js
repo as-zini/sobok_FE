@@ -142,15 +142,15 @@ const Calandar = ({
                 const isEmpty = !date;
                 const fullDate = `${today.format('YYYY-MM')}-${date}`;
                 const isStartOrEnd =
-                  dayjs(fullDate).isSame(dayjs(selectedRange.startDate)) ||
+                  dayjs(fullDate).isSame(dayjs(selectedRange?.startDate)) ||
                   (selectedRange.endDate &&
-                    dayjs(fullDate).isSame(dayjs(selectedRange.endDate)));
+                    dayjs(fullDate).isSame(dayjs(selectedRange?.endDate)));
                 const inRange =
                   version !== 'statistic' &&
-                  selectedRange.startDate &&
-                  selectedRange.endDate &&
-                  dayjs(fullDate).isAfter(dayjs(selectedRange.startDate)) &&
-                  dayjs(fullDate).isBefore(dayjs(selectedRange.endDate));
+                  selectedRange?.startDate &&
+                  selectedRange?.endDate &&
+                  dayjs(fullDate).isAfter(dayjs(selectedRange?.startDate)) &&
+                  dayjs(fullDate).isBefore(dayjs(selectedRange?.endDate));
 
                 return (
                   <DateEl
@@ -164,7 +164,7 @@ const Calandar = ({
                           : isStartOrEnd
                           ? colors.fontMain
                           : 'transparent'
-                        : Number(selectedRange.startDate.slice(8)) === date
+                        : Number(selectedRange.startDate?.slice(8)) === date
                         ? colors.fontMain
                         : 'transparent',
                       borderRadius: isStartOrEnd ? 25 : 0,

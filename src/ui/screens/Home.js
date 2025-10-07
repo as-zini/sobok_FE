@@ -62,6 +62,10 @@ const Home = () => {
   const { getTotalSpareTime } = useSaveTime();
   const [spareTimeTotal, setSpareTimeTotal] = useState({});
   const {getFcmToken, requestNotificationPermission, watchTokenRefresh, sendTokenToBack} = useNotification();
+  const {getNotCompletedTodo, getCompletedTodo} = useTodo();
+  const [notCompletedTodo, setNotCompletedTodo] = useState([])
+  const [completedTodo, setCompletedTodo] = useState([])
+  
 
   const getTimesAfter = (timeString, data) => {
     const [hour, minute, second] = timeString?.split(':');
@@ -73,12 +77,6 @@ const Home = () => {
     }).length;
   };
 
-  const getToken = async () => {
-    const refreshToken = await AsyncStorage.getItem('refresh_token');
-    const accessToken = await AsyncStorage.getItem('access_token');
-    console.log('refresh!!', refreshToken);
-    console.log('access!!', accessToken);
-  };
 
   useFocusEffect(
     useCallback(() => {
@@ -88,6 +86,8 @@ const Home = () => {
       getTodayTodo(setTodayTodo, setIsReady);
       getNowTodo();
       getTotalSpareTime(setSpareTimeTotal);
+      getNotCompletedTodo(setNotCompletedTodo, setIsReady)
+      getCompletedTodo(setCompletedTodo)
     }, [isReady])
   );
 
@@ -225,7 +225,7 @@ useEffect(() => {
                       </>
                     ) : (
                       <>
-                        <Text style={{ fontWeight: '500', color: '#fff', fontSize: 18, }}>어서오세요!</Text>
+                        <Text style={{ fontWeight: '500', color: '#fff', fontSize: 18, }}>{notCompletedTodo.length === completedTodo.length && nowTodo?.length === 0  ? "수고했어요!" : "어서오세요!"}</Text>
                         <MarginVertical top={9} />
                       </>
                     )}
@@ -233,7 +233,7 @@ useEffect(() => {
                       <TodoDuringTime style={{ fontSize: !nowTodo[0]?.message && nowTodo.length > 0 ? 48 : 34 }}>
                         {nowTodo?.length > 0 && !nowTodo[0]?.message
                           ? getTimeDifference(nowTodo[0].startTime, nowTodo[0].endTime)
-                          : '오늘은\n할 일이 없어요!'}
+                          : notCompletedTodo.length === completedTodo.length && nowTodo?.length === 0  ? "오늘의\n할 일 완료!" : '오늘은\n할 일이 없어요!'}
                       </TodoDuringTime>
                       {!nowTodo[0]?.message && nowTodo.length > 0 ? (
                         <TouchableOpacity onPress={() => navigation.navigate('TodayTodo')} style={{ justifyContent: 'center', alignItems: 'center' }}>

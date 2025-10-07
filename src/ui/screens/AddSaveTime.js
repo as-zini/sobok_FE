@@ -27,6 +27,7 @@ const AddSaveTime = ({ route }) => {
   const [time, setTime] = useState({});
   const [title, setTitle] = useState('');
 
+
   const {
     handleSaveSpareTime,
     handleEditSpareTime,
@@ -42,21 +43,7 @@ const AddSaveTime = ({ route }) => {
       title: title || (spareTimeEl?.title || ''),
       startTime: time.startTime,
       endTime: time.endTime,
-      days: selectedDate.map(el =>
-        el === 'MON'
-          ? 'MONDAY'
-          : el === 'TUE'
-          ? 'TUESDAY'
-          : el === 'WED'
-          ? 'WEDNESDAY'
-          : el === 'THU'
-          ? 'THURSDAY'
-          : el === 'FRI'
-          ? 'FRIDAY'
-          : el === 'SAT'
-          ? 'SATURDAY'
-          : 'SUNDAY'
-      )
+      days: selectedDate
     };
 
     if (!spareTimeEl) {
@@ -80,7 +67,7 @@ const AddSaveTime = ({ route }) => {
         <View style={{alignItems:'center'}}>
         <Header>
           <View style={{ position: 'absolute', left: 0 }}>
-            <BackArrowButton />
+            <BackArrowButton isNotBack={false}/>
           </View>
           <HeaderText>자투리 시간</HeaderText>
         </Header>
@@ -107,7 +94,7 @@ const AddSaveTime = ({ route }) => {
         <WeekCalandar
           selectedDate={selectedDate}
           setSelectedDate={setSelectedDate}
-          isDuplication
+          isDuplication={true}
           version="day"
         />
         <MarginVertical top={65} />
