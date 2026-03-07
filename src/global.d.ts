@@ -46,7 +46,7 @@ declare module 'react-native-keyboard-aware-scroll-view' {
 
 // dayjs duration 플러그인
 declare module 'dayjs/plugin/duration' {
-    import { PluginFunc } from 'dayjs';
+    import type { PluginFunc } from 'dayjs';
     const plugin: PluginFunc;
     export default plugin;
 }
