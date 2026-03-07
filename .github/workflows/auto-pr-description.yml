@@ -1,0 +1,78 @@
+name: Auto PR Description
+
+on:
+  pull_request:
+    types: [opened]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  auto-description:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate PR Description
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+            });
+
+            // 이미 내용이 있으면 덮어쓰지 않음
+            if (pr.body && pr.body.trim().length > 0) {
+              console.log('PR description already exists, skipping.');
+              return;
+            }
+
+            const { data: commits } = await github.rest.pulls.listCommits({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+              per_page: 100,
+            });
+
+            // 커밋을 카테고리별로 분류
+            const categories = {
+              feat: { emoji: '✨', title: '새 기능', items: [] },
+              fix: { emoji: '🐛', title: '버그 수정', items: [] },
+              chore: { emoji: '🔧', title: '설정/환경', items: [] },
+              refactor: { emoji: '♻️', title: '리팩토링', items: [] },
+              style: { emoji: '💄', title: '스타일', items: [] },
+              docs: { emoji: '📝', title: '문서', items: [] },
+              other: { emoji: '📌', title: '기타', items: [] },
+            };
+
+            for (const commit of commits) {
+              const msg = commit.commit.message.split('\n')[0];
+              const match = msg.match(/^(\w+):\s*(.+)/);
+              if (match) {
+                const [, type, desc] = match;
+                const key = categories[type] ? type : 'other';
+                categories[key].items.push(`- ${desc} (\`${commit.sha.slice(0, 7)}\`)`);
+              } else {
+                categories.other.items.push(`- ${msg} (\`${commit.sha.slice(0, 7)}\`)`);
+              }
+            }
+
+            let body = `## 📋 변경 사항\n\n`;
+            for (const [, cat] of Object.entries(categories)) {
+              if (cat.items.length > 0) {
+                body += `### ${cat.emoji} ${cat.title}\n${cat.items.join('\n')}\n\n`;
+              }
+            }
+
+            body += `---\n> 🤖 커밋 ${commits.length}개로부터 자동 생성됨\n`;
+
+            await github.rest.pulls.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+              body: body,
+            });
