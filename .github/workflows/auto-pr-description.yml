@@ -31,6 +31,12 @@ jobs:
               return;
             }
 
+            // 브랜치 이름에서 이슈 번호 추출 (예: chore/107-setting-enforce → 107)
+            const branch = pr.head.ref;
+            const issueMatch = branch.match(/\/(\d+)-/);
+            const issueNumber = issueMatch ? issueMatch[1] : null;
+
+            // 커밋 목록 가져오기
             const { data: commits } = await github.rest.pulls.listCommits({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -61,14 +67,31 @@ jobs:
               }
             }
 
-            let body = `## 📋 변경 사항\n\n`;
+            // PR Description 생성
+            let body = '';
+
+            // 1. 연관된 이슈
+            body += `## � 연관된 이슈\n\n`;
+            if (issueNumber) {
+              body += `- closes #${issueNumber}\n`;
+            } else {
+              body += `- \n`;
+            }
+            body += `\n`;
+
+            // 2. 작업 내용
+            body += `## �📋 작업 내용\n\n`;
             for (const [, cat] of Object.entries(categories)) {
               if (cat.items.length > 0) {
                 body += `### ${cat.emoji} ${cat.title}\n${cat.items.join('\n')}\n\n`;
               }
             }
 
-            body += `---\n> 🤖 커밋 ${commits.length}개로부터 자동 생성됨\n`;
+            // 3. 작업 결과
+            body += `## 📸 작업 결과\n\n\n\n`;
+
+            // 4. 참고 사항
+            body += `## 💬 참고 사항\n\n\n`;
 
             await github.rest.pulls.update({
               owner: context.repo.owner,
