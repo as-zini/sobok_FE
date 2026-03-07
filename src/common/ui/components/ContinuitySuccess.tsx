@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import styled from '@emotion/native';
 
-import continuity_bg from '../../../../assets/continuity_bg.png';
-import snow_flake_icon_white from '../../../../assets/snow_flake_icon_white.png';
-import { useGetInfo } from '../../hooks/useGetInfo';
+import continuity_bg from '@/assets/continuity_bg.png';
+import snow_flake_icon_white from '@/assets/snow_flake_icon_white.png';
+import { useGetInfo } from '@/common/hooks/useGetInfo';
 
 const ContinuitySuccess = () => {
   const [achieve, setAchieve] = useState(0);

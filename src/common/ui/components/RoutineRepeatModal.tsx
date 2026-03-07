@@ -4,9 +4,9 @@ import { SafeAreaView, View } from 'react-native';
 import Modal from 'react-native-modal';
 import styled from '@emotion/native';
 
-import routine_repeat_setting_bg from '../../../../assets/routine_repeat_setting_bg.png';
-import { size } from '../styles/size';
-import { colors } from '../styles/colors';
+import routine_repeat_setting_bg from '@/assets/routine_repeat_setting_bg.png';
+import { size } from '@/common/ui/styles/size';
+import { colors } from '@/common/ui/styles/colors';
 import WeekCalandar from './WeekCalandar';
 import TimeSliderBar from './TimeSliderBar';
 import Button from './Button';

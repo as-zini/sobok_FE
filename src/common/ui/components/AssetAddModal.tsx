@@ -4,14 +4,14 @@ import Modal from 'react-native-modal';
 import styled from '@emotion/native';
 import { useNavigation } from '@react-navigation/native';
 
-import asset_add_bg from '../../../../assets/asset_add_bg.png';
-import asset_add_icon from '../../../../assets/asset_add_icon.png';
-import autonomy_routine_icon from '../../../../assets/autonomy_routine_icon.png';
-import installment_saving_icon from '../../../../assets/save_icon.png';
-import ai_routine_icon from '../../../../assets/routine_icon.png';
+import asset_add_bg from '@/assets/asset_add_bg.png';
+import asset_add_icon from '@/assets/asset_add_icon.png';
+import autonomy_routine_icon from '@/assets/autonomy_routine_icon.png';
+import installment_saving_icon from '@/assets/save_icon.png';
+import ai_routine_icon from '@/assets/routine_icon.png';
 
-import { size } from '../styles/size';
-import { colors } from '../styles/colors';
+import { size } from '@/common/ui/styles/size';
+import { colors } from '@/common/ui/styles/colors';
 import MarginVertical from './MarginVertical';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 

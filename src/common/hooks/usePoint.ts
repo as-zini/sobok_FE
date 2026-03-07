@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import axios from "axios"
-import baseUrl from "../api/baseURL"
+import baseUrl from "@/common/api/baseURL"
 
 export const usePoint = () => {
   const getUserPremium = async(setUserPremium) => {

@@ -2,40 +2,40 @@ import React, { useEffect, useState } from 'react'
 import { Image, SafeAreaView, ScrollView, Text, View } from 'react-native'
 
 
-import { size } from '../styles/size';
-import { colors } from '../styles/colors';
-import snowman from '../../../../assets/glass_snow_graphic.png';
-import top from '../../../../assets/top_graphic.png';
-import beaker from '../../../../assets/beaker_graphic.png';
-import donut from '../../../../assets/donut_graphic.png';
-import book from '../../../../assets/book_graphic.png';
-import victory from '../../../../assets/victory_graphic.png';
-import heart from '../../../../assets/heart_graphic.png';
-import halfMoon from '../../../../assets/half_moon_graphic.png';
-import snake from '../../../../assets/snake_graphic.png';
-import angel from '../../../../assets/angel_graphic.png';
-import cloud from '../../../../assets/cloud_graphic.png';
-import hexagon from '../../../../assets/hexagon_graphic.png';
-import hermitCrab from '../../../../assets/hermit_crab_graphic.png';
-import spring from '../../../../assets/spring_graphic.png';
-import rolypoly from '../../../../assets/rolypoly_graphic.png';
-import pudding from '../../../../assets/pudding_graphic.png';
-import quarter from '../../../../assets/quarter_moon_graphic.png';
-import { useReport } from '../../hooks/useReport';
+import { size } from '@/common/ui/styles/size';
+import { colors } from '@/common/ui/styles/colors';
+import snowman from '@/assets/glass_snow_graphic.png';
+import top from '@/assets/top_graphic.png';
+import beaker from '@/assets/beaker_graphic.png';
+import donut from '@/assets/donut_graphic.png';
+import book from '@/assets/book_graphic.png';
+import victory from '@/assets/victory_graphic.png';
+import heart from '@/assets/heart_graphic.png';
+import halfMoon from '@/assets/half_moon_graphic.png';
+import snake from '@/assets/snake_graphic.png';
+import angel from '@/assets/angel_graphic.png';
+import cloud from '@/assets/cloud_graphic.png';
+import hexagon from '@/assets/hexagon_graphic.png';
+import hermitCrab from '@/assets/hermit_crab_graphic.png';
+import spring from '@/assets/spring_graphic.png';
+import rolypoly from '@/assets/rolypoly_graphic.png';
+import pudding from '@/assets/pudding_graphic.png';
+import quarter from '@/assets/quarter_moon_graphic.png';
+import { useReport } from '@/common/hooks/useReport';
 import styled from '@emotion/native'
-import BackArrowButton from '../components/BackArrowButton';
-import MarginVertical from '../components/MarginVertical';
-import snow_card_book_bg from '../../../../assets/statistic_bg.png';
-import card_icon from '../../../../assets/email_icon.png';
-import full from '../../../../assets/full_moon_graphic.png'
-import exercise from '../../../../assets/exercise_graphic.png';
-import globe from '../../../../assets/globe_graphic.png';
-import guitar from '../../../../assets/guitar_graphic.png'
-import fairy from '../../../../assets/fairy_graphic.png';
-import sun from '../../../../assets/sun_graphic.png';
-import present from '../../../../assets/present_graphic.png';
+import BackArrowButton from '@/common/ui/components/BackArrowButton';
+import MarginVertical from '@/common/ui/components/MarginVertical';
+import snow_card_book_bg from '@/assets/statistic_bg.png';
+import card_icon from '@/assets/email_icon.png';
+import full from '@/assets/full_moon_graphic.png'
+import exercise from '@/assets/exercise_graphic.png';
+import globe from '@/assets/globe_graphic.png';
+import guitar from '@/assets/guitar_graphic.png'
+import fairy from '@/assets/fairy_graphic.png';
+import sun from '@/assets/sun_graphic.png';
+import present from '@/assets/present_graphic.png';
 import { useNavigation } from '@react-navigation/native';
-import { useUserInfoStore } from '../../store/user';
+import { useUserInfoStore } from '@/common/store/user';
 
 
 const SnowCardBook = ({ route }) => {

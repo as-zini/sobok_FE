@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { colors } from '../styles/colors';
+import { colors } from '@/common/ui/styles/colors';
 
 const NavigateArrowButton = ({ handleArrowButton }) => (
   <NavigateArrowButtonBody onPress={handleArrowButton}>

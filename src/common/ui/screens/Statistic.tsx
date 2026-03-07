@@ -2,29 +2,29 @@ import React, { useCallback, useEffect, useState } from 'react'
 import styled from '@emotion/native';
 import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 
-import statistic_bg from '../../../../assets/statistic_bg.png';
-import calandar_icon from '../../../../assets/calandar_icon.png';
-import drop_down_bg from '../../../../assets/drop_down_bg.png';
-import { size } from '../styles/size';
-import { colors } from '../styles/colors';
-import DropDownArrowButton from '../components/DropDownArrowButton';
-import SnowFlakeIcon from '../components/SnowFlakeIcon';
-import NavigateArrowButton from '../components/NavigateArrowButton';
-import Calandar from '../components/Calandar';
-import MarginVertical from '../components/MarginVertical';
+import statistic_bg from '@/assets/statistic_bg.png';
+import calandar_icon from '@/assets/calandar_icon.png';
+import drop_down_bg from '@/assets/drop_down_bg.png';
+import { size } from '@/common/ui/styles/size';
+import { colors } from '@/common/ui/styles/colors';
+import DropDownArrowButton from '@/common/ui/components/DropDownArrowButton';
+import SnowFlakeIcon from '@/common/ui/components/SnowFlakeIcon';
+import NavigateArrowButton from '@/common/ui/components/NavigateArrowButton';
+import Calandar from '@/common/ui/components/Calandar';
+import MarginVertical from '@/common/ui/components/MarginVertical';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import dayjs from 'dayjs';
-import { useStatistic } from '../../hooks/useStatistic';
-import AssetEl from '../components/AssetEl';
-import LinkIcon from '../components/LinkIcon';
-import WeekCalandar from '../components/WeekCalandar';
-import AssetAddModal from '../components/AssetAddModal';
-import AssetLinkModal from '../components/AssetLinkModal';
-import { minToHour } from '../../../util';
-import { useGetInfo } from '../../hooks/useGetInfo';
+import { useStatistic } from '@/common/hooks/useStatistic';
+import AssetEl from '@/common/ui/components/AssetEl';
+import LinkIcon from '@/common/ui/components/LinkIcon';
+import WeekCalandar from '@/common/ui/components/WeekCalandar';
+import AssetAddModal from '@/common/ui/components/AssetAddModal';
+import AssetLinkModal from '@/common/ui/components/AssetLinkModal';
+import { minToHour } from '@/util';
+import { useGetInfo } from '@/common/hooks/useGetInfo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import NonPremium from '../components/NonPremium';
-import { useUserInfoStore } from '../../store/user';
+import NonPremium from '@/common/ui/components/NonPremium';
+import { useUserInfoStore } from '@/common/store/user';
 
 const Statistic = () => {
   const [mode, setMode] = useState("월별");
@@ -91,7 +91,7 @@ const Statistic = () => {
         <TouchableOpacity style={{ width: '100%', height: 40, borderRadius: 14, display: 'flex', justifyContent: 'center', alignItems: 'center' }} onPress={() => { setMode(mode === "월별" ? "주별" : "월별"); setShowDropDown(false) }}>
           <Text style={{ color: "#fff", fontSize: 18, fontWeight: 600 }}>{mode === "월별" ? "주별" : "월별"}</Text>
         </TouchableOpacity>
-        <View style={{ width: 80, height: .7, backgroundColor: "#fff" }}></View>
+        <View style={{ width: 80, height: .7, backgroundColor: "#fff" }} />
         <TouchableOpacity style={{ width: '100%', height: 40, borderRadius: 14, display: 'flex', justifyContent: 'center', alignItems: 'center' }} onPress={() => { setMode(mode === "루틴별" ? "주별" : "루틴별"); setShowDropDown(false) }}>
           <Text style={{ color: "#fff", fontSize: 18, fontWeight: 600 }}>{mode === "루틴별" ? "주별" : "루틴별"}</Text>
         </TouchableOpacity>
@@ -107,7 +107,7 @@ const Statistic = () => {
             return (
               <View style={{ display: 'flex', flexDirection: 'row', width: 300, gap: 13, justifyContent: 'center', alignItems: 'center' }} key={index}>
                 <View style={{ width: 40, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 5 }}>
-                  <View style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: colors.fontMain }}></View>
+                  <View style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: colors.fontMain }} />
                   <VerticalBorderLine />
                 </View>
                 <View style={{ flexGrow: 1 }}>

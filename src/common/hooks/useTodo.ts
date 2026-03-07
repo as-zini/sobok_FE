@@ -1,8 +1,8 @@
 import axios from "axios"
 import dayjs from "dayjs"
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
-import baseUrl from "../api/baseURL";
-import { useNowTodoStore } from "../store/todo";
+import baseUrl from "@/common/api/baseURL";
+import { useNowTodoStore } from "@/common/store/todo";
 import { openApp } from "../ui/components/Linking";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";

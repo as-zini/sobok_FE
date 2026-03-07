@@ -2,19 +2,19 @@ import React, { useEffect, useState } from 'react'
 import { Image, Keyboard, SafeAreaView, ScrollView, SectionList, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import styled from '@emotion/native';
 
-import add_free_routine_bg from '../../../../assets/test_bg.png';
-import { size } from '../styles/size';
-import BackArrowButton from '../components/BackArrowButton';
-import StepNumber from '../components/StepNumber';
-import Steps from '../components/Step';
-import { colors } from '../styles/colors';
-import Button from '../components/Button';
-import MarginVertical from '../components/MarginVertical';
-import TimeSliderBar from '../components/TimeSliderBar';
+import add_free_routine_bg from '@/assets/test_bg.png';
+import { size } from '@/common/ui/styles/size';
+import BackArrowButton from '@/common/ui/components/BackArrowButton';
+import StepNumber from '@/common/ui/components/StepNumber';
+import Steps from '@/common/ui/components/Step';
+import { colors } from '@/common/ui/styles/colors';
+import Button from '@/common/ui/components/Button';
+import MarginVertical from '@/common/ui/components/MarginVertical';
+import TimeSliderBar from '@/common/ui/components/TimeSliderBar';
 import { useNavigation } from '@react-navigation/native';
-import { useRoutine } from '../../hooks/useRoutine';
-import { minToHour } from '../../../util';
-import ConnectRoutine from '../components/ConnectRoutine';
+import { useRoutine } from '@/common/hooks/useRoutine';
+import { minToHour } from '@/util';
+import ConnectRoutine from '@/common/ui/components/ConnectRoutine';
 
 const AddFreeRoutine = () => {
   const [step, setStep] = useState(1);

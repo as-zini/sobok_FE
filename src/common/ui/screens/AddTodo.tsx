@@ -11,27 +11,27 @@ import {
 import styled from '@emotion/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import add_todo_bg from '../../../../assets/add_todo_bg.png';
-import add_todo_icon from '../../../../assets/add_todo_icon.png';
-import trash_icon from '../../../../assets/trash_icon.png';
+import add_todo_bg from '@/assets/add_todo_bg.png';
+import add_todo_icon from '@/assets/add_todo_icon.png';
+import trash_icon from '@/assets/trash_icon.png';
 
-import { size } from '../styles/size';
-import { colors } from '../styles/colors';
+import { size } from '@/common/ui/styles/size';
+import { colors } from '@/common/ui/styles/colors';
 
-import BackArrowButton from '../components/BackArrowButton';
-import TimeSliderBar from '../components/TimeSliderBar';
-import LinkIcon from '../components/LinkIcon';
-import DropDownArrowButton from '../components/DropDownArrowButton';
-import Button from '../components/Button';
-import MarginVertical from '../components/MarginVertical';
+import BackArrowButton from '@/common/ui/components/BackArrowButton';
+import TimeSliderBar from '@/common/ui/components/TimeSliderBar';
+import LinkIcon from '@/common/ui/components/LinkIcon';
+import DropDownArrowButton from '@/common/ui/components/DropDownArrowButton';
+import Button from '@/common/ui/components/Button';
+import MarginVertical from '@/common/ui/components/MarginVertical';
 
 import { useNavigation } from '@react-navigation/native';
-import { useTodoStore } from '../../store/todo';
-import { useMyPage } from '../../hooks/useMyPage';
-import { useTodo } from '../../hooks/useTodo';
+import { useTodoStore } from '@/common/store/todo';
+import { useMyPage } from '@/common/hooks/useMyPage';
+import { useTodo } from '@/common/hooks/useTodo';
 import dayjs from 'dayjs';
-import { getTimeDifference } from '../../../util';
-import CategoryEl from '../components/CategoryEl';
+import { getTimeDifference } from '@/util';
+import CategoryEl from '@/common/ui/components/CategoryEl';
 
 const AddTodo = ({ route, navigation }) => {
   const { todoData, setTodoData } = useTodoStore();

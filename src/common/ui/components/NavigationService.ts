@@ -1,4 +1,5 @@
-import { CommonActions, NavigationContainerRef } from '@react-navigation/native';
+import type { NavigationContainerRef } from '@react-navigation/native';
+import { CommonActions } from '@react-navigation/native';
 
 let navigator: NavigationContainerRef<any> | null = null;
 

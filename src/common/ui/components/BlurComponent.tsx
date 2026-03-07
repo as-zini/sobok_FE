@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { BlurView } from '@react-native-community/blur';
 import styled from '@emotion/native';
-import { size } from '../styles/size';
+import { size } from '@/common/ui/styles/size';
 
 const BlurComponent = ({ child }) => (
   <Container>

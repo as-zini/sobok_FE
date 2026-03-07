@@ -2,22 +2,22 @@ import React, { useEffect, useState } from 'react';
 import { SafeAreaView, View, ScrollView, Image, Text } from 'react-native';
 import styled from '@emotion/native';
 import { useNavigation } from '@react-navigation/native';
-import CreateLoading from '../components/CreateLoading';
-import BackArrowButton from '../components/BackArrowButton';
-import Button from '../components/Button';
-import MarginVertical from '../components/MarginVertical';
-import LinkIcon from '../components/LinkIcon';
-import { useInstallmentSaving } from '../../hooks/useInstallmentSaving';
-import { useUserInfoStore } from '../../store/user';
-import { size } from '../styles/size';
-import { colors } from '../styles/colors';
-import { minToHour } from '../../../util';
+import CreateLoading from '@/common/ui/components/CreateLoading';
+import BackArrowButton from '@/common/ui/components/BackArrowButton';
+import Button from '@/common/ui/components/Button';
+import MarginVertical from '@/common/ui/components/MarginVertical';
+import LinkIcon from '@/common/ui/components/LinkIcon';
+import { useInstallmentSaving } from '@/common/hooks/useInstallmentSaving';
+import { useUserInfoStore } from '@/common/store/user';
+import { size } from '@/common/ui/styles/size';
+import { colors } from '@/common/ui/styles/colors';
+import { minToHour } from '@/util';
 
-const mildCloud = require('../../../../assets/mild_cloud_icon.png');
-const snowman = require('../../../../assets/snowman_graphic.png');
-const snowflake = require('../../../../assets/snowflak_icon.png');
-const completeBg = require('../../../../assets/complete_add_saving_bg.png');
-const snowflakeWhite = require('../../../../assets/snow_flake_icon_white.png');
+const mildCloud = require('@/assets/mild_cloud_icon.png');
+const snowman = require('@/assets/snowman_graphic.png');
+const snowflake = require('@/assets/snowflak_icon.png');
+const completeBg = require('@/assets/complete_add_saving_bg.png');
+const snowflakeWhite = require('@/assets/snow_flake_icon_white.png');
 
 const CompleteAddSaving = ({ route }) => {
   const [loading, setLoading] = useState(true);

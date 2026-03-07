@@ -4,9 +4,9 @@ import 'dayjs/locale/en';
 dayjs.locale('en');
 import { View } from 'react-native';
 import styled from '@emotion/native';
-import calandar_arrow_left from '../../../../assets/calandar_arrow_left.png';
-import calandar_arrow_right from '../../../../assets/calandar_arrow_right.png';
-import { colors } from '../styles/colors';
+import calandar_arrow_left from '@/assets/calandar_arrow_left.png';
+import calandar_arrow_right from '@/assets/calandar_arrow_right.png';
+import { colors } from '@/common/ui/styles/colors';
 import MarginVertical from './MarginVertical';
 
 const Calandar = ({

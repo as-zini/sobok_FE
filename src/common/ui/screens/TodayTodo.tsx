@@ -2,27 +2,27 @@ import React, { useCallback, useEffect, useState } from 'react'
 import styled from '@emotion/native';
 import { Image, SafeAreaView, ScrollView, SectionList, Text, View } from 'react-native'
 
-import today_todo_bg from '../../../../assets/add_todo_bg.png';
-import time_icon from '../../../../assets/time_icon.png';
-import { size } from '../styles/size';
-import BackArrowButton from '../components/BackArrowButton';
-import MarginVertical from '../components/MarginVertical';
-import { colors } from '../styles/colors';
-import SnowFlakeIcon from '../components/SnowFlakeIcon';
-import BlurComponent from '../components/BlurComponent';
-import AssetEl from '../components/AssetEl';
-import TodoEl from '../components/TodoEl';
-import LinkIcon from '../components/LinkIcon';
-import button_icon from '../../../../assets/save_icon.png';
-import StartCountDown from '../components/StartCountDown';
+import today_todo_bg from '@/assets/add_todo_bg.png';
+import time_icon from '@/assets/time_icon.png';
+import { size } from '@/common/ui/styles/size';
+import BackArrowButton from '@/common/ui/components/BackArrowButton';
+import MarginVertical from '@/common/ui/components/MarginVertical';
+import { colors } from '@/common/ui/styles/colors';
+import SnowFlakeIcon from '@/common/ui/components/SnowFlakeIcon';
+import BlurComponent from '@/common/ui/components/BlurComponent';
+import AssetEl from '@/common/ui/components/AssetEl';
+import TodoEl from '@/common/ui/components/TodoEl';
+import LinkIcon from '@/common/ui/components/LinkIcon';
+import button_icon from '@/assets/save_icon.png';
+import StartCountDown from '@/common/ui/components/StartCountDown';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { useTodo } from '../../hooks/useTodo';
-import { minToHour } from '../../../util';
-import { useRoutine } from '../../hooks/useRoutine';
+import { useTodo } from '@/common/hooks/useTodo';
+import { minToHour } from '@/util';
+import { useRoutine } from '@/common/hooks/useRoutine';
 import dayjs from 'dayjs';
-import { useNowTodoStore } from '../../store/todo';
+import { useNowTodoStore } from '@/common/store/todo';
 
-var isBetween = require("dayjs/plugin/isBetween");
+const isBetween = require("dayjs/plugin/isBetween");
 dayjs.extend(isBetween);
 
 const TodayTodo = () => {
@@ -141,7 +141,7 @@ const TodayTodo = () => {
                 </View>
                 
                 <MarginVertical top={20}/>
-                <View style={{width:310, height:.8, backgroundColor:"#fff"}}></View>
+                <View style={{width:310, height:.8, backgroundColor:"#fff"}} />
               </View>
               <LenderItem item={el.todos}/>
               {index === notCompletedTodo.length-1 ? <MarginVertical top={100}/> :<></>}

@@ -1,9 +1,9 @@
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios"
 import dayjs from "dayjs";
-import { useTodoStore } from "../store/todo";
+import { useTodoStore } from "@/common/store/todo";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import baseUrl from "../api/baseURL";
+import baseUrl from "@/common/api/baseURL";
 
 
 export const useRoutine = () => {

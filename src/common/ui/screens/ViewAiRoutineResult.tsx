@@ -2,23 +2,23 @@ import React, { useEffect, useState } from 'react'
 import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import styled from '@emotion/native'
 
-import ai_routine_result_bg from '../../../../assets/home_bg.png';
-import { size } from '../styles/size';
-import { colors } from '../styles/colors';
-import BackArrowButton from '../components/BackArrowButton';
-import ai_routine_icon from '../../../../assets/complete_icon.png';
-import LinkIcon from '../components/LinkIcon';
-import WeekCalandar from '../components/WeekCalandar';
-import AssetEl from '../components/AssetEl';
-import MarginVertical from '../components/MarginVertical';
-import Button from '../components/Button';
-import RoutineRepeatModal from '../components/RoutineRepeatModal';
-import AssetLinkModal from '../components/AssetLinkModal';
+import ai_routine_result_bg from '@/assets/home_bg.png';
+import { size } from '@/common/ui/styles/size';
+import { colors } from '@/common/ui/styles/colors';
+import BackArrowButton from '@/common/ui/components/BackArrowButton';
+import ai_routine_icon from '@/assets/complete_icon.png';
+import LinkIcon from '@/common/ui/components/LinkIcon';
+import WeekCalandar from '@/common/ui/components/WeekCalandar';
+import AssetEl from '@/common/ui/components/AssetEl';
+import MarginVertical from '@/common/ui/components/MarginVertical';
+import Button from '@/common/ui/components/Button';
+import RoutineRepeatModal from '@/common/ui/components/RoutineRepeatModal';
+import AssetLinkModal from '@/common/ui/components/AssetLinkModal';
 import { useNavigation } from '@react-navigation/native';
-import { minToHour } from '../../../util';
-import TodoEl from '../components/TodoEl';
-import { useRoutine } from '../../hooks/useRoutine';
-import { useTodo } from '../../hooks/useTodo';
+import { minToHour } from '@/util';
+import TodoEl from '@/common/ui/components/TodoEl';
+import { useRoutine } from '@/common/hooks/useRoutine';
+import { useTodo } from '@/common/hooks/useTodo';
 
 const ViewAiRoutineResult = ({ route }) => {
   const data = [["영어 강의 1강", "스픽", "1H 30M", "06:00 - 07:00"], ["영어 단어 10개 암기", "말해보카", "1H:00", "07:30 - 08:30"]]
@@ -55,12 +55,12 @@ const ViewAiRoutineResult = ({ route }) => {
     console.log(routineInfo)
   }, [selectedDate])
 
-  if (version === "ai") {
-    useEffect(() => {
+  useEffect(() => {
+    if (version === "ai") {
       checkDuplicatedTodo({ startTime: route.params.time[0].slice(0, 5), endTime: route.params.time[0].slice(6) }, setIsDuplicated, selectedDate)
       console.log("!!!!!!!", isDuplicated, route.params.time)
-    }, [selectedDate])
-  }
+    }
+  }, [selectedDate])
 
 
 

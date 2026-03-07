@@ -1,15 +1,15 @@
 import React from 'react'
 import { Image, SafeAreaView, View } from 'react-native'
 import styled from '@emotion/native'
-import { size } from '../styles/size'
-import bg from '../../../../assets/home_bg.png';
-import BackArrowButton from '../components/BackArrowButton';
-import { colors } from '../styles/colors';
-import icon from '../../../../assets/save_icon.png';
-import MarginVertical from '../components/MarginVertical';
-import hakjae from '../../../../assets/hakjaeProfile.png';
-import zini from '../../../../assets/ziniProfile.png';
-import jiyoon from '../../../../assets/jiyoonProfile.png';
+import { size } from '@/common/ui/styles/size'
+import bg from '@/assets/home_bg.png';
+import BackArrowButton from '@/common/ui/components/BackArrowButton';
+import { colors } from '@/common/ui/styles/colors';
+import icon from '@/assets/save_icon.png';
+import MarginVertical from '@/common/ui/components/MarginVertical';
+import hakjae from '@/assets/hakjaeProfile.png';
+import zini from '@/assets/ziniProfile.png';
+import jiyoon from '@/assets/jiyoonProfile.png';
 import Zocial from 'react-native-vector-icons/Zocial';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 

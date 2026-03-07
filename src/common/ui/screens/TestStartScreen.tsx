@@ -3,12 +3,12 @@ import React from 'react';
 import { Dimensions, SafeAreaView, View } from 'react-native';
 import styled from '@emotion/native';
 import { useNavigation } from '@react-navigation/native';
-import BackArrowButton from '../components/BackArrowButton';
-import Button from '../components/Button';
-import { useUserInfoStore } from '../../store/user';
-import test_start_bg from '../../../../assets/test_start_bg.png';
-import test_start_icon from '../../../../assets/save_icon.png';
-import { colors } from '../styles/colors';
+import BackArrowButton from '@/common/ui/components/BackArrowButton';
+import Button from '@/common/ui/components/Button';
+import { useUserInfoStore } from '@/common/store/user';
+import test_start_bg from '@/assets/test_start_bg.png';
+import test_start_icon from '@/assets/save_icon.png';
+import { colors } from '@/common/ui/styles/colors';
 
 const { width, height } = Dimensions.get('screen');
 

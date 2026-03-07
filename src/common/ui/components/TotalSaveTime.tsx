@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import styled from '@emotion/native'
 
-import total_save_time_bg from '../../../../assets/total_save_time_bg.png';
-import { size } from '../styles/size';
+import total_save_time_bg from '@/assets/total_save_time_bg.png';
+import { size } from '@/common/ui/styles/size';
 import { Image, ScrollView, SectionList, Text, View } from 'react-native';
-import time_icon from '../../../../assets/time_icon.png';
+import time_icon from '@/assets/time_icon.png';
 import SnowFlakeIcon from './SnowFlakeIcon';
 import ProgressBar from './ProgressBar';
-import { colors } from '../styles/colors';
-import check_icon_white from '../../../../assets/check_icon_white.png';
+import { colors } from '@/common/ui/styles/colors';
+import check_icon_white from '@/assets/check_icon_white.png';
 import LinkIcon from './LinkIcon';
 import SmallButton from './SmallButton';
 import Button from './Button';
 import { useNavigation } from '@react-navigation/native';
 import MarginVertical from './MarginVertical';
-import { useNowTodoStore } from '../../store/todo';
-import { useRoutine } from '../../hooks/useRoutine';
-import { getTimeDifference, minToHour } from '../../../util';
+import { useNowTodoStore } from '@/common/store/todo';
+import { useRoutine } from '@/common/hooks/useRoutine';
+import { getTimeDifference, minToHour } from '@/util';
 
 const TotalSaveTime = ({ time }) => {
   const navigation = useNavigation();

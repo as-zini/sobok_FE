@@ -9,15 +9,15 @@ import {
 } from '@react-native-google-signin/google-signin';
 
 
-import signup_modal_bg from '../../../../assets/signup_modal_bg.png';
-import signup_icon from '../../../../assets/signup_icon.png';
-import google_icon from '../../../../assets/google_icon.png';
-import kakao_icon from '../../../../assets/kakao_icon.png';
-import email_icon from '../../../../assets/email_icon.png';
+import signup_modal_bg from '@/assets/signup_modal_bg.png';
+import signup_icon from '@/assets/signup_icon.png';
+import google_icon from '@/assets/google_icon.png';
+import kakao_icon from '@/assets/kakao_icon.png';
+import email_icon from '@/assets/email_icon.png';
 import { useNavigation } from '@react-navigation/native';
-import { size } from '../styles/size';
-import baseUrl from '../../api/baseURL';
-import { useSignup } from '../../hooks/useSignup';
+import { size } from '@/common/ui/styles/size';
+import baseUrl from '@/common/api/baseURL';
+import { useSignup } from '@/common/hooks/useSignup';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const StartScreenModal = ({ isSignupModalVisible, setIsSignupModalVisible }) => {
@@ -82,7 +82,7 @@ const StartScreenModal = ({ isSignupModalVisible, setIsSignupModalVisible }) => 
               <GoToLogin>이미 회원이신가요?</GoToLogin>
             </GoToLoginButton>
           </ModalContentsArea>
-          <ModalBg source={require('../../../../assets/signup_modal_bg.png')} />
+          <ModalBg source={require('@/assets/signup_modal_bg.png')} />
         </ModalBody>
       </Modal>
     </SafeAreaView>

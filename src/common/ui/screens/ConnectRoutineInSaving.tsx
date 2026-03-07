@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView, View } from 'react-native'
-import ConnectRoutine from '../components/ConnectRoutine'
+import ConnectRoutine from '@/common/ui/components/ConnectRoutine'
 import styled from '@emotion/native';
-import { size } from '../styles/size';
-import BackArrowButton from '../components/BackArrowButton';
-import bg from '../../../../assets/test_bg.png';
-import MarginVertical from '../components/MarginVertical';
-import Button from '../components/Button';
+import { size } from '@/common/ui/styles/size';
+import BackArrowButton from '@/common/ui/components/BackArrowButton';
+import bg from '@/assets/test_bg.png';
+import MarginVertical from '@/common/ui/components/MarginVertical';
+import Button from '@/common/ui/components/Button';
 import { useNavigation } from '@react-navigation/native';
-import { useInstallmentSaving } from '../../hooks/useInstallmentSaving';
+import { useInstallmentSaving } from '@/common/hooks/useInstallmentSaving';
 
 const ConnectRoutineInSaving = ({ route }) => {
   const [pickedRoutines, setPickedRoutines] = useState([])

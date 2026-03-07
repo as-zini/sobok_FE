@@ -2,18 +2,18 @@ import React, { useCallback, useState } from 'react';
 import { Image, SafeAreaView, ScrollView, SectionList, Text, View } from 'react-native';
 import styled from '@emotion/native';
 
-import installment_saving_bg from '../../../../assets/installment_saving_bg.png';
-import link_icon from '../../../../assets/link_icon.png';
-import installment_icon from '../../../../assets/save_icon.png';
-import { size } from '../styles/size';
-import BackArrowButton from '../components/BackArrowButton';
-import { colors } from '../styles/colors';
-import MarginVertical from '../components/MarginVertical';
+import installment_saving_bg from '@/assets/installment_saving_bg.png';
+import link_icon from '@/assets/link_icon.png';
+import installment_icon from '@/assets/save_icon.png';
+import { size } from '@/common/ui/styles/size';
+import BackArrowButton from '@/common/ui/components/BackArrowButton';
+import { colors } from '@/common/ui/styles/colors';
+import MarginVertical from '@/common/ui/components/MarginVertical';
 
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import AssetEl from '../components/AssetEl';
-import { useInstallmentSaving } from '../../hooks/useInstallmentSaving';
-import { minToHour } from '../../../util';
+import AssetEl from '@/common/ui/components/AssetEl';
+import { useInstallmentSaving } from '@/common/hooks/useInstallmentSaving';
+import { minToHour } from '@/util';
 
 const ViewInstallmentSavingScreen = () => {
   const navigation = useNavigation();

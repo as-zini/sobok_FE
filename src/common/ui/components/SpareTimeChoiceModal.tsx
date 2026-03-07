@@ -4,13 +4,13 @@ import { SafeAreaView, View, Text } from 'react-native';
 import Modal from 'react-native-modal';
 import styled from '@emotion/native';
 
-import { size } from '../styles/size';
-import { colors } from '../styles/colors';
+import { size } from '@/common/ui/styles/size';
+import { colors } from '@/common/ui/styles/colors';
 import TimeSliderBar from './TimeSliderBar';
 import MarginVertical from './MarginVertical';
 import Button from './Button';
-import { getTimeDifference, hasOverlap } from '../../../util';
-import { useTodo } from '../../hooks/useTodo';
+import { getTimeDifference, hasOverlap } from '@/util';
+import { useTodo } from '@/common/hooks/useTodo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const SpareTimeChoiceModal = ({

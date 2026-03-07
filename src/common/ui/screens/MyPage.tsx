@@ -1,47 +1,47 @@
 import React, { useEffect, useState } from 'react'
 import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import styled from '@emotion/native'
-import { colors } from '../styles/colors'
+import { colors } from '@/common/ui/styles/colors'
 
-import mypage_bg from '../../../../assets/home_bg.png';
-import setting_icon from '../../../../assets/setting_icon.png';
-import snowman_graphic from '../../../../assets/snowman_graphic.png';
-import SnowFlakeIcon from '../components/SnowFlakeIcon';
-import { size } from '../styles/size';
-import MarginVertical from '../components/MarginVertical';
+import mypage_bg from '@/assets/home_bg.png';
+import setting_icon from '@/assets/setting_icon.png';
+import snowman_graphic from '@/assets/snowman_graphic.png';
+import SnowFlakeIcon from '@/common/ui/components/SnowFlakeIcon';
+import { size } from '@/common/ui/styles/size';
+import MarginVertical from '@/common/ui/components/MarginVertical';
 import { useNavigation } from '@react-navigation/native';
-import { useUserInfoStore } from '../../store/user';
-import { useGetInfo } from '../../hooks/useGetInfo';
-import { minToHour } from '../../../util';
-import { useInstallmentSaving } from '../../hooks/useInstallmentSaving';
-import ticket from '../../../../assets/checked_ticket_img.png';
+import { useUserInfoStore } from '@/common/store/user';
+import { useGetInfo } from '@/common/hooks/useGetInfo';
+import { minToHour } from '@/util';
+import { useInstallmentSaving } from '@/common/hooks/useInstallmentSaving';
+import ticket from '@/assets/checked_ticket_img.png';
 import dayjs from 'dayjs';
-import { useReport } from '../../hooks/useReport';
+import { useReport } from '@/common/hooks/useReport';
 
-import top from '../../../../assets/top_graphic.png';
-import beaker from '../../../../assets/beaker_graphic.png';
-import donut from '../../../../assets/donut_graphic.png';
-import book from '../../../../assets/book_graphic.png';
-import victory from '../../../../assets/victory_graphic.png';
-import heart from '../../../../assets/heart_graphic.png';
-import halfMoon from '../../../../assets/half_moon_graphic.png';
-import snake from '../../../../assets/snake_graphic.png';
-import angel from '../../../../assets/angel_graphic.png';
-import cloud from '../../../../assets/cloud_graphic.png';
-import hexagon from '../../../../assets/hexagon_graphic.png';
-import hermitCrab from '../../../../assets/hermit_crab_graphic.png';
-import spring from '../../../../assets/spring_graphic.png';
-import rolypoly from '../../../../assets/rolypoly_graphic.png';
-import pudding from '../../../../assets/pudding_graphic.png';
-import quarter from '../../../../assets/quarter_moon_graphic.png';
-import card_icon from '../../../../assets/email_icon.png';
-import full from '../../../../assets/full_moon_graphic.png'
-import exercise from '../../../../assets/exercise_graphic.png';
-import globe from '../../../../assets/globe_graphic.png';
-import guitar from '../../../../assets/guitar_graphic.png'
-import fairy from '../../../../assets/fairy_graphic.png';
-import sun from '../../../../assets/sun_graphic.png';
-import present from '../../../../assets/present_graphic.png';
+import top from '@/assets/top_graphic.png';
+import beaker from '@/assets/beaker_graphic.png';
+import donut from '@/assets/donut_graphic.png';
+import book from '@/assets/book_graphic.png';
+import victory from '@/assets/victory_graphic.png';
+import heart from '@/assets/heart_graphic.png';
+import halfMoon from '@/assets/half_moon_graphic.png';
+import snake from '@/assets/snake_graphic.png';
+import angel from '@/assets/angel_graphic.png';
+import cloud from '@/assets/cloud_graphic.png';
+import hexagon from '@/assets/hexagon_graphic.png';
+import hermitCrab from '@/assets/hermit_crab_graphic.png';
+import spring from '@/assets/spring_graphic.png';
+import rolypoly from '@/assets/rolypoly_graphic.png';
+import pudding from '@/assets/pudding_graphic.png';
+import quarter from '@/assets/quarter_moon_graphic.png';
+import card_icon from '@/assets/email_icon.png';
+import full from '@/assets/full_moon_graphic.png'
+import exercise from '@/assets/exercise_graphic.png';
+import globe from '@/assets/globe_graphic.png';
+import guitar from '@/assets/guitar_graphic.png'
+import fairy from '@/assets/fairy_graphic.png';
+import sun from '@/assets/sun_graphic.png';
+import present from '@/assets/present_graphic.png';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 

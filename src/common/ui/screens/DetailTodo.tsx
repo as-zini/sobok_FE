@@ -2,22 +2,22 @@ import React, { use, useEffect, useState } from 'react'
 import { SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import styled from '@emotion/native';
 
-import todo_bg from '../../../../assets/home_bg.png';
-import todo_icon from '../../../../assets/todo_icon.png';
-import trash_icon from '../../../../assets/trash_icon.png';
-import { size } from '../styles/size';
-import BackArrowButton from '../components/BackArrowButton';
-import { colors } from '../styles/colors';
-import MarginVertical from '../components/MarginVertical';
-import TimeSliderBar from '../components/TimeSliderBar';
-import LinkIcon from '../components/LinkIcon';
-import DropDownArrowButton from '../components/DropDownArrowButton';
-import Button from '../components/Button';
-import { getTimeDifference, minToHour } from '../../../util';
-import CategoryEl from '../components/CategoryEl';
-import { useMyPage } from '../../hooks/useMyPage';
+import todo_bg from '@/assets/home_bg.png';
+import todo_icon from '@/assets/todo_icon.png';
+import trash_icon from '@/assets/trash_icon.png';
+import { size } from '@/common/ui/styles/size';
+import BackArrowButton from '@/common/ui/components/BackArrowButton';
+import { colors } from '@/common/ui/styles/colors';
+import MarginVertical from '@/common/ui/components/MarginVertical';
+import TimeSliderBar from '@/common/ui/components/TimeSliderBar';
+import LinkIcon from '@/common/ui/components/LinkIcon';
+import DropDownArrowButton from '@/common/ui/components/DropDownArrowButton';
+import Button from '@/common/ui/components/Button';
+import { getTimeDifference, minToHour } from '@/util';
+import CategoryEl from '@/common/ui/components/CategoryEl';
+import { useMyPage } from '@/common/hooks/useMyPage';
 import { useNavigation } from '@react-navigation/native';
-import { useTodo } from '../../hooks/useTodo';
+import { useTodo } from '@/common/hooks/useTodo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const DetailTodo = ({ route }) => {

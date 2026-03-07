@@ -8,18 +8,18 @@ import Octicons from 'react-native-vector-icons/Octicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 
-import savetime_bg from '../../../../assets/savetime_bg.png';
-import save_time_bg_first from '../../../../assets/report_bg.png';
-import { size } from '../styles/size';
-import { colors } from '../styles/colors';
-import BackArrowButton from '../components/BackArrowButton';
-import TimeSliderBar from '../components/TimeSliderBar';
-import MarginVertical from '../components/MarginVertical';
-import WeekCalandar from '../components/WeekCalandar';
-import SnowFlakeIcon from '../components/SnowFlakeIcon';
-import Button from '../components/Button';
-import { useSaveTime } from '../../hooks/useSaveTime';
-import { minToHour } from '../../../util';
+import savetime_bg from '@/assets/savetime_bg.png';
+import save_time_bg_first from '@/assets/report_bg.png';
+import { size } from '@/common/ui/styles/size';
+import { colors } from '@/common/ui/styles/colors';
+import BackArrowButton from '@/common/ui/components/BackArrowButton';
+import TimeSliderBar from '@/common/ui/components/TimeSliderBar';
+import MarginVertical from '@/common/ui/components/MarginVertical';
+import WeekCalandar from '@/common/ui/components/WeekCalandar';
+import SnowFlakeIcon from '@/common/ui/components/SnowFlakeIcon';
+import Button from '@/common/ui/components/Button';
+import { useSaveTime } from '@/common/hooks/useSaveTime';
+import { minToHour } from '@/util';
 
 const ViewSaveTime = ({ route }) => {
   const { version, username } = route.params;
@@ -137,7 +137,7 @@ const ViewSaveTime = ({ route }) => {
                 </IconRow>
               </Row>
               <MarginVertical top={12} />
-              <View style={{ backgroundColor: '#fff', height: 40, width: 1.5, position: 'absolute', bottom: 20, left: 32 }}></View>
+              <View style={{ backgroundColor: '#fff', height: 40, width: 1.5, position: 'absolute', bottom: 20, left: 32 }} />
             </View>
           ))}
           <Row onPress={() => navigation.navigate('AddSaveTime', { spareTimeEl: false, length: spareTimeList.length })} style={{ height: 'auto', alignItems: 'center' }}>
@@ -271,4 +271,4 @@ const Footer = styled.View`
   align-items: center;
 `;
 
-const TimeIcon = require('../../../../assets/time_icon.png');
+const TimeIcon = require('@/assets/time_icon.png');

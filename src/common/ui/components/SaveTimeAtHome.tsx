@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import styled from '@emotion/native';
 import SnowFlakeIcon from './SnowFlakeIcon';
-import { minToHour } from '../../../util';
+import { minToHour } from '@/util';
 import MarginVertical from './MarginVertical';
 
 const originalDays = ['일', '월', '화', '수', '목', '금', '토', ''];

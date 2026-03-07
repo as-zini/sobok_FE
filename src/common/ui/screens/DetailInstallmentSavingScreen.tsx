@@ -2,28 +2,28 @@ import React, { useEffect, useRef, useState } from 'react'
 import { SafeAreaProvider, SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import styled from '@emotion/native';
 
-import installment_saving_bg from '../../../../assets/installment_saving_bg.png';
-import installment_icon from '../../../../assets/save_icon.png';
-import MarginVertical from '../components/MarginVertical';
+import installment_saving_bg from '@/assets/installment_saving_bg.png';
+import installment_icon from '@/assets/save_icon.png';
+import MarginVertical from '@/common/ui/components/MarginVertical';
 import { Image, ScrollView, SectionList, Text, TouchableOpacity, View } from 'react-native';
-import BackArrowButton from '../components/BackArrowButton';
-import { colors } from '../styles/colors';
-import { size } from '../styles/size';
-import ShortAlertArea from '../components/ShortAlertArea';
-import DoubleButton from '../components/DoubleButton';
-import ProgressBar from '../components/ProgressBar';
-import BlurComponent from '../components/BlurComponent';
-import DropDownArrowButton from '../components/DropDownArrowButton';
-import AssetEl from '../components/AssetEl';
-import CalandarModal from '../components/CalandarModal';
-import { minToHour } from '../../../util';
+import BackArrowButton from '@/common/ui/components/BackArrowButton';
+import { colors } from '@/common/ui/styles/colors';
+import { size } from '@/common/ui/styles/size';
+import ShortAlertArea from '@/common/ui/components/ShortAlertArea';
+import DoubleButton from '@/common/ui/components/DoubleButton';
+import ProgressBar from '@/common/ui/components/ProgressBar';
+import BlurComponent from '@/common/ui/components/BlurComponent';
+import DropDownArrowButton from '@/common/ui/components/DropDownArrowButton';
+import AssetEl from '@/common/ui/components/AssetEl';
+import CalandarModal from '@/common/ui/components/CalandarModal';
+import { minToHour } from '@/util';
 import { useNavigation } from '@react-navigation/native';
 import dayjs from 'dayjs';
-import { useInstallmentSaving } from '../../hooks/useInstallmentSaving';
+import { useInstallmentSaving } from '@/common/hooks/useInstallmentSaving';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import SavingAlerteModal from '../components/SavingAlertModal';
+import SavingAlerteModal from '@/common/ui/components/SavingAlertModal';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import CompleteSavingModal from '../components/CompleteSavingModal';
+import CompleteSavingModal from '@/common/ui/components/CompleteSavingModal';
 
 
 const DetailInstallmentSavingScreen = ({ route }) => {

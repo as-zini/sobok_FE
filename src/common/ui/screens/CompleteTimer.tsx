@@ -2,16 +2,16 @@ import React, { useState } from 'react'
 import { Image, SafeAreaView, View } from 'react-native'
 import styled from '@emotion/native'
 
-import complete_timer_bg from '../../../../assets/complete_add_saving_bg.png';
-import mild_cloud_icon from '../../../../assets/mild_cloud_icon.png';
-import down_navigate_icon from '../../../../assets/down_navigate_icon.png';
-import { size } from '../styles/size';
-import BackArrowButton from '../components/BackArrowButton';
-import SnowFlakeIcon from '../components/SnowFlakeIcon';
-import { colors } from '../styles/colors';
-import MarginVertical from '../components/MarginVertical';
-import TotalSaveTime from '../components/TotalSaveTime';
-import { useNowTodoStore } from '../../store/todo';
+import complete_timer_bg from '@/assets/complete_add_saving_bg.png';
+import mild_cloud_icon from '@/assets/mild_cloud_icon.png';
+import down_navigate_icon from '@/assets/down_navigate_icon.png';
+import { size } from '@/common/ui/styles/size';
+import BackArrowButton from '@/common/ui/components/BackArrowButton';
+import SnowFlakeIcon from '@/common/ui/components/SnowFlakeIcon';
+import { colors } from '@/common/ui/styles/colors';
+import MarginVertical from '@/common/ui/components/MarginVertical';
+import TotalSaveTime from '@/common/ui/components/TotalSaveTime';
+import { useNowTodoStore } from '@/common/store/todo';
 
 const CompleteTimer = ({ route }) => {
   const [isDetailView, setIsDetailView] = useState(false);

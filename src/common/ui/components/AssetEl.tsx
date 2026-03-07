@@ -4,8 +4,8 @@ import StepNumber from './StepNumber';
 import { useNavigation } from '@react-navigation/native';
 import LinkIcon from './LinkIcon';
 import MarginVertical from './MarginVertical';
-import { colors } from '../styles/colors';
-import { size } from '../styles/size';
+import { colors } from '@/common/ui/styles/colors';
+import { size } from '@/common/ui/styles/size';
 import styled from '@emotion/native';
 
 const AssetEl = ({

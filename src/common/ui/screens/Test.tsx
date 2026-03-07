@@ -2,40 +2,40 @@ import React, { useEffect, useState } from 'react'
 import { Dimensions, FlatList, Image, SafeAreaView, ScrollView, SectionList, Text, TouchableOpacity, View } from 'react-native'
 import styled from '@emotion/native'
 
-import test_bg from '../../../../assets/test_bg.png'
-import BackArrowButton from '../components/BackArrowButton'
-import Steps from '../components/Step'
-import { colors } from '../styles/colors'
-import bus_icon from '../../../../assets/bus_icon.png';
-import car_icon from '../../../../assets/car_icon.png';
-import free_time_icon from '../../../../assets/free_time_icon.png';
-import game_icon from '../../../../assets/game_icon.png';
-import diversity_icon from '../../../../assets/diversity_icon.png';
-import mono_icon from '../../../../assets/mono_icon.png';
-import circle_graphic from '../../../../assets/circle_graphic.png';
-import top_graphic from '../../../../assets/top_graphic.png';
-import trapezoid_graphic from '../../../../assets/trapezoid_graphic.png';
-import plat_graphic from '../../../../assets/plat_graphic.png';
-import Button from '../components/Button'
-import StepNumber from '../components/StepNumber'
+import test_bg from '@/assets/test_bg.png'
+import BackArrowButton from '@/common/ui/components/BackArrowButton'
+import Steps from '@/common/ui/components/Step'
+import { colors } from '@/common/ui/styles/colors'
+import bus_icon from '@/assets/bus_icon.png';
+import car_icon from '@/assets/car_icon.png';
+import free_time_icon from '@/assets/free_time_icon.png';
+import game_icon from '@/assets/game_icon.png';
+import diversity_icon from '@/assets/diversity_icon.png';
+import mono_icon from '@/assets/mono_icon.png';
+import circle_graphic from '@/assets/circle_graphic.png';
+import top_graphic from '@/assets/top_graphic.png';
+import trapezoid_graphic from '@/assets/trapezoid_graphic.png';
+import plat_graphic from '@/assets/plat_graphic.png';
+import Button from '@/common/ui/components/Button'
+import StepNumber from '@/common/ui/components/StepNumber'
 import { useNavigation } from '@react-navigation/native'
-import ChoiceModal from '../components/SpareTimeChoiceModal'
-import MarginVertical from '../components/MarginVertical'
-import clicked_bus_button from '../../../../assets/clicked_bus_button.png';
-import clicked_car_button from '../../../../assets/clicked_car_button.png';
-import clicked_game_button from '../../../../assets/clicked_game_button.png';
-import clicked_time_button from '../../../../assets/clicked_time_button.png';
-import SimpleTodoEl from '../components/SimpleTodoEl'
-import { getTimeDifference, minToHour } from '../../../util'
-import selected_step1_1 from '../../../../assets/selected_step1_1.png';
-import selected_step1_2 from '../../../../assets/selected_step1_2.png';
-import selected_step2_1 from '../../../../assets/selected_step2_1.png';
-import selected_step2_2 from '../../../../assets/selected_step2_2.png';
-import selected_step3_1 from '../../../../assets/selected_step3_1.png';
-import selected_step3_2 from '../../../../assets/selected_step3_2.png';
-import { useUserInfoStore } from '../../store/user'
-import { useTodo } from '../../hooks/useTodo'
-import { size } from '../styles/size'
+import ChoiceModal from '@/common/ui/components/SpareTimeChoiceModal'
+import MarginVertical from '@/common/ui/components/MarginVertical'
+import clicked_bus_button from '@/assets/clicked_bus_button.png';
+import clicked_car_button from '@/assets/clicked_car_button.png';
+import clicked_game_button from '@/assets/clicked_game_button.png';
+import clicked_time_button from '@/assets/clicked_time_button.png';
+import SimpleTodoEl from '@/common/ui/components/SimpleTodoEl'
+import { getTimeDifference, minToHour } from '@/util'
+import selected_step1_1 from '@/assets/selected_step1_1.png';
+import selected_step1_2 from '@/assets/selected_step1_2.png';
+import selected_step2_1 from '@/assets/selected_step2_1.png';
+import selected_step2_2 from '@/assets/selected_step2_2.png';
+import selected_step3_1 from '@/assets/selected_step3_1.png';
+import selected_step3_2 from '@/assets/selected_step3_2.png';
+import { useUserInfoStore } from '@/common/store/user'
+import { useTodo } from '@/common/hooks/useTodo'
+import { size } from '@/common/ui/styles/size'
 
 
 const Test = () => {
@@ -357,7 +357,7 @@ const Test = () => {
                     placeholderTextColor="#fff"
                     style={{ color: step4Value.length > 30 ? "#FF4848" : colors.fontMain }}
                   />
-                  <View style={{ width: "90%", height: 1, backgroundColor: "#fff" }}></View>
+                  <View style={{ width: "90%", height: 1, backgroundColor: "#fff" }} />
                   <Text style={{ color: step4Value.length > 30 ? "#FF4848" : "#fff", fontWeight: 500, fontSize: 14 }}>{`${step4Value.length}/30`}</Text>
                 </View>
                 :
@@ -370,7 +370,7 @@ const Test = () => {
           <Button text={"다음 단계로"} unChecked={unChecked} handleButton={handleTestButton} />
         </View>
       </TestBody>
-      <TestBg source={require("../../../../assets/test_bg.png")} />
+      <TestBg source={require("@/assets/test_bg.png")} />
     </SafeAreaView>
   )
 }

@@ -2,29 +2,29 @@ import React, { useEffect, useState } from 'react'
 import { Image, SafeAreaView, ScrollView, SectionList, Text, View } from 'react-native'
 import styled from '@emotion/native'
 
-import report_bg from '../../../../assets/report_bg.png';
-import { size } from '../styles/size';
-import BackArrowButton from '../components/BackArrowButton';
-import { colors } from '../styles/colors';
-import SnowCardEl from '../components/SnowCardEl';
-import MarginVertical from '../components/MarginVertical';
-import report_arrive_icon from '../../../../assets/report_arrive_icon.png';
-import calandar_icon from '../../../../assets/calandar_icon.png';
-import time_icon from '../../../../assets/time_icon.png';
-import down_navigate_icon from '../../../../assets/down_navigate_icon.png';
-import SnowFlakeIcon from '../components/SnowFlakeIcon';
-import TodoEl from '../components/TodoEl';
-import TimeSliderBar from '../components/TimeSliderBar';
-import Calandar from '../components/Calandar';
-import report_save_bg from '../../../../assets/report_save_bg.png';
-import books_graphic from '../../../../assets/books_graphic.png';
-import Button from '../components/Button';
+import report_bg from '@/assets/report_bg.png';
+import { size } from '@/common/ui/styles/size';
+import BackArrowButton from '@/common/ui/components/BackArrowButton';
+import { colors } from '@/common/ui/styles/colors';
+import SnowCardEl from '@/common/ui/components/SnowCardEl';
+import MarginVertical from '@/common/ui/components/MarginVertical';
+import report_arrive_icon from '@/assets/report_arrive_icon.png';
+import calandar_icon from '@/assets/calandar_icon.png';
+import time_icon from '@/assets/time_icon.png';
+import down_navigate_icon from '@/assets/down_navigate_icon.png';
+import SnowFlakeIcon from '@/common/ui/components/SnowFlakeIcon';
+import TodoEl from '@/common/ui/components/TodoEl';
+import TimeSliderBar from '@/common/ui/components/TimeSliderBar';
+import Calandar from '@/common/ui/components/Calandar';
+import report_save_bg from '@/assets/report_save_bg.png';
+import books_graphic from '@/assets/books_graphic.png';
+import Button from '@/common/ui/components/Button';
 import { useNavigation } from '@react-navigation/native';
-import { useReport } from '../../hooks/useReport';
+import { useReport } from '@/common/hooks/useReport';
 import dayjs from 'dayjs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { minToHour } from '../../../util';
-import { useUserInfoStore } from '../../store/user';
+import { minToHour } from '@/util';
+import { useUserInfoStore } from '@/common/store/user';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const Report = () => {
@@ -133,9 +133,7 @@ const Report = () => {
           )}
           renderSectionHeader={({ section: { title } }) => (
             <ListHeader title={title} />
-          )}>
-
-        </SectionList>
+          )} />
         <MarginVertical top={86} />
         <ReportText>{reportInfo?.reportMessage1}</ReportText>
         <MarginVertical top={10} />
@@ -370,7 +368,7 @@ const Report = () => {
               </View>
             </View>
           </View>
-          <View style={{ width: size.width, height: 50, position: 'absolute', top: 830, zIndex: 3 }}></View>
+          <View style={{ width: size.width, height: 50, position: 'absolute', top: 830, zIndex: 3 }} />
           <TimeSliderBar version={"reportCompare"} compareValue1={reportInfo.averageTime} compareValue2={50} />
 
           <MarginVertical top={40} />

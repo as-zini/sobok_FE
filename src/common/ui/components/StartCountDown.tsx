@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native'
 import styled from '@emotion/native'
-import { size } from '../styles/size'
+import { size } from '@/common/ui/styles/size'
 import SnowFlakeIcon from './SnowFlakeIcon'
 import MarginVertical from './MarginVertical'
 import { useNavigation } from '@react-navigation/native'
-import { useNowTodoStore } from '../../store/todo'
-import { useUserInfoStore } from '../../store/user'
+import { useNowTodoStore } from '@/common/store/todo'
+import { useUserInfoStore } from '@/common/store/user'
 
 const StartCountDown = () => {
   const [count, setCount] = useState(3);

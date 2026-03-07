@@ -1,15 +1,15 @@
 import React from 'react'
 import { SafeAreaView, TouchableOpacity, View } from 'react-native'
 import styled from '@emotion/native'
-import { size } from '../styles/size'
+import { size } from '@/common/ui/styles/size'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { colors } from '../styles/colors';
-import snowman from '../../../../assets/snowman_graphic.png';
-import { useUserInfoStore } from '../../store/user';
-import MarginVertical from '../components/MarginVertical';
-import Button from '../components/Button';
+import { colors } from '@/common/ui/styles/colors';
+import snowman from '@/assets/snowman_graphic.png';
+import { useUserInfoStore } from '@/common/store/user';
+import MarginVertical from '@/common/ui/components/MarginVertical';
+import Button from '@/common/ui/components/Button';
 import { useNavigation } from '@react-navigation/native';
-import bg from "../../../../assets/settingAccountBg.jpg"
+import bg from "@/assets/settingAccountBg.jpg"
 
 
 const SettingAccountList = () => {

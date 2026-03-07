@@ -7,28 +7,28 @@ import {
 } from 'react-native';
 import styled from '@emotion/native';
 
-import timer_bg from '../../../../assets/timer_bg.png';
-import timer_pause_bg from '../../../../assets/timer_pause_bg.png';
-import pause_button_icon from '../../../../assets/save_icon.png';
-import timer_pause_button_bg from '../../../../assets/timer_pause_button_bg.png';
-import timer_continue_button_bg from '../../../../assets/timer_continue_button_bg.png';
-import timer_continue_icon from '../../../../assets/timer_continue_icon.png';
-import snow_flake_icon_opacity from '../../../../assets/snow_flake_icon_opacity.png';
+import timer_bg from '@/assets/timer_bg.png';
+import timer_pause_bg from '@/assets/timer_pause_bg.png';
+import pause_button_icon from '@/assets/save_icon.png';
+import timer_pause_button_bg from '@/assets/timer_pause_button_bg.png';
+import timer_continue_button_bg from '@/assets/timer_continue_button_bg.png';
+import timer_continue_icon from '@/assets/timer_continue_icon.png';
+import snow_flake_icon_opacity from '@/assets/snow_flake_icon_opacity.png';
 
-import { size } from '../styles/size';
-import { colors } from '../styles/colors';
-import BackArrowButton from '../components/BackArrowButton';
-import SnowFlakeIcon from '../components/SnowFlakeIcon';
-import MarginVertical from '../components/MarginVertical';
-import LinkIcon from '../components/LinkIcon';
+import { size } from '@/common/ui/styles/size';
+import { colors } from '@/common/ui/styles/colors';
+import BackArrowButton from '@/common/ui/components/BackArrowButton';
+import SnowFlakeIcon from '@/common/ui/components/SnowFlakeIcon';
+import MarginVertical from '@/common/ui/components/MarginVertical';
+import LinkIcon from '@/common/ui/components/LinkIcon';
 
 import dayjs from 'dayjs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
-import { useUserInfoStore } from '../../store/user';
-import { useTodo } from '../../hooks/useTodo';
-import { useNowTodoStore } from '../../store/todo';
-import { getTimeDifference, minToHour } from '../../../util';
+import { useUserInfoStore } from '@/common/store/user';
+import { useTodo } from '@/common/hooks/useTodo';
+import { useNowTodoStore } from '@/common/store/todo';
+import { getTimeDifference, minToHour } from '@/util';
 
 const { width: screenWidth } = Dimensions.get('window');
 

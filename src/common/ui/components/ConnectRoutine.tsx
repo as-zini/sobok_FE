@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import styled from '@emotion/native';
-import { useRoutine } from '../../hooks/useRoutine';
-import { colors } from '../styles/colors';
-import { minToHour } from '../../../util';
-import { size } from '../styles/size';
+import { useRoutine } from '@/common/hooks/useRoutine';
+import { colors } from '@/common/ui/styles/colors';
+import { minToHour } from '@/util';
+import { size } from '@/common/ui/styles/size';
 import AssetEl from './AssetEl';
 import MarginVertical from './MarginVertical';
 
-const searchIcon = require('../../../../assets/search_icon.png');
+const searchIcon = require('@/assets/search_icon.png');
 
 const ConnectRoutine = ({ pickedRoutines, setPickedRoutines, setStep }) => {
   const { getRoutineByList } = useRoutine();

@@ -2,14 +2,14 @@ import React, { useEffect, useRef, useState } from 'react'
 import { SafeAreaView, ImageBackground, View, Text, ScrollView, Dimensions } from 'react-native'
 import styled from '@emotion/native'
 
-import bg from '../../../../assets/interestBg.png'
-import icon from '../../../../assets/point_icon.png'
-import { size } from '../styles/size'
-import { colors } from '../styles/colors'
-import BackArrowButton from '../components/BackArrowButton'
-import MarginVertical from '../components/MarginVertical'
-import SnowFlakeIcon from '../components/SnowFlakeIcon'
-import { useInstallmentSaving } from '../../hooks/useInstallmentSaving'
+import bg from '@/assets/interestBg.png'
+import icon from '@/assets/point_icon.png'
+import { size } from '@/common/ui/styles/size'
+import { colors } from '@/common/ui/styles/colors'
+import BackArrowButton from '@/common/ui/components/BackArrowButton'
+import MarginVertical from '@/common/ui/components/MarginVertical'
+import SnowFlakeIcon from '@/common/ui/components/SnowFlakeIcon'
+import { useInstallmentSaving } from '@/common/hooks/useInstallmentSaving'
 
 const BAR_DATA = [
   { month: '9월', value: 800, date: '2024.09', point: 800, percent: 40 },

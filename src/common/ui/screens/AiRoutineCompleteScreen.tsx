@@ -3,16 +3,16 @@ import React, { useEffect, useState } from 'react';
 import { SafeAreaView, View } from 'react-native';
 import styled from '@emotion/native';
 
-import CreateLoading from '../components/CreateLoading';
-import airoutine_complete_bg from '../../../../assets/airoutine_complete_bg.png';
-import { size } from '../styles/size';
-import complete_icon from '../../../../assets/complete_icon.png';
-import { colors } from '../styles/colors';
-import MarginVertical from '../components/MarginVertical';
-import Button from '../components/Button';
+import CreateLoading from '@/common/ui/components/CreateLoading';
+import airoutine_complete_bg from '@/assets/airoutine_complete_bg.png';
+import { size } from '@/common/ui/styles/size';
+import complete_icon from '@/assets/complete_icon.png';
+import { colors } from '@/common/ui/styles/colors';
+import MarginVertical from '@/common/ui/components/MarginVertical';
+import Button from '@/common/ui/components/Button';
 import { useNavigation } from '@react-navigation/native';
-import { useTest } from '../../hooks/useTest';
-import { useUserInfoStore } from '../../store/user';
+import { useTest } from '@/common/hooks/useTest';
+import { useUserInfoStore } from '@/common/store/user';
 
 const AiRoutineCompleteScreen = ({ route }) => {
   const [isCreateComplete, setIsCreateComplete] = useState(false);

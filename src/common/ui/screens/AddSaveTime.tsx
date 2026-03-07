@@ -5,17 +5,17 @@ import styled from '@emotion/native';
 import { useNavigation } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-import savetime_bg from '../../../../assets/savetime_bg.png';
-import time_icon from '../../../../assets/time_icon.png';
-import { size } from '../styles/size';
-import { colors } from '../styles/colors';
-import BackArrowButton from '../components/BackArrowButton';
-import MarginVertical from '../components/MarginVertical';
-import WeekCalandar from '../components/WeekCalandar';
-import TimeSliderBar from '../components/TimeSliderBar';
-import Button from '../components/Button';
-import { useSaveTime } from '../../hooks/useSaveTime';
-import { getTimeDifference } from '../../../util';
+import savetime_bg from '@/assets/savetime_bg.png';
+import time_icon from '@/assets/time_icon.png';
+import { size } from '@/common/ui/styles/size';
+import { colors } from '@/common/ui/styles/colors';
+import BackArrowButton from '@/common/ui/components/BackArrowButton';
+import MarginVertical from '@/common/ui/components/MarginVertical';
+import WeekCalandar from '@/common/ui/components/WeekCalandar';
+import TimeSliderBar from '@/common/ui/components/TimeSliderBar';
+import Button from '@/common/ui/components/Button';
+import { useSaveTime } from '@/common/hooks/useSaveTime';
+import { getTimeDifference } from '@/util';
 
 const AddSaveTime = ({ route }) => {
   const { spareTimeEl, length } = route.params;

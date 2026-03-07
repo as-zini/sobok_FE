@@ -1,15 +1,15 @@
 import React from 'react'
 import { SafeAreaView, View } from 'react-native'
 import styled from '@emotion/native'
-import { size } from '../styles/size'
+import { size } from '@/common/ui/styles/size'
 
-import bg from '../../../../assets/statistic_bg.png';
-import BackArrowButton from '../components/BackArrowButton';
-import SnowCardEl from '../components/SnowCardEl';
-import SnowFlakeIcon from '../components/SnowFlakeIcon';
-import { colors } from '../styles/colors';
-import MarginVertical from '../components/MarginVertical';
-import { useUserInfoStore } from '../../store/user';
+import bg from '@/assets/statistic_bg.png';
+import BackArrowButton from '@/common/ui/components/BackArrowButton';
+import SnowCardEl from '@/common/ui/components/SnowCardEl';
+import SnowFlakeIcon from '@/common/ui/components/SnowFlakeIcon';
+import { colors } from '@/common/ui/styles/colors';
+import MarginVertical from '@/common/ui/components/MarginVertical';
+import { useUserInfoStore } from '@/common/store/user';
 
 
 const DetailSnowCard = ({ route }) => {

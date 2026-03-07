@@ -3,10 +3,10 @@ import { Image, View, Text } from 'react-native';
 import styled from '@emotion/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import bg from '../../../../assets/nonPremiumUserBg.png';
-import crown_icon from '../../../../assets/crown_icon.png';
-import { size } from '../styles/size';
-import { colors } from '../styles/colors';
+import bg from '@/assets/nonPremiumUserBg.png';
+import crown_icon from '@/assets/crown_icon.png';
+import { size } from '@/common/ui/styles/size';
+import { colors } from '@/common/ui/styles/colors';
 import MarginVertical from './MarginVertical';
 import { useNavigation } from '@react-navigation/native';
 

@@ -1,18 +1,18 @@
 import React, { useState } from 'react'
 import { Image, SafeAreaView, Text, TouchableOpacity, View } from 'react-native'
 import styled from '@emotion/native'
-import { size } from '../styles/size'
+import { size } from '@/common/ui/styles/size'
 
-import setting_bg from '../../../../assets/setting_bg.png';
-import BackArrowButton from '../components/BackArrowButton';
-import { colors } from '../styles/colors';
-import snowman_graphic from '../../../../assets/snowman_graphic.png';
-import NavigateArrowButton from '../components/NavigateArrowButton';
-import MarginVertical from '../components/MarginVertical';
+import setting_bg from '@/assets/setting_bg.png';
+import BackArrowButton from '@/common/ui/components/BackArrowButton';
+import { colors } from '@/common/ui/styles/colors';
+import snowman_graphic from '@/assets/snowman_graphic.png';
+import NavigateArrowButton from '@/common/ui/components/NavigateArrowButton';
+import MarginVertical from '@/common/ui/components/MarginVertical';
 import { useNavigation } from '@react-navigation/native';
-import { useUserInfoStore } from '../../store/user';
+import { useUserInfoStore } from '@/common/store/user';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import RoutinePauseModal from '../components/RoutinePauseModal';
+import RoutinePauseModal from '@/common/ui/components/RoutinePauseModal';
 
 const Setting = () => {
   const settingCategory = ["연동 설정", "지원 문의", "약관 및 개인정보 처리 동의", "앱 버전"]

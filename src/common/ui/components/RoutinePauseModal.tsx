@@ -2,17 +2,17 @@ import React, { useState } from 'react';
 import Modal from 'react-native-modal';
 import { Image } from 'react-native';
 import styled from '@emotion/native';
-import { size } from '../styles/size';
-import { colors } from '../styles/colors';
+import { size } from '@/common/ui/styles/size';
+import { colors } from '@/common/ui/styles/colors';
 import MarginVertical from './MarginVertical';
 import DoubleButton from './DoubleButton';
 
-import snowflakeIcon from '../../../../assets/snowflak_icon.png';
-import checkIcon from '../../../../assets/check_icon_indigo.png';
-import routinePauseBg from '../../../../assets/routine_pause_bg.png';
-import { useRoutine } from '../../hooks/useRoutine';
-import { useUserInfoStore } from '../../store/user';
-import { useLogin } from '../../hooks/useLogin';
+import snowflakeIcon from '@/assets/snowflak_icon.png';
+import checkIcon from '@/assets/check_icon_indigo.png';
+import routinePauseBg from '@/assets/routine_pause_bg.png';
+import { useRoutine } from '@/common/hooks/useRoutine';
+import { useUserInfoStore } from '@/common/store/user';
+import { useLogin } from '@/common/hooks/useLogin';
 
 const RoutinePauseModal = ({
   isPauseModalVisible,

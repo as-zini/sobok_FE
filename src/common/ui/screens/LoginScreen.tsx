@@ -9,13 +9,13 @@ import {
 } from 'react-native';
 import styled from '@emotion/native';
 
-import loginBg from '../../../../assets/login_bg.png';
-import login_icon from '../../../../assets/login_icon.png';
-import { colors } from '../styles/colors';
-import Button from '../components/Button';
+import loginBg from '@/assets/login_bg.png';
+import login_icon from '@/assets/login_icon.png';
+import { colors } from '@/common/ui/styles/colors';
+import Button from '@/common/ui/components/Button';
 import { useNavigation } from '@react-navigation/native';
-import BackArrowButton from '../components/BackArrowButton';
-import { useLogin } from '../../hooks/useLogin';
+import BackArrowButton from '@/common/ui/components/BackArrowButton';
+import { useLogin } from '@/common/hooks/useLogin';
 
 const LoginScreen = () => {
   const navigation = useNavigation();

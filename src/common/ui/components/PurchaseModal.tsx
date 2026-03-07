@@ -3,18 +3,18 @@ import Modal from 'react-native-modal';
 import { Image } from 'react-native';
 import styled from '@emotion/native';
 import dayjs from 'dayjs';
-import { size } from '../styles/size';
-import { colors } from '../styles/colors';
+import { size } from '@/common/ui/styles/size';
+import { colors } from '@/common/ui/styles/colors';
 import MarginVertical from './MarginVertical';
 import DoubleButton from './DoubleButton';
-import { usePoint } from '../../hooks/usePoint';
-import { useUserInfoStore } from '../../store/user';
-import { useGetInfo } from '../../hooks/useGetInfo';
+import { usePoint } from '@/common/hooks/usePoint';
+import { useUserInfoStore } from '@/common/store/user';
+import { useGetInfo } from '@/common/hooks/useGetInfo';
 
-import snowflakeIcon from '../../../../assets/snowflak_icon.png';
-import subscribeCompleteIcon from '../../../../assets/subscribe_complete_icon.png';
-import checkIcon from '../../../../assets/check_icon_indigo.png';
-import routinePauseBg from '../../../../assets/routine_pause_bg.png';
+import snowflakeIcon from '@/assets/snowflak_icon.png';
+import subscribeCompleteIcon from '@/assets/subscribe_complete_icon.png';
+import checkIcon from '@/assets/check_icon_indigo.png';
+import routinePauseBg from '@/assets/routine_pause_bg.png';
 
 const PurchaseModal = ({ isPurchaseModalVisible, setIsPurchaseModalVisible, version }) => {
   const [isComplete, setIsComplete] = useState(false);

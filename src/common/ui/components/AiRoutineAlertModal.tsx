@@ -3,14 +3,14 @@ import Modal from 'react-native-modal';
 import { Image, View } from 'react-native';
 import styled from '@emotion/native';
 import { useNavigation } from '@react-navigation/native';
-import { useRoutine } from '../../hooks/useRoutine';
+import { useRoutine } from '@/common/hooks/useRoutine';
 import MarginVertical from './MarginVertical';
 import DoubleButton from './DoubleButton';
-import { colors } from '../styles/colors';
-import { size } from '../styles/size';
+import { colors } from '@/common/ui/styles/colors';
+import { size } from '@/common/ui/styles/size';
 
-import alertBg from '../../../../assets/ai_routine_alert_bg.png';
-import alertIcon from '../../../../assets/alert_icon.png';
+import alertBg from '@/assets/ai_routine_alert_bg.png';
+import alertIcon from '@/assets/alert_icon.png';
 
 const AiRoutineAlertModal = ({ isPauseModalVisible, setIsPauseModalVisible }) => {
   const navigation = useNavigation();

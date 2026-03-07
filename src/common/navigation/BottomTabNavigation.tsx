@@ -4,12 +4,12 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { BlurView } from '@react-native-community/blur';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import Home from '../ui/screens/Home';
-import Today from '../ui/screens/Today';
-import Statistic from '../ui/screens/Statistic';
-import MyPage from '../ui/screens/MyPage';
-import { size } from '../ui/styles/size';
-import { colors } from '../ui/styles/colors';
+import Home from '@/common/ui/screens/Home';
+import Today from '@/common/ui/screens/Today';
+import Statistic from '@/common/ui/screens/Statistic';
+import MyPage from '@/common/ui/screens/MyPage';
+import { size } from '@/common/ui/styles/size';
+import { colors } from '@/common/ui/styles/colors';
 
 const Tab = createBottomTabNavigator();
 
@@ -32,23 +32,23 @@ const BottomTabNavigation = () => (
         switch (route.name) {
           case 'HOME':
             iconPath = focused
-              ? require('../../../assets/home_icon_focused.png')
-              : require('../../../assets/home_icon.png');
+              ? require('@/assets/home_icon_focused.png')
+              : require('@/assets/home_icon.png');
             break;
           case 'TODAY':
             iconPath = focused
-              ? require('../../../assets/today_icon_focused.png')
-              : require('../../../assets/today_icon.png');
+              ? require('@/assets/today_icon_focused.png')
+              : require('@/assets/today_icon.png');
             break;
           case 'REPORT':
             iconPath = focused
-              ? require('../../../assets/report_icon.png')
-              : require('../../../assets/report_icon.png')
+              ? require('@/assets/report_icon.png')
+              : require('@/assets/report_icon.png')
             break;
           case 'MY':
             iconPath = focused
-              ? require('../../../assets/my_icon_focused.png')
-              : require('../../../assets/my_icon.png');
+              ? require('@/assets/my_icon_focused.png')
+              : require('@/assets/my_icon.png');
             break;
         }
         if (route.name === "REPORT" && focused) return <MaterialCommunityIcons name="chart-scatter-plot" size={24} color={colors.fontMain} />

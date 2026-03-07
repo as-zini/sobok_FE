@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import NavigationService from '../ui/components/NavigationService';
+import NavigationService from '@/common/ui/components/NavigationService';
 
 const baseUrl = axios.create({
   baseURL: 'https://sobok-app.com',
@@ -15,7 +15,7 @@ baseUrl.interceptors.request.use(
     try {
       const token = await AsyncStorage.getItem('access_token');
       if (token) {
-        config.headers['Authorization'] = `Bearer ${token}`;
+        config.headers.Authorization = `Bearer ${token}`;
         config.headers['Content-Type'] = 'application/json';
       }
     } catch (error) {
@@ -65,7 +65,7 @@ baseUrl.interceptors.response.use(
 
             await AsyncStorage.setItem('access_token', newAccessToken);
 
-            originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+            originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
             isTokenRefreshing = false;
 
             return axios(originalRequest); // 🔁 실패했던 요청 재시도

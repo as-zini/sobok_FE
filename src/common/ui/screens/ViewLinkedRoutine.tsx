@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react'
 import { Image, SafeAreaView, ScrollView, View } from 'react-native'
 
-import bg from '../../../../assets/installment_saving_bg.png';
+import bg from '@/assets/installment_saving_bg.png';
 import styled from '@emotion/native';
-import { size } from '../styles/size';
-import { colors } from '../styles/colors';
-import BackArrowButton from '../components/BackArrowButton';
-import icon from '../../../../assets/double_circle_icon.png';
-import MarginVertical from '../components/MarginVertical';
-import AssetEl from '../components/AssetEl';
-import { minToHour } from '../../../util';
+import { size } from '@/common/ui/styles/size';
+import { colors } from '@/common/ui/styles/colors';
+import BackArrowButton from '@/common/ui/components/BackArrowButton';
+import icon from '@/assets/double_circle_icon.png';
+import MarginVertical from '@/common/ui/components/MarginVertical';
+import AssetEl from '@/common/ui/components/AssetEl';
+import { minToHour } from '@/util';
 
 const ViewLinkedRoutine = ({ route }) => {
   const { title, routines } = route.params;

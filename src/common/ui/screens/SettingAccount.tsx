@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { Image, SafeAreaView, Text, View } from 'react-native'
 import styled from '@emotion/native'
-import { size } from '../styles/size'
-import bg from '../../../../assets/home_bg.png';
-import BackArrowButton from '../components/BackArrowButton';
-import icon from '../../../../assets/login_icon.png';
-import { colors } from '../styles/colors';
-import MarginVertical from '../components/MarginVertical';
-import { useUserInfoStore } from '../../store/user';
+import { size } from '@/common/ui/styles/size'
+import bg from '@/assets/home_bg.png';
+import BackArrowButton from '@/common/ui/components/BackArrowButton';
+import icon from '@/assets/login_icon.png';
+import { colors } from '@/common/ui/styles/colors';
+import MarginVertical from '@/common/ui/components/MarginVertical';
+import { useUserInfoStore } from '@/common/store/user';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import Button from '../components/Button';
-import { useMyPage } from '../../hooks/useMyPage';
-import { useGetInfo } from '../../hooks/useGetInfo';
-import authIcon from '../../../../assets/phone_number_auth_icon.png';
-import { useSignup } from '../../hooks/useSignup';
+import Button from '@/common/ui/components/Button';
+import { useMyPage } from '@/common/hooks/useMyPage';
+import { useGetInfo } from '@/common/hooks/useGetInfo';
+import authIcon from '@/assets/phone_number_auth_icon.png';
+import { useSignup } from '@/common/hooks/useSignup';
 
 const SettingAccount = ({ route }) => {
   const { version, title } = route.params

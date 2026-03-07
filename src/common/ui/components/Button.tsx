@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/native';
-import login_button_bg from '../../../../assets/login_button_bg.png';
-import unchecked_button_bg from '../../../../assets/unchecked_button_bg.png';
+import login_button_bg from '@/assets/login_button_bg.png';
+import unchecked_button_bg from '@/assets/unchecked_button_bg.png';
 
 const Button = ({ text, handleButton, unChecked, bg }) => {
   return (

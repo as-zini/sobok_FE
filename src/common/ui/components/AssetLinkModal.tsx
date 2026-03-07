@@ -3,16 +3,16 @@ import { Image, Text, TextInput, TouchableOpacity, View, ScrollView } from 'reac
 import Modal from 'react-native-modal';
 import styled from '@emotion/native';
 
-import asset_link_modal_bg from '../../../../assets/assetLinkModalBg.png';
-import search_icon from '../../../../assets/search_icon.png';
+import asset_link_modal_bg from '@/assets/assetLinkModalBg.png';
+import search_icon from '@/assets/search_icon.png';
 import Button from './Button';
 import MarginVertical from './MarginVertical';
 import AssetEl from './AssetEl';
-import { size } from '../styles/size';
-import { colors } from '../styles/colors';
-import { useInstallmentSaving } from '../../hooks/useInstallmentSaving';
-import { useRoutine } from '../../hooks/useRoutine';
-import { minToHour } from '../../../util';
+import { size } from '@/common/ui/styles/size';
+import { colors } from '@/common/ui/styles/colors';
+import { useInstallmentSaving } from '@/common/hooks/useInstallmentSaving';
+import { useRoutine } from '@/common/hooks/useRoutine';
+import { minToHour } from '@/util';
 import dayjs from 'dayjs';
 
 const AssetLinkModal = ({

@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native"
 import axios from "axios"
-import baseUrl from "../api/baseURL";
+import baseUrl from "@/common/api/baseURL";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   appleAuth,

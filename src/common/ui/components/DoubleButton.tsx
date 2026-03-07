@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
 import styled from '@emotion/native';
-import { colors } from '../styles/colors';
+import { colors } from '@/common/ui/styles/colors';
 
 const DoubleButton = ({ text1, text2, handleLeftButton, handleRightButton }) => (
   <Container>

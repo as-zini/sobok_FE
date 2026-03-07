@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import { Image, SafeAreaView, View } from 'react-native';
 import styled from '@emotion/native';
-import { size } from '../styles/size';
-import { colors } from '../styles/colors';
-import MarginVertical from '../components/MarginVertical';
-import Button from '../components/Button';
-import AiRoutineAlertModal from '../components/AiRoutineAlertModal';
+import { size } from '@/common/ui/styles/size';
+import { colors } from '@/common/ui/styles/colors';
+import MarginVertical from '@/common/ui/components/MarginVertical';
+import Button from '@/common/ui/components/Button';
+import AiRoutineAlertModal from '@/common/ui/components/AiRoutineAlertModal';
 import AiRoutineCompleteScreen from './AiRoutineCompleteScreen';
 import { useNavigation } from '@react-navigation/native';
-import { useUserInfoStore } from '../../store/user';
+import { useUserInfoStore } from '@/common/store/user';
 
-import addSavingBg from '../../../../assets/add_saving_bg.png';
-import addAiRoutineBg from '../../../../assets/add_ai_routine_bg.png';
-import freeRoutineAddBg from '../../../../assets/free_routine_add_bg.png';
-import startButton from '../../../../assets/mild_cloud_icon.png';
+import addSavingBg from '@/assets/add_saving_bg.png';
+import addAiRoutineBg from '@/assets/add_ai_routine_bg.png';
+import freeRoutineAddBg from '@/assets/free_routine_add_bg.png';
+import startButton from '@/assets/mild_cloud_icon.png';
 
 const StartAddAsset = ({ route }) => {
   const navigation = useNavigation();

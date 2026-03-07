@@ -2,19 +2,19 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Image, SafeAreaView, ScrollView, SectionList, Text, View } from 'react-native';
 import styled from '@emotion/native';
 
-import routine_icon from '../../../../assets/routine_icon.png';
-import installment_saving_bg from '../../../../assets/installment_saving_bg.png';
-import { colors } from '../styles/colors';
-import MarginVertical from '../components/MarginVertical';
-import BackArrowButton from '../components/BackArrowButton';
-import DropDownArrowButton from '../components/DropDownArrowButton';
-import { size } from '../styles/size';
-import AssetEl from '../components/AssetEl';
-import WeekCalandar from '../components/WeekCalandar';
+import routine_icon from '@/assets/routine_icon.png';
+import installment_saving_bg from '@/assets/installment_saving_bg.png';
+import { colors } from '@/common/ui/styles/colors';
+import MarginVertical from '@/common/ui/components/MarginVertical';
+import BackArrowButton from '@/common/ui/components/BackArrowButton';
+import DropDownArrowButton from '@/common/ui/components/DropDownArrowButton';
+import { size } from '@/common/ui/styles/size';
+import AssetEl from '@/common/ui/components/AssetEl';
+import WeekCalandar from '@/common/ui/components/WeekCalandar';
 import dayjs from 'dayjs';
-import { useRoutine } from '../../hooks/useRoutine';
+import { useRoutine } from '@/common/hooks/useRoutine';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { minToHour } from '../../../util';
+import { minToHour } from '@/util';
 import { useFocusEffect } from '@react-navigation/native';
 
 const ViewRoutineListScreen = () => {

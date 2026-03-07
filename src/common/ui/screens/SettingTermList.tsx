@@ -1,12 +1,12 @@
 import React from 'react'
 import { SafeAreaView, View } from 'react-native'
 import styled from '@emotion/native'
-import { size } from '../styles/size'
-import { colors } from '../styles/colors'
-import BackArrowButton from '../components/BackArrowButton'
-import bg from '../../../../assets/setting_bg.png';
+import { size } from '@/common/ui/styles/size'
+import { colors } from '@/common/ui/styles/colors'
+import BackArrowButton from '@/common/ui/components/BackArrowButton'
+import bg from '@/assets/setting_bg.png';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import MarginVertical from '../components/MarginVertical'
+import MarginVertical from '@/common/ui/components/MarginVertical'
 import { useNavigation } from '@react-navigation/native'
 
 

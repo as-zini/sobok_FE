@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { Text, View, TouchableOpacity } from 'react-native';
 import styled from '@emotion/native';
-import { colors } from '../styles/colors';
+import { colors } from '@/common/ui/styles/colors';
 
 const WeekCalandar = ({ selectedDate, setSelectedDate, isDuplication, version, achieveList, setIsNextMonth }) => {
   const [today, setToday] = useState(dayjs());

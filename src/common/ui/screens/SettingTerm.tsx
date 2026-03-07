@@ -1,14 +1,14 @@
 import React from 'react'
 import { Image, SafeAreaView, ScrollView, View } from 'react-native'
 import styled from '@emotion/native'
-import BackArrowButton from '../components/BackArrowButton'
-import bg from '../../../../assets/home_bg.png';
-import { size } from '../styles/size';
-import { colors } from '../styles/colors';
-import privateIcon from '../../../../assets/privateIcon.png';
-import personalInfoIcon from '../../../../assets/personalInfoIcon.png';
-import termIcon from '../../../../assets/termIcon.png';
-import MarginVertical from '../components/MarginVertical';
+import BackArrowButton from '@/common/ui/components/BackArrowButton'
+import bg from '@/assets/home_bg.png';
+import { size } from '@/common/ui/styles/size';
+import { colors } from '@/common/ui/styles/colors';
+import privateIcon from '@/assets/privateIcon.png';
+import personalInfoIcon from '@/assets/personalInfoIcon.png';
+import termIcon from '@/assets/termIcon.png';
+import MarginVertical from '@/common/ui/components/MarginVertical';
 
 const SettingTerm = ({route}) => {
   const {version} = route.params

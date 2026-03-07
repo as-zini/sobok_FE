@@ -1,18 +1,18 @@
 import React from 'react'
 import Modal from 'react-native-modal';
 
-import subscribe_bg from '../../../../assets/subscribe_bg.png';
-import ticket_img from '../../../../assets/ticket_img.png';
-import ticket_check_icon from '../../../../assets/ticket_check_icon.png';
+import subscribe_bg from '@/assets/subscribe_bg.png';
+import ticket_img from '@/assets/ticket_img.png';
+import ticket_check_icon from '@/assets/ticket_check_icon.png';
 import styled from 'styled-components';
-import { size } from '../styles/size';
-import { colors } from '../styles/colors';
+import { size } from '@/common/ui/styles/size';
+import { colors } from '@/common/ui/styles/colors';
 import { Image } from 'react-native';
 import ProgressBar from './ProgressBar';
 import Button from './Button';
 import MarginVertical from './MarginVertical';
 import dayjs from 'dayjs';
-import { useUserInfoStore } from '../../store/user';
+import { useUserInfoStore } from '@/common/store/user';
 
 const SubscribeModal = ({ isSubscribeModalVisible, setIsSubscribeModalVisible, setIsPurchaseModalVisible, userPremium }) => {
   const { userInfo } = useUserInfoStore();

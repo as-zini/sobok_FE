@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from '@emotion/native';
 
-import current_step_icon from '../../../../assets/current_step_icon.png';
-import not_current_step_icon from '../../../../assets/not_current_step_icon.png';
+import current_step_icon from '@/assets/current_step_icon.png';
+import not_current_step_icon from '@/assets/not_current_step_icon.png';
 
 const Steps = ({ step }) => {
   const totalStep = 5;

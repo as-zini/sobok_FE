@@ -1,7 +1,7 @@
 import axios from "axios"
-import { useUserInfoStore } from "../store/user";
+import { useUserInfoStore } from "@/common/store/user";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import baseUrl from "../api/baseURL";
+import baseUrl from "@/common/api/baseURL";
 
 export const useGetInfo = () => {
   const { userInfo, setUserInfo } = useUserInfoStore();

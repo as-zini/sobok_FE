@@ -1,14 +1,14 @@
 import React from 'react';
 import { Image, SafeAreaView, ScrollView, View } from 'react-native';
 import styled from '@emotion/native';
-import { size } from '../styles/size';
-import { colors } from '../styles/colors';
-import BackArrowButton from '../components/BackArrowButton';
-import MarginVertical from '../components/MarginVertical';
-import SnowFlakeIcon from '../components/SnowFlakeIcon';
+import { size } from '@/common/ui/styles/size';
+import { colors } from '@/common/ui/styles/colors';
+import BackArrowButton from '@/common/ui/components/BackArrowButton';
+import MarginVertical from '@/common/ui/components/MarginVertical';
+import SnowFlakeIcon from '@/common/ui/components/SnowFlakeIcon';
 
-import bg from '../../../../assets/savetime_bg.png';
-import icon from '../../../../assets/login_icon.png';
+import bg from '@/assets/savetime_bg.png';
+import icon from '@/assets/login_icon.png';
 
 const notiArr = [
   ['10월 3일', ['알림이 왔어요!', '3시간전'], ['집가고싶다...', '3시간전']],

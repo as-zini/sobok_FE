@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/native';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import { colors } from '../styles/colors';
+import { colors } from '@/common/ui/styles/colors';
 
 const StepNumber = ({ step, marginBottom, indexColor, stepColor, isChecked }) => {
   const backgroundColor =

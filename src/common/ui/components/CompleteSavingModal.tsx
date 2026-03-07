@@ -4,20 +4,20 @@ import styled from '@emotion/native';
 import Modal from 'react-native-modal';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
-import { colors } from '../styles/colors';
-import { size } from '../styles/size';
+import { colors } from '@/common/ui/styles/colors';
+import { size } from '@/common/ui/styles/size';
 import MarginVertical from './MarginVertical';
 import DoubleButton from './DoubleButton';
-import routine_pause_bg from '../../../../assets/routine_pause_bg.png';
-import { useRoutine } from '../../hooks/useRoutine';
-import { useInstallmentSaving } from '../../hooks/useInstallmentSaving';
-import step0Icon from '../../../../assets/save_icon.png';
+import routine_pause_bg from '@/assets/routine_pause_bg.png';
+import { useRoutine } from '@/common/hooks/useRoutine';
+import { useInstallmentSaving } from '@/common/hooks/useInstallmentSaving';
+import step0Icon from '@/assets/save_icon.png';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 // import MaterialDesignIcons from 'react-native-vector-icons/MaterialDesignIcons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import SnowFlakeIcon from './SnowFlakeIcon';
 import TimeSliderBar from './TimeSliderBar';
-import { minToHour } from '../../../util';
+import { minToHour } from '@/util';
 import Button from './Button';
 
 const CompleteSavingModal = ({ isCompleteModalVisible, setIsCompleteModalVisible, id, title, time }) => {

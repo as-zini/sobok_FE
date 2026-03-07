@@ -3,21 +3,21 @@ import { Image, TouchableOpacity, SafeAreaView, Text, View } from 'react-native'
 import styled from '@emotion/native';
 import Modal from 'react-native-modal';
 import dayjs from 'dayjs';
-import { useUserInfoStore } from '../../store/user';
+import { useUserInfoStore } from '@/common/store/user';
 import { useNavigation } from '@react-navigation/native';
 
-import subscribeBg from '../../../../assets/subscribe_bg.png';
-import ticketImg from '../../../../assets/ticket_img.png';
-import ticketCheckIcon from '../../../../assets/ticket_check_icon.png';
-import crownIconIndigo from '../../../../assets/crown_icon_indigo.png';
-import { size } from '../styles/size';
-import { colors } from '../styles/colors';
-import MarginVertical from '../components/MarginVertical';
-import Button from '../components/Button';
-import ProgressBar from '../components/ProgressBar';
-import BackArrowButton from '../components/BackArrowButton';
-import PurchaseModal from '../components/PurchaseModal';
-import ticketUncheckIcon from '../../../../assets/ticket_uncheck_icon.png'
+import subscribeBg from '@/assets/subscribe_bg.png';
+import ticketImg from '@/assets/ticket_img.png';
+import ticketCheckIcon from '@/assets/ticket_check_icon.png';
+import crownIconIndigo from '@/assets/crown_icon_indigo.png';
+import { size } from '@/common/ui/styles/size';
+import { colors } from '@/common/ui/styles/colors';
+import MarginVertical from '@/common/ui/components/MarginVertical';
+import Button from '@/common/ui/components/Button';
+import ProgressBar from '@/common/ui/components/ProgressBar';
+import BackArrowButton from '@/common/ui/components/BackArrowButton';
+import PurchaseModal from '@/common/ui/components/PurchaseModal';
+import ticketUncheckIcon from '@/assets/ticket_uncheck_icon.png'
 
 const TicketPurchase = ({ route }) => {
   const { userInfo } = useUserInfoStore();

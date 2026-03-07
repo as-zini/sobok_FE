@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import styled from '@emotion/native';
-import { colors } from '../styles/colors';
-import StartScreenModal from '../components/StartScreenModal';
+import { colors } from '@/common/ui/styles/colors';
+import StartScreenModal from '@/common/ui/components/StartScreenModal';
 import { useNavigation } from '@react-navigation/native';
-import { size } from '../styles/size';
+import { size } from '@/common/ui/styles/size';
 
 const StartScreen = () => {
   const [isSignupModalVisible, setIsSignupModalVisible] = useState(false);
@@ -14,7 +14,7 @@ const StartScreen = () => {
   return (
     <StartScreenBody>
       <StartScreenBg
-        source={require('../../../../assets/start_bg.png')}
+        source={require('@/assets/start_bg.png')}
       />
       <StartText style={{ fontFamily: 'Pretendard ' }}>
         안녕하세요{`\n`}환영합니다

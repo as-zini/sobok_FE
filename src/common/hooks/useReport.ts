@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import baseUrl from "../api/baseURL"
+import baseUrl from "@/common/api/baseURL"
 import dayjs from "dayjs"
 import { useNavigation } from "@react-navigation/native"
 

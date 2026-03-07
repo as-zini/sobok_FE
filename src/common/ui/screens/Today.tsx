@@ -1,23 +1,23 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Image, SafeAreaView, ScrollView, Text, View } from 'react-native'
 import styled from '@emotion/native';
-import { colors } from '../styles/colors'
+import { colors } from '@/common/ui/styles/colors'
 
-import today_bg from '../../../../assets/home_bg.png';
-import { size } from '../styles/size';
-import ContinuitySuccess from '../components/ContinuitySuccess';
+import today_bg from '@/assets/home_bg.png';
+import { size } from '@/common/ui/styles/size';
+import ContinuitySuccess from '@/common/ui/components/ContinuitySuccess';
 import dayjs from 'dayjs';
-import NavigateArrowButton from '../components/NavigateArrowButton';
-import SnowFlakeIcon from '../components/SnowFlakeIcon';
-import MarginVertical from '../components/MarginVertical';
+import NavigateArrowButton from '@/common/ui/components/NavigateArrowButton';
+import SnowFlakeIcon from '@/common/ui/components/SnowFlakeIcon';
+import MarginVertical from '@/common/ui/components/MarginVertical';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { useTodo } from '../../hooks/useTodo';
-import { minToHour } from '../../../util';
-import timeIcon from '../../../../assets/time_icon.png';
-import { useRoutine } from '../../hooks/useRoutine';
-import LinkIcon from '../components/LinkIcon';
+import { useTodo } from '@/common/hooks/useTodo';
+import { minToHour } from '@/util';
+import timeIcon from '@/assets/time_icon.png';
+import { useRoutine } from '@/common/hooks/useRoutine';
+import LinkIcon from '@/common/ui/components/LinkIcon';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import TodoEl from '../components/TodoEl';
+import TodoEl from '@/common/ui/components/TodoEl';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 
 const containerWidth = size.width - 50;

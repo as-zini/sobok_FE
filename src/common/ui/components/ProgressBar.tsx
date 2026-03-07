@@ -3,9 +3,9 @@ import { Animated, Image, View, Text } from 'react-native';
 import styled from '@emotion/native';
 import dayjs from 'dayjs';
 
-import snowflake_icon from '../../../../assets/snowflak_icon.png';
+import snowflake_icon from '@/assets/snowflak_icon.png';
 import MarginVertical from './MarginVertical';
-import { colors } from '../styles/colors';
+import { colors } from '@/common/ui/styles/colors';
 
 // 분 → H M 변환 함수
 const formatTime = (minutes) => {

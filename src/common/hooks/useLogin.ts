@@ -1,8 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios'
-import { useUserInfoStore, useUserTokenStore } from '../store/user';
-import baseUrl from '../api/baseURL';
+import { useUserInfoStore, useUserTokenStore } from '@/common/store/user';
+import baseUrl from '@/common/api/baseURL';
 
 export const useLogin = () => {
   const navigation = useNavigation();

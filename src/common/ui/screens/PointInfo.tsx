@@ -3,21 +3,21 @@ import { Image, ScrollView, Text, View, TouchableOpacity } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import styled from '@emotion/native';
 import { useNavigation } from '@react-navigation/native';
-import { useUserInfoStore } from '../../store/user';
+import { useUserInfoStore } from '@/common/store/user';
 
-import { size } from '../styles/size';
-import { colors } from '../styles/colors';
-import BackArrowButton from '../components/BackArrowButton';
-import SnowFlakeIcon from '../components/SnowFlakeIcon';
-import SnowCardEl from '../components/SnowCardEl';
-import MarginVertical from '../components/MarginVertical';
+import { size } from '@/common/ui/styles/size';
+import { colors } from '@/common/ui/styles/colors';
+import BackArrowButton from '@/common/ui/components/BackArrowButton';
+import SnowFlakeIcon from '@/common/ui/components/SnowFlakeIcon';
+import SnowCardEl from '@/common/ui/components/SnowCardEl';
+import MarginVertical from '@/common/ui/components/MarginVertical';
 
-import crownIcon from '../../../../assets/crown_icon.png';
-import pointInfoImg1 from '../../../../assets/point_info_img1.png';
-import pointInfoImg2 from '../../../../assets/point_info_img2.png';
-import calendarIcon from '../../../../assets/calandar_icon.png';
-import reportIcon from '../../../../assets/report_arrive_icon.png';
-import snowCardIcon from '../../../../assets/snow_card_icon.png';
+import crownIcon from '@/assets/crown_icon.png';
+import pointInfoImg1 from '@/assets/point_info_img1.png';
+import pointInfoImg2 from '@/assets/point_info_img2.png';
+import calendarIcon from '@/assets/calandar_icon.png';
+import reportIcon from '@/assets/report_arrive_icon.png';
+import snowCardIcon from '@/assets/snow_card_icon.png';
 
 const PointInfo = () => {
   const navigation = useNavigation();

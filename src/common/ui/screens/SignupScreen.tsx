@@ -13,21 +13,21 @@ import {
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styled from '@emotion/native';
 
-import signup_bg from '../../../../assets/signup_bg.png';
-import BackArrowButton from '../components/BackArrowButton';
-import { colors } from '../styles/colors';
-import Button from '../components/Button';
-import Steps from '../components/Step';
-import phone_number_auth_icon from '../../../../assets/phone_number_auth_icon.png';
-import clock_graphic from '../../../../assets/clock_graphic.png';
+import signup_bg from '@/assets/signup_bg.png';
+import BackArrowButton from '@/common/ui/components/BackArrowButton';
+import { colors } from '@/common/ui/styles/colors';
+import Button from '@/common/ui/components/Button';
+import Steps from '@/common/ui/components/Step';
+import phone_number_auth_icon from '@/assets/phone_number_auth_icon.png';
+import clock_graphic from '@/assets/clock_graphic.png';
 import { useNavigation } from '@react-navigation/native';
-import StepNumber from '../components/StepNumber';
-import { size } from '../styles/size';
-import check_icon from '../../../../assets/check_icon_indigo.png';
-import { useSignup } from '../../hooks/useSignup';
-import { useLogin } from '../../hooks/useLogin';
-import MarginVertical from '../components/MarginVertical';
-import { debouce } from '../../../util';
+import StepNumber from '@/common/ui/components/StepNumber';
+import { size } from '@/common/ui/styles/size';
+import check_icon from '@/assets/check_icon_indigo.png';
+import { useSignup } from '@/common/hooks/useSignup';
+import { useLogin } from '@/common/hooks/useLogin';
+import MarginVertical from '@/common/ui/components/MarginVertical';
+import { debouce } from '@/util';
 
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;

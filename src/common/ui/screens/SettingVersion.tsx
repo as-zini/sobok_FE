@@ -1,10 +1,10 @@
 import React from 'react'
 import { SafeAreaView } from 'react-native'
 import styled from '@emotion/native'
-import { size } from '../styles/size'
-import bg from '../../../../assets/versionBg.png';
-import SnowFlakeIcon from '../components/SnowFlakeIcon';
-import MarginVertical from '../components/MarginVertical';
+import { size } from '@/common/ui/styles/size'
+import bg from '@/assets/versionBg.png';
+import SnowFlakeIcon from '@/common/ui/components/SnowFlakeIcon';
+import MarginVertical from '@/common/ui/components/MarginVertical';
 
 const SettingVersion = () => {
   return (

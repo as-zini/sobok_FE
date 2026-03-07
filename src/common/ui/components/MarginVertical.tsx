@@ -3,7 +3,7 @@ import { View } from 'react-native'
 
 const MarginVertical = ({top}) => {
   return (
-    <View style={{marginTop:top}}></View>
+    <View style={{marginTop:top}} />
   )
 }
 

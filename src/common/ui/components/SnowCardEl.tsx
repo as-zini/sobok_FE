@@ -5,31 +5,31 @@ import SnowFlakeIcon from './SnowFlakeIcon';
 import MarginVertical from './MarginVertical';
 
 // Assets
-import snow_card_bg from '../../../../assets/snow_card_bg.png';
-import top from '../../../../assets/top_graphic.png';
-import beaker from '../../../../assets/beaker_graphic.png';
-import donut from '../../../../assets/donut_graphic.png';
-import book from '../../../../assets/book_graphic.png';
-import heart from '../../../../assets/heart_graphic.png';
-import quarter from '../../../../assets/quarter_moon_graphic.png';
-import halfMoon from '../../../../assets/half_moon_graphic.png';
-import full from '../../../../assets/full_moon_graphic.png';
-import angel from '../../../../assets/angel_graphic.png';
-import cloud from '../../../../assets/cloud_graphic.png';
-import hexagon from '../../../../assets/hexagon_graphic.png';
-import hermitCrab from '../../../../assets/hermit_crab_graphic.png';
-import spring from '../../../../assets/spring_graphic.png';
-import exercise from '../../../../assets/exercise_graphic.png';
-import rolypoly from '../../../../assets/rolypoly_graphic.png';
-import pudding from '../../../../assets/pudding_graphic.png';
-import snake from '../../../../assets/snake_graphic.png';
-import globe from '../../../../assets/globe_graphic.png';
-import guitar from '../../../../assets/guitar_graphic.png'
-import fairy from '../../../../assets/fairy_graphic.png';
-import sun from '../../../../assets/sun_graphic.png';
-import present from '../../../../assets/present_graphic.png';
-import arrowLeft from '../../../../assets/calandar_arrow_left.png';
-import arrowRight from '../../../../assets/calandar_arrow_right.png';
+import snow_card_bg from '@/assets/snow_card_bg.png';
+import top from '@/assets/top_graphic.png';
+import beaker from '@/assets/beaker_graphic.png';
+import donut from '@/assets/donut_graphic.png';
+import book from '@/assets/book_graphic.png';
+import heart from '@/assets/heart_graphic.png';
+import quarter from '@/assets/quarter_moon_graphic.png';
+import halfMoon from '@/assets/half_moon_graphic.png';
+import full from '@/assets/full_moon_graphic.png';
+import angel from '@/assets/angel_graphic.png';
+import cloud from '@/assets/cloud_graphic.png';
+import hexagon from '@/assets/hexagon_graphic.png';
+import hermitCrab from '@/assets/hermit_crab_graphic.png';
+import spring from '@/assets/spring_graphic.png';
+import exercise from '@/assets/exercise_graphic.png';
+import rolypoly from '@/assets/rolypoly_graphic.png';
+import pudding from '@/assets/pudding_graphic.png';
+import snake from '@/assets/snake_graphic.png';
+import globe from '@/assets/globe_graphic.png';
+import guitar from '@/assets/guitar_graphic.png'
+import fairy from '@/assets/fairy_graphic.png';
+import sun from '@/assets/sun_graphic.png';
+import present from '@/assets/present_graphic.png';
+import arrowLeft from '@/assets/calandar_arrow_left.png';
+import arrowRight from '@/assets/calandar_arrow_right.png';
 
 const images = {
   "english":top,

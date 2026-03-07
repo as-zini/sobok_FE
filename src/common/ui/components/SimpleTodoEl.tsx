@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import styled from '@emotion/native';
-import { colors } from '../styles/colors';
+import { colors } from '@/common/ui/styles/colors';
 
 const SimpleTodoEl = ({ data, index, handleClick }) => (
   <Container onPress={handleClick}>

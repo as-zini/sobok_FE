@@ -3,43 +3,43 @@ import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'r
 import styled from '@emotion/native';
 import { firebase } from '@react-native-firebase/app';
 
-import home_bg from '../../../../assets/home_bg.png';
-import snow_flake_icon_white from '../../../../assets/snow_flake_icon_white.png';
-import home_main_square_bg from '../../../../assets/home_main_square_bg.png';
-import home_square_middle from '../../../../assets/home_sqaure_middle.png';
-import home_square_small from '../../../../assets/home_square_small.png';
-import go_todo_icon from '../../../../assets/phone_number_auth_icon.png';
-import installment_saving_icon from '../../../../assets/save_icon.png';
-import routine_icon from '../../../../assets/routine_icon.png';
-import point_icon from '../../../../assets/point_icon.png';
-import { size } from '../styles/size';
-import { colors } from '../styles/colors';
-import MarginVertical from '../components/MarginVertical';
-import NavigateArrowButton from '../components/NavigateArrowButton';
-import Button from '../components/Button';
-import ContinuitySuccess from '../components/ContinuitySuccess';
-import AssetAddModal from '../components/AssetAddModal';
+import home_bg from '@/assets/home_bg.png';
+import snow_flake_icon_white from '@/assets/snow_flake_icon_white.png';
+import home_main_square_bg from '@/assets/home_main_square_bg.png';
+import home_square_middle from '@/assets/home_sqaure_middle.png';
+import home_square_small from '@/assets/home_square_small.png';
+import go_todo_icon from '@/assets/phone_number_auth_icon.png';
+import installment_saving_icon from '@/assets/save_icon.png';
+import routine_icon from '@/assets/routine_icon.png';
+import point_icon from '@/assets/point_icon.png';
+import { size } from '@/common/ui/styles/size';
+import { colors } from '@/common/ui/styles/colors';
+import MarginVertical from '@/common/ui/components/MarginVertical';
+import NavigateArrowButton from '@/common/ui/components/NavigateArrowButton';
+import Button from '@/common/ui/components/Button';
+import ContinuitySuccess from '@/common/ui/components/ContinuitySuccess';
+import AssetAddModal from '@/common/ui/components/AssetAddModal';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useGetInfo } from '../../hooks/useGetInfo';
-import { useUserInfoStore } from '../../store/user';
-import { useInstallmentSaving } from '../../hooks/useInstallmentSaving';
-import { useRoutine } from '../../hooks/useRoutine';
-import { useTodo } from '../../hooks/useTodo';
+import { useGetInfo } from '@/common/hooks/useGetInfo';
+import { useUserInfoStore } from '@/common/store/user';
+import { useInstallmentSaving } from '@/common/hooks/useInstallmentSaving';
+import { useRoutine } from '@/common/hooks/useRoutine';
+import { useTodo } from '@/common/hooks/useTodo';
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
-import { useNowTodoStore } from '../../store/todo';
-import SaveTimeAtHome from '../components/SaveTimeAtHome';
-import saving_time_home_bg from '../../../../assets/saving_time_home_bg.png';
+import { useNowTodoStore } from '@/common/store/todo';
+import SaveTimeAtHome from '@/common/ui/components/SaveTimeAtHome';
+import saving_time_home_bg from '@/assets/saving_time_home_bg.png';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useSaveTime } from '../../hooks/useSaveTime';
-import smile_icon from '../../../../assets/smile_icon.png';
-import home_button_bg from '../../../../assets/home_button_bg.png';
+import { useSaveTime } from '@/common/hooks/useSaveTime';
+import smile_icon from '@/assets/smile_icon.png';
+import home_button_bg from '@/assets/home_button_bg.png';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import baseUrl from '../../api/baseURL';
-import { getTimeDifference, minToHour } from '../../../util';
-import { useNotification } from '../../hooks/useNotification';
+import baseUrl from '@/common/api/baseURL';
+import { getTimeDifference, minToHour } from '@/util';
+import { useNotification } from '@/common/hooks/useNotification';
 import { Platform } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 
@@ -198,9 +198,7 @@ const Home = () => {
                 <TouchableOpacity
                   style={{ justifyContent: 'center', alignItems: 'center' }}
                   onPress={() => navigation.navigate('Notification')}
-                >
-
-                </TouchableOpacity>
+                 />
               </View>
 
               <MarginVertical top={25} />

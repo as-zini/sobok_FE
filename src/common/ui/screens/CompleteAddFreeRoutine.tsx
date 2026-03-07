@@ -2,15 +2,15 @@
 import React, { useState } from 'react'
 import { SafeAreaView, View } from 'react-native'
 import styled from '@emotion/native';
-import MarginVertical from '../components/MarginVertical';
-import { size } from '../styles/size';
-import { colors } from '../styles/colors';
+import MarginVertical from '@/common/ui/components/MarginVertical';
+import { size } from '@/common/ui/styles/size';
+import { colors } from '@/common/ui/styles/colors';
 
-import mild_complete_routine_icon from '../../../../assets/mild_complete_routine_icon.png';
-import Button from '../components/Button';
-import complete_add_routine_bg from '../../../../assets/airoutine_complete_bg.png';
+import mild_complete_routine_icon from '@/assets/mild_complete_routine_icon.png';
+import Button from '@/common/ui/components/Button';
+import complete_add_routine_bg from '@/assets/airoutine_complete_bg.png';
 import { useNavigation } from '@react-navigation/native';
-import { useUserInfoStore } from '../../store/user';
+import { useUserInfoStore } from '@/common/store/user';
 
 const CompleteAddFreeRoutine = () => {
   const navigation = useNavigation();

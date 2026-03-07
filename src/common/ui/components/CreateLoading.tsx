@@ -2,15 +2,15 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Dimensions, SafeAreaView, Image } from 'react-native';
 import styled from '@emotion/native';
 import { useNavigation } from '@react-navigation/native';
-import { useUserInfoStore } from '../../store/user';
+import { useUserInfoStore } from '@/common/store/user';
 import Steps from './Step';
 import MarginVertical from './MarginVertical';
-import { colors } from '../styles/colors';
-import { size } from '../styles/size';
+import { colors } from '@/common/ui/styles/colors';
+import { size } from '@/common/ui/styles/size';
 
-import bgImage from '../../../../assets/create_loading_bg.png';
-import cloudIcon from '../../../../assets/cloud_icon.png';
-import snowflakeIcon from '../../../../assets/snowflak_icon.png';
+import bgImage from '@/assets/create_loading_bg.png';
+import cloudIcon from '@/assets/cloud_icon.png';
+import snowflakeIcon from '@/assets/snowflak_icon.png';
 
 const screenWidth = Dimensions.get('screen').width;
 const screenHeight = Dimensions.get('screen').height;

@@ -2,14 +2,14 @@ import React from 'react';
 import { SafeAreaView, View, Text, Image } from 'react-native';
 import Modal from 'react-native-modal';
 import styled from '@emotion/native';
-import { colors } from '../styles/colors';
-import { size } from '../styles/size';
+import { colors } from '@/common/ui/styles/colors';
+import { size } from '@/common/ui/styles/size';
 import MarginVertical from './MarginVertical';
 import Calandar from './Calandar';
 import SmallButton from './SmallButton';
-import { useInstallmentSaving } from '../../hooks/useInstallmentSaving';
-import { usePoint } from '../../hooks/usePoint';
-import calandar_modal_bg from '../../../../assets/caladar_modal_bg.png';
+import { useInstallmentSaving } from '@/common/hooks/useInstallmentSaving';
+import { usePoint } from '@/common/hooks/usePoint';
+import calandar_modal_bg from '@/assets/caladar_modal_bg.png';
 
 const CalandarModal = ({
   isCalandarModalVisible,

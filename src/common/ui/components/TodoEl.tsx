@@ -4,8 +4,8 @@ import styled from '@emotion/native';
 import { useNavigation } from '@react-navigation/native';
 import LinkIcon from './LinkIcon';
 import MarginVertical from './MarginVertical';
-import { colors } from '../styles/colors';
-import { size } from '../styles/size';
+import { colors } from '@/common/ui/styles/colors';
+import { size } from '@/common/ui/styles/size';
 
 const TodoEl = ({ data, index, todoInfo, routineTitle, isTouchable, days }) => {
   const navigation = useNavigation();

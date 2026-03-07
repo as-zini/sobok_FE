@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView, View } from 'react-native'
 import styled from '@emotion/native'
-import { colors } from '../styles/colors'
-import complete_snow_card_bg from '../../../../assets/complete_snow_card_bg.png';
-import BackArrowButton from '../components/BackArrowButton';
-import SnowCardEl from '../components/SnowCardEl';
-import SnowFlakeIcon from '../components/SnowFlakeIcon';
-import MarginVertical from '../components/MarginVertical';
-import Button from '../components/Button';
+import { colors } from '@/common/ui/styles/colors'
+import complete_snow_card_bg from '@/assets/complete_snow_card_bg.png';
+import BackArrowButton from '@/common/ui/components/BackArrowButton';
+import SnowCardEl from '@/common/ui/components/SnowCardEl';
+import SnowFlakeIcon from '@/common/ui/components/SnowFlakeIcon';
+import MarginVertical from '@/common/ui/components/MarginVertical';
+import Button from '@/common/ui/components/Button';
 import { useNavigation } from '@react-navigation/native';
 import dayjs from 'dayjs';
-import { size } from '../styles/size';
-import { useMyPage } from '../../hooks/useMyPage';
+import { size } from '@/common/ui/styles/size';
+import { useMyPage } from '@/common/hooks/useMyPage';
 
 const CompleteSnowCard = ({ route }) => {
   const cardInfo = [{ type: 'english', title: '알파벳 A의', text: '어딘가 모르게\nA를 닮은 눈 조각\n영어를 열심히 하셨군요?' }, { type: 'beaker', title: '비커 모양의', text: "실험실의 눈 조각!\n새로운 일을 시도하신\n지윤 님에게 드립니다!" }, { type: "donut", title: "도넛 모양의", text: "돌고 돌아 드디어\n적금을 완성하셨군요!\n도넛의 처음과 끝이 만났네요!" },

@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Animated, PanResponder, Text, View, TextInput, TouchableOpacity, Image } from 'react-native';
 import styled from '@emotion/native';
-import { minToHour } from '../../../util';
+import { minToHour } from '@/util';
 import dayjs from 'dayjs';
-import { colors } from '../styles/colors';
+import { colors } from '@/common/ui/styles/colors';
 
 const TimeSliderBar = ({ text, setOutValue, version, type, compareValue1, compareValue2, timeInit }) => {
   const parseTimeToMinutes = (timeString) => {
@@ -167,7 +167,7 @@ const TimeSliderBar = ({ text, setOutValue, version, type, compareValue1, compar
         <LabelText>{text}</LabelText>
       </ValueWrapper>
       <SliderContainer>
-        <FixedIcon source={require("../../../../assets/snowflak_icon.png")} />
+        <FixedIcon source={require("@/assets/snowflak_icon.png")} />
         <Track
           {...panResponder.panHandlers}
           style={{ transform: [{ translateX: trackPosition }] }}
@@ -281,9 +281,9 @@ const Tick = styled.View`
 // import React, { useEffect, useRef, useState } from 'react';
 // import { Animated, PanResponder, Text, View, TextInput, TouchableOpacity } from 'react-native';
 // import styled from '@emotion/native';
-// import { minToHour } from '../../util';
+// import { minToHour } from '@/util';
 // import dayjs from 'dayjs';
-// import { colors } from '../styles/colors';
+// import { colors } from '@/common/ui/styles/colors';
 
 // const TimeSliderBar = ({ text, setOutValue, version, type, compareValue1, compareValue2, timeInit }) => {
 //   const parseTimeToMinutes = (timeString) => {
@@ -530,7 +530,7 @@ const Tick = styled.View`
 //         <Text style={{ fontSize: 14, fontWeight: '500', color: "#4c4c4c" }}>{text}</Text>
 //       </View>
 //       <SliderContainer>
-//         <FixedButton source={require("../../../../assets/snowflak_icon.png")} />
+//         <FixedButton source={require("@/assets/snowflak_icon.png")} />
 //         <AnimatedTrack
 //           {...panResponder.panHandlers}
 //           style={{ transform: [{ translateX: trackPosition }] }}

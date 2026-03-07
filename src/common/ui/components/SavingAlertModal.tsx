@@ -4,13 +4,13 @@ import styled from '@emotion/native';
 import Modal from 'react-native-modal';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
-import { colors } from '../styles/colors';
-import { size } from '../styles/size';
+import { colors } from '@/common/ui/styles/colors';
+import { size } from '@/common/ui/styles/size';
 import MarginVertical from './MarginVertical';
 import DoubleButton from './DoubleButton';
-import routine_pause_bg from '../../../../assets/routine_pause_bg.png';
-import { useRoutine } from '../../hooks/useRoutine';
-import { useInstallmentSaving } from '../../hooks/useInstallmentSaving';
+import routine_pause_bg from '@/assets/routine_pause_bg.png';
+import { useRoutine } from '@/common/hooks/useRoutine';
+import { useInstallmentSaving } from '@/common/hooks/useInstallmentSaving';
 
 const SavingAlertModal = ({ isAlertModalVisible, setIsAlertModalVisible, id, version }) => {
   const navigation = useNavigation();

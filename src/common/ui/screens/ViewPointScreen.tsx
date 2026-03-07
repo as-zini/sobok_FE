@@ -4,22 +4,22 @@ import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-cont
 import styled from '@emotion/native';
 import dayjs from 'dayjs';
 
-import installment_saving_bg from '../../../../assets/installment_saving_bg.png';
-import link_icon from '../../../../assets/link_icon.png';
-import point_icon from '../../../../assets/point_icon.png';
-import { size } from '../styles/size';
-import { colors } from '../styles/colors';
-import BackArrowButton from '../components/BackArrowButton';
-import MarginVertical from '../components/MarginVertical';
-import AssetEl from '../components/AssetEl';
-import SmallButton from '../components/SmallButton';
-import ProgressBar from '../components/ProgressBar';
-import BlurComponent from '../components/BlurComponent';
-import DropDownArrowButton from '../components/DropDownArrowButton';
-import CalandarModal from '../components/CalandarModal';
-import { useUserInfoStore } from '../../store/user';
-import { usePoint } from '../../hooks/usePoint';
-import { useGetInfo } from '../../hooks/useGetInfo';
+import installment_saving_bg from '@/assets/installment_saving_bg.png';
+import link_icon from '@/assets/link_icon.png';
+import point_icon from '@/assets/point_icon.png';
+import { size } from '@/common/ui/styles/size';
+import { colors } from '@/common/ui/styles/colors';
+import BackArrowButton from '@/common/ui/components/BackArrowButton';
+import MarginVertical from '@/common/ui/components/MarginVertical';
+import AssetEl from '@/common/ui/components/AssetEl';
+import SmallButton from '@/common/ui/components/SmallButton';
+import ProgressBar from '@/common/ui/components/ProgressBar';
+import BlurComponent from '@/common/ui/components/BlurComponent';
+import DropDownArrowButton from '@/common/ui/components/DropDownArrowButton';
+import CalandarModal from '@/common/ui/components/CalandarModal';
+import { useUserInfoStore } from '@/common/store/user';
+import { usePoint } from '@/common/hooks/usePoint';
+import { useGetInfo } from '@/common/hooks/useGetInfo';
 import { useNavigation } from '@react-navigation/native';
 
 const ViewPointScreen = () => {
