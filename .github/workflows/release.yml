@@ -18,6 +18,7 @@ jobs:
         id: notes
         run: |
           TAG=${GITHUB_REF#refs/tags/}
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
           PREV_TAG=$(git describe --tags --abbrev=0 $TAG^ 2>/dev/null || echo "")
           
           if [ -z "$PREV_TAG" ]; then
@@ -33,8 +34,9 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          name: Release ${GITHUB_REF#refs/tags/}
+          name: Release ${{ steps.notes.outputs.tag }}
           body: |
             ## Changes
             ${{ steps.notes.outputs.commits }}
           generate_release_notes: true
+
