@@ -1,6 +1,6 @@
 {
   "name": "sobok",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -11,7 +11,7 @@
     "lint:fix": "eslint 'src/**/*.{ts,tsx}' --fix",
     "format": "prettier --write 'src/**/*.{ts,tsx}'",
     "format:check": "prettier --check 'src/**/*.{ts,tsx}'",
-    "postversion": "npx react-native-version --never-amend && git push && git push --tags",
+    "postversion": "npx react-native-version --never-amend && git push origin HEAD && git push --tags",
     "prepare": "husky"
   },
   "dependencies": {
