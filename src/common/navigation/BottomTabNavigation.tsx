@@ -25,6 +25,7 @@ function TabBarIcon({ iconPath, focused, routeName }) {
 
 const BottomTabNavigation = () => (
   <Tab.Navigator
+    id={undefined}
     screenOptions={({ route }) => ({
       headerShown: false,
       tabBarIcon: ({ focused }) => {
@@ -43,7 +44,7 @@ const BottomTabNavigation = () => (
           case 'REPORT':
             iconPath = focused
               ? require('@/assets/report_icon.png')
-              : require('@/assets/report_icon.png')
+              : require('@/assets/report_icon.png');
             break;
           case 'MY':
             iconPath = focused
@@ -51,16 +52,15 @@ const BottomTabNavigation = () => (
               : require('@/assets/my_icon.png');
             break;
         }
-        if (route.name === "REPORT" && focused) return <MaterialCommunityIcons name="chart-scatter-plot" size={24} color={colors.fontMain} />
+        if (route.name === 'REPORT' && focused)
+          return (
+            <MaterialCommunityIcons name="chart-scatter-plot" size={24} color={colors.fontMain} />
+          );
         return <TabBarIcon iconPath={iconPath} focused={focused} routeName={route.name} />;
       },
       tabBarActiveTintColor: 'black',
       tabBarBackground: () => (
-        <BlurView
-          style={{ width: size.width, height: '100%' }}
-          blurType="light"
-          blurAmount={50}
-        />
+        <BlurView style={{ width: size.width, height: '100%' }} blurType="light" blurAmount={50} />
       ),
       tabBarStyle: {
         position: 'absolute',

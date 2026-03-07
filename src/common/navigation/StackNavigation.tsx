@@ -1,6 +1,6 @@
-import { createStackNavigator } from '@react-navigation/stack'
-import React, { useEffect, useState } from 'react'
-import StartScreen from '@/common/ui/screens/StartScreen'
+import { createStackNavigator } from '@react-navigation/stack';
+import React, { useEffect, useState } from 'react';
+import StartScreen from '@/common/ui/screens/StartScreen';
 import LoginScreen from '@/common/ui/screens/LoginScreen';
 import SignupScreen from '@/common/ui/screens/SignupScreen';
 import TestStartScreen from '@/common/ui/screens/TestStartScreen';
@@ -46,50 +46,47 @@ import SettingAccountList from '@/common/ui/screens/SettingAccountList';
 import SettingAccount from '@/common/ui/screens/SettingAccount';
 import Notification from '@/common/ui/screens/Notification';
 import ViewInterest from '@/common/ui/screens/ViewInterest';
+import type { RootStackParamList } from './types';
 
-
-
-const Stack = createStackNavigator();
-
-
-
-
+const Stack = createStackNavigator<RootStackParamList>();
 
 const StackNavigation = () => {
-  const [version, setVersion] = useState('Tabs')
+  const [version, setVersion] = useState<keyof RootStackParamList>('Tabs');
 
   const isValidUser = async () => {
     try {
-      const refreshToken = await AsyncStorage.getItem('refresh_token')
-      const response = await baseUrl.post('/user/refresh-token', {}, {
-        headers: {
-          'Authorization': `Bearer ${refreshToken}`,
-          'Content-Type': 'application/json',
+      const refreshToken = await AsyncStorage.getItem('refresh_token');
+      const response = await baseUrl.post(
+        '/user/refresh-token',
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${refreshToken}`,
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
         },
-        withCredentials: true
-      });
+      );
       await AsyncStorage.setItem('access_token', response.data.accessToken);
-
     } catch (error) {
-      console.log(error)
-      setVersion('Start')
+      console.log(error);
+      setVersion('Start');
     }
-  }
+  };
 
   useEffect(() => {
-    isValidUser()
-  }, [])
-
+    isValidUser();
+  }, []);
 
   return (
     <Stack.Navigator
+      id={undefined}
       screenOptions={{
         headerShown: false,
       }}
-      // initialRouteName={getUser() ? "Tabs" : 'Start'}
       initialRouteName={version}
     >
-      <Stack.Screen name='Start' component={StartScreen} />
+      <Stack.Screen name="Start" component={StartScreen} />
       <Stack.Screen name="Signup" component={SignupScreen} />
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Tabs" component={BottomTabNavigation} />
@@ -130,11 +127,11 @@ const StackNavigation = () => {
       <Stack.Screen name="SettingTerm" component={SettingTerm} />
       <Stack.Screen name="SettingVersion" component={SettingVersion} />
       <Stack.Screen name="SettingAccountList" component={SettingAccountList} />
-      <Stack.Screen name='SettingAccount' component={SettingAccount} />
+      <Stack.Screen name="SettingAccount" component={SettingAccount} />
       <Stack.Screen name="Notification" component={Notification} />
       <Stack.Screen name="ViewInterest" component={ViewInterest} />
     </Stack.Navigator>
-  )
-}
+  );
+};
 
-export default StackNavigation
+export default StackNavigation;
