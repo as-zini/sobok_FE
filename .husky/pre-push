@@ -1,0 +1,2 @@
+npx eslint 'src/**/*.{ts,tsx}' --quiet
+npx tsc --noEmit
