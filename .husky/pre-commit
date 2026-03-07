@@ -1,1 +1,3 @@
+echo "🔍 ESLint + Prettier 검사 중..."
 npx lint-staged
+echo "✅ 검사 통과!"

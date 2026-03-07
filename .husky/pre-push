@@ -1,1 +1,3 @@
+echo "🔍 ESLint 검사 중..."
 npx eslint 'src/**/*.{ts,tsx}' --quiet
+echo "✅ ESLint 통과!"
