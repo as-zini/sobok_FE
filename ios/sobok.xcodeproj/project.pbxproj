@@ -8,19 +8,30 @@
 
 /* Begin PBXBuildFile section */
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
+		199570B86CEB47B295EB98B6 /* Pretendard-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BF76245C707B48809B53DD9D /* Pretendard-ExtraBold.ttf */; };
+		1D3628A4769A4FB0A85CF4C5 /* Pretendard-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AD7F910F83B847758DA4E7C7 /* Pretendard-ExtraLight.ttf */; };
+		26041FAB7D7C48A7B3210F98 /* Pretendard-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2D8D71EB1B9845719465B30D /* Pretendard-Light.ttf */; };
 		2A253B642E4706CC00ACBCAE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2A253B632E4706CC00ACBCAE /* GoogleService-Info.plist */; };
+		2FCD1039B3904E8EB611FFBE /* Pretendard-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E2545B3802504A1E9F524D51 /* Pretendard-Regular.ttf */; };
+		376F670C40834928A44B5BB4 /* Pretendard-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B6BB2C49EE2C4415979A6CF7 /* Pretendard-Thin.ttf */; };
+		576108A152D3430B89A81A69 /* Pretendard-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 215157E70B0747A28E8EB222 /* Pretendard-SemiBold.ttf */; };
+		5A47CA0E4BB24F05911F13D2 /* Pretendard-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3D31B372852D45D28898EB55 /* Pretendard-Bold.ttf */; };
 		724136DD793C4415B922DEF9 /* Pretendard Variable.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 30E4388F176C45F38626BF5C /* Pretendard Variable.ttf */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
 		7FFAA2259D9FC7A91A8B8011 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		A6ED0C0021E94BCFA738423C /* Pretendard-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 586A3E8E5CD340408F7B3CDB /* Pretendard-Black.ttf */; };
+		BA947016B910402B8FF3E31F /* Pretendard-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 02CD106E743F43A58859AF37 /* Pretendard-Medium.ttf */; };
 		FFBA261BE41012FBCEEC2596 /* libPods-sobok.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9856B0E43F82361837777BB0 /* libPods-sobok.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		02CD106E743F43A58859AF37 /* Pretendard-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Pretendard-Medium.ttf"; path = "../src/assets/fonts/Pretendard-Medium.ttf"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* sobok.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = sobok.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = sobok/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = sobok/Info.plist; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = sobok/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		215157E70B0747A28E8EB222 /* Pretendard-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Pretendard-SemiBold.ttf"; path = "../src/assets/fonts/Pretendard-SemiBold.ttf"; sourceTree = "<group>"; };
 		2A253B632E4706CC00ACBCAE /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2A3D02B42E1A3BD10057DE73 /* sobok.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = sobok.entitlements; path = sobok/sobok.entitlements; sourceTree = "<group>"; };
 		2A885E432E16CF5B00FCCCBD /* AntDesign.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AntDesign.ttf; sourceTree = "<group>"; };
@@ -42,11 +53,18 @@
 		2A885E542E16CFA700FCCCBD /* Fontisto.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Fontisto.ttf; sourceTree = "<group>"; };
 		2A885E552E16CFA700FCCCBD /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome.ttf; sourceTree = "<group>"; };
 		2A885E562E16CFA700FCCCBD /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SimpleLineIcons.ttf; sourceTree = "<group>"; };
-		30E4388F176C45F38626BF5C /* Pretendard Variable.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Pretendard Variable.ttf"; path = "../assets/fonts/Pretendard Variable.ttf"; sourceTree = "<group>"; };
+		2D8D71EB1B9845719465B30D /* Pretendard-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Pretendard-Light.ttf"; path = "../src/assets/fonts/Pretendard-Light.ttf"; sourceTree = "<group>"; };
+		30E4388F176C45F38626BF5C /* Pretendard Variable.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Pretendard Variable.ttf"; path = "../src/assets/fonts/Pretendard Variable.ttf"; sourceTree = "<group>"; };
+		3D31B372852D45D28898EB55 /* Pretendard-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Pretendard-Bold.ttf"; path = "../src/assets/fonts/Pretendard-Bold.ttf"; sourceTree = "<group>"; };
+		586A3E8E5CD340408F7B3CDB /* Pretendard-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Pretendard-Black.ttf"; path = "../src/assets/fonts/Pretendard-Black.ttf"; sourceTree = "<group>"; };
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = sobok/AppDelegate.swift; sourceTree = "<group>"; };
 		80A1AB22A27DF86ACCC22F49 /* Pods-sobok.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-sobok.debug.xcconfig"; path = "Target Support Files/Pods-sobok/Pods-sobok.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = sobok/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9856B0E43F82361837777BB0 /* libPods-sobok.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-sobok.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AD7F910F83B847758DA4E7C7 /* Pretendard-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Pretendard-ExtraLight.ttf"; path = "../src/assets/fonts/Pretendard-ExtraLight.ttf"; sourceTree = "<group>"; };
+		B6BB2C49EE2C4415979A6CF7 /* Pretendard-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Pretendard-Thin.ttf"; path = "../src/assets/fonts/Pretendard-Thin.ttf"; sourceTree = "<group>"; };
+		BF76245C707B48809B53DD9D /* Pretendard-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Pretendard-ExtraBold.ttf"; path = "../src/assets/fonts/Pretendard-ExtraBold.ttf"; sourceTree = "<group>"; };
+		E2545B3802504A1E9F524D51 /* Pretendard-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Pretendard-Regular.ttf"; path = "../src/assets/fonts/Pretendard-Regular.ttf"; sourceTree = "<group>"; };
 		E96DABE744BC53898027B4A3 /* Pods-sobok.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-sobok.release.xcconfig"; path = "Target Support Files/Pods-sobok/Pods-sobok.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -139,6 +157,15 @@
 			isa = PBXGroup;
 			children = (
 				30E4388F176C45F38626BF5C /* Pretendard Variable.ttf */,
+				02CD106E743F43A58859AF37 /* Pretendard-Medium.ttf */,
+				586A3E8E5CD340408F7B3CDB /* Pretendard-Black.ttf */,
+				E2545B3802504A1E9F524D51 /* Pretendard-Regular.ttf */,
+				B6BB2C49EE2C4415979A6CF7 /* Pretendard-Thin.ttf */,
+				AD7F910F83B847758DA4E7C7 /* Pretendard-ExtraLight.ttf */,
+				215157E70B0747A28E8EB222 /* Pretendard-SemiBold.ttf */,
+				BF76245C707B48809B53DD9D /* Pretendard-ExtraBold.ttf */,
+				3D31B372852D45D28898EB55 /* Pretendard-Bold.ttf */,
+				2D8D71EB1B9845719465B30D /* Pretendard-Light.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -218,6 +245,15 @@
 				2A253B642E4706CC00ACBCAE /* GoogleService-Info.plist in Resources */,
 				7FFAA2259D9FC7A91A8B8011 /* PrivacyInfo.xcprivacy in Resources */,
 				724136DD793C4415B922DEF9 /* Pretendard Variable.ttf in Resources */,
+				BA947016B910402B8FF3E31F /* Pretendard-Medium.ttf in Resources */,
+				A6ED0C0021E94BCFA738423C /* Pretendard-Black.ttf in Resources */,
+				2FCD1039B3904E8EB611FFBE /* Pretendard-Regular.ttf in Resources */,
+				376F670C40834928A44B5BB4 /* Pretendard-Thin.ttf in Resources */,
+				1D3628A4769A4FB0A85CF4C5 /* Pretendard-ExtraLight.ttf in Resources */,
+				576108A152D3430B89A81A69 /* Pretendard-SemiBold.ttf in Resources */,
+				199570B86CEB47B295EB98B6 /* Pretendard-ExtraBold.ttf in Resources */,
+				5A47CA0E4BB24F05911F13D2 /* Pretendard-Bold.ttf in Resources */,
+				26041FAB7D7C48A7B3210F98 /* Pretendard-Light.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -330,7 +366,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = sobok/sobok.entitlements;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 5D5DATKCFY;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = sobok/Info.plist;
@@ -360,7 +396,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = sobok/sobok.entitlements;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 5D5DATKCFY;
 				INFOPLIST_FILE = sobok/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
