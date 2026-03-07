@@ -5,9 +5,9 @@ import { StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import StackNavigation from './src/navigation/StackNavigation';
-import NavigationService from './src/ui/components/NavigationService';
+import NavigationService from './src/common/ui/components/NavigationService';
 import SplashScreen from 'react-native-splash-screen';
+import StackNavigation from './src/common/navigation/StackNavigation';
 
 export default function App() {
   useEffect(() => {
