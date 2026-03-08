@@ -1,0 +1,194 @@
+import React, { useState } from 'react';
+import {
+  Keyboard,
+  TouchableWithoutFeedback,
+  Animated,
+  TextInput,
+  SafeAreaView,
+  Image,
+} from 'react-native';
+import styled from '@emotion/native';
+
+import loginBg from '@/assets/login_bg.png';
+import login_icon from '@/assets/login_icon.png';
+import { colors } from '@/common/ui/styles/colors';
+import Button from '@/common/ui/components/Button';
+import { useNavigation } from '@react-navigation/native';
+import { useLogin } from '@/common/hooks/useLogin';
+import Bg from '../../../common/ui/components/Bg';
+import AuthInput from '../components/AuthInput';
+import Header from '@/common/ui/components/Header';
+import { size } from '@/common/ui/styles/size';
+import { verticalScale } from '@/common/utils/moderateScale';
+
+const LoginScreen = () => {
+  const navigation = useNavigation();
+  const [id, setId] = useState('');
+  const [password, setPassword] = useState('');
+  const { handleLogin } = useLogin();
+  const [isLoginFail, setIsLoginFail] = useState(false);
+  const isActive = id.length > 0 && password.length > 0;
+
+  // 애니메이션 값
+  const translateY = useState(new Animated.Value(0))[0];
+
+  const handleFocusPassword = () => {
+    Animated.timing(translateY, {
+      toValue: -30,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handleBlurPassword = () => {
+    Animated.timing(translateY, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <Bg source={loginBg} />
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} style={{ flex: 1 }}>
+        <Container>
+          <Header isBack={true} />
+          <IntroArea>
+            <LoginIcon source={login_icon} />
+            <Title>로그인</Title>
+            <Subtitle>또 와주셨군요!{`\n`}소복과 또 함께 시간을 모아봐요!</Subtitle>
+          </IntroArea>
+
+          <Animated.View style={{ transform: [{ translateY }] }}>
+            <InputArea>
+              <InputBlock>
+                {/* <Label>아이디</Label>
+              <Input
+                placeholder="아이디를 입력해주세요"
+                placeholderTextColor="#fff"
+                value={id}
+                onChangeText={setId}
+              /> */}
+                <AuthInput
+                  label="아이디"
+                  placeholder="아이디를 입력해주세요"
+                  value={id}
+                  onChangeText={setId}
+                  secureTextEntry={false}
+                  onBlur={() => {}}
+                  onFocus={() => {}}
+                />
+                <Line />
+              </InputBlock>
+              <InputBlock>
+                <Label>비밀번호</Label>
+                <Input
+                  placeholder="비밀번호를 입력해주세요"
+                  placeholderTextColor="#fff"
+                  secureTextEntry
+                  value={password}
+                  onChangeText={setPassword}
+                  onFocus={handleFocusPassword}
+                  onBlur={handleBlurPassword}
+                />
+                <Line />
+              </InputBlock>
+            </InputArea>
+          </Animated.View>
+
+          <ButtonArea>
+            {isLoginFail && <ErrorText>다시 시도해주세요</ErrorText>}
+            <Button
+              text="로그인하기"
+              handleButton={() => handleLogin(id, password, setIsLoginFail)}
+              unChecked={!isActive}
+            />
+          </ButtonArea>
+        </Container>
+      </TouchableWithoutFeedback>
+      {/* <Bg source={loginBg} /> */}
+    </SafeAreaView>
+  );
+};
+
+export default LoginScreen;
+
+// Styled Components
+const Container = styled.View({
+  flex: 1,
+  alignItems: 'center',
+  backgroundColor: 'transparent',
+});
+
+const IntroArea = styled.View({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginTop: verticalScale(40),
+});
+
+const LoginIcon = styled.Image({
+  width: 48,
+  height: 40,
+  marginLeft: 8,
+  marginBottom: verticalScale(11),
+});
+
+const Title = styled.Text({
+  color: colors.fontMain,
+  fontWeight: 600,
+  fontSize: 24,
+  marginBottom: verticalScale(15),
+});
+
+const Subtitle = styled.Text({
+  textAlign: 'center',
+  color: colors.fontMain80,
+  fontSize: 16,
+  fontFamily: 'Pretendard-Medium',
+  fontWeight: 500,
+  lineHeight: 24,
+});
+
+const InputArea = styled.View`
+margin - top: 50px;
+`;
+
+const InputBlock = styled.View`
+margin - bottom: 45px;
+`;
+
+const Label = styled.Text`
+font - size: 16px;
+font - weight: 500;
+color: ${colors.fontMain80};
+`;
+
+const Input = styled(TextInput)`
+width: 290px;
+height: 50px;
+color: ${colors.fontMain};
+font - size: 16px;
+font - weight: 500;
+`;
+
+const Line = styled.View`
+width: 290px;
+height: 0.6px;
+background - color: ${colors.fontMain};
+`;
+
+const ButtonArea = styled.View`
+position: absolute;
+bottom: 80px;
+align - items: center;
+gap: 10px;
+`;
+
+const ErrorText = styled.Text`
+color: ${colors.fontMain};
+font - size: 16px;
+font - weight: 600;
+`;

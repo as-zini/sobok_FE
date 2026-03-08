@@ -4,13 +4,14 @@ import { colors } from '@/common/ui/styles/colors';
 import StartScreenModal from '@/common/ui/components/StartScreenModal';
 import { size } from '@/common/ui/styles/size';
 import bg from '@/assets/start_bg.png';
+import Bg from '../components/Bg';
 
 const StartScreen = () => {
   const [isSignupModalVisible, setIsSignupModalVisible] = useState(false);
 
   return (
     <StartScreenBody>
-      <StartScreenBg source={bg} />
+      <Bg source={bg} />
       <StartText style={{ fontFamily: 'Pretendard ' }}>안녕하세요{`\n`}환영합니다</StartText>
       <StartButton onPress={() => setIsSignupModalVisible(true)}>
         <StartButtonText>시작하기</StartButtonText>
@@ -31,15 +32,6 @@ const StartScreenBody = styled.View`
   align-items: center;
   width: ${() => `${size.width}px`};
   height: ${() => `${size.height}px`};
-`;
-
-const StartScreenBg = styled.Image`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
 `;
 
 const StartText = styled.Text`
