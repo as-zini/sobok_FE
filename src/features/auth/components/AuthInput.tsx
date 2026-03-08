@@ -45,7 +45,7 @@ const Label = styled(DefaultText)({
 const Input = styled(TextInput)({
   width: '100%',
   height: 50,
-  backgroundColor: 'rgba(255, 255, 255, .8)',
+  backgroundColor: 'rgba(255, 255, 255, .5)',
   borderRadius: 8,
   borderStyle: 'solid',
   borderWidth: 0.8,

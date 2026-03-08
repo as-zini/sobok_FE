@@ -1,34 +1,28 @@
 import React, { useState } from 'react';
-import {
-  Keyboard,
-  TouchableWithoutFeedback,
-  Animated,
-  TextInput,
-  SafeAreaView,
-} from 'react-native';
+import { Keyboard, TouchableWithoutFeedback, Animated, SafeAreaView } from 'react-native';
 import styled from '@emotion/native';
 
 import loginBg from '@/assets/login_bg.png';
 import login_icon from '@/assets/login_icon.png';
 import { colors } from '@/common/ui/styles/colors';
 import Button from '@/common/ui/components/Button';
-import { useNavigation } from '@react-navigation/native';
 import { useLogin } from '@/common/hooks/useLogin';
-import Bg from '../../../common/ui/components/Bg';
+import Bg from '@/common/ui/components/Bg';
 import AuthInput from '../components/AuthInput';
 import Header from '@/common/ui/components/Header';
 import { verticalScale } from '@/common/utils/moderateScale';
 import { DefaultText } from '@/common/ui/components/DefaultText';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { size } from '@/common/ui/styles/size';
 
 const LoginScreen = () => {
-  const navigation = useNavigation();
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const { handleLogin } = useLogin();
   const [isLoginFail, setIsLoginFail] = useState(false);
   const isActive = id.length > 0 && password.length > 0;
+  const insets = useSafeAreaInsets();
 
-  // 애니메이션 값
   const translateY = useState(new Animated.Value(0))[0];
 
   const handleFocusPassword = () => {
@@ -53,7 +47,6 @@ const LoginScreen = () => {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} style={{ flex: 1 }}>
         <Container>
           <Header isBack={true} />
-
           <IntroArea>
             <LoginIcon source={login_icon} />
             <Title>로그인</Title>
@@ -77,13 +70,16 @@ const LoginScreen = () => {
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry={false}
-                onBlur={() => {}}
-                onFocus={() => {}}
+                onBlur={() => {
+                  handleBlurPassword();
+                }}
+                onFocus={() => {
+                  handleFocusPassword();
+                }}
               />
             </InputArea>
           </Animated.View>
-
-          <ButtonArea>
+          <ButtonArea bottomInset={insets.bottom}>
             {isLoginFail && <ErrorText>다시 시도해주세요</ErrorText>}
             <Button
               text="로그인하기"
@@ -93,7 +89,6 @@ const LoginScreen = () => {
           </ButtonArea>
         </Container>
       </TouchableWithoutFeedback>
-      {/* <Bg source={loginBg} /> */}
     </SafeAreaView>
   );
 };
@@ -142,15 +137,16 @@ const InputArea = styled.View({
   gap: 36,
 });
 
-const ButtonArea = styled.View`
-position: absolute;
-bottom: 80px;
-align - items: center;
-gap: 10px;
-`;
+const ButtonArea = styled.View<{ bottomInset: number }>(({ bottomInset }) => ({
+  position: 'absolute',
+  bottom: bottomInset,
+  alignItems: 'center',
+  gap: 10,
+  width: size.width - 80,
+}));
 
-const ErrorText = styled.Text`
-color: ${colors.fontMain};
-font - size: 16px;
-font - weight: 600;
-`;
+const ErrorText = styled(DefaultText)({
+  color: colors.fontMain,
+  fontSize: 16,
+  fontWeight: 600,
+});
