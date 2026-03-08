@@ -5,7 +5,6 @@ import {
   Animated,
   TextInput,
   SafeAreaView,
-  Image,
 } from 'react-native';
 import styled from '@emotion/native';
 
@@ -18,8 +17,8 @@ import { useLogin } from '@/common/hooks/useLogin';
 import Bg from '../../../common/ui/components/Bg';
 import AuthInput from '../components/AuthInput';
 import Header from '@/common/ui/components/Header';
-import { size } from '@/common/ui/styles/size';
 import { verticalScale } from '@/common/utils/moderateScale';
+import { DefaultText } from '@/common/ui/components/DefaultText';
 
 const LoginScreen = () => {
   const navigation = useNavigation();
@@ -54,6 +53,7 @@ const LoginScreen = () => {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} style={{ flex: 1 }}>
         <Container>
           <Header isBack={true} />
+
           <IntroArea>
             <LoginIcon source={login_icon} />
             <Title>로그인</Title>
@@ -62,38 +62,24 @@ const LoginScreen = () => {
 
           <Animated.View style={{ transform: [{ translateY }] }}>
             <InputArea>
-              <InputBlock>
-                {/* <Label>아이디</Label>
-              <Input
+              <AuthInput
+                label="아이디"
                 placeholder="아이디를 입력해주세요"
-                placeholderTextColor="#fff"
                 value={id}
                 onChangeText={setId}
-              /> */}
-                <AuthInput
-                  label="아이디"
-                  placeholder="아이디를 입력해주세요"
-                  value={id}
-                  onChangeText={setId}
-                  secureTextEntry={false}
-                  onBlur={() => {}}
-                  onFocus={() => {}}
-                />
-                <Line />
-              </InputBlock>
-              <InputBlock>
-                <Label>비밀번호</Label>
-                <Input
-                  placeholder="비밀번호를 입력해주세요"
-                  placeholderTextColor="#fff"
-                  secureTextEntry
-                  value={password}
-                  onChangeText={setPassword}
-                  onFocus={handleFocusPassword}
-                  onBlur={handleBlurPassword}
-                />
-                <Line />
-              </InputBlock>
+                secureTextEntry={false}
+                onBlur={() => {}}
+                onFocus={() => {}}
+              />
+              <AuthInput
+                label={'비밀번호'}
+                placeholder="비밀번호를 입력해주세요"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry={false}
+                onBlur={() => {}}
+                onFocus={() => {}}
+              />
             </InputArea>
           </Animated.View>
 
@@ -127,6 +113,7 @@ const IntroArea = styled.View({
   alignItems: 'center',
   justifyContent: 'center',
   marginTop: verticalScale(40),
+  marginBottom: verticalScale(65),
 });
 
 const LoginIcon = styled.Image({
@@ -136,14 +123,13 @@ const LoginIcon = styled.Image({
   marginBottom: verticalScale(11),
 });
 
-const Title = styled.Text({
-  color: colors.fontMain,
+const Title = styled(DefaultText)({
   fontWeight: 600,
   fontSize: 24,
   marginBottom: verticalScale(15),
 });
 
-const Subtitle = styled.Text({
+const Subtitle = styled(DefaultText)({
   textAlign: 'center',
   color: colors.fontMain80,
   fontSize: 16,
@@ -152,33 +138,9 @@ const Subtitle = styled.Text({
   lineHeight: 24,
 });
 
-const InputArea = styled.View`
-margin - top: 50px;
-`;
-
-const InputBlock = styled.View`
-margin - bottom: 45px;
-`;
-
-const Label = styled.Text`
-font - size: 16px;
-font - weight: 500;
-color: ${colors.fontMain80};
-`;
-
-const Input = styled(TextInput)`
-width: 290px;
-height: 50px;
-color: ${colors.fontMain};
-font - size: 16px;
-font - weight: 500;
-`;
-
-const Line = styled.View`
-width: 290px;
-height: 0.6px;
-background - color: ${colors.fontMain};
-`;
+const InputArea = styled.View({
+  gap: 36,
+});
 
 const ButtonArea = styled.View`
 position: absolute;
