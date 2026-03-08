@@ -4,7 +4,6 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import styled from '@emotion/native';
 
 import signup_bg from '@/assets/signup_bg.png';
-import BackArrowButton from '@/common/ui/components/BackArrowButton';
 import { colors } from '@/common/ui/styles/colors';
 import Button from '@/common/ui/components/Button';
 import Steps from '@/common/ui/components/Step';
@@ -18,6 +17,13 @@ import { useSignup } from '@/features/auth/hooks/useSignup';
 import { useLogin } from '@/features/auth/hooks/useLogin';
 import MarginVertical from '@/common/ui/components/MarginVertical';
 import { debouce } from '@/util';
+import Header from '@/common/ui/components/Header';
+import Bg from '@/common/ui/components/Bg';
+import { verticalScale } from '@/common/utils/moderateScale';
+import { DefaultText } from '@/common/ui/components/DefaultText';
+import AuthInput from '../components/AuthInput';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import DoubleAuthInput from '../components/DoubleAuthInput';
 
 const SignupScreen = ({ route }) => {
   const [step, setStep] = useState(1);
@@ -29,6 +35,7 @@ const SignupScreen = ({ route }) => {
   const [varifyCode, setVarifyCode] = useState('');
   const { handleLogin } = useLogin();
   const { version } = route.params;
+  const insets = useSafeAreaInsets();
   const [values, setValues] = useState({
     username: '',
     displayName: '',
@@ -140,70 +147,59 @@ const SignupScreen = ({ route }) => {
     <SafeAreaView>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <ContentsBody>
-          <Header>
-            <BackArrowButton />
-          </Header>
+          <Header isBack={true} />
+          <MarginVertical top={verticalScale(10)} />
           <Steps step={step} />
           <InputArea>
             {step !== 5 && <StepNumber step={step} marginBottom={20} />}
-
+            <ContentText>{contentsText[step - 1]}</ContentText>
+            {step === 2 && <CategoryText>닉네임을 설정해주세요!</CategoryText>}
             {step === 1 || step === 2 ? (
-              <>
-                <ContentText>{contentsText[step - 1]}</ContentText>
-                <Row>
-                  <TextInput
-                    placeholder={placeholderText[step - 1]}
-                    placeholderTextColor="#fff"
-                    value={step === 1 ? values.name : values.displayName}
-                    onChange={e =>
-                      step === 1
-                        ? setValues({ ...values, name: e.nativeEvent.text })
-                        : setValues({ ...values, displayName: e.nativeEvent.text })
-                    }
-                  />
-                  {step === 2 && !nicknameChecked && values.displayName.length > 0 && (
-                    <CheckIcon source={check_icon} />
-                  )}
-                </Row>
-                <Line />
-              </>
+              <AuthInput
+                placeholder={'이름을 입력해주세요'}
+                value={step === 1 ? values.name : values.displayName}
+                onChangeText={text =>
+                  step === 1
+                    ? setValues({ ...values, name: text })
+                    : setValues({ ...values, displayName: text })
+                }
+                secureTextEntry={false}
+                onFocus={() => {}}
+                onBlur={() => {}}
+              />
             ) : step === 3 ? (
-              <KeyboardAwareScrollView keyboardShouldPersistTaps="handled" enableOnAndroid>
-                <ContentText style={{ marginBottom: 0 }}>{contentsText[2]}</ContentText>
-                <CategoryText>{categoryText[2][0]}</CategoryText>
-                <Row>
-                  <TextInput
-                    placeholder={placeholderText[2][0]}
-                    placeholderTextColor="#fff"
-                    value={version === 'email' ? values.username : route.params.email}
-                    onChange={e => setValues({ ...values, username: e.nativeEvent.text })}
-                    editable={version === 'email'}
-                  />
-                  {!idChecked && <CheckIcon source={check_icon} />}
-                </Row>
-                <Line />
-                <CategoryText>{categoryText[2][1]}</CategoryText>
-                <TextInput
-                  placeholder={placeholderText[2][1]}
-                  placeholderTextColor="#fff"
-                  secureTextEntry
-                  value={version === 'email' ? values.password : 'social_password'}
-                  onChange={e => setValues({ ...values, password: e.nativeEvent.text })}
-                  editable={version === 'email'}
+              <KeyboardAwareScrollView
+                style={{ marginTop: verticalScale(32) }}
+                keyboardShouldPersistTaps="handled"
+                enableOnAndroid
+              >
+                <AuthInput
+                  label="아이디"
+                  placeholder="아이디를 입력하세요 (5~15자)"
+                  value={version === 'email' ? values.username : route.params.email}
+                  onChangeText={text => setValues({ ...values, username: text })}
+                  secureTextEntry={false}
+                  disabled={version !== 'email'}
+                  onBlur={() => {}}
+                  onFocus={() => {}}
                 />
-                <Line />
-                <Row>
-                  <TextInput
-                    placeholder={placeholderText[2][2]}
-                    placeholderTextColor="#fff"
-                    secureTextEntry
-                    value={version === 'email' ? values.password2 : 'apple_password'}
-                    onChange={e => setValues({ ...values, password2: e.nativeEvent.text })}
-                    editable={version === 'email'}
-                  />
-                  {!isSame && <CheckIcon source={check_icon} />}
-                </Row>
-                <Line />
+                <MarginVertical top={verticalScale(32)} />
+                <DoubleAuthInput
+                  label="비밀번호"
+                  placeholders={[
+                    '비밀번호를 입력하세요 (8~16자)',
+                    '비밀번호를 한 번 더 입력해주세요',
+                  ]}
+                  values={[values.password, values.password2]}
+                  onTopChangeText={text => setValues({ ...values, password: text })}
+                  onBottomChangeText={text => setValues({ ...values, password2: text })}
+                  secureTextEntrys={[true, true]}
+                  disables={[version !== 'email', version !== 'email']}
+                  onTopFocus={() => {}}
+                  onBottomBlur={() => {}}
+                  onBottomFocus={() => {}}
+                  onTopBlur={() => {}}
+                />
               </KeyboardAwareScrollView>
             ) : step === 4 ? (
               <View style={{ height: '300%' }}>
@@ -213,7 +209,6 @@ const SignupScreen = ({ route }) => {
                   showsVerticalScrollIndicator={false}
                   style={{ height: 100 }}
                 >
-                  <ContentText style={{ marginBottom: 0 }}>{contentsText[3]}</ContentText>
                   <CategoryText>{categoryText[3][0]}</CategoryText>
                   <Row>
                     <TextInput
@@ -278,7 +273,7 @@ const SignupScreen = ({ route }) => {
             )}
           </InputArea>
 
-          <ButtonWrapper>
+          <ButtonWrapper bottomInset={insets.bottom}>
             <Button
               text="다음 단계로"
               handleButton={handleButton}
@@ -297,14 +292,13 @@ const SignupScreen = ({ route }) => {
           </ButtonWrapper>
         </ContentsBody>
       </TouchableWithoutFeedback>
-      <Background source={signup_bg} />
+      <Bg source={signup_bg} />
     </SafeAreaView>
   );
 };
 
 export default SignupScreen;
 
-// Styled Components
 const ContentsBody = styled.View(() => ({
   width: size.width,
   height: size.height,
@@ -312,41 +306,21 @@ const ContentsBody = styled.View(() => ({
   paddingHorizontal: 40,
 }));
 
-const Background = styled.Image(() => ({
-  width: size.width,
-  height: size.height,
-  position: 'absolute',
-  top: 0,
-  zIndex: -1,
-}));
+const InputArea = styled.View({
+  marginTop: verticalScale(57),
+});
 
-const Header = styled.View(() => ({
-  width: size.width - 50,
-  height: 50,
-  justifyContent: 'center',
-}));
+const ContentText = styled(DefaultText)({
+  fontSize: 24,
+  fontWeight: 600,
+  color: colors.fontMain,
+  lineHeight: 34,
+});
 
-const InputArea = styled.View`
-  position: absolute;
-  top: 130px;
-  align-items: flex-start;
-`;
-
-const ContentText = styled.Text`
-  font-size: 24px;
-  font-weight: 600;
-  color: ${colors.fontMain};
-  margin-bottom: 40px;
-  line-height: 34px;
-`;
-
-const CategoryText = styled.Text`
-  font-size: 16px;
-  font-weight: 500;
-  color: #fff;
-  margin-bottom: 20px;
-  margin-top: 40px;
-`;
+const CategoryText = styled(DefaultText)({
+  color: colors.fontMain80,
+  lineHeight: 36,
+});
 
 const TextInput = styled.TextInput`
   width: 290px;
@@ -398,10 +372,11 @@ const ErrorText = styled.Text`
   margin-bottom: 20px;
 `;
 
-const ButtonWrapper = styled.View`
-  position: absolute;
-  bottom: 100px;
-`;
+const ButtonWrapper = styled.View<{ bottomInset: number }>(({ bottomInset }) => ({
+  width: '100%',
+  position: 'absolute',
+  bottom: bottomInset + 70,
+}));
 
 const Complete = styled.View`
   align-items: center;

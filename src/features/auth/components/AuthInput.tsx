@@ -5,6 +5,17 @@ import { colors } from '@/common/ui/styles/colors';
 import { DefaultText } from '@/common/ui/components/DefaultText';
 import { size } from '@/common/ui/styles/size';
 
+interface AuthInputProps {
+  label?: string;
+  placeholder: string;
+  value: string;
+  secureTextEntry: boolean;
+  onChangeText: (text: string) => void;
+  onFocus: () => void;
+  onBlur: () => void;
+  disabled: boolean;
+}
+
 const AuthInput = ({
   label,
   placeholder,
@@ -13,7 +24,8 @@ const AuthInput = ({
   secureTextEntry,
   onFocus,
   onBlur,
-}) => {
+  disabled,
+}: AuthInputProps) => {
   return (
     <InputBlock>
       <Label>{label}</Label>
@@ -25,6 +37,7 @@ const AuthInput = ({
         onChangeText={onChangeText}
         onFocus={onFocus}
         onBlur={onBlur}
+        editable={!disabled}
       />
     </InputBlock>
   );

@@ -1,6 +1,8 @@
 import styled from '@emotion/native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
+import { size } from '../styles/size';
+import { DefaultText } from './DefaultText';
 
 const Header = ({
   title,
@@ -24,24 +26,24 @@ const Header = ({
 
 export default Header;
 
-const HeaderBody = styled.View`
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-  margin-top: 20px;
-`;
+const HeaderBody = styled.View({
+  width: size.width,
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginTop: 20,
+});
 
-const ButtonBody = styled.TouchableOpacity`
-  width: 24px;
-  height: 24px;
-  justify-content: center;
-  align-items: flex-start;
-  position: absolute;
-  left: 24px;
-`;
+const ButtonBody = styled.TouchableOpacity({
+  width: 24,
+  height: 24,
+  justifyContent: 'center',
+  alignItems: 'flex-start',
+  position: 'absolute',
+  left: 24,
+});
 
-const Title = styled.Text`
-  font-size: 20px;
-  font-weight: 600;
-  color: #4c4c4c;
-`;
+const Title = styled(DefaultText)({
+  fontSize: 20,
+  fontWeight: 600,
+  color: '#4c4c4c',
+});
