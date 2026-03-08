@@ -5,6 +5,7 @@ import StartScreenModal from '@/common/ui/components/StartScreenModal';
 import { size } from '@/common/ui/styles/size';
 import bg from '@/assets/start_bg.png';
 import Bg from '../components/Bg';
+import { DefaultText } from '../components/DefaultText';
 
 const StartScreen = () => {
   const [isSignupModalVisible, setIsSignupModalVisible] = useState(false);
@@ -12,7 +13,7 @@ const StartScreen = () => {
   return (
     <StartScreenBody>
       <Bg source={bg} />
-      <StartText style={{ fontFamily: 'Pretendard ' }}>안녕하세요{`\n`}환영합니다</StartText>
+      <StartText>안녕하세요{`\n`}환영합니다</StartText>
       <StartButton onPress={() => setIsSignupModalVisible(true)}>
         <StartButtonText>시작하기</StartButtonText>
       </StartButton>
@@ -26,35 +27,34 @@ const StartScreen = () => {
 
 export default StartScreen;
 
-const StartScreenBody = styled.View`
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-  width: ${() => `${size.width}px`};
-  height: ${() => `${size.height}px`};
-`;
+const StartScreenBody = styled.View({
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+  width: size.width,
+  height: size.height,
+});
 
-const StartText = styled.Text`
-  position: absolute;
-  font-size: 24px;
-  bottom: 150px;
-  font-weight: 600;
-  color: ${colors.fontMain};
-`;
+const StartText = styled(DefaultText)({
+  fontSize: 24,
+  position: 'absolute',
+  bottom: 150,
+  fontFamily: 'Pretendard-SemiBold',
+});
 
-const StartButton = styled.TouchableOpacity`
-  position: absolute;
-  bottom: 60px;
-  background-color: ${colors.fontMain};
-  width: 290px;
-  height: 60px;
-  justify-content: center;
-  align-items: center;
-  border-radius: 8px;
-`;
+const StartButton = styled.TouchableOpacity({
+  position: 'absolute',
+  bottom: 60,
+  backgroundColor: colors.fontMain,
+  width: 290,
+  height: 60,
+  justifyContent: 'center',
+  alignItems: 'center',
+  borderRadius: 8,
+});
 
-const StartButtonText = styled.Text`
-  font-weight: 600;
-  color: #fff;
-  font-size: 20px;
-`;
+const StartButtonText = styled(DefaultText)({
+  color: '#fff',
+  fontSize: 20,
+  fontFamily: 'Pretendard-SemiBold',
+});

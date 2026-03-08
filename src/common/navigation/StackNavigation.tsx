@@ -2,7 +2,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import React, { useEffect, useState } from 'react';
 import StartScreen from '@/common/ui/screens/StartScreen';
 import LoginScreen from '@/features/auth/screens/LoginScreen';
-import SignupScreen from '@/common/ui/screens/SignupScreen';
+import SignupScreen from '@/features/auth/screens/SignupScreen';
 import TestStartScreen from '@/common/ui/screens/TestStartScreen';
 import Test from '@/common/ui/screens/Test';
 import AiRoutineCompleteScreen from '@/common/ui/screens/AiRoutineCompleteScreen';

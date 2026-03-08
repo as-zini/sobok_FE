@@ -10,8 +10,9 @@ import kakao_icon from '@/assets/kakao_icon.png';
 import email_icon from '@/assets/email_icon.png';
 import { useNavigation } from '@react-navigation/native';
 import { size } from '@/common/ui/styles/size';
-import { useSignup } from '@/common/hooks/useSignup';
+import { useSignup } from '@/features/auth/hooks/useSignup';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import { DefaultText } from './DefaultText';
 
 const StartScreenModal = ({ isSignupModalVisible, setIsSignupModalVisible }) => {
   const navigation = useNavigation();
@@ -53,7 +54,7 @@ const StartScreenModal = ({ isSignupModalVisible, setIsSignupModalVisible }) => 
   useEffect(() => {
     GoogleSignin.configure({
       webClientId: '927685447127-gh9fmj2vpalns39uu167gdpl66iavht5.apps.googleusercontent.com',
-      iosClientId: '927685447127-a7muurhgj3me105a9vbhbklnq18at29c.apps.googleusercontent.com', // 백엔드 검증용 “웹” 클라이언트 ID
+      iosClientId: '927685447127-a7muurhgj3me105a9vbhbklnq18at29c.apps.googleusercontent.com', // 백엔드 검증용 "웹" 클라이언트 ID
       offlineAccess: true, // 서버에서 리프레시 토큰을 받으려면 true
     });
   }, []);
@@ -103,99 +104,97 @@ const StartScreenModal = ({ isSignupModalVisible, setIsSignupModalVisible }) => 
 
 export default StartScreenModal;
 
-const ModalBody = styled.View`
-  width: ${() => `${size.width}px`};
-  height: 600px;
-  border-radius: 24px;
-  background-color: rgba(255, 255, 255, 0.7);
-  position: absolute;
-  bottom: -30px;
-  left: -20px;
-`;
+const ModalBody = styled.View({
+  width: size.width,
+  height: 600,
+  borderRadius: 24,
+  backgroundColor: 'rgba(255, 255, 255, 0.7)',
+  position: 'absolute',
+  bottom: -30,
+  left: -20,
+});
 
-const ModalBg = styled.Image`
-  width: 100%;
-  height: 100%;
+const ModalBg = styled.Image({
+  width: '100%',
+  height: '100%',
+  position: 'absolute',
+  borderRadius: 20,
+});
 
-  position: absolute;
-  border-radius: 20px;
-`;
+const SignUpIcon = styled.Image({
+  width: 56,
+  height: 43,
+  marginBottom: 30,
+  zIndex: 2,
+});
 
-const SignUpIcon = styled.Image`
-  width: 56px;
-  height: 43px;
-  margin-bottom: 30px;
-  z-index: 2;
-`;
+const ModalContentsArea = styled.View({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  height: '100%',
+  zIndex: 2,
+});
 
-const ModalContentsArea = styled.View`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  z-index: 2;
-`;
+const SignupTitle = styled(DefaultText)({
+  color: '#fff',
+  fontWeight: '600',
+  fontSize: 26,
+  marginBottom: 16,
+  zIndex: 2,
+});
 
-const SignupTitle = styled.Text`
-  color: #fff;
-  font-weight: 600;
-  font-size: 26px;
-  margin-bottom: 16px;
-  z-index: 2;
-`;
+const SignupText = styled(DefaultText)({
+  color: '#fff',
+  fontWeight: '500',
+  fontSize: 18,
+  zIndex: 2,
+  lineHeight: 24,
+});
 
-const SignupText = styled.Text`
-  color: #fff;
-  font-weight: 500;
-  font-size: 18px;
-  z-index: 2;
-  line-height: 24px;
-`;
+const SignupPlatformArea = styled.View({
+  display: 'flex',
+  gap: 10,
+  marginTop: 40,
+  zIndex: 2,
+});
 
-const SignupPlatformArea = styled.View`
-  display: flex;
-  gap: 10px;
-  margin-top: 40px;
-  z-index: 2;
-`;
+const SignupButton = styled.TouchableOpacity({
+  width: 290,
+  height: 56,
+  display: 'flex',
+  flexDirection: 'row',
+  backgroundColor: '#fff',
+  borderRadius: 8,
+  justifyContent: 'center',
+  alignItems: 'center',
+  zIndex: 2,
+});
 
-const SignupButton = styled.TouchableOpacity`
-  width: 290px;
-  height: 56px;
-  display: flex;
-  flex-direction: row;
-  background-color: #fff;
-  border-radius: 8px;
-  justify-content: center;
-  align-items: center;
-  z-index: 2;
-`;
+const PlatformIcon = styled.Image({
+  width: 25,
+  height: 25,
+  position: 'absolute',
+  left: 20,
+  zIndex: 2,
+});
 
-const PlatformIcon = styled.Image`
-  width: 25px;
-  height: 25px;
-  position: absolute;
-  left: 20px;
-  z-index: 2;
-`;
+const PlatformText = styled(DefaultText)({
+  flexGrow: 1,
+  textAlign: 'center',
+  color: '#4c4c4c',
+  fontSize: 18,
+  fontWeight: '500',
+  zIndex: 2,
+});
 
-const PlatformText = styled.Text`
-  flex-grow: 1;
-  text-align: center;
-  color: #4c4c4c;
-  font-size: 18px;
-  font-weight: 500;
-  z-index: 2;
-`;
+const GoToLoginButton = styled.TouchableOpacity({
+  marginTop: 15,
+  zIndex: 2,
+});
 
-const GoToLoginButton = styled.TouchableOpacity`
-  margin-top: 15px;
-  z-index: 2;
-`;
-
-const GoToLogin = styled.Text`
-  font-size: 16px;
-  font-weight: 500;
-  color: #fff;
-  z-index: 2;
-`;
+const GoToLogin = styled(DefaultText)({
+  fontWeight: '500',
+  color: '#fff',
+  zIndex: 2,
+});

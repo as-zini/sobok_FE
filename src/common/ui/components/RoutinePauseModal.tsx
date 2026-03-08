@@ -12,7 +12,7 @@ import checkIcon from '@/assets/check_icon_indigo.png';
 import routinePauseBg from '@/assets/routine_pause_bg.png';
 import { useRoutine } from '@/common/hooks/useRoutine';
 import { useUserInfoStore } from '@/common/store/user';
-import { useLogin } from '@/common/hooks/useLogin';
+import { useLogin } from '@/features/auth/hooks/useLogin';
 
 const RoutinePauseModal = ({
   isPauseModalVisible,
@@ -39,24 +39,30 @@ const RoutinePauseModal = ({
   };
 
   const titleText =
-    version === 'Complete' ? '루틴을\n완료할까요?' :
-      version === 'Logout' ? '로그아웃\n할까요?' :
-        isPause
-          ? isReturn ? '루틴이 다시\n시작되었어요!' : '루틴을 다시\n시작할까요?'
-          : isReturn ? '루틴을 보관함에 넣어두었어요!' : '루틴을 보관함에 넣어둘까요?';
+    version === 'Complete'
+      ? '루틴을\n완료할까요?'
+      : version === 'Logout'
+      ? '로그아웃\n할까요?'
+      : isPause
+      ? isReturn
+        ? '루틴이 다시\n시작되었어요!'
+        : '루틴을 다시\n시작할까요?'
+      : isReturn
+      ? '루틴을 보관함에 넣어두었어요!'
+      : '루틴을 보관함에 넣어둘까요?';
 
   const bodyText =
     version === 'Complete'
       ? `${userInfo.displayName} 님의 일상을 책임졌던 루틴!\n드디어 결실을 맺은 걸까요?`
       : version === 'Logout'
-        ? '정말\n로그아웃 할까요?'
-        : isPause
-          ? isReturn
-            ? '루틴 페이지에서\n잠시 미뤄둘 수 있어요!'
-            : '돌아오셨군요!\n다시 열심히 해봐요!'
-          : isReturn
-            ? '루틴 페이지에서 언제든\n다시 시작할 수 있어요!'
-            : '잠시 미뤄두었다가\n언제든 다시 시작할 수 있어요!';
+      ? '정말\n로그아웃 할까요?'
+      : isPause
+      ? isReturn
+        ? '루틴 페이지에서\n잠시 미뤄둘 수 있어요!'
+        : '돌아오셨군요!\n다시 열심히 해봐요!'
+      : isReturn
+      ? '루틴 페이지에서 언제든\n다시 시작할 수 있어요!'
+      : '잠시 미뤄두었다가\n언제든 다시 시작할 수 있어요!';
 
   return (
     <Modal
@@ -71,7 +77,10 @@ const RoutinePauseModal = ({
     >
       <Container height={isReturn ? 310 : 400}>
         <MarginVertical top={isReturn ? 52 : 0} />
-        <Icon source={isReturn ? checkIcon : snowflakeIcon} style={{ width: isReturn ? 44 : 16, height: isReturn ? 44 : 16 }} />
+        <Icon
+          source={isReturn ? checkIcon : snowflakeIcon}
+          style={{ width: isReturn ? 44 : 16, height: isReturn ? 44 : 16 }}
+        />
         <MarginVertical top={15} />
         <Title>{titleText}</Title>
         <MarginVertical top={30} />
@@ -103,7 +112,7 @@ const Container = styled.View`
   align-items: center;
   position: absolute;
   bottom: 0px;
-  border-radius:20px;
+  border-radius: 20px;
   overflow: hidden;
 `;
 
@@ -134,5 +143,5 @@ const Background = styled(Image)`
   width: ${() => `${size.width}px`};
   height: 100%;
   z-index: -1;
-  border-radius:20px;
+  border-radius: 20px;
 `;

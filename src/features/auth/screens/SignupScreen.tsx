@@ -1,15 +1,5 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react';
-import {
-  Dimensions,
-  Image,
-  Keyboard,
-  Platform,
-  SafeAreaView,
-  Text,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  View
-} from 'react-native';
+import React, { useEffect, useState, useMemo } from 'react';
+import { Keyboard, SafeAreaView, TouchableWithoutFeedback, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styled from '@emotion/native';
 
@@ -24,13 +14,10 @@ import { useNavigation } from '@react-navigation/native';
 import StepNumber from '@/common/ui/components/StepNumber';
 import { size } from '@/common/ui/styles/size';
 import check_icon from '@/assets/check_icon_indigo.png';
-import { useSignup } from '@/common/hooks/useSignup';
-import { useLogin } from '@/common/hooks/useLogin';
+import { useSignup } from '@/features/auth/hooks/useSignup';
+import { useLogin } from '@/features/auth/hooks/useLogin';
 import MarginVertical from '@/common/ui/components/MarginVertical';
 import { debouce } from '@/util';
-
-const width = Dimensions.get('screen').width;
-const height = Dimensions.get('screen').height;
 
 const SignupScreen = ({ route }) => {
   const [step, setStep] = useState(1);
@@ -50,34 +37,40 @@ const SignupScreen = ({ route }) => {
     password2: '',
     email: '',
     phoneNumber: '',
-    birth: ''
+    birth: '',
   });
   const navigation = useNavigation();
-  const { handleSignup, checkAvailability, handleSmsSend, handleSmsVarify, addUserInfo } = useSignup();
+  const { handleSignup, checkAvailability, handleSmsSend, handleSmsVarify, addUserInfo } =
+    useSignup();
 
   // 디바운스된 인증번호 설정 함수
 
   const debouncedVerify = useMemo(
     () =>
-      debouce((code) => {
+      debouce(code => {
         // 최신 phoneNumber로 검증
-        console.log(code)
+        console.log(code);
         handleSmsVarify(values.phoneNumber, code, setIsVarified);
       }, 500),
-    [values.phoneNumber] // 의도적으로 phoneNumber만 의존
+    [values.phoneNumber], // 의도적으로 phoneNumber만 의존
   );
 
   const handleButton = () => {
     if (step < 4) {
       setStep(prev => prev + 1);
     } else if (step === 4) {
-      if (version === "email") {
+      if (version === 'email') {
         handleSignup(values, setStep);
       } else {
-        addUserInfo({ name: values.name, displayName: values.displayName, phoneNumber: values.phoneNumber, birth: values.birth })
+        addUserInfo({
+          name: values.name,
+          displayName: values.displayName,
+          phoneNumber: values.phoneNumber,
+          birth: values.birth,
+        });
       }
     } else {
-      if (version === "email") {
+      if (version === 'email') {
         handleLogin(values.username, values.password, '', true);
       }
       navigation.navigate('ViewSaveTime', { version: 'first', username: values.displayName });
@@ -89,7 +82,7 @@ const SignupScreen = ({ route }) => {
     '소복에서는 \n어떻게 불러드릴까요?',
     '아이디와 \n비밀번호를 설정할게요!',
     `${values.displayName} 님에 대해 \n더 알려주세요!`,
-    ''
+    '',
   ];
 
   const placeholderText = [
@@ -98,15 +91,10 @@ const SignupScreen = ({ route }) => {
     [
       '아이디를 입력하세요(5-15자)',
       '비밀번호를 입력하세요 (8~16글자)',
-      '비밀번호를 한 번 더 입력해주세요'
+      '비밀번호를 한 번 더 입력해주세요',
     ],
-    [
-      '이메일을 입력해주세요',
-      '전화번호를 입력해주세요',
-      '인증번호를 입력해주세요',
-      'ex)20000101'
-    ],
-    ''
+    ['이메일을 입력해주세요', '전화번호를 입력해주세요', '인증번호를 입력해주세요', 'ex)20000101'],
+    '',
   ];
 
   const categoryText = ['', '', ['아이디', '비밀번호'], ['이메일', '전화번호', '생년월일']];
@@ -115,19 +103,28 @@ const SignupScreen = ({ route }) => {
     step === 1 || step === 2
       ? (step === 1 ? values.name : values.displayName).trim() !== ''
       : step === 3
-        ? values.username.trim() !== '' && values.password.trim() !== '' && values.password2.trim() !== ''
-        : values.email.trim() !== '' && values.phoneNumber.trim() !== '' && values.birth.trim() !== '';
+      ? values.username.trim() !== '' &&
+        values.password.trim() !== '' &&
+        values.password2.trim() !== ''
+      : values.email.trim() !== '' &&
+        values.phoneNumber.trim() !== '' &&
+        values.birth.trim() !== '';
 
-  const isSame = values.password !== values.password2 || values.password.length < 7 || values.password.length > 17;
+  const isSame =
+    values.password !== values.password2 ||
+    values.password.length < 7 ||
+    values.password.length > 17;
   const checkList = [
     !isActive || nicknameChecked,
     !isActive || isSame || idChecked,
-    !isActive || emailChecked || !isVarified
+    !isActive || emailChecked || !isVarified,
   ];
 
   useEffect(() => {
     if (step === 2) {
-      checkAvailability(values.displayName, 'display-name').then(res => setNicknameChecked(res.isDuplicated));
+      checkAvailability(values.displayName, 'display-name').then(res =>
+        setNicknameChecked(res.isDuplicated),
+      );
     } else if (step === 3) {
       checkAvailability(values.username, 'username').then(res => setIdChecked(res.isDuplicated));
     } else if (step === 4) {
@@ -171,19 +168,16 @@ const SignupScreen = ({ route }) => {
                 <Line />
               </>
             ) : step === 3 ? (
-              <KeyboardAwareScrollView
-                keyboardShouldPersistTaps="handled"
-                enableOnAndroid
-              >
+              <KeyboardAwareScrollView keyboardShouldPersistTaps="handled" enableOnAndroid>
                 <ContentText style={{ marginBottom: 0 }}>{contentsText[2]}</ContentText>
                 <CategoryText>{categoryText[2][0]}</CategoryText>
                 <Row>
                   <TextInput
                     placeholder={placeholderText[2][0]}
                     placeholderTextColor="#fff"
-                    value={version === "email" ? values.username : route.params.email}
+                    value={version === 'email' ? values.username : route.params.email}
                     onChange={e => setValues({ ...values, username: e.nativeEvent.text })}
-                    editable={version === "email"}
+                    editable={version === 'email'}
                   />
                   {!idChecked && <CheckIcon source={check_icon} />}
                 </Row>
@@ -193,9 +187,9 @@ const SignupScreen = ({ route }) => {
                   placeholder={placeholderText[2][1]}
                   placeholderTextColor="#fff"
                   secureTextEntry
-                  value={version === "email" ? values.password : 'social_password'}
+                  value={version === 'email' ? values.password : 'social_password'}
                   onChange={e => setValues({ ...values, password: e.nativeEvent.text })}
-                  editable={version === "email"}
+                  editable={version === 'email'}
                 />
                 <Line />
                 <Row>
@@ -203,9 +197,9 @@ const SignupScreen = ({ route }) => {
                     placeholder={placeholderText[2][2]}
                     placeholderTextColor="#fff"
                     secureTextEntry
-                    value={version === "email" ? values.password2 : 'apple_password'}
+                    value={version === 'email' ? values.password2 : 'apple_password'}
                     onChange={e => setValues({ ...values, password2: e.nativeEvent.text })}
-                    editable={version === "email"}
+                    editable={version === 'email'}
                   />
                   {!isSame && <CheckIcon source={check_icon} />}
                 </Row>
@@ -225,8 +219,8 @@ const SignupScreen = ({ route }) => {
                     <TextInput
                       placeholder={placeholderText[3][0]}
                       placeholderTextColor="#fff"
-                      value={version === "email" ? values.email : route.params.email}
-                      editable={version === "email"}
+                      value={version === 'email' ? values.email : route.params.email}
+                      editable={version === 'email'}
                       onChange={e => setValues({ ...values, email: e.nativeEvent.text })}
                     />
                     {!emailChecked && <CheckIcon source={check_icon} />}
@@ -247,16 +241,19 @@ const SignupScreen = ({ route }) => {
                   </Row>
                   <Line />
                   <MarginVertical top={10} />
-                  {phoneChecked === '' ? null : !phoneChecked && (
-                    <ErrorText>이미 가입된 전화번호입니다</ErrorText>
-                  )}
+                  {phoneChecked === ''
+                    ? null
+                    : !phoneChecked && <ErrorText>이미 가입된 전화번호입니다</ErrorText>}
                   <View style={{ alignItems: 'center' }}>
                     <TextInput
                       placeholder={placeholderText[3][2]}
                       placeholderTextColor="#fff"
                       keyboardType="numeric"
                       value={varifyCode}
-                      onChange={e => { setVarifyCode(e.nativeEvent.text); debouncedVerify(e.nativeEvent.text); }}
+                      onChange={e => {
+                        setVarifyCode(e.nativeEvent.text);
+                        debouncedVerify(e.nativeEvent.text);
+                      }}
                     />
                     {isVarified && <CheckIcon source={check_icon} style={{ bottom: 30 }} />}
                     <Line />
@@ -270,7 +267,6 @@ const SignupScreen = ({ route }) => {
                     onChange={e => setValues({ ...values, birth: e.nativeEvent.text })}
                   />
                   <Line />
-
                 </KeyboardAwareScrollView>
               </View>
             ) : (
@@ -283,11 +279,23 @@ const SignupScreen = ({ route }) => {
           </InputArea>
 
           <ButtonWrapper>
-            <Button text="다음 단계로" handleButton={handleButton} unChecked={step === 2 ? checkList[0] : step === 3 && version === "email" ? checkList[1] : step === 3 && version !== "email" ? false : step === 4 ? checkList[2] : !isActive} />
+            <Button
+              text="다음 단계로"
+              handleButton={handleButton}
+              unChecked={
+                step === 2
+                  ? checkList[0]
+                  : step === 3 && version === 'email'
+                  ? checkList[1]
+                  : step === 3 && version !== 'email'
+                  ? false
+                  : step === 4
+                  ? checkList[2]
+                  : !isActive
+              }
+            />
           </ButtonWrapper>
-
         </ContentsBody>
-
       </TouchableWithoutFeedback>
       <Background source={signup_bg} />
     </SafeAreaView>
@@ -298,10 +306,10 @@ export default SignupScreen;
 
 // Styled Components
 const ContentsBody = styled.View(() => ({
-  width,
-  height,
+  width: size.width,
+  height: size.height,
   alignItems: 'center',
-  paddingHorizontal: 40
+  paddingHorizontal: 40,
 }));
 
 const Background = styled.Image(() => ({
@@ -310,13 +318,12 @@ const Background = styled.Image(() => ({
   position: 'absolute',
   top: 0,
   zIndex: -1,
-
 }));
 
 const Header = styled.View(() => ({
   width: size.width - 50,
   height: 50,
-  justifyContent: 'center'
+  justifyContent: 'center',
 }));
 
 const InputArea = styled.View`
@@ -330,7 +337,7 @@ const ContentText = styled.Text`
   font-weight: 600;
   color: ${colors.fontMain};
   margin-bottom: 40px;
-  line-height:34px;
+  line-height: 34px;
 `;
 
 const CategoryText = styled.Text`
@@ -387,7 +394,7 @@ const ErrorText = styled.Text`
   color: ${colors.error};
   font-weight: 500;
   font-size: 14px;
-  margin-top:-20px;
+  margin-top: -20px;
   margin-bottom: 20px;
 `;
 

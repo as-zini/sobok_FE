@@ -6,7 +6,7 @@ import loginBg from '@/assets/login_bg.png';
 import login_icon from '@/assets/login_icon.png';
 import { colors } from '@/common/ui/styles/colors';
 import Button from '@/common/ui/components/Button';
-import { useLogin } from '@/common/hooks/useLogin';
+import { useLogin } from '@/features/auth/hooks/useLogin';
 import Bg from '@/common/ui/components/Bg';
 import AuthInput from '../components/AuthInput';
 import Header from '@/common/ui/components/Header';
